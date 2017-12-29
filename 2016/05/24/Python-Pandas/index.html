@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,pandas," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Pandas is a module for data analysis based on Numpy.There are two data types in pandas: Series and DataFrame. import pandas as pdimport numpy as npimport matplotlib.pyplot as plt 创建SeriesSeries can be">
+<meta name="keywords" content="Python,pandas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python-Pandas">
+<meta property="og:url" content="http://mirokule.github.io/2016/05/24/Python-Pandas/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="Pandas is a module for data analysis based on Numpy.There are two data types in pandas: Series and DataFrame. import pandas as pdimport numpy as npimport matplotlib.pyplot as plt 创建SeriesSeries can be">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T00:45:17.602Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python-Pandas">
+<meta name="twitter:description" content="Pandas is a module for data analysis based on Numpy.There are two data types in pandas: Series and DataFrame. import pandas as pdimport numpy as npimport matplotlib.pyplot as plt 创建SeriesSeries can be">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2016/05/24/Python-Pandas/"/>
+
+
+
+
+
+  <title>Python-Pandas | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/24/Python-Pandas/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python-Pandas</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-24T22:02:10+08:00">
+                2016-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  551
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>Pandas</strong> is a module for data analysis based on <strong>Numpy</strong>.<br>There are two data types in pandas: <strong>Series</strong> and <strong>DataFrame</strong>.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+<h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><h4 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h4><p>Series can be regarded as <strong>fix-length ordered dictionary</strong>(定长的有序字典)：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s = pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], index=[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>]) // s = dict&#123;<span class="string">'a'</span>:<span class="number">1</span>, <span class="string">'b'</span>:<span class="number">2</span>, <span class="string">'c'</span>:<span class="number">3</span>&#125;</span><br><span class="line">s.index </span><br><span class="line">s.values</span><br><span class="line">s[<span class="string">'a'</span>] //<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>Series 的 index 和 values 实际仍为互相独立的 ndarray 数组。</p>
+<h4 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h4><p>DataFrame是一个表格型的数据结构。它含有一组有序的列(同index)，values可以有多列，每列可以是不同的值类型。可以将各列看成是共享index的Series类型</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">   data = &#123;<span class="string">'num'</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="string">'year'</span>: [<span class="number">2001</span>,<span class="number">2002</span>,<span class="number">2003</span>], <span class="string">'pop'</span>: [<span class="number">1.2</span>,<span class="number">1.5</span>,<span class="number">1.7</span>]&#125;</span><br><span class="line">   df = pd.DataFrame(data, index = [<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>], columns = [<span class="string">'c1'</span>,<span class="string">'c2'</span>,<span class="string">'c3'</span>]</span><br><span class="line">   /*</span><br><span class="line">	c1	c2	c3</span><br><span class="line">one	<span class="number">1</span>	<span class="number">2001</span>	<span class="number">1.2</span></span><br><span class="line">two	<span class="number">2</span>	<span class="number">2002</span>	<span class="number">1.5</span></span><br><span class="line">three	<span class="number">3</span>	<span class="number">2003</span>	<span class="number">1.7</span></span><br><span class="line">   */</span><br><span class="line">   df.reindex(index=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], columns=[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>], method=<span class="string">'ffill'</span>)</span><br><span class="line">   <span class="keyword">for</span> index, passenger <span class="keyword">in</span> df.iterrows(): //迭代器，遍历每行记录</span><br><span class="line">       <span class="keyword">print</span> passenger[<span class="string">'Age'</span>]</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="数据操作"><a href="#数据操作" class="headerlink" title="数据操作"></a>数据操作</h2><h4 id="查看数据"><a href="#查看数据" class="headerlink" title="查看数据"></a>查看数据</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.head() //default <span class="number">5</span> rows</span><br><span class="line">df.tail(<span class="number">3</span>)</span><br><span class="line">df.index</span><br><span class="line">df.colums</span><br><span class="line">df.values</span><br><span class="line">df.describe() //mean, var <span class="keyword">and</span> so on</span><br><span class="line">df.T //转置</span><br><span class="line">df.sort_index(axis=<span class="number">1</span>, ascending=<span class="keyword">False</span>) //对列排序</span><br></pre></td></tr></table></figure>
+<h4 id="选择数据"><a href="#选择数据" class="headerlink" title="选择数据"></a>选择数据</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df[<span class="number">0</span>:<span class="number">3</span>] //返回行</span><br><span class="line">df[<span class="string">'A'</span>] //返回列</span><br><span class="line"></span><br><span class="line">//通过行列标签</span><br><span class="line">df.loc[<span class="string">'one'</span>] //返回行</span><br><span class="line">df.loc[:,[<span class="string">'A'</span>,<span class="string">'B'</span>]] //返回所有行、AB列</span><br><span class="line">df.loc[<span class="string">'one'</span>:<span class="string">'five'</span>,[<span class="string">'A'</span>,<span class="string">'B'</span>]]</span><br><span class="line"></span><br><span class="line">//通过位置</span><br><span class="line">df.iloc[<span class="number">3</span>] //返回第<span class="number">4</span>行</span><br><span class="line">df.iloc[<span class="number">3</span>:<span class="number">5</span>, <span class="number">0</span>:<span class="number">2</span>] </span><br><span class="line">df.iloc[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>],[<span class="number">0</span>,<span class="number">2</span>]]</span><br><span class="line">df.iloc[<span class="number">1</span>,<span class="number">1</span>] //等价于df.iat[<span class="number">1</span>,<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">//条件</span><br><span class="line">df[df.A &gt; <span class="number">0</span>]</span><br><span class="line">df[df &gt; <span class="number">0</span>] </span><br><span class="line">df[df[<span class="string">'A'</span>].isin([<span class="string">'str1'</span>,<span class="string">'str2'</span>])]</span><br></pre></td></tr></table></figure>
+<h4 id="填充数据"><a href="#填充数据" class="headerlink" title="填充数据"></a>填充数据</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.at[<span class="string">'one'</span>,<span class="string">'A'</span>] = <span class="number">12</span> //by label</span><br><span class="line">df.at[<span class="number">0</span>,<span class="number">1</span>] = <span class="number">12</span> //by positon</span><br><span class="line">df.loc[:,<span class="string">'D'</span>] = np.array([<span class="number">5</span>]*len(df))</span><br><span class="line"></span><br><span class="line">//缺失数据在pandas中用np.nan表示</span><br><span class="line">df.dropna(how=<span class="string">'any'</span>) //删除含有缺失值的行</span><br><span class="line">df.fillna(value=<span class="number">5</span>) //填充缺失值</span><br><span class="line">pd.isna(df1) //得到判断nan的mask</span><br></pre></td></tr></table></figure>
+<h4 id="数据运算"><a href="#数据运算" class="headerlink" title="数据运算"></a>数据运算</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.mean() //纵向计算，得到每列的均值</span><br><span class="line">df.mean(<span class="number">1</span>) //横向计算，得到每行的均值</span><br><span class="line"></span><br><span class="line">df.apply(np.cumsum) //apply functions to the data</span><br><span class="line"></span><br><span class="line">s.value_counts() //统计元素频次</span><br><span class="line"></span><br><span class="line">s.str.lower() //转换小写字母</span><br></pre></td></tr></table></figure>
+<h4 id="数据合并"><a href="#数据合并" class="headerlink" title="数据合并"></a>数据合并</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">//在表格末端追加数据</span><br><span class="line">s = df.iloc[<span class="number">3</span>] //取出第<span class="number">4</span>行</span><br><span class="line">df.append(s, ignore_index=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">pd.concat([df[:<span class="number">2</span>], df[<span class="number">3</span>:<span class="number">5</span>], df[<span class="number">7</span>:]]) //切片合并</span><br><span class="line"></span><br><span class="line">pd.merge(left, right, on=<span class="string">'key'</span>) //join数据表</span><br></pre></td></tr></table></figure>
+<h4 id="数据分组"><a href="#数据分组" class="headerlink" title="数据分组"></a>数据分组</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.groupby(<span class="string">'A'</span>).sum()</span><br><span class="line">df.groupby([<span class="string">'A'</span>,<span class="string">'B'</span>]).sum()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/pandas/" rel="tag"># pandas</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/21/ML-Methods/" rel="next" title="Machine-Learning-Methods">
+                <i class="fa fa-chevron-left"></i> Machine-Learning-Methods
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/25/Stat-Basic/" rel="prev" title="Stat-Basic">
+                Stat-Basic <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">149</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建"><span class="nav-number">1.</span> <span class="nav-text">创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Series"><span class="nav-number">1.0.1.</span> <span class="nav-text">Series</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DataFrame"><span class="nav-number">1.0.2.</span> <span class="nav-text">DataFrame</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据操作"><span class="nav-number">2.</span> <span class="nav-text">数据操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看数据"><span class="nav-number">2.0.1.</span> <span class="nav-text">查看数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选择数据"><span class="nav-number">2.0.2.</span> <span class="nav-text">选择数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#填充数据"><span class="nav-number">2.0.3.</span> <span class="nav-text">填充数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据运算"><span class="nav-number">2.0.4.</span> <span class="nav-text">数据运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据合并"><span class="nav-number">2.0.5.</span> <span class="nav-text">数据合并</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据分组"><span class="nav-number">2.0.6.</span> <span class="nav-text">数据分组</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">45.3k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

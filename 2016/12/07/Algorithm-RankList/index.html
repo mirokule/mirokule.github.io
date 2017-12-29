@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Algorithm," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="奥地利符号计算研究所（Research Institute for Symbolic Computation，简称RISC）的Christoph Koutschan博士在自己的页面上发布了一篇文章，提到他做了一个调查，参与者大多数是计算机科学家，他请这些科学家投票选出最重要的算法，以下是这次调查的结果，按照英文名称字母顺序排序。  A搜索算法——图形搜索算法，从给定起点到给定终点计算出路径。其中使">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Algorithm-RankList">
+<meta property="og:url" content="http://mirokule.github.io/2016/12/07/Algorithm-RankList/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="奥地利符号计算研究所（Research Institute for Symbolic Computation，简称RISC）的Christoph Koutschan博士在自己的页面上发布了一篇文章，提到他做了一个调查，参与者大多数是计算机科学家，他请这些科学家投票选出最重要的算法，以下是这次调查的结果，按照英文名称字母顺序排序。  A搜索算法——图形搜索算法，从给定起点到给定终点计算出路径。其中使">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T00:45:17.593Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Algorithm-RankList">
+<meta name="twitter:description" content="奥地利符号计算研究所（Research Institute for Symbolic Computation，简称RISC）的Christoph Koutschan博士在自己的页面上发布了一篇文章，提到他做了一个调查，参与者大多数是计算机科学家，他请这些科学家投票选出最重要的算法，以下是这次调查的结果，按照英文名称字母顺序排序。  A搜索算法——图形搜索算法，从给定起点到给定终点计算出路径。其中使">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2016/12/07/Algorithm-RankList/"/>
+
+
+
+
+
+  <title>Algorithm-RankList | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/07/Algorithm-RankList/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Algorithm-RankList</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-07T11:27:23+08:00">
+                2016-12-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,989
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>奥地利符号计算研究所（Research Institute for Symbolic Computation，简称RISC）的Christoph Koutschan博士在自己的页面上发布了一篇文章，提到他做了一个调查，参与者大多数是计算机科学家，他请这些科学家投票选出最重要的算法，以下是这次调查的结果，按照英文名称字母顺序排序。</p>
+<ul>
+<li><p>A<em>搜索算法——图形搜索算法，从给定起点到给定终点计算出路径。其中使用了一种启发式的估算，为每个节点估算通过该节点的最佳路径，并以之为各个地点排定次序。算法以得到的次序访问这些节点。因此，A</em>搜索算法是最佳优先搜索的范例。</p>
+</li>
+<li><p>集束搜索（又名定向搜索，Beam Search）——最佳优先搜索算法的优化。使用启发式函数评估它检查的每个节点的能力。不过，集束搜索只能在每个深度中发现最前面的m个最符合条件的节点，m是固定数字——集束的宽度。</p>
+</li>
+<li><p>二分查找（Binary Search）——在线性数组中找特定值的算法，每个步骤去掉一半不符合要求的数据。<br>分支界定算法（Branch and Bound）——在多种最优化问题中寻找特定最优化解决方案的算法，特别是针对离散、组合的最优化。</p>
+</li>
+<li><p>Buchberger算法——一种数学算法，可将其视为针对单变量最大公约数求解的欧几里得算法和线性系统中高斯消元法的泛化。<br>数据压缩——采取特定编码方案，使用更少的字节数（或是其他信息承载单元）对信息编码的过程，又叫来源编码。</p>
+</li>
+<li><p>Diffie-Hellman密钥交换算法——一种加密协议，允许双方在事先不了解对方的情况下，在不安全的通信信道中，共同建立共享密钥。该密钥以后可与一个对称密码一起，加密后续通讯。</p>
+</li>
+<li><p>Dijkstra算法——针对没有负值权重边的有向图，计算其中的单一起点最短算法。</p>
+</li>
+<li><p>离散微分算法（Discrete differentiation）</p>
+</li>
+<li><p>动态规划算法（Dynamic Programming）——展示互相覆盖的子问题和最优子架构算法</p>
+</li>
+<li><p>欧几里得算法（Euclidean algorithm）——计算两个整数的最大公约数。最古老的算法之一，出现在公元前300前欧几里得的《几何原本》。</p>
+</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li><p>期望-最大算法（Expectation-maximization algorithm，又名EM-Training）——在统计计算中，期望-最大算法在概率模型中寻找可能性最大的参数估算值，其中模型依赖于未发现的潜在变量。EM在两个步骤中交替计算，第一步是计算期望，利用对隐藏变量的现有估计值，计算其最大可能估计值；第二步是最大化，最大化在第一步上求得的最大可能值来计算参数的值。</p>
+</li>
+<li><p>快速傅里叶变换（Fast Fourier transform，FFT）——计算离散的傅里叶变换（DFT）及其反转。该算法应用范围很广，从数字信号处理到解决偏微分方程，到快速计算大整数乘积。</p>
+</li>
+<li><p>梯度下降（Gradient descent）——一种数学上的最优化算法。</p>
+</li>
+<li><p>哈希算法（Hashing）</p>
+</li>
+<li><p>堆排序（Heaps）<br>Karatsuba乘法——需要完成上千位整数的乘法的系统中使用，比如计算机代数系统和大数程序库，如果使用长乘法，速度太慢。该算法发现于1962年。</p>
+</li>
+<li><p>LLL算法（Lenstra-Lenstra-Lovasz??lattice reduction）——以格规约（lattice）基数为输入，输出短正交向量基数。LLL算法在以下公共密钥加密方法中有大量使用：背包加密系统（knapsack）、有特定设置的RSA加密等等。</p>
+</li>
+<li><p>最大流量算法（Maximum flow）——该算法试图从一个流量网络中找到最大的流。它优势被定义为找到这样一个流的值。最大流问题可以看作更复杂的网络流问题的特定情况。最大流与网络中的界面有关，这就是最大流-最小截定理（Max-flow min-cut theorem）。Ford-Fulkerson 能找到一个流网络中的最大流。</p>
+</li>
+<li><p>合并排序（Merge Sort）</p>
+</li>
+<li><p>牛顿法（Newton’s method）——求非线性方程（组）零点的一种重要的迭代法。</p>
+</li>
+<li><p>Q-learning学习算法——这是一种通过学习动作值函数（action-value function）完成的强化学习算法，函数采取在给定状态的给定动作，并计算出期望的效用价值，在此后遵循固定的策略。Q-leanring的优势是，在不需要环境模型的情况下，可以对比可采纳行动的期望效用。</p>
+</li>
+<li><p>两次筛法（Quadratic Sieve）——现代整数因子分解算法，在实践中，是目前已知第二快的此类算法（仅次于数域筛法Number Field Sieve）。对于110位以下的十位整数，它仍是最快的，而且都认为它比数域筛法更简单。</p>
+</li>
+<li><p>RANSAC——是“RANdom SAmple Consensus”的缩写。该算法根据一系列观察得到的数据，数据中包含异常值，估算一个数学模型的参数值。其基本假设是：数据包含非异化值，也就是能够通过某些模型参数解释的值，异化值就是那些不符合模型的数据点。</p>
+</li>
+<li><p>RSA——公钥加密算法。首个适用于以签名作为加密的算法。RSA在电商行业中仍大规模使用，大家也相信它有足够安全长度的公钥。<br>Sch?nhage-Strassen算法——在数学中，Sch?nhage-Strassen算法是用来完成大整数的乘法的快速渐近算法。其算法复杂度为：O(N log(N) log(log(N)))，该算法使用了傅里叶变换。</p>
+</li>
+<li><p>单纯型算法（Simplex Algorithm）——在数学的优化理论中，单纯型算法是常用的技术，用来找到线性规划问题的数值解。线性规划问题包括在一组实变量上的一系列线性不等式组，以及一个等待最大化（或最小化）的固定线性函数。</p>
+</li>
+<li><p>奇异值分解（Singular value decomposition，简称SVD）——在线性代数中，SVD是重要的实数或复数矩阵的分解方法，在信号处理和统计中有多种应用，比如计算矩阵的伪逆矩阵（以求解最小二乘法问题）、解决超定线性系统（overdetermined?linear systems）、矩阵逼近、数值天气预报等等。</p>
+</li>
+<li><p>求解线性方程组（Solving a system of linear equations）——线性方程组是数学中最古老的问题，它们有很多应用，比如在数字信号处理、线性规划中的估算和预测、数值分析中的非线性问题逼近等等。求解线性方程组，可以使用高斯—约当消去法（Gauss-Jordan elimination），或是柯列斯基分解（?Cholesky decomposition）。</p>
+</li>
+<li><p>Strukturtensor算法——应用于模式识别领域，为所有像素找出一种计算方法，看看该像素是否处于同质区域（?homogenous region），看看它是否属于边缘，还是是一个顶点。</p>
+</li>
+<li><p>合并查找算法（Union-find）——给定一组元素，该算法常常用来把这些元素分为多个分离的、彼此不重合的组。不相交集（disjoint-set）的数据结构可以跟踪这样的切分方法。合并查找算法可以在此种数据结构上完成两个有用的操作：<br>查找：判断某特定元素属于哪个组。<br>合并：联合或合并两个组为一个组。</p>
+</li>
+<li><p>维特比算法（Viterbi algorithm）——寻找隐藏状态最有可能序列的动态规划算法，这种序列被称为维特比路径，其结果是一系列可以观察到的事件，特别是在隐藏的Markov模型中。</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/07/Algorithm-Basic/" rel="next" title="Algorithm-Basic">
+                <i class="fa fa-chevron-left"></i> Algorithm-Basic
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/07/Algorithm-Sort/" rel="prev" title="Algorithm-Sort">
+                Algorithm-Sort <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">149</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">45.3k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

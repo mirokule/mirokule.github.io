@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="AI,Unity," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="使用了Unity的有限状态机框架。http://wiki.unity3d.com/index.php/Finite_State_Machine 框架 状态机FSMSystem states: 所有状态列表 current: 当前状态 AddState() / DeleteState(): 维护状态列表 PerformTransition(): 状态转换   状态FSMState stateID:">
+<meta name="keywords" content="AI,Unity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity-FSM">
+<meta property="og:url" content="http://mirokule.github.io/2016/12/16/Unity-FSM/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="使用了Unity的有限状态机框架。http://wiki.unity3d.com/index.php/Finite_State_Machine 框架 状态机FSMSystem states: 所有状态列表 current: 当前状态 AddState() / DeleteState(): 维护状态列表 PerformTransition(): 状态转换   状态FSMState stateID:">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T00:45:17.588Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity-FSM">
+<meta name="twitter:description" content="使用了Unity的有限状态机框架。http://wiki.unity3d.com/index.php/Finite_State_Machine 框架 状态机FSMSystem states: 所有状态列表 current: 当前状态 AddState() / DeleteState(): 维护状态列表 PerformTransition(): 状态转换   状态FSMState stateID:">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2016/12/16/Unity-FSM/"/>
+
+
+
+
+
+  <title>Unity-FSM | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/16/Unity-FSM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Unity-FSM</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-16T16:28:55+08:00">
+                2016-12-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  901
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>使用了Unity的有限状态机框架。<br><a href="http://wiki.unity3d.com/index.php/Finite_State_Machine" target="_blank" rel="noopener">http://wiki.unity3d.com/index.php/Finite_State_Machine</a></p>
+<h4 id="框架"><a href="#框架" class="headerlink" title="框架"></a>框架</h4><ul>
+<li><strong>状态机FSMSystem</strong><ul>
+<li>states: 所有状态列表</li>
+<li>current: 当前状态</li>
+<li>AddState() / DeleteState(): 维护状态列表</li>
+<li>PerformTransition(): 状态转换</li>
+</ul>
+</li>
+<li><strong>状态FSMState</strong><ul>
+<li>stateID: id</li>
+<li>map: 当前状态可用的转换表</li>
+<li>AddTransition() / DeleteTransion(): 维护转换表</li>
+<li>GetOutputState(): 转换后的状态ID</li>
+<li>DoBeforeEntering() / DoBeforeLeaving(): 转换前动作</li>
+<li>Reason() / Act(): 状态内动作</li>
+</ul>
+</li>
+<li><strong>StateID</strong>: 状态编号枚举</li>
+<li><strong>Transition</strong>: 转换枚举</li>
+</ul>
+<a id="more"></a>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Transition</span><br><span class="line">&#123;</span><br><span class="line">	NullTransition = <span class="number">0</span>, <span class="comment">// Use this transition to represent a non-existing transition in your system</span></span><br><span class="line">	SawPlayer = <span class="number">1</span>,</span><br><span class="line">	LostPlayer = <span class="number">2</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> StateID</span><br><span class="line">&#123;</span><br><span class="line">	NullStateID = <span class="number">0</span>, <span class="comment">// Use this ID to represent a non-existing State in your system	</span></span><br><span class="line">	Patrol = <span class="number">1</span>,</span><br><span class="line">	ChasingPlayer = <span class="number">2</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title">FSMState</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">protected</span> Dictionary&lt;Transition, StateID&gt; map = <span class="keyword">new</span> Dictionary&lt;Transition, StateID&gt;(); <span class="comment">// transition to other state</span></span><br><span class="line">	<span class="keyword">protected</span> StateID stateID; <span class="comment">// id of this state</span></span><br><span class="line">	<span class="keyword">public</span> StateID ID &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> stateID; &#125; &#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddTransition</span>(<span class="params">Transition trans, StateID id</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">// check args </span></span><br><span class="line">		<span class="keyword">if</span> (trans == Transition.NullTransition) &#123;</span><br><span class="line">			Debug.LogError (<span class="string">"FSMState Error: NullTransition is not allowed for a real transition"</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (id == StateID.NullStateID) &#123;</span><br><span class="line">			Debug.LogError (<span class="string">"FSMState Error: NullState is not allowed for a real ID"</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">			</span><br><span class="line">		<span class="keyword">if</span> (map.ContainsKey (trans)) &#123;</span><br><span class="line">			Debug.LogError (<span class="string">"FSMState Error: State "</span> + stateID.ToString () + <span class="string">" already has transition "</span> + trans.ToString ());</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// add into map</span></span><br><span class="line">		map.Add (trans, id);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DeleteTransition</span>(<span class="params">Transition trans</span>) </span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (trans == Transition.NullTransition) &#123;</span><br><span class="line">			Debug.LogError (<span class="string">"FSMState Error: NullTransition is not allowed."</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (map.ContainsKey (trans)) &#123;</span><br><span class="line">			map.Remove (trans);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		Debug.LogError (<span class="string">"FSMState Error: Can not find Transition "</span> + trans.ToString() + <span class="string">" in State "</span> + stateID.ToString());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> StateID <span class="title">GetOutputState</span>(<span class="params">Transition trans</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (map.ContainsKey (trans)) &#123;</span><br><span class="line">			<span class="keyword">return</span> map [trans];</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> StateID.NullStateID;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">DoBeforeEntering</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">DoBeforeLeaving</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">Reason</span> (<span class="params">GameObject player, GameObject npc</span>)</span>; <span class="comment">//检查是否要转换状态</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">Act</span>(<span class="params">GameObject player, GameObject npc</span>)</span>; <span class="comment">//当前状态的实际执行任务</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FSMSystem</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">private</span> List&lt;FSMState&gt; states;</span><br><span class="line">	<span class="keyword">private</span> FSMState currentState;</span><br><span class="line">	<span class="keyword">private</span> StateID currentStateID;</span><br><span class="line">	<span class="keyword">public</span> FSMState CurrentState &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> currentState; &#125;&#125;</span><br><span class="line">	<span class="keyword">public</span> StateID CurrentStateID &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> currentStateID; &#125;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">FSMSystem</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		states = <span class="keyword">new</span> List&lt;FSMState&gt;();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddState</span>(<span class="params">FSMState s</span>) </span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (s == <span class="literal">null</span>) &#123;</span><br><span class="line">			Debug.LogError (<span class="string">"FSM ERROR: Null Reference"</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Add first state and set current </span></span><br><span class="line">		<span class="keyword">if</span> (states.Count == <span class="number">0</span>) &#123;</span><br><span class="line">			states.Add (s);</span><br><span class="line">			currentState = s;</span><br><span class="line">			currentStateID = s.ID;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// check for duplicate</span></span><br><span class="line">		<span class="keyword">foreach</span> (FSMState state <span class="keyword">in</span> states) &#123;</span><br><span class="line">			<span class="keyword">if</span> (state.ID == s.ID) &#123;</span><br><span class="line">				Debug.LogError (<span class="string">"FSM ERROR: State "</span> + s.ID.ToString () + <span class="string">" alreay exist."</span>);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		states.Add (s);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DeleteState</span>(<span class="params">StateID id</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (id == StateID.NullStateID) &#123;</span><br><span class="line">			Debug.LogError (<span class="string">"FSM ERROR: NullStateID is not allowed for a real state"</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// search and delete</span></span><br><span class="line">		<span class="keyword">foreach</span> (FSMState state <span class="keyword">in</span> states) &#123;</span><br><span class="line">			<span class="keyword">if</span> (state.ID == id) &#123;</span><br><span class="line">				states.Remove (state);</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		Debug.LogError (<span class="string">"FSM ERROR: Can not find State of ID "</span> + id.ToString());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">PerformTransition</span>(<span class="params">Transition trans</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (trans == Transition.NullTransition) &#123;</span><br><span class="line">			Debug.LogError (<span class="string">"FSM ERROR: NullTransition is not allowed for a real transition"</span>);</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// check if current state can deal with this transition</span></span><br><span class="line">		StateID id = currentState.GetOutputState (trans);</span><br><span class="line">		<span class="keyword">if</span> (id == StateID.NullStateID) &#123;</span><br><span class="line">			Debug.LogError (<span class="string">"FSMERROR: Invalid transition "</span> + trans.ToString () + <span class="string">" for state "</span> + currentStateID.ToString ());</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			currentStateID = id;</span><br><span class="line">			<span class="keyword">foreach</span> (FSMState state <span class="keyword">in</span> states) &#123;</span><br><span class="line">				<span class="keyword">if</span> (state.ID == currentStateID) &#123;</span><br><span class="line">					currentState.DoBeforeLeaving ();</span><br><span class="line">					currentState = state;</span><br><span class="line">					currentState.DoBeforeEntering ();</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>####使用</p>
+<ul>
+<li><strong>Start</strong>:生成状态和状态机</li>
+<li><strong>FixedUpdate</strong>:更新当前状态的Reason和Act</li>
+<li><strong>SetTransition</strong>:调用状态机的performTransition()实现状态转换</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FSMExample</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> GameObject player;</span><br><span class="line">	<span class="keyword">public</span> Transform[] path;</span><br><span class="line">	<span class="keyword">private</span> FSMSystem fsm;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetTransition</span>(<span class="params">Transition t</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		fsm.PerformTransition (t);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Use this for initialization</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">		MakeFSM ();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// Update is called once per frame</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">FiexedUpdate</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">		fsm.CurrentState.Reason (player, gameObject);</span><br><span class="line">		fsm.CurrentState.Act (player, gameObject);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">MakeFSM</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		PatrolState patrol = <span class="keyword">new</span> PatrolState (path);</span><br><span class="line">		patrol.AddTransition (Transition.SawPlayer, StateID.ChasingPlayer);</span><br><span class="line"></span><br><span class="line">		ChasePlayerState chasing = <span class="keyword">new</span> ChasePlayerState ();</span><br><span class="line">		chasing.AddTransition (Transition.LostPlayer, StateID.Patrol);</span><br><span class="line"></span><br><span class="line">		fsm = <span class="keyword">new</span> FSMSystem ();</span><br><span class="line">		fsm.AddState (patrol);</span><br><span class="line">		fsm.AddState (chasing);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PatrolState</span>: <span class="title">FSMState</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> currentWayPoint;</span><br><span class="line">	<span class="keyword">private</span> Transform[] wayPoints;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">PatrolState</span>(<span class="params">Transform[] wp</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		wayPoints = wp;</span><br><span class="line">		currentWayPoint = <span class="number">0</span>;</span><br><span class="line">		stateID = StateID.Patrol;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Reason</span>(<span class="params">GameObject player, GameObject npc</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		RaycastHit hit;</span><br><span class="line">		<span class="keyword">if</span> (Physics.Raycast(npc.transform.position, npc.transform.forward, <span class="keyword">out</span> hit, <span class="number">15</span>F)) &#123;</span><br><span class="line">			<span class="keyword">if</span> (hit.transform.gameObject.tag == <span class="string">"Player"</span>)</span><br><span class="line">				npc.GetComponent&lt;FSMExample&gt; ().SetTransition (Transition.SawPlayer);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Act</span>(<span class="params">GameObject player, GameObject npc</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		Vector3 direction = wayPoints[currentWayPoint].position - npc.transform.position;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (direction.magnitude &lt; <span class="number">1</span>) &#123;<span class="comment">//too close to this one ,set target to next one</span></span><br><span class="line">			currentWayPoint++;</span><br><span class="line">			<span class="keyword">if</span> (currentWayPoint &gt;= wayPoints.Length)</span><br><span class="line">				currentWayPoint = <span class="number">0</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123; <span class="comment">// set rotation and velocity, according to current target</span></span><br><span class="line">			npc.transform.rotation = Quaternion.Slerp (npc.transform.rotation, Quaternion.LookRotation (direction), <span class="number">5</span> * Time.deltaTime);</span><br><span class="line">			npc.transform.eulerAngles = <span class="keyword">new</span> Vector3 (<span class="number">0</span>, npc.transform.eulerAngles.y, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">			npc.GetComponent&lt;Rigidbody&gt; ().velocity = direction.normalized * <span class="number">10</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChasePlayerState</span>: <span class="title">FSMState</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ChasePlayerState</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		stateID = StateID.ChasingPlayer;</span><br><span class="line">	&#125;</span><br><span class="line">		</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Reason</span>(<span class="params">GameObject player, GameObject npc</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(Vector3.Distance(npc.transform.position, player.transform.position) &gt;= <span class="number">30</span>)&#123; <span class="comment">//lost player</span></span><br><span class="line">			npc.GetComponent&lt;FSMExample&gt;().SetTransition(Transition.LostPlayer);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Act</span>(<span class="params">GameObject player, GameObject npc</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//chase player</span></span><br><span class="line">		Vector3 direction = player.transform.position - npc.transform.position;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// change rotation</span></span><br><span class="line">		npc.transform.rotation = Quaternion.Slerp (npc.transform.rotation, Quaternion.LookRotation (direction), <span class="number">5</span> * Time.deltaTime);</span><br><span class="line">		npc.transform.eulerAngles = <span class="keyword">new</span> Vector3 (<span class="number">0</span>, npc.transform.eulerAngles.y, <span class="number">0</span>); <span class="comment">// make sure only rotate along Y axis</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">// change velocity</span></span><br><span class="line">		npc.GetComponent&lt;Rigidbody&gt; ().velocity = direction.normalized * <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AI/" rel="tag"># AI</a>
+          
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/13/Unity-EditorMenu/" rel="next" title="Unity-EditorMenu">
+                <i class="fa fa-chevron-left"></i> Unity-EditorMenu
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/16/AI-Boids/" rel="prev" title="AI-Boids">
+                AI-Boids <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">149</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#框架"><span class="nav-number">1.</span> <span class="nav-text">框架</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">45.3k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

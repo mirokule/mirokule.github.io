@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Unity," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Gizmos用于在场景中给出一个可视化的调试或辅助设置。所有的Gizmos绘制在脚本的OnDrawGizmos或OnDrawGizmosSelected中完成。OnDrawGizmos在每一帧被调用。OnDrawGizmosSelected在被选中时调用。 类变量 static var color : Color    //    描述：设置下次绘制的Gizmos的颜色。  function On">
+<meta name="keywords" content="Unity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity-Gizmos">
+<meta property="og:url" content="http://mirokule.github.io/2016/09/20/Unity-Gizmos/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="Gizmos用于在场景中给出一个可视化的调试或辅助设置。所有的Gizmos绘制在脚本的OnDrawGizmos或OnDrawGizmosSelected中完成。OnDrawGizmos在每一帧被调用。OnDrawGizmosSelected在被选中时调用。 类变量 static var color : Color    //    描述：设置下次绘制的Gizmos的颜色。  function On">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T00:45:17.610Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity-Gizmos">
+<meta name="twitter:description" content="Gizmos用于在场景中给出一个可视化的调试或辅助设置。所有的Gizmos绘制在脚本的OnDrawGizmos或OnDrawGizmosSelected中完成。OnDrawGizmos在每一帧被调用。OnDrawGizmosSelected在被选中时调用。 类变量 static var color : Color    //    描述：设置下次绘制的Gizmos的颜色。  function On">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2016/09/20/Unity-Gizmos/"/>
+
+
+
+
+
+  <title>Unity-Gizmos | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/20/Unity-Gizmos/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Unity-Gizmos</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-20T16:30:58+08:00">
+                2016-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  516
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Gizmos用于在场景中给出一个可视化的调试或辅助设置。所有的Gizmos绘制在脚本的OnDrawGizmos或OnDrawGizmosSelected中完成。<br>OnDrawGizmos在每一帧被调用。<br>OnDrawGizmosSelected在被选中时调用。</p>
+<h4 id="类变量"><a href="#类变量" class="headerlink" title="类变量"></a>类变量</h4><ul>
+<li>static var color : Color    //    描述：设置下次绘制的Gizmos的颜色。</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function">function <span class="title">OnDrawGizmosSelected</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	Gizmos.color = Color.red;   </span><br><span class="line">	<span class="keyword">var</span> direction = transform.TransformDirection(Vector3.forward) * <span class="number">5</span>;  <span class="comment">//    在物体的前方绘制一个5米长的线</span></span><br><span class="line">	Gizmos.DrawRay(transform.position, direction);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>-static var matrix : Matrix4x4    //    描述：设置用于渲染所有gizmos的矩阵。</p>
+<h4 id="类方法"><a href="#类方法" class="headerlink" title="类方法"></a>类方法</h4><ul>
+<li>Static function DrawCube(center:Vector3,size:Vector3):void    //    描述:用center和size绘制一个立方体.</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function">Function <span class="title">OnDrawGizmosSelected</span>(<span class="params"></span>)</span>&#123;      </span><br><span class="line">    Gizmos.color=Color(<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">5</span>);    <span class="comment">//    在变换位置处绘制一个变透明的蓝色立方体</span></span><br><span class="line">    Gizmos.DrawCube(transform.position,Vector3(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li><p>Static function DrawGUITexture(screenRect:Rect,texture:Texture,mat:Material=null):void    //    描述：在屏幕坐标下绘制一个纹理。用于GUI背景。</p>
+</li>
+<li><p>Static function Drawicon(center:Vector3,name:string):void    //    描述:在世界位置center处绘制一个图标.这个图标被命名为name并放置在Assets/Gizmos文件夹或Unity.app/Resoutces文件夹.DrawIcon允许你在游戏中快速选择重要的物体。</p>
+</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function">function <span class="title">OnDrawGizmos</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="function">Gizmos <span class="title">DrawIcon</span>(<span class="params">transform.position,”Light Gizmo.tiff”</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Static function DrawLine(from:Vector3,to:Vector3):void    //    描述:绘制一条线从from到to.</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function">function <span class="title">OnDrawGizmosSelected</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(target != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">       Gizmos.color = Color.blue;   <span class="comment">//从transform到target绘制一条蓝色的线</span></span><br><span class="line">       Gizmos.DrawLine(transform.position,target.position);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Static function DrawRay(r:Ray):void</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function">Static function <span class="title">DrawRay</span>(<span class="params"><span class="keyword">from</span>:Vector3,direction:Vector3</span>):<span class="keyword">void</span>    <span class="comment">//   描述:绘制一个射线从from开始到from + direction.</span></span></span><br><span class="line"><span class="function">  function <span class="title">OnDrawGizmosSelected</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     Gizmos.color = Color.red;</span><br><span class="line">     Direction = transform.TransformDirection(Vector3.forward)*<span class="number">5</span>;</span><br><span class="line">     Gizmos.DrawRay(transform.positon,direction);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Static function DrawSphere(center:Vector3,radius:flont):void    //   描述:用center和randins绘制一个球体.</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function">Function <span class="title">OnDrawGizmosSelected</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     Gizmos.color = Color.yellow;     <span class="comment">//    在变换位置处绘制一个黄色的球体</span></span><br><span class="line">     Gizmos.DrawSphere(transtorm.position,<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Static function DrawWireCube(center:Vector3, size: Vector3):void    //    描述:用center和radius绘制一个线框立方体.</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function">Function <span class="title">OnDrawGizmosSelected</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"> Gizmos.color = Color.yellow;     <span class="comment">//在变换位置处绘制一个黄色立方体</span></span><br><span class="line"> Gizmos.DrawWireCube (transtorm.position, Vector3(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Static function DrawWireSphere(center:Vector3,radius:float):void    //    描述:用center和radius绘制一个线框球体.</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">Var explosionRadius = <span class="number">5.0</span>;</span><br><span class="line"><span class="function">Function <span class="title">OnDrawGizmosSelected</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    Gizmos.color = Color.white;    <span class="comment">//选中的时候显示爆炸路劲</span></span><br><span class="line">    Gizmos.DrawSphere(transtorm.position,explpsionRadius);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/13/Unity-Vector/" rel="next" title="Unity-Vector">
+                <i class="fa fa-chevron-left"></i> Unity-Vector
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/27/Unity-Collision/" rel="prev" title="Unity-Collision">
+                Unity-Collision <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">149</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#类变量"><span class="nav-number">1.</span> <span class="nav-text">类变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类方法"><span class="nav-number">2.</span> <span class="nav-text">类方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">45.3k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

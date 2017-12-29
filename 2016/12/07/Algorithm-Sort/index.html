@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Algorithm," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="分类 内存占用In-place Sort（不占用额外内存或占用常数的内存）：插入排序、选择排序、冒泡排序、堆排序、快速排序。Out-place Sort：归并排序、计数排序、基数排序、桶排序。  稳定性Stable Sort：插入排序、冒泡排序、归并排序、计数排序、基数排序、桶排序。Unstable Sort：选择排序(5 8 5 2 9)、快速排序、堆排序。  复杂度O(n2)：插入排序、选择排">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Algorithm-Sort">
+<meta property="og:url" content="http://mirokule.github.io/2016/12/07/Algorithm-Sort/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="分类 内存占用In-place Sort（不占用额外内存或占用常数的内存）：插入排序、选择排序、冒泡排序、堆排序、快速排序。Out-place Sort：归并排序、计数排序、基数排序、桶排序。  稳定性Stable Sort：插入排序、冒泡排序、归并排序、计数排序、基数排序、桶排序。Unstable Sort：选择排序(5 8 5 2 9)、快速排序、堆排序。  复杂度O(n2)：插入排序、选择排">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T00:45:17.593Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Algorithm-Sort">
+<meta name="twitter:description" content="分类 内存占用In-place Sort（不占用额外内存或占用常数的内存）：插入排序、选择排序、冒泡排序、堆排序、快速排序。Out-place Sort：归并排序、计数排序、基数排序、桶排序。  稳定性Stable Sort：插入排序、冒泡排序、归并排序、计数排序、基数排序、桶排序。Unstable Sort：选择排序(5 8 5 2 9)、快速排序、堆排序。  复杂度O(n2)：插入排序、选择排">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2016/12/07/Algorithm-Sort/"/>
+
+
+
+
+
+  <title>Algorithm-Sort | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/07/Algorithm-Sort/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Algorithm-Sort</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-07T11:28:13+08:00">
+                2016-12-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,120
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><ul>
+<li><p><strong>内存占用</strong><br>In-place Sort（不占用额外内存或占用常数的内存）：插入排序、选择排序、冒泡排序、堆排序、快速排序。<br>Out-place Sort：归并排序、计数排序、基数排序、桶排序。</p>
+</li>
+<li><p><strong>稳定性</strong><br>Stable Sort：插入排序、冒泡排序、归并排序、计数排序、基数排序、桶排序。<br>Unstable Sort：选择排序(5 8 5 2 9)、快速排序、堆排序。</p>
+</li>
+<li><p><strong>复杂度</strong><br>O(n2)：插入排序、选择排序、冒泡排序<br>nlogN：快速排序、归并排序、堆排序</p>
+</li>
+</ul>
+<hr>
+<a id="more"></a>
+<h4 id="插入排序-Insertion-Sort"><a href="#插入排序-Insertion-Sort" class="headerlink" title="插入排序 Insertion Sort"></a>插入排序 Insertion Sort</h4><p>思路：集合A初始为空，每次选择1个元素插入集合A，直到所有元素都插入。<br>实现：</p>
+<pre><code>for i=2 to n
+    j = i - 1
+    key = A[i]
+    while j&gt;0 &amp;&amp; A[j]&gt;key
+        A[j+1] = A[j]
+        j--
+    A[j+1] = key
+</code></pre><hr>
+<h4 id="冒泡排序-Bubble-Sort"><a href="#冒泡排序-Bubble-Sort" class="headerlink" title="冒泡排序 Bubble Sort"></a>冒泡排序 Bubble Sort</h4><p>思路：两两交换，最大或最小元素将在首次冒出<br>实现：</p>
+<pre><code>for i=1 to n
+    for j = n to i+1
+        if A[j]&lt;A[j-1]
+            swap(A[j], A[j-1])
+</code></pre><hr>
+<h4 id="选择排序-Selection-Sort"><a href="#选择排序-Selection-Sort" class="headerlink" title="选择排序 Selection Sort"></a>选择排序 Selection Sort</h4><p>思路：每次找剩余元素中的最小值<br>实现：</p>
+<pre><code>for i=1 to n-1
+    minIndex = i
+    for j = i+1 to n
+        if A[minIndex]&gt;A[j]
+            minIndex = j
+    swap(A[minIndex], A[i])
+</code></pre><hr>
+<h4 id="归并排序-Merge-Sort"><a href="#归并排序-Merge-Sort" class="headerlink" title="归并排序 Merge Sort"></a>归并排序 Merge Sort</h4><p>思路：使用分治法，将若干个子序列分别排序，然后合并<br>实现：</p>
+<pre><code>Merge_sort(A) {
+    recursive_mergesort(A, 1, length(A))
+}
+recursive_mergesort(A,p,q) {
+    if p&lt;q
+        m = (p+q)/2
+        recursive_mergesort(A,p,m)
+        recursive_mergesort(A,m+1,q)
+        merge(A,p,m,q)
+}
+merge(A,p,m,q) {
+    a = m-p+1 //子序列长度, 例p=1, m=3, q=5
+    b = q-m
+    new Array L[a+1] &amp; R[b+1]
+    for i=1 to a
+        L[i] = A[p+i-1]
+    for i=1 to b
+        R[i] = A[m+i]
+    L[a+1] = INFINITY
+    R[b+1] = INFINITY
+    i = j = 1
+    for k = p to q
+        if L[i] &lt; R[j]
+            A[k] = L[i]
+            i++
+        else if L[i] &gt; R[j]
+            A[k] = R[j]
+            j++
+}
+</code></pre><p><strong>讨论</strong><br>问：归并排序的缺点是什么？<br>答：他是Out-place sort，因此相比快排，需要很多额外的空间。</p>
+<p>问：为什么归并排序比快速排序慢？<br>答：虽然渐近复杂度一样，但是归并排序的系数比快排大。</p>
+<p>问：对于归并排序有什么改进？<br>答：就是在数组长度为k时，用插入排序，因为插入排序适合对小数组排序。在算法导论思考题2-1中介绍了。复杂度为O(nk+nlg(n/k)) ，当k=O(lgn)时，复杂度为O(nlgn)</p>
+<hr>
+<h4 id="快速排序-Quick-Sort"><a href="#快速排序-Quick-Sort" class="headerlink" title="快速排序 Quick Sort"></a>快速排序 Quick Sort</h4><p>思想：也是基于分治法，随机选取元素k，将大于k和小于k的元素分成子序列，继续对子序列选取元素并分裂。<br>实现：</p>
+<pre><code>quick_sort(A) {
+    recursive_quicksort(A, 1, length(A))
+}
+recursive_quicksort(A, p, q) {
+    if p&lt;q
+        r = partion(A, p ,q)
+        recursive_quicksort(A, p, r-1)
+        recursive_quicksort(A, r+1, q)
+}
+partition(A,p,q) {
+    i = p-1
+    pivot = A[q]
+    for j=p to q-1 //遍历序列，每遇到一个比pivot小的，都换到前面去
+        if A[j] &lt;= pivot
+            i++
+            swap(A[i], A[j])
+    swap(A[i+1], A[q])
+    return i+1
+}
+</code></pre><hr>
+<h4 id="堆排序-Heap-Sort"><a href="#堆排序-Heap-Sort" class="headerlink" title="堆排序 Heap Sort"></a>堆排序 Heap Sort</h4><p>思想：运用了最小堆、最大堆，依次输出堆顶元素<br>实现：</p>
+<pre><code>heapsort(A) {
+    build_max_heap(A)
+    for i=n to 2
+        swap(A[1], A[heapsize])
+        heapsize--
+        MAX_HEAPIFY(A,1)
+}
+build_max_heap(A){
+    for i=floor(n/2) to 1
+        MAX_HEAPIFY(A,i)
+}
+MAX_HEAPIFY(A,i) {
+    heapsize = heapsize[A]
+    largest = i
+    if left(i)&lt;=heapsize &amp;&amp; A[largest]&lt;A[left(i)]
+        largest = left(i)
+    else if right(i)&lt;=heapsize &amp;&amp; A[largest]&lt;A[right(i)]
+        largest = right(i)
+    if(largest!=i)
+        swap(A[i],A[largest])
+        MAX_HEAPIFY(A,largest)
+}
+</code></pre><hr>
+<h4 id="计数排序-Counting-Sort"><a href="#计数排序-Counting-Sort" class="headerlink" title="计数排序 Counting Sort"></a>计数排序 Counting Sort</h4><p>思想：对于给定的输入序列中的每一个元素x，确定该序列中值小于x的元素的个数（此处并非比较各元素的大小，而是通过对元素值的计数和计数值的累加来确定）。<br>一旦有了这个信息，就可以将x直接存放到最终的输出序列的正确位置上。<br>条件：元素的取值范围有一定限制，即k=O(n)。<br>实现：</p>
+<pre><code>n = length[A]
+new array B[n] &amp; C[k+1]
+for i=0 to k
+    C[i] = 0
+for i=1 to n 
+    C[A[i]] ++  //A[i]取值范围有限制
+for i=1 to k
+    C[i] = C[i] + C[i-1]
+for i=n to 1
+    B[C[A[i]]] = A[i]
+    C[A[i]]--
+</code></pre><hr>
+<h4 id="桶排序-Bucket-Sort"><a href="#桶排序-Bucket-Sort" class="headerlink" title="桶排序 Bucket Sort"></a>桶排序 Bucket Sort</h4><p>思想：将数组分到有限数量的桶里，各桶分别排序后合并<br>实现：</p>
+<pre><code>n = length[A]
+new buckets B[n]
+for i=1 to n
+    insert A[i] to B[nA[i]]
+for i=0 to n-1
+    sort B[i]
+concatenate B[]
+</code></pre><hr>
+<h4 id="基数排序-Radix-Sort"><a href="#基数排序-Radix-Sort" class="headerlink" title="基数排序 Radix Sort"></a>基数排序 Radix Sort</h4><p>思想：每次按1个数位排序，依次实现由低位到高位的有序<br>实现：</p>
+<pre><code>for i = 1 to d
+    Sort(A,i,k)    
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/07/Algorithm-RankList/" rel="next" title="Algorithm-RankList">
+                <i class="fa fa-chevron-left"></i> Algorithm-RankList
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/13/DP-Factory/" rel="prev" title="DesignPattern-FactoryPattern">
+                DesignPattern-FactoryPattern <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">149</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#分类"><span class="nav-number">1.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入排序-Insertion-Sort"><span class="nav-number">2.</span> <span class="nav-text">插入排序 Insertion Sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#冒泡排序-Bubble-Sort"><span class="nav-number">3.</span> <span class="nav-text">冒泡排序 Bubble Sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选择排序-Selection-Sort"><span class="nav-number">4.</span> <span class="nav-text">选择排序 Selection Sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#归并排序-Merge-Sort"><span class="nav-number">5.</span> <span class="nav-text">归并排序 Merge Sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#快速排序-Quick-Sort"><span class="nav-number">6.</span> <span class="nav-text">快速排序 Quick Sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆排序-Heap-Sort"><span class="nav-number">7.</span> <span class="nav-text">堆排序 Heap Sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计数排序-Counting-Sort"><span class="nav-number">8.</span> <span class="nav-text">计数排序 Counting Sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#桶排序-Bucket-Sort"><span class="nav-number">9.</span> <span class="nav-text">桶排序 Bucket Sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基数排序-Radix-Sort"><span class="nav-number">10.</span> <span class="nav-text">基数排序 Radix Sort</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">45.3k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
