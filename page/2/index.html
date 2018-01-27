@@ -262,6 +262,157 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-Features/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/ML-Features/" itemprop="url">数据清洗</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T09:39:47+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  118
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Scaling-and-Normalization"><a href="#Scaling-and-Normalization" class="headerlink" title="Scaling and Normalization"></a>Scaling and Normalization</h4><p>Feature Scaling: Make sure features are on a similar scale.</p>
+<p>$$ x_i := \frac{x_i}{s_i} $$</p>
+<p>Mean Normalization: Replace $x_i$ with $x_i-\mu_i$ to make features have approximately zero means</p>
+<p>$$ x_i := \frac{x_i-\mu_i}{s_i} $$</p>
+<ul>
+<li>$\mu_i$ Average of all the values for feature(i)</li>
+<li>$s_i$ Range of values(max-min), or Standard Deviation</li>
+</ul>
+<p><strong>对结果的影响</strong></p>
+<ul>
+<li>Scaling是对X的列向量进行缩放，向量方向不变，X列向量张成的平面不变，y的投影不变，e不变，$\theta$改变</li>
+<li>Normalization改变了列向量方向，改变了平面、投影、误差？</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/Calculus-Integration/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1076,7 +1227,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  74
+                  255
                 </span>
               
 
@@ -1103,9 +1254,19 @@
       
         
           
-            <p>主成分分析(Principal Component Analysis)是经典的特征降维技术。</p>
-<p>降维过程可以规避大量的特征冗余，大量节省模型训练的时间。<br>也很有可能会损失一些有用的模式信息。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line"></span><br><span class="line">estimater = PCA(n_components = <span class="number">2</span>)</span><br><span class="line">X_pca = estimator.fit_transform(X_digits)</span><br></pre></td></tr></table></figure>
+            <p>主成分分析(Principal Component Analysis)是经典的特征降维技术。<br>寻找k个向量张成的超平面，使原始数据投影到超平面的误差最小。<br>PCA可以用于</p>
+<ul>
+<li>减少存储数据的内存消耗</li>
+<li>加快模型训练速度</li>
+<li>高维数据可视化(k=2，3)</li>
+</ul>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
+<li>数据标准化</li>
+<li>计算covariance matrix<br>$$ \sigma = \frac{1}{m}\sum_{i=1}^{n}(x^{(i)})(x^{(i)})^T $$</li>
+<li>计算 $[U,S,V] = svd(Sigma)$<br>其中前k个向量$U(:,1:K)=U_{reduce}$是映射矩阵，$z=U_{reduce}\ast x$;<br>若要还原x，$x_{approx}=U_{reduce}\ast z$；</li>
+</ol>
+<p><strong>选择k</strong><br>一般要求映射过程保留99%的方差<br>$$ \frac{\frac{1}{m}\sum_{i=1}^m\left|\left|x^{(i)}-x_{approx}^{(i)}\right|\right|^2}{\frac{1}{m}\sum_{i=1}^m\left|left|x^{(i)}\right|\right|^2} \leq 0.01(1%)<br>S是一个n*n矩阵，主元位置$S_{ii}$即代表数据方差，选择$k$使得<br>$$ \frac{\sum_{i=1}^kS_{ii}}{\sum_{i=1}^nS_{ii}} \geq 0.99$$</p>
+<p>使用sklearn:<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line"></span><br><span class="line">estimater = PCA(n_components = <span class="number">2</span>)</span><br><span class="line">X_pca = estimator.fit_transform(X_digits)</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -1592,179 +1753,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/30/Calculus-Limit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/30/Calculus-Limit/" itemprop="url">极限</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-30T09:57:51+08:00">
-                2017-12-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  534
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Limit-of-a-Function"><a href="#Limit-of-a-Function" class="headerlink" title="Limit of a Function"></a>Limit of a Function</h4><p>Let $f(x)$ be defined on an open interval about $x_{0}$, except possibly at $x_{0}$ itself. We say that the <strong>limit of $f(x)$ as $x$ approaches $x_{0}$ is the number $L$ </strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $\delta &gt; 0$ such that for all x,</p>
-<p>$$ 0 &lt; \left | x - x_{0} \right | &lt; \delta \Rightarrow \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>对任意小的正数 $\epsilon$，都可以找到一个区间，在这个区间内 $\left | f(x) - L \right | &lt; \epsilon $</p>
-<p>由定义可以证明加法律、乘法律等运算规则。</p>
-<h4 id="One-Sided-Limits"><a href="#One-Sided-Limits" class="headerlink" title="One-Sided Limits"></a>One-Sided Limits</h4><p>1.We say that $f(x)$ has <strong>right-hand limit $L$ at $x_{0}$</strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}^{+}} f(x) = L $$</p>
-<p>if for every number $\epsilon &gt; 0$ there exists a corresponding number $\delta &gt; 0$ such that for all x</p>
-<p>$$ x_{0} &lt; x &lt; x_{0} + \delta \Rightarrow \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>2.We say that $f(x)$ has <strong>left-hand limit $L$ at $x_{0}$</strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}^{-}} f(x) = L $$</p>
-<p>if for every number $\epsilon &gt; 0$ there exists a corresponding number $\delta &gt; 0$ such that for all x</p>
-<p>$$ x_{0} - \delta &lt; x &lt; x_{0}   \Rightarrow   \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>3.当左右极限相等时，在该点有函数极限。</p>
-<p>A function $f(x)$ has a limit as $x$ approaches $c$ if and only if it has left-hand and right-hand limits there and these one-sided limits are equal:</p>
-<p>$$ \lim_{x\rightarrow c} f(x) = L \Leftrightarrow \lim_{x\rightarrow c^{-}} f(x) = L \; and \; \lim{x\rightarrow c^{+}} f(x) = L $$</p>
-<h4 id="Limit-as-x-approaches-∞-or-∞"><a href="#Limit-as-x-approaches-∞-or-∞" class="headerlink" title="Limit as x approaches ∞ or -∞"></a>Limit as x approaches ∞ or -∞</h4><ol>
-<li>We say that $f(x)$ has the <strong>limit $L$ as $x$ approaches infinity</strong> and write</li>
-</ol>
-<p>$$ \lim_{x\rightarrow ∞} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $M$ such that for all $x$</p>
-<p>$$ x &gt; M \Rightarrow \left |f(x) - L \right | &lt; \epsilon $$</p>
-<p>对任意小的正数$\epsilon$，都可以找到区间$(M, ∞)$，在这个区间内 $\left |f(x) - L \right | &lt; \epsilon$</p>
-<ol>
-<li>We say that $f(x)$ has the <strong>limit $L$ as $x$ approaches minus infinity</strong> and write</li>
-</ol>
-<p>$$ \lim_{x\rightarrow -∞} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $N$ such that for all $x$</p>
-<p>$$ x &lt; N \Rightarrow \left |f(x) - L \right | &lt; \epsilon $$</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Sandwich-Theorem-夹逼定理"><a href="#The-Sandwich-Theorem-夹逼定理" class="headerlink" title="The Sandwich Theorem(夹逼定理)"></a>The Sandwich Theorem(夹逼定理)</h4><p>Suppose that $g(x)\leqslant f(x)\leqslant h(x)$ for all $x$ in some open interval containing $c$, except possibly at $x = c$ itself. Suppose also that</p>
-<p>$$\lim_{x\rightarrow c} g(x) = \lim_{x\rightarrow c} h(x) = L$$</p>
-<p>Then $\lim_{x\rightarrow c} f(x) = L$</p>
-<h4 id="函数-frac-sin-theta-theta"><a href="#函数-frac-sin-theta-theta" class="headerlink" title="函数$\frac{sin\theta}{\theta}$"></a>函数$\frac{sin\theta}{\theta}$</h4><p>$$ \lim_{\theta\rightarrow 0}\frac{sin\theta}{\theta} = 1    (\theta \, in \, radians) $$</p>
-<p>因为 $ cos\theta &lt; \frac{sin\theta}{\theta} &lt; 1$，由夹逼定理可证。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1819,7 +1807,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">169</span>
+                  <span class="site-state-item-count">170</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1921,7 +1909,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">55.3k</span>
+    <span title="Site words total count">55.7k</span>
   
 </div>
 

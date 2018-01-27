@@ -262,6 +262,157 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/27/ML-AnomalyDetection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/27/ML-AnomalyDetection/" itemprop="url">异常点检测</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-27T14:55:32+08:00">
+                2018-01-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  238
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>正例(y=1)不足，不能支持分类模型训练时，可以使用非监督学习的检测算法来识别异常点。</p>
+<p><strong>算法</strong><br>假设特征服从正态分布，并且相互独立；</p>
+<ol>
+<li>选择能有效识别异常点的特征</li>
+<li>对每个特征，求均值$\mu$和方差$\sigma^2$</li>
+<li>计算样本分布概率$p(x)$<br>$$ p(x)=\prod_{j=1}^np(x_j;\mu_j,\sigma_j^2)=\prod_{j=1}^n\frac{1}{\sqrt{2\pi}\sigma_j}exp(-\frac{(x_j-\mu_j)^2}{2\sigma^2}) $$<br>如果$p(x)&lt;\epsilon$则认为是异常点。</li>
+</ol>
+<p><strong>问题</strong></p>
+<ol>
+<li>如果特征不服从正态分布怎么办？<br>对特征转化处理，例如乘方、开方、取log等，转为近似正态分布。</li>
+<li>如果特征不独立怎么办？<br>使用多元高斯分布计算$p(x)$。</li>
+<li>如果异常点的$p(x)$不显著，不能和正常点分开怎么办？<br>观察异常点，构造显著特征，例如$\frac{x_1}{x_2}$。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/24/LinearAlgebra-LinearEquations/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1671,157 +1822,6 @@ v(1:10)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-Features/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/12/ML-Features/" itemprop="url">数据清洗</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T09:39:47+08:00">
-                2018-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  118
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Scaling-and-Normalization"><a href="#Scaling-and-Normalization" class="headerlink" title="Scaling and Normalization"></a>Scaling and Normalization</h4><p>Feature Scaling: Make sure features are on a similar scale.</p>
-<p>$$ x_i := \frac{x_i}{s_i} $$</p>
-<p>Mean Normalization: Replace $x_i$ with $x_i-\mu_i$ to make features have approximately zero means</p>
-<p>$$ x_i := \frac{x_i-\mu_i}{s_i} $$</p>
-<ul>
-<li>$\mu_i$ Average of all the values for feature(i)</li>
-<li>$s_i$ Range of values(max-min), or Standard Deviation</li>
-</ul>
-<p><strong>对结果的影响</strong></p>
-<ul>
-<li>Scaling是对X的列向量进行缩放，向量方向不变，X列向量张成的平面不变，y的投影不变，e不变，$\theta$改变</li>
-<li>Normalization改变了列向量方向，改变了平面、投影、误差？</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1876,7 +1876,7 @@ v(1:10)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">169</span>
+                  <span class="site-state-item-count">170</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1978,7 +1978,7 @@ v(1:10)
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">55.3k</span>
+    <span title="Site words total count">55.7k</span>
   
 </div>
 
