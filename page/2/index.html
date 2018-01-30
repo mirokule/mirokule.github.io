@@ -984,7 +984,7 @@ v(1:10)
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  196
+                  284
                 </span>
               
 
@@ -1014,16 +1014,24 @@ v(1:10)
             <h4 id="梯度下降法-Gradient-Descent-Algorithm"><a href="#梯度下降法-Gradient-Descent-Algorithm" class="headerlink" title="梯度下降法(Gradient Descent Algorithm)"></a>梯度下降法(Gradient Descent Algorithm)</h4><p><img src="/img/GDA.png" alter="GDA"></p>
 <p>repeat until convergence {</p>
 <p>$$ \theta_{j} := \theta_{j} - \alpha \frac{\partial}{\partial\theta_{j}}J(\theta_{0}, \theta_{1}) $$</p>
-<p>(for j = 0 and j = 1)</p>
-<p>}</p>
-<p><strong>符号说明</strong></p>
+<p>(for j = 0 and j = 1)}(Batch Gradient Descent)</p>
+<p><strong>说明</strong></p>
 <ul>
 <li>$\alpha$ 学习速率(Leaning Rate)，迭代的步长，太小收敛慢，太大可能导致在最优解附近来回波动</li>
-<li>:= 赋值</li>
+<li>收敛到的局部最优解不一定是全局最优解，但对于最小二乘法的弓型损失函数来说唯一的局部最优解就是全局最优解</li>
 </ul>
-<p><strong>计算规则</strong><br>1.分别计算$\theta_{0}$、$\theta_{1}$的新值$t_{0}$、$t_{1}$，再同步更新$\theta_{0}$、$\theta_{1}$<br>逐个更新的话会使计算结果变化，成为另外的梯度算法。</p>
-<p>2.收敛到的局部最优解不一定是全局最优解，但对于最小二乘法的弓型损失函数来说唯一的局部最优解就是全局最优解</p>
-<p>3.每次计算都使用了所有的样本，因而是一种”Batch” Gradient Descent.</p>
+<p><strong>种类</strong></p>
+<ul>
+<li>Batch Gradient Descent: 每次迭代使用全部m个样本，最优梯度方向，计算开销大，可以使用mapreduce</li>
+<li>Stochastic Gradient Descent: 每次迭代使用1个样本，随机梯度方向，适合大样本，需要将输入数据shuffle</li>
+<li>Mini-batch Gradient Descent: 每次迭代使用b个(2~100)样本</li>
+<li>Online Learning: 每次迭代使用1个样本，学习后丢弃样本，适合数据流，模型会跟随输入数据的趋势改变</li>
+</ul>
+<p><strong>判断收敛</strong></p>
+<ul>
+<li>Batch: 观察$J_{train}(\theta)$, 每次跌代后是否变小</li>
+<li>Stochastic: 观察$Cost=\frac{1}{2}(h_{\theta}(x^{(i)})-y^{(i)})^2$均值，每k次迭代后是否变小</li>
+</ul>
 
           
         
@@ -1953,7 +1961,7 @@ v(1:10)
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">56.8k</span>
+    <span title="Site words total count">57.0k</span>
   
 </div>
 
