@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="1.使用Tensorflow输出一句话： import tensorflow as tfimport numpy as np// 初始化常亮字符串greeting = tf.constant(&apos;Hello!&apos;)// 启动会话并执行session = tf.Session()result = sess.run(greeting)print resultsess.close() 2.线性函数计算： m">
+<meta name="description" content="1.使用Tensorflow输出一句话： import tensorflow as tfimport numpy as np# 初始化常亮字符串greeting = tf.constant(&apos;Hello!&apos;)# 启动会话并执行session = tf.Session()result = sess.run(greeting)print resultsess.close() 2.线性函数计算： mat">
 <meta name="keywords" content="Machine Learning,Tensorflow">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tensorflow">
 <meta property="og:url" content="http://mirokule.github.io/2018/01/06/ML-Tensorflow/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="1.使用Tensorflow输出一句话： import tensorflow as tfimport numpy as np// 初始化常亮字符串greeting = tf.constant(&apos;Hello!&apos;)// 启动会话并执行session = tf.Session()result = sess.run(greeting)print resultsess.close() 2.线性函数计算： m">
+<meta property="og:description" content="1.使用Tensorflow输出一句话： import tensorflow as tfimport numpy as np# 初始化常亮字符串greeting = tf.constant(&apos;Hello!&apos;)# 启动会话并执行session = tf.Session()result = sess.run(greeting)print resultsess.close() 2.线性函数计算： mat">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-06T03:53:11.151Z">
+<meta property="og:updated_time" content="2018-02-02T02:22:45.727Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tensorflow">
-<meta name="twitter:description" content="1.使用Tensorflow输出一句话： import tensorflow as tfimport numpy as np// 初始化常亮字符串greeting = tf.constant(&apos;Hello!&apos;)// 启动会话并执行session = tf.Session()result = sess.run(greeting)print resultsess.close() 2.线性函数计算： m">
+<meta name="twitter:description" content="1.使用Tensorflow输出一句话： import tensorflow as tfimport numpy as np# 初始化常亮字符串greeting = tf.constant(&apos;Hello!&apos;)# 启动会话并执行session = tf.Session()result = sess.run(greeting)print resultsess.close() 2.线性函数计算： mat">
 
 
 
@@ -350,11 +350,11 @@
 
       
         <p>1.使用Tensorflow输出一句话：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">// 初始化常亮字符串</span><br><span class="line">greeting = tf.constant(<span class="string">'Hello!'</span>)</span><br><span class="line"></span><br><span class="line">// 启动会话并执行</span><br><span class="line">session = tf.Session()</span><br><span class="line">result = sess.run(greeting)</span><br><span class="line"><span class="keyword">print</span> result</span><br><span class="line">sess.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化常亮字符串</span></span><br><span class="line">greeting = tf.constant(<span class="string">'Hello!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动会话并执行</span></span><br><span class="line">session = tf.Session()</span><br><span class="line">result = sess.run(greeting)</span><br><span class="line"><span class="keyword">print</span> result</span><br><span class="line">sess.close()</span><br></pre></td></tr></table></figure>
 <p>2.线性函数计算：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">matrix1 = tf.constant([[<span class="number">3.</span>, <span class="number">3.</span>]])</span><br><span class="line">matrix2 = tf.constant([[<span class="number">2.</span>],[<span class="number">2.</span>]])</span><br><span class="line"></span><br><span class="line">product = tf.matmul(maxtrx1, matrix2)</span><br><span class="line">linear = tf.add(product, tf.constant(<span class="number">2.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">	result = sess.run(linear)</span><br><span class="line">	<span class="keyword">print</span> result</span><br></pre></td></tr></table></figure>
 <p>3.自定义线性分类器</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">// 定义变量并设定初始值</span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">1</span>]))</span><br><span class="line">W = tf.Variable(tf.random_uniform([<span class="number">1</span>,<span class="number">2</span>],<span class="number">-1.0</span>,<span class="number">1.0</span>))</span><br><span class="line"></span><br><span class="line">// 定义目标函数、损失函数</span><br><span class="line">y = tf.matmul(W, X_train) + b</span><br><span class="line">loss = tf.reduce_mean(tf.square(y - y_train))</span><br><span class="line"></span><br><span class="line">// 使用梯度下降法估计参数，设定步长为<span class="number">0.01</span></span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(<span class="number">0.01</span>)</span><br><span class="line">train = optimizer.minimize(loss)</span><br><span class="line"></span><br><span class="line">// 初始化所有变量</span><br><span class="line">init = tf.initialize_all_variables()</span><br><span class="line">sess = tf.Session()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line">// 迭代训练参数</span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> srange(<span class="number">0</span>,<span class="number">1000</span>):</span><br><span class="line">	sess.run(train)</span><br><span class="line">	<span class="keyword">if</span> step %<span class="number">200</span> == <span class="number">0</span>:</span><br><span class="line">		<span class="keyword">print</span> step, sess.run(W), sess.run(b)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义变量并设定初始值</span></span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">1</span>]))</span><br><span class="line">W = tf.Variable(tf.random_uniform([<span class="number">1</span>,<span class="number">2</span>],<span class="number">-1.0</span>,<span class="number">1.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义目标函数、损失函数</span></span><br><span class="line">y = tf.matmul(W, X_train) + b</span><br><span class="line">loss = tf.reduce_mean(tf.square(y - y_train))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用梯度下降法估计参数，设定步长为0.01</span></span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(<span class="number">0.01</span>)</span><br><span class="line">train = optimizer.minimize(loss)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化所有变量</span></span><br><span class="line">init = tf.initialize_all_variables()</span><br><span class="line">sess = tf.Session()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 迭代训练参数</span></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> srange(<span class="number">0</span>,<span class="number">1000</span>):</span><br><span class="line">	sess.run(train)</span><br><span class="line">	<span class="keyword">if</span> step %<span class="number">200</span> == <span class="number">0</span>:</span><br><span class="line">		<span class="keyword">print</span> step, sess.run(W), sess.run(b)</span><br></pre></td></tr></table></figure>
 <p>4.skflow工具包是对Tensorflow进一步的封装，以求与Scikit-learn使用类似的接口。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> skflow</span><br><span class="line"></span><br><span class="line">tf_lr = skflow.TensorFlowLinearRegressor(steps=<span class="number">10000</span>, learning_rate=<span class="number">0.01</span>, batch_size=<span class="number">50</span>)</span><br><span class="line">tf_lr.fit(X_train, y_train)</span><br><span class="line">tf_lr_y_predict = tf_lr.predict(X_test)</span><br><span class="line"></span><br><span class="line">tf_dnn_regressor - skflow.TensorFlowDNNRegressor(hidden_units=[<span class="number">100</span>,<span class="number">40</span>], steps=<span class="number">10000</span>, learning_rate=<span class="number">0.01</span>, batch_size=<span class="number">50</span>)</span><br><span class="line">tf_dnn_regressor.fit(X_train, y_train)</span><br><span class="line">tf_dnn_regressor_y_predict = tf_dnn_regressor.predict(X_test)</span><br></pre></td></tr></table></figure>
 
@@ -473,7 +473,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">172</span>
+                  <span class="site-state-item-count">174</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -575,7 +575,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">57.0k</span>
+    <span title="Site words total count">57.4k</span>
   
 </div>
 

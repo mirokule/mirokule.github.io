@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://mirokule.github.io/img/logistic.jpg">
 <meta property="og:image" content="http://mirokule.github.io/img/logisticY1.png">
 <meta property="og:image" content="http://mirokule.github.io/img/logisticY0.png">
-<meta property="og:updated_time" content="2018-01-18T00:35:16.240Z">
+<meta property="og:updated_time" content="2018-02-02T02:20:40.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Logistic Regression">
 <meta name="twitter:description" content="将线性回归函数f映射到(0,1)，得到经典的线性分类器Logistic Regression。虽然名字叫做“回归”，但实际上是一种分类模型。 $$h_{w,b}(x)=g(f(w,x,b))=\frac{1}{1+e^{-f}}=\frac{1}{1+e^{-(w^{T}x+b)}}$$    线性分类器是最基本和最常用的分类模型。受限于数据特征和分类目标之间的线性假设。 代价函数Logistic">
@@ -364,7 +364,7 @@
 <p>除此之外也有其他的最优化方法。不需要指定$\alpha$，求解速度更快，但是也更复杂。</p>
 <a id="more"></a>
 <h4 id="多分类"><a href="#多分类" class="headerlink" title="多分类"></a>多分类</h4><p>One-vs-all：使用Logistic每次分出1个类别，如有k个类别则需要执行k次。</p>
-<h4 id="肿瘤细胞分类"><a href="#肿瘤细胞分类" class="headerlink" title="肿瘤细胞分类"></a>肿瘤细胞分类</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> SGDClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</span><br><span class="line"></span><br><span class="line">// 数据清洗，丢弃缺失数据</span><br><span class="line">data = data.replace(to_replace=<span class="string">'?'</span>, value=np.nan)</span><br><span class="line">data = data.dropna(how=<span class="string">'any'</span>)</span><br><span class="line"></span><br><span class="line">// 数据分割，分别用于训练和测试</span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(data[column_names[<span class="number">1</span>:<span class="number">10</span>]], data[column_names[<span class="number">10</span>]], test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line">// 标准化数据</span><br><span class="line">ss = StandardScaler()</span><br><span class="line">X_train = ss.fit_transform(X_train)</span><br><span class="line">X_test = ss.transform(X_test)</span><br><span class="line"></span><br><span class="line">// 训练模型参数</span><br><span class="line">lr = LogisticRegression()</span><br><span class="line">sgdc = SGDClassifier()</span><br><span class="line"></span><br><span class="line">lr.fit(X_train, y_train) // 训练模型, 使用解析的方式计算参数</span><br><span class="line">lr_y_predict = lr.predict(X_text) // 预测结果</span><br><span class="line"></span><br><span class="line">sgdc.fit(X_train, y_train) // 使用随机梯度下降计算参数</span><br><span class="line">sgdc_y_predict = sgdc.predict(X_test) // 预测结果</span><br><span class="line"></span><br><span class="line">// 性能分析</span><br><span class="line">lr.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, sgdc_y_predict, target_names=[<span class="string">'B'</span>,<span class="string">'M'</span>])</span><br></pre></td></tr></table></figure>
+<h4 id="肿瘤细胞分类"><a href="#肿瘤细胞分类" class="headerlink" title="肿瘤细胞分类"></a>肿瘤细胞分类</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> SGDClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据清洗，丢弃缺失数据</span></span><br><span class="line">data = data.replace(to_replace=<span class="string">'?'</span>, value=np.nan)</span><br><span class="line">data = data.dropna(how=<span class="string">'any'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据分割，分别用于训练和测试</span></span><br><span class="line">X_train,X_test,y_train,y_test = train_test_split(data[column_names[<span class="number">1</span>:<span class="number">10</span>]], data[column_names[<span class="number">10</span>]], test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化数据</span></span><br><span class="line">ss = StandardScaler()</span><br><span class="line">X_train = ss.fit_transform(X_train)</span><br><span class="line">X_test = ss.transform(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型参数</span></span><br><span class="line">lr = LogisticRegression()</span><br><span class="line">sgdc = SGDClassifier()</span><br><span class="line"></span><br><span class="line">lr.fit(X_train, y_train) <span class="comment"># 训练模型, 使用解析的方式计算参数</span></span><br><span class="line">lr_y_predict = lr.predict(X_text) <span class="comment"># 预测结果</span></span><br><span class="line"></span><br><span class="line">sgdc.fit(X_train, y_train) <span class="comment"># 使用随机梯度下降计算参数</span></span><br><span class="line">sgdc_y_predict = sgdc.predict(X_test) <span class="comment"># 预测结果</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">lr.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, sgdc_y_predict, target_names=[<span class="string">'B'</span>,<span class="string">'M'</span>])</span><br></pre></td></tr></table></figure>
 <p>在Scikit-learn中，Logistic Regression采用了解析的方式精确计算模型参数，比使用梯度法估计参数的SGDClassifier模型精度要高，预测结果也更好，代价是计算时间更长。</p>
 
       
@@ -489,7 +489,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">172</span>
+                  <span class="site-state-item-count">174</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -607,7 +607,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">57.0k</span>
+    <span title="Site words total count">57.4k</span>
   
 </div>
 

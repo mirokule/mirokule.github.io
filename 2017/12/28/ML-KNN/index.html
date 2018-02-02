@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Gate of Babylon">
 <meta property="og:description" content="分类kNN(k Nearest Neighbour)寻找与待分类样本在特征空间中距离最近的K个已标记样本作为参考。 Iris花朵分类from sklearn.datasets import load_irisfrom sklearn.preprocessing import StandardScalerfrom sklearn.neighbors import KNeighborsClassifi">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-29T03:42:28.610Z">
+<meta property="og:updated_time" content="2018-02-02T02:19:25.507Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="k近邻">
 <meta name="twitter:description" content="分类kNN(k Nearest Neighbour)寻找与待分类样本在特征空间中距离最近的K个已标记样本作为参考。 Iris花朵分类from sklearn.datasets import load_irisfrom sklearn.preprocessing import StandardScalerfrom sklearn.neighbors import KNeighborsClassifi">
@@ -350,10 +350,10 @@
 
       
         <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>kNN(k Nearest Neighbour)寻找与待分类样本在特征空间中距离最近的K个已标记样本作为参考。</p>
-<h4 id="Iris花朵分类"><a href="#Iris花朵分类" class="headerlink" title="Iris花朵分类"></a>Iris花朵分类</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line">// 导入数据</span><br><span class="line">iris = load_iris()</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line">// 标准化</span><br><span class="line">ss = StandardScaler()</span><br><span class="line">X_train = ss.fit_transform(X_train)</span><br><span class="line">X_test = ss.transform(X_test)</span><br><span class="line"></span><br><span class="line">// 训练模型并预测</span><br><span class="line">knc = KNeighborsClassifier()</span><br><span class="line">knc.fit(X_train, y_train)</span><br><span class="line">y_predict = knc.predict(X_test)</span><br><span class="line"></span><br><span class="line">// 性能分析</span><br><span class="line">knc.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, y_predict, target_names=iris.target_names)</span><br></pre></td></tr></table></figure>
+<h4 id="Iris花朵分类"><a href="#Iris花朵分类" class="headerlink" title="Iris花朵分类"></a>Iris花朵分类</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入数据</span></span><br><span class="line">iris = load_iris()</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化</span></span><br><span class="line">ss = StandardScaler()</span><br><span class="line">X_train = ss.fit_transform(X_train)</span><br><span class="line">X_test = ss.transform(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型并预测</span></span><br><span class="line">knc = KNeighborsClassifier()</span><br><span class="line">knc.fit(X_train, y_train)</span><br><span class="line">y_predict = knc.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">knc.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, y_predict, target_names=iris.target_names)</span><br></pre></td></tr></table></figure>
 <p>k近邻算法没有参数训练过程，属于无参数模型(Nonparametric Model)中非常简单的一种。<br>也就是说，并没有使用学习算法分析训练数据，而只是根据样本的分布直接作出分类决策。<br>由于需要对内存中的样本逐一计算距离，具有平方级的计算复杂度，内存消耗大。</p>
 <h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><p>使用样本周围k个最近的训练样本的目标数值，得出预测值。<br>可以使用普通的算术平均算法，也可以考虑距离的差异进行加权平均。</p>
-<h4 id="预测房价"><a href="#预测房价" class="headerlink" title="预测房价"></a>预测房价</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbours <span class="keyword">import</span> KNeighborsRegressor</span><br><span class="line"></span><br><span class="line">// 使用算术平均</span><br><span class="line">uni_knr = KNeighborsRegressor(weights=<span class="string">'uniform'</span>)</span><br><span class="line">uni_knr.fit(X_train, y_train)</span><br><span class="line">uni_knr_y_predict = uni_knr.predict(X_test)</span><br><span class="line"></span><br><span class="line">// 使用距离加权</span><br><span class="line">dis_knr = KNeighborsRegressor(weights=<span class="string">'distance'</span>)</span><br><span class="line">dis_knr.fit(X_train, y_train)</span><br><span class="line">dis_knr_y_predict = dis_knr.predict(X_test_)</span><br></pre></td></tr></table></figure>
+<h4 id="预测房价"><a href="#预测房价" class="headerlink" title="预测房价"></a>预测房价</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbours <span class="keyword">import</span> KNeighborsRegressor</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用算术平均</span></span><br><span class="line">uni_knr = KNeighborsRegressor(weights=<span class="string">'uniform'</span>)</span><br><span class="line">uni_knr.fit(X_train, y_train)</span><br><span class="line">uni_knr_y_predict = uni_knr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用距离加权</span></span><br><span class="line">dis_knr = KNeighborsRegressor(weights=<span class="string">'distance'</span>)</span><br><span class="line">dis_knr.fit(X_train, y_train)</span><br><span class="line">dis_knr_y_predict = dis_knr.predict(X_test_)</span><br></pre></td></tr></table></figure>
 <p>与KNN分类一样，属于无参数模型。</p>
 
       
@@ -478,7 +478,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">172</span>
+                  <span class="site-state-item-count">174</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -596,7 +596,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">57.0k</span>
+    <span title="Site words total count">57.4k</span>
   
 </div>
 
