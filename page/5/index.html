@@ -262,6 +262,326 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/20/DP-GameEngineOptimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/20/DP-GameEngineOptimization/" itemprop="url">DesignPattern-GameEngineOptimization</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-20T21:13:09+08:00">
+                2016-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  405
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="数据局部性"><a href="#数据局部性" class="headerlink" title="数据局部性"></a>数据局部性</h4><ul>
+<li><strong>意图</strong></li>
+</ul>
+<p>通过合理组织数据利用CPU的缓存机制来加快内存访问速度。<br>保持数据处于连续的内存中，增加CPU缓存的命中几率，从而提高处理速度。</p>
+<ul>
+<li><strong>实现</strong></li>
+</ul>
+<p>1.将组件模式的组件放在数组中，比如PhysicsComponent[MAX_ENTITIES]<br>2.将活动的组件放在数组前端<br>3.将冷热数据分解。热数据是每帧都会用到的数据，冷数据是不会频繁使用的数据，比如怪物被消灭后的掉落信息。</p>
+<hr>
+<h4 id="脏标记模式"><a href="#脏标记模式" class="headerlink" title="脏标记模式"></a>脏标记模式</h4><ul>
+<li><strong>意图</strong></li>
+</ul>
+<p>一组原始数据随世界变化，一组衍生数据经过一些代价昂贵的操作由原始数据确定，比如子对象的位置和朝向。<br>当原始数据改变时，给衍生数据设置脏标记；当需要衍生数据时，如果有脏标记则重新计算，否则使用缓存数据。<br>这样对场景中大量的静态物体，不用每次都重新计算位置和朝向等。</p>
+<hr>
+<h4 id="对象池"><a href="#对象池" class="headerlink" title="对象池"></a>对象池</h4><ul>
+<li><strong>意图</strong></li>
+</ul>
+<p>使用固定的对象池重用对象，取代单独地分配和释放对象。</p>
+<ul>
+<li><strong>使用情境</strong><br>1.对象需要频繁的创建和销毁；<br>2.对象的大小一致；<br>3.对象内存分配较慢，或者会产生内存碎片；<br>4.每个对象封装着获取代价昂贵而且可重用的资源，比如数据库、网络的连接等</li>
+</ul>
+<hr>
+<h4 id="空间分区"><a href="#空间分区" class="headerlink" title="空间分区"></a>空间分区</h4><ul>
+<li><strong>意图</strong></li>
+</ul>
+<p>将对象存储在根据位置组织的数据结构中，以高效地定位它们</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/17/DP-GameEngine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/17/DP-GameEngine/" itemprop="url">DesignPattern-GameEngine</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-17T11:29:23+08:00">
+                2016-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  456
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="游戏循环"><a href="#游戏循环" class="headerlink" title="游戏循环"></a>游戏循环</h4><p>实现用户输入和处理器速度在游戏行进时间上的解耦。<br>对于一般应用程序，在没有输入时程序处于阻塞状态，而游戏的AI、动画等在没有输入时仍然持续运行。</p>
+<p>一个游戏循环会在游戏过程中持续地运转。<br>每循环一次，它非阻塞地处理用户的输入，更新游戏状态，并渲染游戏。<br>它跟踪流逝的时间并控制游戏的速率。</p>
+<hr>
+<h4 id="更新方法"><a href="#更新方法" class="headerlink" title="更新方法"></a>更新方法</h4><p>游戏世界维护一个对象集合。每个对象实现一个更新方法以在每帧模拟自己的行为。游戏循环在每帧对集合中所有的对象调用其更新方法，以实现和游戏世界同步更新。</p>
+<hr>
+<h4 id="组件模式"><a href="#组件模式" class="headerlink" title="组件模式"></a>组件模式</h4><p>单一实体横跨了多个域时，为了保持域之间相互隔离，每个域的代码都独立地放在自己的组件类中。实体本身可以简化为这些组件的容器。<br>组件常用于定义实体的核心类。<br>使用组件模式后，不同组件之间的通信、内存管理将更加复杂。</p>
+<p><strong>使用条件</strong></p>
+<ul>
+<li>一个类涉及多个域，希望这些域保持解耦</li>
+<li>一个类越来越大，难以开发</li>
+<li>希望定义许多共享不同能力的对象，但采用继承无法精确地重用</li>
+</ul>
+<p><strong>组件通信方式</strong></p>
+<ul>
+<li>修改容器对象的状态：保持解耦；数据混杂，消耗内存；对组件执行顺序产生依赖</li>
+<li>直接相互引用：简单快捷，但会紧密耦合(推荐强关联组件使用)</li>
+<li>通过消息传递：最复杂，需要建立消息系统；保持解耦(推荐弱关联组件使用)</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/17/DP-Sandbox/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1492,312 +1812,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-DoubleBuffer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/13/DP-DoubleBuffer/" itemprop="url">DesignPattern-DoubleBufferPattern</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T13:24:31+08:00">
-                2016-12-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  619
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>双缓冲模式解决的核心问题是状态同时进行修改和访问的冲突。<br>通过设置2片缓冲区，将缓冲内容的读和写分离。<br>常见于图形显示，其中渲染代码写入缓存，显卡读取缓存。</p>
-<p><strong>演员的例子</strong><br>加入双缓冲后，无论演员的顺序如何变，同一帧里的状态不会发生改变；每一帧只有1次巴掌传递。<br>单缓冲时，在缓冲区首位写入的状态，会随着读取不断向后传递，每帧有多个巴掌；在缓冲区末位写入的状态，每帧只有1个巴掌。<br>目的是将读写分离，本帧内写的新状态不会在本帧内读取，使每帧读取的状态稳定可控。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/13/DP-DoubleBuffer/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-Observer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/13/DP-Observer/" itemprop="url">DesignPattern-ObserverPattern</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T13:20:53+08:00">
-                2016-12-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  651
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在对象间定义一种一对多的依赖关系，以便当某对象的状态改变时，与它存在依赖关系的所有对象都能收到通知并自动进行更新。<br>C#将观察者模式集成在了语言层面(event关键字)。</p>
-<p>例如实现成就系统，如果在碰撞处理的代码中加入解锁成就的判断会带来耦合。<br>可以只发送相应的通知，而不关心谁会收到通知的消息以及如何解锁成就。<br>观察者模式非常适合于一些不相关的模块之间的通信，不适合于单个紧凑的模块内部的通信。</p>
-<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
-<li><p><strong>主要解决</strong>：一个对象状态改变给其他对象通知的问题，而且要考虑到易用和低耦合，保证高度的协作。</p>
-</li>
-<li><p><strong>何时使用</strong>：一个对象（目标对象）的状态发生改变，所有的依赖对象（观察者对象）都将得到通知，进行广播通知。</p>
-</li>
-<li><p><strong>关键代码</strong>：在抽象类里有一个 ArrayList 存放观察者们。</p>
-</li>
-<li><p><strong>应用实例</strong>：<br>1、拍卖的时候，拍卖师观察最高标价，然后通知给其他竞价者竞价。 </p>
-</li>
-<li><p><strong>优点</strong>：<br>1、观察者和被观察者是抽象耦合的。<br>2、建立一套触发机制。 </p>
-</li>
-<li><p><strong>缺点</strong>：<br>1、如果一个被观察者对象有很多的直接和间接的观察者的话，将所有的观察者都通知到会花费很多时间。<br>2、如果在观察者和观察目标之间有循环依赖的话，观察目标会触发它们之间进行循环调用，可能导致系统崩溃。<br>3、观察者模式没有相应的机制让观察者知道所观察的目标对象是怎么发生变化的，而仅仅只是知道观察目标发生了变化。 </p>
-</li>
-<li><p><strong>使用场景</strong>：<br>1、有多个子类共有的方法，且逻辑相同。<br>2、重要的、复杂的方法，可以考虑作为模板方法。</p>
-</li>
-<li><p><strong>注意事项</strong>：<br>1、J避免循环引用。<br>2、如果顺序执行，某一观察者错误会导致系统卡壳，一般采用异步方式。<br>3、如果一个观察者没有及时注销自己，被观察对象的观察者列表会越来越长，带来失效观察者问题。</p>
-</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/13/DP-Observer/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1852,7 +1866,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">174</span>
+                  <span class="site-state-item-count">176</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1954,7 +1968,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">58.4k</span>
+    <span title="Site words total count">59.2k</span>
   
 </div>
 

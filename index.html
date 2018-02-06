@@ -262,6 +262,304 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/06/Python-DataConversion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/06/Python-DataConversion/" itemprop="url">Pandas数据转换</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T14:23:43+08:00">
+                2018-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  258
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="移除重复数据"><a href="#移除重复数据" class="headerlink" title="移除重复数据"></a>移除重复数据</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 判断重复</span></span><br><span class="line">data.duplicated()<span class="comment">#返回布尔型Series，表示各行是否重复</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 移除重复</span></span><br><span class="line">data.drop_duplicates()<span class="comment">#返回移除了重复行的DataFrame，保留第一个</span></span><br><span class="line">data.drop_duplicates([<span class="string">'k1'</span>])<span class="comment">#只根据k1列过滤</span></span><br><span class="line">data.drop_duplicates([<span class="string">'k1'</span>,<span class="string">'k2'</span>], take_last=<span class="keyword">True</span>) <span class="comment">#保留重复值的最后一个</span></span><br></pre></td></tr></table></figure>
+<h4 id="数据转换"><a href="#数据转换" class="headerlink" title="数据转换"></a>数据转换</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将数据映射为其他值</span></span><br><span class="line">data[<span class="string">'food'</span>].map(str.lower).map(meat_to_animal)</span><br><span class="line">data[<span class="string">'food'</span>].map(<span class="keyword">lambda</span> x: meat_to_animal[x.lower()])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将轴标签映射为其他值</span></span><br><span class="line">data.index.map(str.upper)</span><br><span class="line">data.rename(index=&#123;<span class="string">'oldName'</span>:<span class="string">'newName'</span>&#125;, inplace=<span class="keyword">True</span>) <span class="comment">#就地生效</span></span><br><span class="line">data.rename(index=&#123;<span class="string">'o'</span>:<span class="string">'n'</span>&#125;,columns=&#123;<span class="string">'oo'</span>:<span class="string">'nn'</span>&#125;) <span class="comment">#复制数据并修改行列索引</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 填充缺失值</span></span><br><span class="line">data.fillna()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换值</span></span><br><span class="line">data.replace(<span class="number">-999</span>, np.nan)</span><br><span class="line">data.replace([<span class="number">-999</span>,<span class="number">-1000</span>], np.nan)</span><br><span class="line">data.replace([<span class="number">-999</span>,<span class="number">-1000</span>], [np.nan, <span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+<h4 id="检测异常值"><a href="#检测异常值" class="headerlink" title="检测异常值"></a>检测异常值</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">col = data[<span class="number">3</span>]</span><br><span class="line">col[np.abs(col) &gt; <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">data[(np.abs(data)&gt;<span class="number">3</span>).any(<span class="number">1</span>)]</span><br><span class="line">data[np.abs(data) &gt; <span class="number">3</span>] = np.sign(data) * <span class="number">3</span> <span class="comment">#np.sign返回1或者-1</span></span><br></pre></td></tr></table></figure>
+<h4 id="随机采样"><a href="#随机采样" class="headerlink" title="随机采样"></a>随机采样</h4><p>numpy.random.permutation产生指定长度的随机整数数组，可用于数据重排列。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 重排</span></span><br><span class="line">sampler = np.random.permutation(<span class="number">5</span>)</span><br><span class="line">df.take(sampler) </span><br><span class="line"></span><br><span class="line"><span class="comment"># 采样</span></span><br><span class="line">df.take(np.random.permutation(len(df))[:<span class="number">3</span>])</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/06/Python-DataRearrangement/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/06/Python-DataRearrangement/" itemprop="url">Pandas数据重排</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T13:42:28+08:00">
+                2018-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  504
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="数据合并"><a href="#数据合并" class="headerlink" title="数据合并"></a>数据合并</h2><p>数据对象可以通过几种不同的方式合并：</p>
+<ul>
+<li>pd.merge: join</li>
+<li>pd.concat: concatenation, binding, stacking</li>
+<li>pd.combine_first: 补充</li>
+</ul>
+<h4 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h4><p>数据库风格的合并，将两张表按某些相同值连接。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列-列连接，索引会被丢弃</span></span><br><span class="line">pd.merge(df1, df2, on=<span class="string">'key'</span>)</span><br><span class="line">pd.merge(df1, df2, left_on=<span class="string">'key1'</span>, right_on=<span class="string">'key2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># merge默认inner join</span></span><br><span class="line">pd.merge(df1, df2, how=<span class="string">'outer'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># suffixes用于指定附加到重复列名上的字符串</span></span><br><span class="line">pd.merge(left, right, on=<span class="string">'key1'</span>, suffixes=(<span class="string">'_left'</span>,<span class="string">'_right'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将索引用作连接键</span></span><br><span class="line">pd.merge(left, right, left_on=<span class="string">'key'</span>, right_index=<span class="keyword">True</span>)</span><br><span class="line">left.join(right, how=<span class="string">'outer'</span>)<span class="comment">#按索引合并，默认左连接</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="concat"><a href="#concat" class="headerlink" title="concat"></a>concat</h4><p>Numpy中有一个用于合并原始Numpy数组的concatenation函数：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.concatenate([arr,arr], axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
+<p>Pandas中的concat可以将值和索引粘合在一起：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.concat([s1, s2, s3]) <span class="comment">#将Series数据堆叠在一起</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定轴向堆叠，得到DataFrame</span></span><br><span class="line">pd.concat([s1, s2, s3], axis=<span class="number">1</span>) </span><br><span class="line">pd.concat([s1, s4], axis=<span class="number">1</span>, join=<span class="string">'inner'</span>) <span class="comment">#内连接，得到交集</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定索引</span></span><br><span class="line">pd.concat([s1, s4], axis=<span class="number">1</span>, join_axes=[[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>]])</span><br><span class="line">pd.concat([s1, s2], keys=[<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>])</span><br></pre></td></tr></table></figure></p>
+<h4 id="combine-first"><a href="#combine-first" class="headerlink" title="combine_first"></a>combine_first</h4><p>索引全部或部分重叠的两个数据集，用B数据集为A数据集里的缺失数据“打补丁”。<br>在Numpy中，可以使用where函数<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.where(pd.isnull(a), b, a)</span><br></pre></td></tr></table></figure></p>
+<p>在pandas中，combine_first函数实现的是同样的方法，而且会数据对齐：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df1.combine_first(df2)</span><br></pre></td></tr></table></figure></p>
+<h2 id="数据重塑"><a href="#数据重塑" class="headerlink" title="数据重塑"></a>数据重塑</h2><p>用于重新排列表格型数据，也称作重塑(reshape)或轴向旋转(pivot)。</p>
+<h4 id="stack"><a href="#stack" class="headerlink" title="stack"></a>stack</h4><ul>
+<li>stack: 将数据的列“旋转”为行</li>
+<li>unstack: 将数据的行“旋转”为列</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将DataFrame旋转为层次化索引的Series</span></span><br><span class="line"><span class="comment"># 会滤除缺失数据</span></span><br><span class="line">data.stack()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将层次化索引的Series旋转为DataFrame</span></span><br><span class="line"><span class="comment"># 可能引入缺失数据</span></span><br><span class="line">result.unstack()</span><br><span class="line">result.unstack(<span class="number">0</span>) <span class="comment">#指定层级</span></span><br><span class="line">result.unstack(<span class="string">'state'</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="pivot"><a href="#pivot" class="headerlink" title="pivot"></a>pivot</h4><p>重新指定DataFrame的行列索引，使数据重排。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 前两个参数作为行列索引，第三个参数用于填充数据列</span></span><br><span class="line">pivoted = df.pivot(<span class="string">'date'</span>,<span class="string">'item'</span>,<span class="string">'value'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 忽略第三个参数，则生成层次化的列</span></span><br><span class="line">pivoted = df.pivot(<span class="string">'date'</span>,<span class="string">'item'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 等同于如下语句</span></span><br><span class="line">pivoted = df.set_index([<span class="string">'date'</span>,<span class="string">'time]).unstack('</span>item<span class="string">')</span></span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/02/Python-Functions/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1449,323 +1747,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/20/Calculus-PartialDerivatives/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/20/Calculus-PartialDerivatives/" itemprop="url">多元微分</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-20T08:07:28+08:00">
-                2018-01-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  547
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Partial-Derivative-with-Respect-to-x"><a href="#Partial-Derivative-with-Respect-to-x" class="headerlink" title="Partial Derivative with Respect to x"></a>Partial Derivative with Respect to x</h4><p>The partial derivative of $f(x,y)$ with respect to x at the point $(x_0,y_0)$ is<br>$$ \frac{\partial f}{\partial x}|_{x_0,y_0} = \lim_{h\rightarrow 0}\frac{f(x_0+h,y_0)-f(x_0,y_0)}{h} $$<br>provided the limit exists.</p>
-<h4 id="Differentiable-Function"><a href="#Differentiable-Function" class="headerlink" title="Differentiable Function"></a>Differentiable Function</h4><p>A function $z=f(x,y)$ is differentiable at $(x_0,y_0)$ if $f_x(x_0,y_0)$ and $f_y(x_0,y_0)$ exist and $\Delta z$ satisfies an equation of the form<br>$$ \Delta z = f_x(x_0,y_0)\Delta x + f_y(x_0,y_0)\Delta y + \epsilon_1\Delta x + \epsilon_2\Delta y $$<br>in which each of $\epsilon_1,\epsilon_2\rightarrow 0$ as both $\Delta x,\Delta y\rightarrow 0$. We call $f$ differentiable if it is differentiable at every point in its domain.<br>如果每个变量的偏导数存在且连续，则多元函数可微。</p>
-<h4 id="Directional-Derivative"><a href="#Directional-Derivative" class="headerlink" title="Directional Derivative"></a>Directional Derivative</h4><p>The derivative of $f$ at $P_0(x_0,y_0)$ in the direction of the unit vector $u=u_1i+u_2j$ is the number<br>$$ \left(\frac{df}{ds}\right)_{u,P_0} = \lim_{s\rightarrow 0}\frac{f(x_0+su_1,y_0+su_2)-f(x_0,y_0)}{s}$$<br>provided the limit exists.<br>$$ \left(\frac{df}{ds}\right)_{u,P_0} = (\triangledown f)_{P_0}\cdot u $$<br>方向导数等于梯度和方向的内积。</p>
-<h4 id="Gradient-Vector"><a href="#Gradient-Vector" class="headerlink" title="Gradient Vector"></a>Gradient Vector</h4><p>The gradient vector of $f(x,y)$ at a point $P_0(x_0,y_0)$ is the vector<br>$$ \triangledown f = \frac{\partial f}{\partial x}i + \frac{\partial f}{\partial y}j $$<br>obtained by evaluating the partial derivatives of $f$ at $P_0$.</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Mixed-Derivative-Theorem"><a href="#The-Mixed-Derivative-Theorem" class="headerlink" title="The Mixed Derivative Theorem"></a>The Mixed Derivative Theorem</h4><p>If $f(x,y)$ and its partial derivatives $f_x,f_y,f_{xy},f_{yx}$ are defined throughout an open region containing a point $(a,b)$ and are all continuous at $(a,b)$, then<br>$$ f_{xy}(a,b) = f_{yx}(a,b) $$</p>
-<h4 id="Chain-Rule-for-Functions-of-Two-Independent-Variables"><a href="#Chain-Rule-for-Functions-of-Two-Independent-Variables" class="headerlink" title="Chain Rule for Functions of Two Independent Variables"></a>Chain Rule for Functions of Two Independent Variables</h4><p>If $w=f(x,y)$ has continuous partial derivatives $f_x$ and $f_y$ and if $x=x(t), y=y(t)$ are differentiable functions of $t$, then the composite $w=f(x(t),y(t))$ is a differentiable function of $t$ and<br>$$ \frac{dw}{dt} = \frac{\partial f}{\partial x}\frac{dx}{dt} + \frac{\partial f}{\partial y}\frac{dy}{dt} $$</p>
-<h4 id="First-Derivative-Test-for-Local-Extreme-Values"><a href="#First-Derivative-Test-for-Local-Extreme-Values" class="headerlink" title="First Derivative Test for Local Extreme Values"></a>First Derivative Test for Local Extreme Values</h4><p>If $f(x,y)$ has a local maximum or minimum value at an interior point $(a,b)$ of its domain and if the first partial derivatives exist there, then $f_x(a,b)=0$ and $f_y(a,b)=0$.</p>
-<h4 id="Seconde-Derivative-Test-for-Local-Extreme-Values"><a href="#Seconde-Derivative-Test-for-Local-Extreme-Values" class="headerlink" title="Seconde Derivative Test for Local Extreme Values"></a>Seconde Derivative Test for Local Extreme Values</h4><p>Suppose that $f(x,y)$ and its first and second partial derivatives are continuous throughout a disk centered at $(a,b)$ and that $f_x(a,b)=f_y(a,b)=0$. Then<br>i. $f$ has a local maximum at $(a,b)$ if $f_{xx}<0,\;f_{xx}f_{yy}-f_{xy}^2>0$ at $(a,b)$.<br>ii. $f$ has a local minimum at $(a,b)$ if $f_{xx}&gt;0,\;f_{xx}f_{yy}-f_{xy}^2&gt;0$ at $(a,b)$.<br>iii. $f$ has a saddle point at $(a,b)$ if $f_{xx}f_{yy}-f_{xy}^2&lt;0$ at $(a,b)$.<br>iv. The test is inconclusive at $(a,b)$ if $f_{xx}f_{yy}-f_{xy}^2=0$ at $(a,b)$.</0,\;f_{xx}f_{yy}-f_{xy}^2></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/18/ML-Overfitting/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/18/ML-Overfitting/" itemprop="url">过拟合与欠拟合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T07:47:02+08:00">
-                2018-01-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  714
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>当模型过度追求对训练数据的拟合时，会失去对新数据的预测精度，称为过拟合(Overfitting)。<br>当模型对训练数据的拟合不足，在训练集上的误差较大时，称为欠拟合(Underfitting)。</p>
-<h4 id="识别"><a href="#识别" class="headerlink" title="识别"></a>识别</h4><p><img src="\img\DiagnosingJ.png"></p>
-<p>欠拟合(Underfitting): High bias(偏差), $J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等<br>过拟合(Overfitting): High variance(方差), $J_{train}(\Theta)$较小，$J_{CV}(\Theta)$很大，两者有明显差距</p>
-<p><strong>学习曲线</strong>：不同样本数量下的误差值，可以观察样本量是否足够，进而分辨Bias/Variance<br><img src="\img\highBias.png"><br>High Bias<br>低样本量时，$J_{train}(\Theta)$很小，$J_{CV}(\Theta)$很大<br>高样本量时，$J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等</p>
-<p><img src="\img\highVariance.png"><br>High Variance<br>低样本量时，$J_{train}(\Theta)$很小，$J_{CV}(\Theta)$很大<br>高样本量时，$J_{train}(\Theta)$持续增加，$J_{CV}(\Theta)$持续减少，两者仍有明显差距</p>
-<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><ul>
-<li>改变特征数<ul>
-<li>过拟合：减少特征数，手动或者通过算法选择(PCA)</li>
-<li>欠拟合：增加特征数，比如$x_i^n$</li>
-</ul>
-</li>
-<li>增加样本量<ul>
-<li>过拟合：增加样本量m可以降低$J_{CV}(\Theta)$</li>
-<li>欠拟合：无效</li>
-</ul>
-</li>
-<li>正则化(Regularization)<br>$$ J(\theta) = \frac{1}{2m} \left[\sum_{i=1}^{m}(h_\theta(x^{(i)})-y^{(i)})^2 + \lambda\sum_{j=1}^{n}\theta_j^2\right] $$<ul>
-<li>过拟合：$\lambda$过小，应增加$\lambda$</li>
-<li>欠拟合：$\lambda$过大，应减少$\lambda$</li>
-</ul>
-</li>
-</ul>
-<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
-<li>创建一系列备选的$\lambda\in\left{0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24\left}$(k个)</li>
-<li>创建不同维度的模型(d个)</li>
-<li>对每个$\lambda$，训练每个模型的参数$\Theta$(k*d个)</li>
-<li>用每套参数$\Theta$计算误差$J_{CV}(\Theta)$(模拟$J_{test}(\Theta)$，故计算时不使用$\lambda$)(k*d个)</li>
-<li>选择$J_{CV}(\Theta)$最小的模型(1个)</li>
-<li>应用到测试集，得到$J_{test}(\Theta)$</li>
-</ol>
-<h4 id="线性回归正则化"><a href="#线性回归正则化" class="headerlink" title="线性回归正则化"></a>线性回归正则化</h4><p><strong>1.Gradient Descent</strong><br>Repeat {<br>$$ \theta_0 := \theta_0 - \alpha\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}))x_0^{(i)} $$<br>$$ \theta_j := \theta_j - \alpha\left[\left(\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}))x_j^{(i)} \right)+\frac{\lambda}{m}\theta_j \right] $$<br>}<br>其中$\theta_j$的迭代式可以写成：<br>$$ \theta_j := \theta_j(1-\alpha\frac{\lambda}{m}) -\alpha\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}))x_j^{(i)} $$<br>第一项中的 $1-\alpha\frac{\lambda}{m}$ 永远小于1，每次迭代都会减小$\theta$；<br>第二项和原来一样。</p>
-<p><strong>2.Normal Equation</strong><br>$$ \theta = (X^TX+\lambda\cdot L)^{-1}X^Ty $$<br>其中L是$a_{11}=0$的(n+1)阶单位矩阵。<br>当$m&lt;n$时，矩阵$X^TX$不可逆；但是加上$\lambda\cdot L$后，矩阵$X^TX+\lambda\cdot L$可逆。</p>
-<h4 id="Logistic回归正则化"><a href="#Logistic回归正则化" class="headerlink" title="Logistic回归正则化"></a>Logistic回归正则化</h4><p>新的代价函数<br>$$ J(\theta) = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)}log(h_{\theta}(x^{(i)}))+(1-y^{(i)})log(1-h_{\theta}(x^{(i)})) \right] +\frac{\lambda}{2m}\sum_{j=1}^{n}\theta_j^2 $$<br>注意$\sum_{j=1}^{n}\theta_j^2$从$n=1$开始，不包括$\theta_0$<br>$\theta$的迭代式和线性回归一样。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1820,7 +1801,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">174</span>
+                  <span class="site-state-item-count">176</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1922,7 +1903,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">58.4k</span>
+    <span title="Site words total count">59.2k</span>
   
 </div>
 
