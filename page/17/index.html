@@ -262,6 +262,299 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/09/10/UIAlertController/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/09/10/UIAlertController/" itemprop="url">UIAlertController</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-10T11:08:22+08:00">
+                2015-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  92
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Presenting-actionsheet-on-iPad"><a href="#Presenting-actionsheet-on-iPad" class="headerlink" title="Presenting actionsheet on iPad"></a>Presenting actionsheet on iPad</h4><p><strong>Error</strong></p>
+<p>The modalPresentationStyle of a UIAlertController with this style is UIModalPresentationPopover. You must provide location information for this popover through the alert controller’s popoverPresentationController. You must provide either a sourceView and sourceRect or a barButtonItem.  If this information is not known when you present the alert controller, you may provide it in the UIPopoverPresentationControllerDelegate method -prepareForPopoverPresentation.’</p>
+<p><strong>Solve</strong></p>
+<p>if sender is a <strong>UIBarButtonItem</strong></p>
+<pre><code>if let popoverController = alertController.popoverPresentationController {
+    popoverController.barButtonItem = sender
+}
+</code></pre><p>else</p>
+<pre><code>if let popoverController = alertController.popoverPresentationController {
+    popoverController.sourceView = exchangeButton
+    popoverController.sourceRect = exchangeButton.bounds
+    popoverController.permittedArrowDirections = UIPopoverArrowDirection.Up
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/09/07/UIActivityIndicatorView/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/09/07/UIActivityIndicatorView/" itemprop="url">UIActivityIndicatorView</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-07T13:29:06+08:00">
+                2015-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  61
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Use-indicator-with-code"><a href="#Use-indicator-with-code" class="headerlink" title="Use indicator with code"></a>Use indicator with code</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> indicator = <span class="type">UIActivityIndicatorView</span>(activityIndicatorStyle: .<span class="type">White</span>)</span><br><span class="line">indicator.hidesWhenStopped = <span class="literal">true</span></span><br><span class="line">indicator.startAnimating()</span><br><span class="line"><span class="keyword">let</span> indicatorPoint = <span class="type">CGPoint</span>(x: center.x - round(indicator.frame.size.width / <span class="number">2</span>), y: center.y - round(indicator.frame.size.height / <span class="number">2</span>) - boxHeight / <span class="number">8</span>)</span><br><span class="line">indicator.frame.origin = indicatorPoint</span><br><span class="line"><span class="keyword">self</span>.addSubview(indicator)</span><br></pre></td></tr></table></figure>
+<h4 id="Different-style"><a href="#Different-style" class="headerlink" title="Different style"></a>Different style</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">UIActivityIndicatorViewStyle</span>: <span class="title">Int</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="type">WhiteLarge</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">White</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">Gray</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h4><pre><code>indicator.stopAnimating()
+indicator.isAnimating() -&gt; Bool
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/09/04/UI-HudView/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1415,306 +1708,6 @@ iconImageView.tintColor = UIColor.darkGrayColor()
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/08/11/UITableView-Pull-to-Refresh/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/08/11/UITableView-Pull-to-Refresh/" itemprop="url">UITableView Pull-to-Refresh</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-11T15:25:37+08:00">
-                2015-08-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  60
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="ViewDidLoad"><a href="#ViewDidLoad" class="headerlink" title="ViewDidLoad"></a>ViewDidLoad</h4><p>In viewDidLoad(), add the following code:</p>
-<pre><code>self.refreshControl = UIRefreshControl()
-self.refreshControl?.backgroundColor = UIColor.purpleColor()
-self.refreshControl?.tintColor = UIColor.whiteColor()
-self.refreshControl?.addTarget(self, action: Selector(&quot;actionHandler&quot;), forControlEvents: UIControlEvents.ValueChanged)
-</code></pre><p>When the tableview is pulled down sufficiently, the refresh controll triggers the UIControlEvents.ValueChanged.</p>
-<h4 id="ActionHandler"><a href="#ActionHandler" class="headerlink" title="ActionHandler"></a>ActionHandler</h4><p>It’s your responsibility to hide the refresh control.</p>
-<pre><code>func actionHandler() {
-    ...
-    self.refreshControl?.endRefreshing()
-}
-</code></pre><p>Nice.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/08/10/Swift-StringJoinMap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/08/10/Swift-StringJoinMap/" itemprop="url">String Join and Map</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-10T19:56:05+08:00">
-                2015-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  27
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <pre><code>let animals = [&quot;cat&quot;, &quot;dog&quot;, &quot;Elephant&quot;]
-</code></pre><h3 id="Join"><a href="#Join" class="headerlink" title="Join"></a>Join</h3><pre><code>println(&quot;;&quot;.join(animals))
-println(join(&quot;;&quot;, animals))
-
-//output:
-&quot;cat;dog;Elephant&quot;
-</code></pre><h3 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h3><pre><code>println(&quot;\n&quot;.join(animals.map({&quot;*&quot; + $0})))
-
-//output:
-*cat
-*dog
-*Elephant
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1769,7 +1762,7 @@ println(join(&quot;;&quot;, animals))
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">176</span>
+                  <span class="site-state-item-count">178</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1782,7 +1775,7 @@ println(join(&quot;;&quot;, animals))
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1871,7 +1864,7 @@ println(join(&quot;;&quot;, animals))
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">59.2k</span>
+    <span title="Site words total count">60.1k</span>
   
 </div>
 

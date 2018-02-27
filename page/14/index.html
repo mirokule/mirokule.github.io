@@ -262,6 +262,285 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/01/22/CAEmitterLayer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/01/22/CAEmitterLayer/" itemprop="url">CAEmitterLayer</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-22T10:25:42+08:00">
+                2016-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  194
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>CAEmitterLayer is similar to SKEmitterNode, but lack of “NumOfParticles” property.</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> frameRect = <span class="type">CGRect</span>(x: <span class="number">0.0</span>, y: <span class="number">0.0</span>, width: view.bounds.width, height: view.bounds.height)</span><br><span class="line">    emitterLayer.frame = frameRect</span><br><span class="line">    emitterLayer.borderColor = <span class="type">UIColor</span>.redColor().<span class="type">CGColor</span></span><br><span class="line">    emitterLayer.borderWidth = <span class="number">3</span></span><br><span class="line">    </span><br><span class="line">    setupEmitter()</span><br><span class="line">    setupEmitterCell()</span><br><span class="line">    </span><br><span class="line">    view.layer.addSublayer(emitterLayer)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setupEmitter</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">//Shape: Point, Line, Rectangle, Cuboid, Circle, Sphere</span></span><br><span class="line">    emitterLayer.emitterShape = kCAEmitterLayerPoint</span><br><span class="line">    </span><br><span class="line">    emitterLayer.emitterPosition = containerView.center</span><br><span class="line">    emitterLayer.emitterZPosition = <span class="number">0.0</span></span><br><span class="line">    </span><br><span class="line">    emitterLayer.emitterSize = <span class="type">CGSize</span>(width: <span class="number">10</span>, height: <span class="number">10</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setupEmitterCell</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">let</span> emitterCell = <span class="type">CAEmitterCell</span>()</span><br><span class="line">    emitterCell.contents = <span class="type">UIImage</span>(named: <span class="string">"star"</span>)?.<span class="type">CGImage</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//birth</span></span><br><span class="line">    emitterCell.birthRate = <span class="number">200</span></span><br><span class="line">    emitterCell.lifetime = <span class="number">3.5</span></span><br><span class="line">    emitterCell.lifetimeRange = <span class="number">2.0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//scale</span></span><br><span class="line">    emitterCell.scale = <span class="number">0.2</span></span><br><span class="line">    emitterCell.scaleRange = <span class="number">0</span></span><br><span class="line">    emitterCell.scaleSpeed = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//color</span></span><br><span class="line">    emitterCell.color = <span class="type">UIColor</span>(red: <span class="number">0.9</span>, green: <span class="number">1.0</span>, blue: <span class="number">1.0</span>, alpha: <span class="number">1.0</span>).<span class="type">CGColor</span></span><br><span class="line">    emitterCell.redRange = <span class="number">0.3</span></span><br><span class="line">    emitterCell.blueRange = <span class="number">0.3</span></span><br><span class="line">    emitterCell.greenRange = <span class="number">0.3</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//transparent</span></span><br><span class="line">    emitterCell.alphaRange = <span class="number">0.75</span></span><br><span class="line">    emitterCell.alphaSpeed = <span class="number">0.3</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//angle</span></span><br><span class="line">    emitterCell.emissionLongitude = -<span class="number">3.14</span> / <span class="number">4</span></span><br><span class="line">    emitterCell.emissionLatitude = <span class="number">0</span></span><br><span class="line">    emitterCell.emissionRange = <span class="number">3.14</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//speed</span></span><br><span class="line">    emitterCell.velocity = <span class="number">20.0</span></span><br><span class="line">    emitterCell.velocityRange = <span class="number">200.0</span></span><br><span class="line">    emitterCell.spin = <span class="number">3.14</span> / <span class="number">4</span></span><br><span class="line">    emitterCell.spinRange = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//acceleration</span></span><br><span class="line">    emitterCell.yAcceleration = <span class="number">0.0</span></span><br><span class="line">    emitterCell.xAcceleration = <span class="number">0.0</span></span><br><span class="line">    emitterCell.zAcceleration = <span class="number">10.0</span></span><br><span class="line"></span><br><span class="line">    emitterLayer.emitterCells = [emitterCell]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/12/25/NSCalendar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/12/25/NSCalendar/" itemprop="url">NSCalendar</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-25T09:09:03+08:00">
+                2015-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  19
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Judging-Date"><a href="#Judging-Date" class="headerlink" title="Judging Date"></a>Judging Date</h2><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">let</span> calendar = <span class="type">NSCalendar</span>.currentCalendar()</span><br><span class="line"><span class="keyword">if</span> calendar.isDateInYesterday(<span class="type">Date1</span>) &#123;</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">"yesterday"</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> calendar.isDateInToday(<span class="type">Date1</span>) &#123;</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">"today"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/18/UI-Color/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1475,306 +1754,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/02/CAAnimation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/11/02/CAAnimation/" itemprop="url">CAAnimation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-02T09:05:25+08:00">
-                2015-11-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  82
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="CAAnimation"><a href="#CAAnimation" class="headerlink" title="CAAnimation"></a>CAAnimation</h2><p><strong>CAAnimation</strong> is an abstract class. Subclasses includes <strong>CABasicAnimation</strong>, <strong>CAKeyframeAnimation</strong>, <strong>CAAnimationGroup</strong>, <strong>CATransition</strong>. Animations will be attached to <strong>CALayer</strong> objects.</p>
-<h4 id="Attributes"><a href="#Attributes" class="headerlink" title="Attributes"></a>Attributes</h4><ul>
-<li><strong>removeOnCompletion</strong>: default true</li>
-<li><strong>timingFunction</strong>: CAMediaTimingFunction?</li>
-</ul>
-<h4 id="Delegate"><a href="#Delegate" class="headerlink" title="Delegate"></a>Delegate</h4><ul>
-<li><strong>animationDidStart:</strong></li>
-<li><strong>animationDidStop:finished:</strong></li>
-</ul>
-<h4 id="Key-value-coding"><a href="#Key-value-coding" class="headerlink" title="Key-value coding"></a>Key-value coding</h4><p>CAAnimation and subclasses are key-value coding compliant.</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">anim.setValue(<span class="string">"name"</span>, forKey: <span class="string">"NAME"</span>)</span><br><span class="line">anim.setValue(heading.layer, forKey: <span class="string">"layer"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> name = anim.valueForKey(<span class="string">"NAME"</span>) <span class="keyword">as</span>? <span class="type">String</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> name == <span class="string">"name"</span> &#123;</span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="CAPropertyAnimation"><a href="#CAPropertyAnimation" class="headerlink" title="CAPropertyAnimation"></a>CAPropertyAnimation</h2><p><strong>CAPropertyAnimation</strong> is an abstract subclass of CAAnimation for creating animations that manipulate the value of layer properties.</p>
-<ul>
-<li><strong>keyPath</strong></li>
-<li><strong>animationWithKeyPath</strong></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/02/CABasicAnimation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/11/02/CABasicAnimation/" itemprop="url">CABasicAnimation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-02T09:04:30+08:00">
-                2015-11-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  73
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>CABasicAnimatioin inherts CAAnimation and CAPropertyAnimation.</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> fly = <span class="type">CABasicAnimation</span>(keyPath: <span class="string">"position.y"</span>)</span><br><span class="line">fly.fromValue = -view.bounds.size.height/<span class="number">2</span></span><br><span class="line">fly.toValue = -view.bounds.size.height/<span class="number">2</span></span><br><span class="line">fly.duration = <span class="number">0.5</span></span><br><span class="line">fly.beginTime = <span class="type">CACurrentMediaTime</span>() + <span class="number">0.3</span></span><br><span class="line">fly.fillMode = kCAFillModeBoth</span><br><span class="line">fly.removeOnCompletion = <span class="literal">false</span></span><br><span class="line">layer.addAnimation(fly, forKey: <span class="string">"FLY"</span>)</span><br><span class="line"></span><br><span class="line">	layer.removeAnimationForKey(<span class="string">"FLY"</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="Property"><a href="#Property" class="headerlink" title="Property"></a>Property</h4><ul>
-<li><strong>fromValue</strong></li>
-<li><strong>toValue</strong></li>
-<li><strong>byValue</strong></li>
-</ul>
-<p>The animation uses a <strong>presentation layer</strong>. The presentation layer is removed once the animation completes and the original layer shows again.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1829,7 +1808,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">176</span>
+                  <span class="site-state-item-count">178</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1842,7 +1821,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1931,7 +1910,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">59.2k</span>
+    <span title="Site words total count">60.1k</span>
   
 </div>
 
