@@ -262,6 +262,492 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-NormalEquations/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/ML-NormalEquations/" itemprop="url">Normal Equations</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T10:56:55+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  462
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Normal Equations可以直接解出最小二乘法的参数估计值，不需要GDA的迭代过程。</p>
+<p>高斯曾经证明，在所有无偏的线性估计类中，最小二乘法是其中方差最小的。</p>
+<h4 id="推导"><a href="#推导" class="headerlink" title="推导"></a>推导</h4><p>线性回归模型 $X\theta=y$ 形如方程 $Ax=b$</p>
+<p>当矩阵A的 $m&gt;n$，即训练样本数m大于特征数n时，A的n个列向量无法充满整个m维空间，方程没有解。</p>
+<p>故使用最小二乘法(LSE)，使残差e最小，$Ax$尽可能逼近$b$:</p>
+<p>$$ min(H) = min(\left|\left|e\right|\right|^2) = min(\left|\left|b-Ax\right|\right|^2) $$</p>
+<p>从向量投影的角度来看，将向量b投影到A平面时，e与A平面垂直，距离最短，从而使误差最小。</p>
+<p><img src="/img/projection.png" alt="projection" width="300px"></p>
+<p>如图，$\vec{p}$ 是 $\vec{b}$ 在A平面内的投影，所以有</p>
+<p>$$ \vec{p} = x_1\vec{a_1} + x_2\vec{a_2} +…+ x_n\vec{a_n} = Ax $$</p>
+<p>$$ \vec{e} = \vec{b} - \vec{p} = b - Ax $$</p>
+<p>又因为 $\vec{e}$ 与A平面垂直，所以</p>
+<p>$$ A\times \vec{e} = 0 \;\;\;\; \Rightarrow \;\;\;\; A^T(b-Ax) = 0 $$</p>
+<p>将括号展开可以得到</p>
+<p>$$ x = (A^TA)^{-1}A^T\cdot b $$</p>
+<p>$$ p = Ax = A(A^TA)^{-1}A^T\cdot b $$</p>
+<p>其中，$P = A(A^TA)^{-1}A^T$称为投影矩阵，可以将 $\vec{b}$ 投影成 $\vec{p}$。</p>
+<p>投影矩阵P具有两个性质：</p>
+<ul>
+<li>$P^T = P$: P是对称矩阵</li>
+<li>$P^2 = P$: 二次投影仍是本身，即投影之后的投影不会改变</li>
+</ul>
+<p>另外，在线性回归模型中，$x$就是最小二乘法求出来的$\theta$，即</p>
+<p>$$ \theta = (X^TX)^{-1}X^Ty $$</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>不需要选择步长$\alpha$</li>
+<li>不需要迭代</li>
+<li>需要计算矩阵$(X^TX)^{-1}$，复杂度$O(n^3)$，当n很大时计算速度慢</li>
+</ul>
+<p><strong>如果$(X^TX)$不可逆</strong>怎么办？</p>
+<ul>
+<li>可能存在冗余特征，使矩阵线性相关</li>
+<li>特征数太多，删除部分特征，或使用正则化(Regularization)</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-Features/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/ML-Features/" itemprop="url">数据清洗</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T09:39:47+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  118
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Scaling-and-Normalization"><a href="#Scaling-and-Normalization" class="headerlink" title="Scaling and Normalization"></a>Scaling and Normalization</h4><p>Feature Scaling: Make sure features are on a similar scale.</p>
+<p>$$ x_i := \frac{x_i}{s_i} $$</p>
+<p>Mean Normalization: Replace $x_i$ with $x_i-\mu_i$ to make features have approximately zero means</p>
+<p>$$ x_i := \frac{x_i-\mu_i}{s_i} $$</p>
+<ul>
+<li>$\mu_i$ Average of all the values for feature(i)</li>
+<li>$s_i$ Range of values(max-min), or Standard Deviation</li>
+</ul>
+<p><strong>对结果的影响</strong></p>
+<ul>
+<li>Scaling是对X的列向量进行缩放，向量方向不变，X列向量张成的平面不变，y的投影不变，e不变，$\theta$改变</li>
+<li>Normalization改变了列向量方向，改变了平面、投影、误差？</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/Calculus-Integration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/11/Calculus-Integration/" itemprop="url">积分</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T12:31:44+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  489
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="The-Definite-Integral-as-a-Limit-of-Riemann-Sums"><a href="#The-Definite-Integral-as-a-Limit-of-Riemann-Sums" class="headerlink" title="The Definite Integral as a Limit of Riemann Sums"></a>The Definite Integral as a Limit of Riemann Sums</h4><p>$$ \lim_{n\rightarrow ∞} \sum_{k=1}^{n}f(c_{k})\Delta x = I = \int_{a}^{b} f(x)dx $$</p>
+<h4 id="Area-Under-a-Curve-as-a-Definite-Integral"><a href="#Area-Under-a-Curve-as-a-Definite-Integral" class="headerlink" title="Area Under a Curve as a Definite Integral"></a>Area Under a Curve as a Definite Integral</h4><p>If $y=f(x)$ is nonnegative and integrable over a closed interval $[a,b]$, then the <strong>area under the curve $y = f(x)$ over $[a,b]$</strong> is the integral of $f$ from $a$ to $b$</p>
+<p>$$ A = \int_{a}^{b} f(x)dx $$</p>
+<p>if $f$ and $g$ are continuous with $f(x)\geq g(x)$ throughout $[a,b]$, then the area of the region between the curves $y=f(x)$ and $y=g(x)$ from a to b is the integral of (f-g) from $a$ to $b$:</p>
+<p>$$ A = \int_{a}^{b} [f(x) - g(x)]dx $$</p>
+<h4 id="The-Average-of-Mean-Value-of-a-Function"><a href="#The-Average-of-Mean-Value-of-a-Function" class="headerlink" title="The Average of Mean Value of a Function"></a>The Average of Mean Value of a Function</h4><p>If $f$ is integrable on $[a,b]$, the its average value on $[a,b]$, also called its mean value, is</p>
+<p>$$ av(f) = \frac{1}{b-a}\int_{a}^{b} f(x)dx $$</p>
+<h4 id="Little-oh-and-Big-oh"><a href="#Little-oh-and-Big-oh" class="headerlink" title="Little-oh and Big-oh"></a>Little-oh and Big-oh</h4><p>A function $f$ is of small order than $g$ as $x\rightarrow ∞$ if $\lim_{x\rightarrow ∞} \frac{f(x)}{g(x)} = 0$.</p>
+<p>We indicate this by writing $f=o(g)$ (“f is little-oh of g”)</p>
+<p>$f$ is of at most the order of $g$ as $x\rightarrow ∞$ if there is a positive integer $M$ for which</p>
+<p>$$ \frac{f(x)}{g(x)} \leq M $$</p>
+<p>for $x$ sufficiently large. We indicate this by writing $f=O(g)$ (“f is big-oh of g”)</p>
+<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Existence-of-Definite-Integrals"><a href="#The-Existence-of-Definite-Integrals" class="headerlink" title="The Existence of Definite Integrals"></a>The Existence of Definite Integrals</h4><p>A continuous function is integrable. That is, if a function $f$ is continuous on an interval $[a,b]$, then its definite integral over $[a,b]$ exists.</p>
+<p>连续则可积，不要求可导。</p>
+<h4 id="The-Mean-Value-Theorem-for-Definite-Integrals"><a href="#The-Mean-Value-Theorem-for-Definite-Integrals" class="headerlink" title="The Mean Value Theorem for Definite Integrals"></a>The Mean Value Theorem for Definite Integrals</h4><p>If $f$ is continuous on $[a,b]$, then at some point $c$ in $[a,b]$,</p>
+<p>$$ f(c) = \frac{1}{b-a} \int_{a}^{b} f(x)dx $$</p>
+<h4 id="The-Fundamental-Theorem-of-Calculus"><a href="#The-Fundamental-Theorem-of-Calculus" class="headerlink" title="The Fundamental Theorem of Calculus"></a>The Fundamental Theorem of Calculus</h4><p>If $f$ is continuous on $[a,b]$ then $F(x) = \int_{a}^{x} f(t)dt$ is continuous on $[a,b]$ and differentiable on $(a,b)$ and its derivative is $f(x)$</p>
+<p>$$ F’(x) = \frac{d}{dx} \int_{a}^{x} f(t)dt = f(x) $$</p>
+<p>If $f$ is continuous at every point of $[a,b]$ and $F$ is any antiderivative of $f$ on [a,b], then</p>
+<p>$$ \int_{a}^{b} f(x)dx = F(b) - F(a) $$</p>
+<h4 id="The-Substitution-Rule"><a href="#The-Substitution-Rule" class="headerlink" title="The Substitution Rule"></a>The Substitution Rule</h4><p>If $u=g(x)$ is a differentiable function whose range is an interval $I$ and $f$ is continuous on $I$, then</p>
+<p>$$ \int f(g(x))g’(x)dx = \int f(u)du $$</p>
+<p>If $g’$ is continuous on the interval $[a,b]$ and $f$ is continuous on the range of $g$, then </p>
+<p>$$ \int_{a}^{b} f(g(x)) \cdot g’(x)dx = \int_{g(a)}^{g(b)} f(u)du $$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/ML-GDA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1303,469 +1789,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/01/Calculus-Continuity/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/01/Calculus-Continuity/" itemprop="url">连续</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-01T15:50:06+08:00">
-                2018-01-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  185
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Continuous-at-a-Point"><a href="#Continuous-at-a-Point" class="headerlink" title="Continuous at a Point"></a>Continuous at a Point</h4><p><strong>Interior point</strong>: A function $y = f(x)$ is <strong>continuous at an interior point c</strong> of its domain if</p>
-<p>$$ \lim_{x\rightarrow c} f(x) = f(c) $$</p>
-<p><strong>Endpoint</strong>: A function $y = f(x)$ is <strong>continuous at a left endpoint a</strong> or is <strong>continuous at a right endpoint b</strong> of its domain if</p>
-<p>$$ \lim_{x\rightarrow a^{+}} f(x) = f(a) \, or \, \lim_{x\rightarrow b^{-}} f(x) = f(b) $$</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="Intermediate-Value-Property-介值定理"><a href="#Intermediate-Value-Property-介值定理" class="headerlink" title="Intermediate Value Property(介值定理)"></a>Intermediate Value Property(介值定理)</h4><p>A function $y = f(x)$ that is continuous on a closed interval $[a,b]$ takes on every value between $f(a)$ and $f(b)$. In other words, if $y_{0}$ is any value between $f(a)$ and $f(b)$, the $y_{0} = f(c)$ for some c in $[a,b]$.</p>
-<p>若$f(x)$在$[a,b]$上连续，对$(f(a), f(b))$中的任意y，存在c，使得$f(c) = y$.</p>
-<p>若$f(x)$在区间内连续且有正负值，且方程$f(x) = 0$在区间内必有解。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/30/Calculus-Limit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/30/Calculus-Limit/" itemprop="url">极限</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-30T09:57:51+08:00">
-                2017-12-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  534
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Limit-of-a-Function"><a href="#Limit-of-a-Function" class="headerlink" title="Limit of a Function"></a>Limit of a Function</h4><p>Let $f(x)$ be defined on an open interval about $x_{0}$, except possibly at $x_{0}$ itself. We say that the <strong>limit of $f(x)$ as $x$ approaches $x_{0}$ is the number $L$ </strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $\delta &gt; 0$ such that for all x,</p>
-<p>$$ 0 &lt; \left | x - x_{0} \right | &lt; \delta \Rightarrow \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>对任意小的正数 $\epsilon$，都可以找到一个区间，在这个区间内 $\left | f(x) - L \right | &lt; \epsilon $</p>
-<p>由定义可以证明加法律、乘法律等运算规则。</p>
-<h4 id="One-Sided-Limits"><a href="#One-Sided-Limits" class="headerlink" title="One-Sided Limits"></a>One-Sided Limits</h4><p>1.We say that $f(x)$ has <strong>right-hand limit $L$ at $x_{0}$</strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}^{+}} f(x) = L $$</p>
-<p>if for every number $\epsilon &gt; 0$ there exists a corresponding number $\delta &gt; 0$ such that for all x</p>
-<p>$$ x_{0} &lt; x &lt; x_{0} + \delta \Rightarrow \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>2.We say that $f(x)$ has <strong>left-hand limit $L$ at $x_{0}$</strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}^{-}} f(x) = L $$</p>
-<p>if for every number $\epsilon &gt; 0$ there exists a corresponding number $\delta &gt; 0$ such that for all x</p>
-<p>$$ x_{0} - \delta &lt; x &lt; x_{0}   \Rightarrow   \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>3.当左右极限相等时，在该点有函数极限。</p>
-<p>A function $f(x)$ has a limit as $x$ approaches $c$ if and only if it has left-hand and right-hand limits there and these one-sided limits are equal:</p>
-<p>$$ \lim_{x\rightarrow c} f(x) = L \Leftrightarrow \lim_{x\rightarrow c^{-}} f(x) = L \; and \; \lim{x\rightarrow c^{+}} f(x) = L $$</p>
-<h4 id="Limit-as-x-approaches-∞-or-∞"><a href="#Limit-as-x-approaches-∞-or-∞" class="headerlink" title="Limit as x approaches ∞ or -∞"></a>Limit as x approaches ∞ or -∞</h4><ol>
-<li>We say that $f(x)$ has the <strong>limit $L$ as $x$ approaches infinity</strong> and write</li>
-</ol>
-<p>$$ \lim_{x\rightarrow ∞} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $M$ such that for all $x$</p>
-<p>$$ x &gt; M \Rightarrow \left |f(x) - L \right | &lt; \epsilon $$</p>
-<p>对任意小的正数$\epsilon$，都可以找到区间$(M, ∞)$，在这个区间内 $\left |f(x) - L \right | &lt; \epsilon$</p>
-<ol>
-<li>We say that $f(x)$ has the <strong>limit $L$ as $x$ approaches minus infinity</strong> and write</li>
-</ol>
-<p>$$ \lim_{x\rightarrow -∞} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $N$ such that for all $x$</p>
-<p>$$ x &lt; N \Rightarrow \left |f(x) - L \right | &lt; \epsilon $$</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Sandwich-Theorem-夹逼定理"><a href="#The-Sandwich-Theorem-夹逼定理" class="headerlink" title="The Sandwich Theorem(夹逼定理)"></a>The Sandwich Theorem(夹逼定理)</h4><p>Suppose that $g(x)\leqslant f(x)\leqslant h(x)$ for all $x$ in some open interval containing $c$, except possibly at $x = c$ itself. Suppose also that</p>
-<p>$$\lim_{x\rightarrow c} g(x) = \lim_{x\rightarrow c} h(x) = L$$</p>
-<p>Then $\lim_{x\rightarrow c} f(x) = L$</p>
-<h4 id="函数-frac-sin-theta-theta"><a href="#函数-frac-sin-theta-theta" class="headerlink" title="函数$\frac{sin\theta}{\theta}$"></a>函数$\frac{sin\theta}{\theta}$</h4><p>$$ \lim_{\theta\rightarrow 0}\frac{sin\theta}{\theta} = 1    (\theta \, in \, radians) $$</p>
-<p>因为 $ cos\theta &lt; \frac{sin\theta}{\theta} &lt; 1$，由夹逼定理可证。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/29/ML-LinearRegression/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/29/ML-LinearRegression/" itemprop="url">线性回归</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T10:19:17+08:00">
-                2017-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  237
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Boston房价预测"><a href="#Boston房价预测" class="headerlink" title="Boston房价预测"></a>Boston房价预测</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_boston</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> SGDRegressor</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> r2_score, mean_square_error, mean_absolute_error</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入数据</span></span><br><span class="line">boston = load_boston()</span><br><span class="line">X = boston.data</span><br><span class="line">y = boston.target</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=<span class="number">33</span>, test_size=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化，由于y不再是0和1，也需要标准化</span></span><br><span class="line">ss_X = StandardScaler()</span><br><span class="line">ss_y = StandardScaler()</span><br><span class="line">X_train = ss_X.fit_transform(X_train)</span><br><span class="line">X_test = ss_X.transform(X_test)</span><br><span class="line">y_train = ss_y.fit_transform(y_train)</span><br><span class="line">y_test = ss_y.transform(y_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析法训练参数</span></span><br><span class="line">lr = LinearRegression()</span><br><span class="line">lr.fit(X_train, y_train)</span><br><span class="line">lr_y_predict = lr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度下降法训练参数</span></span><br><span class="line">sgdr = SGDRegressor()</span><br><span class="line">sgdr.fit(X_train, y_train)</span><br><span class="line">sgdr_y_predict = sgdr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">lr.score(X_test, y_test)</span><br><span class="line">r2_score(y_test, lr_y_predict)</span><br><span class="line">mean_square_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(lr_y_predict))</span><br><span class="line">mean_absolute_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(lr_y_predict))</span><br></pre></td></tr></table></figure>
-<p>随机梯度下降法训练出的模型，预测精度不如解析法(Normal Equation?)训练出的模型。<br>但是计算量小，消耗时间少。<br>根据Scikit-learn官网的建议，在数据规模超过10万时，推荐使用随机梯度法估计参数模型。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1815,7 +1843,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">178</span>
+                  <span class="site-state-item-count">181</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1828,7 +1856,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1917,7 +1945,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">60.1k</span>
+    <span title="Site words total count">61.1k</span>
   
 </div>
 

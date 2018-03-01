@@ -262,6 +262,453 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/08/18/Unity-Quaternion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/18/Unity-Quaternion/" itemprop="url">Unity-Quaternion</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-18T15:58:07+08:00">
+                2016-08-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  271
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Rotation"><a href="#Rotation" class="headerlink" title="Rotation"></a>Rotation</h2><p>旋转本质上需要知道 1个向量 + 1个角度，共4个值。有3种表示方法：</p>
+<ul>
+<li><p><strong>Matrix(矩阵)</strong>: 使用 4*4 矩阵，共16个值，计算时有额外的时间和空间消耗；</p>
+</li>
+<li><p><strong>Euler(欧拉)</strong>: 使用3个值(xRotation, yRotation, zRotation)，是一系列坐标轴旋转的组合，按顺序沿各个轴旋转；会带来万向节锁问题。<br>Gimbal Lock(万向节锁)：当欧拉旋转的第二次旋转角度为90°时，第三个轴就被转到了第一个轴相同的方向，因此丢失了一个自由度。</p>
+</li>
+<li><p><strong>Quaternion(四元数)</strong>: 本质上是一个高阶复数，即 x = a + bi + cj + dk，效率更高</p>
+<p>  rigidBody.rotation = Quaternion.Euler(0.0f, 0.0f, rigidBody.velocity.x * -1);</p>
+</li>
+</ul>
+<h1 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h1><ol>
+<li>quaternion <em> quaternio，例如q = q1 </em> q2，表示将一个点先q1旋转，再q2旋转</li>
+<li>quaternion <em> Vector3，例如p = q </em> v，表示将向量v进行q旋转，得到旋转后的向量p.<br>Quaternion必须位于乘号的左边。</li>
+</ol>
+<pre><code class="cs"><span class="comment">//镜头到物体的距离</span>
+distance = Vector3.forward * <span class="number">10.0</span>f;
+transform.position = target.position - distance
+<span class="comment">//有旋转</span>
+transform.position = target.position - rotation * distance
+</code></pre>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/08/08/GKRandom/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/08/GKRandom/" itemprop="url">GKRandom</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-08T11:39:19+08:00">
+                2016-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  50
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Randomization-Distributions"><a href="#Randomization-Distributions" class="headerlink" title="Randomization Distributions"></a>Randomization Distributions</h4><ul>
+<li><strong>Random</strong>: GKRandomDistribution(:)</li>
+<li><strong>Gaussian</strong>: GKGausianDistribution(:), good for making corridors</li>
+<li><strong>Shuffled</strong>: GKShuffledDistribution(:), does not repeat a number until all the numbers have been returned, good for making rooms</li>
+</ul>
+<h4 id="Randomization-Sources"><a href="#Randomization-Sources" class="headerlink" title="Randomization Sources"></a>Randomization Sources</h4><ul>
+<li><strong>Linear Congruential</strong>: GKLinearCongruentialRandomSource(), least computation and randomness</li>
+<li><strong>ARC4 random</strong>: GKARC4RandomSource(), the default source</li>
+<li><strong>Mersenne Twister</strong>: GKMersenneTwisterRandomSource(), most computation and randomness</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/07/27/Swift-FlatMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/27/Swift-FlatMap/" itemprop="url">Map and FlatMap</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-27T15:31:06+08:00">
+                2016-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  52
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>FlatMap returns an Array containing the <strong>non-nil</strong> results of mapping transform over self.</p>
+<p>s.flatMap(transform) is equivalent to Array(s.map(transform).flatten()).</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// find specified nodes</span></span><br><span class="line"><span class="keyword">let</span> touchedNodes: [<span class="type">SKNode</span>] = <span class="keyword">self</span>.nodesAtPoint(touch.locationInNode(<span class="keyword">self</span>)).flatMap &#123; node <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> nodeName = node.name <span class="keyword">where</span> nodeName.hasPrefix(<span class="string">"Prefix_"</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> node</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/07/23/GKGraph/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1140,7 +1587,7 @@ Chartboost.setShouldRequestInterstitialsInFirstSession(false)
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/26/Python-Scikit-learn/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/26/Python-sklearn/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -1159,7 +1606,7 @@ Chartboost.setShouldRequestInterstitialsInFirstSession(false)
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/05/26/Python-Scikit-learn/" itemprop="url">Scikit-learn</a></h1>
+                <a class="post-title-link" href="/2016/05/26/Python-sklearn/" itemprop="url">sklearn</a></h1>
         
 
         <div class="post-meta">
@@ -1203,7 +1650,7 @@ Chartboost.setShouldRequestInterstitialsInFirstSession(false)
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  164
+                  162
                 </span>
               
 
@@ -1230,14 +1677,22 @@ Chartboost.setShouldRequestInterstitialsInFirstSession(false)
       
         
           
-            <p>There are six parts in sickit-learn: Classification, Regression, Clustering, Dimensionality reduction, Model selection and Preprocessing(分类，回归，聚类，降维，模型选择，数据预处理).</p>
-<h2 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h2><p>There are 3 kinds of dataset interfaces for different types of datasets.</p>
+            <p>包含六个模块：</p>
+<ul>
+<li>Classification: 分类</li>
+<li>Regression: 回归</li>
+<li>Clustering: 聚类</li>
+<li>Dimensionality Reduction: 降维</li>
+<li>Model Selection: 模型选择</li>
+<li>Preprocessing: 数据预处理</li>
+</ul>
+<h4 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h4><p>There are 3 kinds of dataset interfaces for different types of datasets.</p>
 <ol>
 <li>images</li>
 <li>(x, y): n_samples * n_features numpy array x and n_samples length array y</li>
 <li>{data: n_samples * n_features, target: n_samples length}</li>
 </ol>
-<h2 id="Cross-Validation"><a href="#Cross-Validation" class="headerlink" title="Cross Validation"></a>Cross Validation</h2><pre><code>#主函数
+<h4 id="Cross-Validation"><a href="#Cross-Validation" class="headerlink" title="Cross Validation"></a>Cross Validation</h4><pre><code>#主函数
 clf = svm.SVC(kernel=&apos;linear&apos;, C=1) #分类器
 scores = cross_validation.cross_val_score(clf, raw data, raw target, cv=5, score_func = None)
 #有raw target,则StraitifiedKFold；没有则KFold
@@ -1284,448 +1739,11 @@ x_train, x_text, y_train, y_test = cross_validation.train_test_split(train_data,
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/26/Python-Matplotlib/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/26/Python-Matplotlib/" itemprop="url">Python-Matplotlib</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-26T15:54:39+08:00">
-                2016-05-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  279
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Matplotlib.pyplot提供了一套和matlab类似的命令API，用于交互式制图。<br>matplotlib提供的是比较底层的命令，若要制作完整图表，需要依次添加各种元素。<br>故常用其他包封装的高级绘图命令来生成复杂的图表。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> randn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘图区与子区域</span></span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>,<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">fig = plt.figure()</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>) <span class="comment"># 2*2区域的第1个子图</span></span><br><span class="line"></span><br><span class="line">fig, axes = plt.subplots(<span class="number">2</span>,<span class="number">3</span>) <span class="comment"># 创建2*3个子区域并返回数组</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调整子区域边框宽度</span></span><br><span class="line">subplots_adjust(left=<span class="keyword">None</span>, bottom=<span class="keyword">None</span>, right=<span class="keyword">None</span>, top=<span class="keyword">None</span>, wspace=<span class="keyword">None</span>, hspace=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 图线类型</span></span><br><span class="line">plt.plot(x,y,label=<span class="string">"$sin(x)$"</span>,color=<span class="string">"red"</span>,linewidth=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">ax1.plot(x,z,<span class="string">"b--"</span>,label=<span class="string">"$cos(x^2)$"</span>)</span><br><span class="line">ax2.hist(randn(<span class="number">100</span>), bins=<span class="number">20</span>, color=<span class="string">'k'</span>, alpha=<span class="number">0.3</span>)</span><br><span class="line">ax3.scatter(np.arrange(<span class="number">30</span>), np.arrange(<span class="number">30</span>)+<span class="number">3</span>*randn(<span class="number">30</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 标签和图例</span></span><br><span class="line">plt.xlabel(<span class="string">"Time(s)"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Volt"</span>)</span><br><span class="line">plt.title(<span class="string">"PyPlot First Example"</span>)</span><br><span class="line"></span><br><span class="line">ax1.set_xticks([<span class="number">3</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">12</span>,<span class="number">15</span>]) <span class="comment"># 横轴刻度</span></span><br><span class="line"></span><br><span class="line">plt.ylim(<span class="number">-1.2</span>,<span class="number">1.2</span>) <span class="comment">#设置Y轴的范围</span></span><br><span class="line">plt.legend() <span class="comment">#显示图例</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 文字注解</span></span><br><span class="line">ax1.text(x,y,<span class="string">'text'</span>,family=<span class="string">'monospace'</span>,fontsize=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">plt.show() <span class="comment">#显示绘图</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存到文件</span></span><br><span class="line">plt.savefig(<span class="string">'figpath.png'</span>, dpi=<span class="number">400</span>, bbox_inches=<span class="string">'tight'</span>)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/25/Python-NumPy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/25/Python-NumPy/" itemprop="url">NumPy</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-25T15:19:25+08:00">
-                2016-05-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  974
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>NumPy(Numerical Python)是高性能科学计算和数据分析的基础包。它是高级工具的构建基础。<br>Numpy最重要的特点是它的N维数组对象ndarray.<br>Numpy的设计目的是处理大数据，默认传递引用，而不是复制数据。</p>
-<h2 id="ndarray"><a href="#ndarray" class="headerlink" title="ndarray"></a>ndarray</h2><p>ndarray是<strong>同种元素</strong>的多维数组，快速而灵活的大数据集容器。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建</span></span><br><span class="line">A = np.array(mylist)</span><br><span class="line">A = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]], dtype = np.int32)</span><br><span class="line">A = np.asarray([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]) <span class="comment">#当数据源是ndarray时，array()仍会copy副本，而asarray()不会</span></span><br><span class="line">A = np.arange(<span class="number">15</span>).reshape(<span class="number">3</span>,<span class="number">5</span>) <span class="comment">#arrange()是Python内置range()函数的数组版本</span></span><br><span class="line">A = np.linspace(<span class="number">0</span>,<span class="number">4</span>,<span class="number">9</span>)</span><br><span class="line">A = np.zeros((<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">A = np.repeat([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],<span class="number">3</span>)</span><br><span class="line">B = A.astype(np.float64) <span class="comment">#转换数据类型，astype()总会创建一份新的拷贝</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 属性</span></span><br><span class="line">A.ndim <span class="comment">#秩, rank, number of axes(dimensions)</span></span><br><span class="line">A.size <span class="comment">#数组元素个数, product of the elements of shape</span></span><br><span class="line">A.shape <span class="comment">#维度(3,2), dimensions of the array</span></span><br><span class="line">A.dtype <span class="comment">#数据类型, type of the elements in the array</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 矩阵运算</span></span><br><span class="line">A+B <span class="comment">#元素相加</span></span><br><span class="line">A*B <span class="comment">#元素乘法，将对应位置的数字分别相乘</span></span><br><span class="line">A**<span class="number">2</span> <span class="comment">#元素平方	</span></span><br><span class="line">A.dot(B) <span class="comment">#矩阵乘法</span></span><br><span class="line">np.dot(A,B) <span class="comment">#矩阵乘法</span></span><br><span class="line">A.T <span class="comment">#转置矩阵</span></span><br><span class="line">inv(A), pinv(A) <span class="comment">#逆矩阵</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数学方法</span></span><br><span class="line">A.max()</span><br><span class="line">A.argmax() <span class="comment">#最大值的索引</span></span><br><span class="line">A.mean()</span><br><span class="line">A.std()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切片</span></span><br><span class="line">v[<span class="number">4</span>:] = <span class="number">12</span> <span class="comment">#将元素赋值给选区，称为broadcasting</span></span><br><span class="line">v[<span class="number">-5</span>::<span class="number">-2</span>]</span><br><span class="line">A[<span class="number">3</span>,<span class="number">3</span>:<span class="number">6</span>] = A[<span class="number">3</span>][<span class="number">3</span>:<span class="number">6</span>] <span class="comment">#两种写法等价</span></span><br><span class="line">A[:,:<span class="number">1</span>]</span><br><span class="line">A[[<span class="number">4</span>,<span class="number">3</span>,<span class="number">0</span>,<span class="number">6</span>]] <span class="comment">#花式索引(Fancy indexing)，返回指定行</span></span><br><span class="line">A[A&gt;<span class="number">30</span>] = <span class="number">30</span></span><br><span class="line">A[(names=<span class="string">'Bob'</span>)|(names=<span class="string">'Alice'</span>)] <span class="comment">#Python关键字and和or在布尔型数组中无效</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝</span></span><br><span class="line">A2 = A[:<span class="number">3</span>,:<span class="number">3</span>] <span class="comment">#传递引用，修改A2也会改变A</span></span><br><span class="line">A2 = A[<span class="number">1</span>:<span class="number">3</span>].copy() <span class="comment">#传递数据，修改A2不会改变A</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/05/25/Python-NumPy/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/25/Stat-Basic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/25/Stat-Basic/" itemprop="url">Stat-Basic</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-25T10:59:20+08:00">
-                2016-05-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  68
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Average"><a href="#Average" class="headerlink" title="Average"></a>Average</h4><ul>
-<li>Mode(众数): the most frequency</li>
-<li>Median(中位数): sort and the number in the median</li>
-<li>Mean(平均值): sum(numbers) / n</li>
-</ul>
-<h3 id="Variance"><a href="#Variance" class="headerlink" title="#Variance"></a>#Variance</h3><ul>
-<li>Absolute Deviation(绝对差): |xi - x`|</li>
-<li>Variance(方差): sum(|xi - x`|^2) / n</li>
-<li><p>Standard Deviation(标准差): root(var)</p>
-</li>
-<li><p>样本的标准差: /n</p>
-</li>
-<li>用样本估计总体的标准差: /(n-1)</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1775,7 +1793,7 @@ x_train, x_text, y_train, y_test = cross_validation.train_test_split(train_data,
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">178</span>
+                  <span class="site-state-item-count">181</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1788,7 +1806,7 @@ x_train, x_text, y_train, y_test = cross_validation.train_test_split(train_data,
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1877,7 +1895,7 @@ x_train, x_text, y_train, y_test = cross_validation.train_test_split(train_data,
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">60.1k</span>
+    <span title="Site words total count">61.1k</span>
   
 </div>
 
