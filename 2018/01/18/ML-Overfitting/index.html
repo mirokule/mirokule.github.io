@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="当模型过度追求对训练数据的拟合时，会失去对新数据的预测精度，称为过拟合(Overfitting)。当模型对训练数据的拟合不足，在训练集上的误差较大时，称为欠拟合(Underfitting)。 识别 欠拟合(Underfitting): High bias(偏差), $J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等过拟合(Overfitting): High">
+<meta name="description" content="当模型过度追求对训练数据的拟合时，会失去对新数据的预测精度，称为过拟合(Overfitting)。当模型对训练数据的拟合不足，在训练集上的误差较大时，称为欠拟合(Underfitting)。     测试误差小 测试误差大     训练误差小 完美 过拟合：模型学习能力过度   训练误差大 不可能 欠拟合：模型学习能力不足    识别 欠拟合(Underfitting): High bias(偏差">
 <meta name="keywords" content="Machine Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="过拟合与欠拟合">
 <meta property="og:url" content="http://mirokule.github.io/2018/01/18/ML-Overfitting/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="当模型过度追求对训练数据的拟合时，会失去对新数据的预测精度，称为过拟合(Overfitting)。当模型对训练数据的拟合不足，在训练集上的误差较大时，称为欠拟合(Underfitting)。 识别 欠拟合(Underfitting): High bias(偏差), $J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等过拟合(Overfitting): High">
+<meta property="og:description" content="当模型过度追求对训练数据的拟合时，会失去对新数据的预测精度，称为过拟合(Overfitting)。当模型对训练数据的拟合不足，在训练集上的误差较大时，称为欠拟合(Underfitting)。     测试误差小 测试误差大     训练误差小 完美 过拟合：模型学习能力过度   训练误差大 不可能 欠拟合：模型学习能力不足    识别 欠拟合(Underfitting): High bias(偏差">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://mirokule.github.io/img/DiagnosingJ.png">
 <meta property="og:image" content="http://mirokule.github.io/img/highBias.png">
 <meta property="og:image" content="http://mirokule.github.io/img/highVariance.png">
-<meta property="og:updated_time" content="2018-01-23T05:08:49.830Z">
+<meta property="og:updated_time" content="2018-03-04T06:39:00.665Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="过拟合与欠拟合">
-<meta name="twitter:description" content="当模型过度追求对训练数据的拟合时，会失去对新数据的预测精度，称为过拟合(Overfitting)。当模型对训练数据的拟合不足，在训练集上的误差较大时，称为欠拟合(Underfitting)。 识别 欠拟合(Underfitting): High bias(偏差), $J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等过拟合(Overfitting): High">
+<meta name="twitter:description" content="当模型过度追求对训练数据的拟合时，会失去对新数据的预测精度，称为过拟合(Overfitting)。当模型对训练数据的拟合不足，在训练集上的误差较大时，称为欠拟合(Underfitting)。     测试误差小 测试误差大     训练误差小 完美 过拟合：模型学习能力过度   训练误差大 不可能 欠拟合：模型学习能力不足    识别 欠拟合(Underfitting): High bias(偏差">
 <meta name="twitter:image" content="http://mirokule.github.io/img/DiagnosingJ.png">
 
 
@@ -328,7 +328,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  714
+                  761
                 </span>
               
 
@@ -354,6 +354,27 @@
 
       
         <p>当模型过度追求对训练数据的拟合时，会失去对新数据的预测精度，称为过拟合(Overfitting)。<br>当模型对训练数据的拟合不足，在训练集上的误差较大时，称为欠拟合(Underfitting)。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">测试误差小</th>
+<th style="text-align:center">测试误差大</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">训练误差小</td>
+<td style="text-align:center">完美</td>
+<td style="text-align:center">过拟合：模型学习能力过度</td>
+</tr>
+<tr>
+<td style="text-align:center">训练误差大</td>
+<td style="text-align:center">不可能</td>
+<td style="text-align:center">欠拟合：模型学习能力不足</td>
+</tr>
+</tbody>
+</table>
 <h4 id="识别"><a href="#识别" class="headerlink" title="识别"></a>识别</h4><p><img src="\img\DiagnosingJ.png"></p>
 <p>欠拟合(Underfitting): High bias(偏差), $J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等<br>过拟合(Overfitting): High variance(方差), $J_{train}(\Theta)$较小，$J_{CV}(\Theta)$很大，两者有明显差距</p>
 <p><strong>学习曲线</strong>：不同样本数量下的误差值，可以观察样本量是否足够，进而分辨Bias/Variance<br><img src="\img\highBias.png"><br>High Bias<br>低样本量时，$J_{train}(\Theta)$很小，$J_{CV}(\Theta)$很大<br>高样本量时，$J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等</p>
@@ -376,7 +397,7 @@
 </li>
 </ul>
 <h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
-<li>创建一系列备选的$\lambda\in\left{0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24\left}$(k个)</li>
+<li>创建一系列备选的$\lambda \in \left {0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24 \right }$(k个)</li>
 <li>创建不同维度的模型(d个)</li>
 <li>对每个$\lambda$，训练每个模型的参数$\Theta$(k*d个)</li>
 <li>用每套参数$\Theta$计算误差$J_{CV}(\Theta)$(模拟$J_{test}(\Theta)$，故计算时不使用$\lambda$)(k*d个)</li>
@@ -509,7 +530,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">182</span>
+                  <span class="site-state-item-count">184</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -627,7 +648,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">61.9k</span>
+    <span title="Site words total count">62.9k</span>
   
 </div>
 
