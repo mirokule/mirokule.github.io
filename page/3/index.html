@@ -262,6 +262,605 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/28/ML-CollaborativeFiltering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/28/ML-CollaborativeFiltering/" itemprop="url">协同过滤</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T10:03:22+08:00">
+                2018-01-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  416
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>用户偏好</strong><br>从用户对物品的评分中，学习用户的偏好向量，从而预测用户对新物品的评分并推荐<br>$$J(\theta) = \frac{1}{2}\sum_{j=1}^{n_u}\sum_{i:r(i,j)=1}((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})^2+\frac{\lambda}{2}\sum_{j=1}^{n_u}\sum_{k=1}^n(\theta_k^{(j)})^2 $$</p>
+<p>$x^{(i)}$ 物品i的特征向量<br>$\theta^{(j)}$ 用户j的偏好向量<br>$r(i,j)$ 用户j是否对物品i评价<br>$y^{(i,j)}$ 用户j对物品i的评分，当$r(i,j)=1$时有效</p>
+<p><strong>物品特征</strong><br>$x^{(i)}$可以由专家给出，也可以通过用户评分来自主学习<br>$$ J(x) = \frac{1}{2}\sum_{i=1}^{n_m}\sum_{j:r(i,j)=1}((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})^2+\frac{\lambda}{2}\sum_{i=1}^{n_m}\sum_{k=1}^n(x_k^{(i)})^2 $$</p>
+<p><strong>协同过滤</strong><br>根据评分数据$y$，同时估计$\theta$和$x$<br>$$ J(x,\theta) = \frac{1}{2}\sum_{(i,j):r(i,j)=1}((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})^2 +\frac{\lambda}{2}\sum_{i=1}^{n_m}\sum_{k=1}^n(x_k^{i})^2 +\frac{\lambda}{2}\sum_{j=1}^{n_u}\sum_{k=1}^n(\theta_k^{j})^2 $$<br>算法步骤：</p>
+<ol>
+<li>初始化所有$\theta,x$为”small random values”</li>
+<li>梯度迭代求解最优化问题</li>
+<li>对用户没有标记过的物品，预测评分$\theta^Tx$</li>
+</ol>
+<p>对没有任何标记的新用户，其偏好向量为<strong>0</strong>，对任何新物品的预测评分也为<strong>0</strong>;<br>新用户的评分应该中立，而不是厌恶，故修改评分为物品评分的均值$0+\mu_i$<br>对其他用户，也要做对应修改，故在训练模型前有必要对评分进行均值标准化处理，使评分分布从[0~5]变为[-0.25~0.25]。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/27/ML-AnomalyDetection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/27/ML-AnomalyDetection/" itemprop="url">异常点检测</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-27T14:55:32+08:00">
+                2018-01-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  238
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>正例(y=1)不足，不能支持分类模型训练时，可以使用非监督学习的检测算法来识别异常点。</p>
+<p><strong>算法</strong><br>假设特征服从正态分布，并且相互独立；</p>
+<ol>
+<li>选择能有效识别异常点的特征</li>
+<li>对每个特征，求均值$\mu$和方差$\sigma^2$</li>
+<li>计算样本分布概率$p(x)$<br>$$ p(x)=\prod_{j=1}^np(x_j;\mu_j,\sigma_j^2)=\prod_{j=1}^n\frac{1}{\sqrt{2\pi}\sigma_j}exp(-\frac{(x_j-\mu_j)^2}{2\sigma^2}) $$<br>如果$p(x)&lt;\epsilon$则认为是异常点。</li>
+</ol>
+<p><strong>问题</strong></p>
+<ol>
+<li>如果特征不服从正态分布怎么办？<br>对特征转化处理，例如乘方、开方、取log等，转为近似正态分布。</li>
+<li>如果特征不独立怎么办？<br>使用多元高斯分布计算$p(x)$。</li>
+<li>如果异常点的$p(x)$不显著，不能和正常点分开怎么办？<br>观察异常点，构造显著特征，例如$\frac{x_1}{x_2}$。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/24/LinearAlgebra-LinearEquations/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/24/LinearAlgebra-LinearEquations/" itemprop="url">线性方程组和矩阵</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T13:45:51+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,165
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="线性方程组"><a href="#线性方程组" class="headerlink" title="线性方程组"></a>线性方程组</h2><p>A <strong>linear system</strong> is a collection of one or more linear equations involving the same variables. A linear system has</p>
+<ul>
+<li>no solutions</li>
+<li>exactly one solution</li>
+<li>infinitely many solutions</li>
+</ul>
+<p>方程$Ax=b$有解当且仅当$b$是$A$的各列的线性组合。<br>每个线性方程代表高维空间的一个超平面，线性方程组的解是所有超平面的交点。<br>解方程组的基本思路是把方程组用一个更容易解的等价方程组代替。<br>若两个线性方程组的增广矩阵(augmented matrix)是行等价的，则它们具有相同的解集(solution set)。</p>
+<h4 id="阶梯形矩阵"><a href="#阶梯形矩阵" class="headerlink" title="阶梯形矩阵"></a>阶梯形矩阵</h4><p>一个矩阵称为阶梯形(echelon form)(或行阶梯形)，若它有以下三个性质：</p>
+<ul>
+<li>每一非零行在每一零行之上；</li>
+<li>某一行的先导元素(leading entry)所在的列位于前一行先导元素的右面；</li>
+<li>某一先导元素所在列下方元素都是零。<br>若一个阶梯形矩阵还满足以下性质，称为简化阶梯形(reduced echelon form)：</li>
+<li>每一非零行的先导元素是1；</li>
+<li>每一先导元素1是该元素所在列的唯一非零元素。</li>
+</ul>
+<p><strong>定理</strong><br>每个矩阵行等价于唯一的简化阶梯形矩阵。<br><strong>主元位置</strong><br>矩阵中的主元位置(pivot position)是A中对应于它的阶梯形中先导元素的位置。主元列是A的含有主元位置的列。</p>
+<h4 id="线性方程组的解"><a href="#线性方程组的解" class="headerlink" title="线性方程组的解"></a>线性方程组的解</h4><p>对应主元列的变量称为基本变量，其他变量称为自由变量。<br>齐次方程$Ax=0$有非平凡解(非零向量)，当且仅当方程至少有一个自由变量。</p>
+<h4 id="线性无关"><a href="#线性无关" class="headerlink" title="线性无关"></a>线性无关</h4><p>$\mathbb{R}^n$中一组向量{$\vec{v}_1,…\vec{v}_p$}称为线性无关的，若向量方程<br>$$ x_1\vec{v_1} + x_2\vec{v_2} +\cdot\cdot\cdot+ x_p\vec{v_p} = 0 $$<br>仅有平凡解。向量组称为线性相关的，若存在不全为零的权$c_1,…c_p$，使得<br>$$ c_1\vec{v_1} + c_2\vec{v_2} +\cdot\cdot\cdot+ c_p\vec{v_p} = 0 $$<br>矩阵A的各列线性无关，当且仅当$Ax=0$仅有平凡解。<br><strong>定理</strong><br>若一个向量组的向量个数超过每个向量元素个数，那么这个向量组线性相关。即$\mathbb{R}^n$中任意向量组{$\vec{v_1},…,\vec{v_p}$}，当$p&gt;n$时线性相关。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/24/LinearAlgebra-LinearEquations/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/21/Calculus-MultipleIntegrals/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/21/Calculus-MultipleIntegrals/" itemprop="url">多元积分</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-21T07:56:54+08:00">
+                2018-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  215
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Jacobian"><a href="#Jacobian" class="headerlink" title="Jacobian"></a>Jacobian</h4><p>The Jacobian determinant or Jacobian of the corredinate transformation $x=g(u,v),\;y=h(u,v)$ is<br>$$J(u,v)=\begin{vmatrix}\frac{\partial x}{\partial u}&amp;\frac{\partial x}{\partial v} \\ \frac{\partial y}{\partial u} &amp;\frac{\partial y}{\partial v} \end{vmatrix} = \frac{\partial x}{\partial u}\frac{\partial y}{\partial v}-\frac{\partial x}{\partial v}\frac{\partial y}{\partial u}$$<br>It measures how much the transformation is expanding or contracting the area around a point G as G is transformed into R.<br>$$ \int\int_Rf(x,y)dxdy = \int\int_Gf(g(u,v),h(u,v))\left|J(u,v)\right|dudv $$<br>The Jacobian is also denoted by<br>$$ J(u,v) = \frac{\partial(x,y)}{\partial(u,v)} $$</p>
+<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="Fubini’s-Theorem"><a href="#Fubini’s-Theorem" class="headerlink" title="Fubini’s Theorem"></a>Fubini’s Theorem</h4><p>If $f(x,y)$ is continuous throughout the rectangular region $R:a\leq x\leq b,\; c\leq y\leq d$, then<br>$$ \int \int_R f(x,y)dA = \int_c^d \int_a^b f(x,y)dxdy = \int_a^b \int_c^d f(x,y)dydx $$<br>If $R$ is defined by $a\leq x\leq b,\;g_1(x)\leq y\leq g_2(x)$, with $g_1$ and $g_2$ continuous on $[a,b]$, then<br>$$ \int \int_R f(x,y)dA = \int_a^b \int_{g_1(x)}^{g_2(x)}f(x,y)dydx $$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/20/ML-NeuralNetworks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1219,656 +1818,11 @@ v(1:10)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-NormalEquations/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/12/ML-NormalEquations/" itemprop="url">Normal Equations</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T10:56:55+08:00">
-                2018-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  462
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Normal Equations可以直接解出最小二乘法的参数估计值，不需要GDA的迭代过程。</p>
-<p>高斯曾经证明，在所有无偏的线性估计类中，最小二乘法是其中方差最小的。</p>
-<h4 id="推导"><a href="#推导" class="headerlink" title="推导"></a>推导</h4><p>线性回归模型 $X\theta=y$ 形如方程 $Ax=b$</p>
-<p>当矩阵A的 $m&gt;n$，即训练样本数m大于特征数n时，A的n个列向量无法充满整个m维空间，方程没有解。</p>
-<p>故使用最小二乘法(LSE)，使残差e最小，$Ax$尽可能逼近$b$:</p>
-<p>$$ min(H) = min(\left|\left|e\right|\right|^2) = min(\left|\left|b-Ax\right|\right|^2) $$</p>
-<p>从向量投影的角度来看，将向量b投影到A平面时，e与A平面垂直，距离最短，从而使误差最小。</p>
-<p><img src="/img/projection.png" alt="projection" width="300px"></p>
-<p>如图，$\vec{p}$ 是 $\vec{b}$ 在A平面内的投影，所以有</p>
-<p>$$ \vec{p} = x_1\vec{a_1} + x_2\vec{a_2} +…+ x_n\vec{a_n} = Ax $$</p>
-<p>$$ \vec{e} = \vec{b} - \vec{p} = b - Ax $$</p>
-<p>又因为 $\vec{e}$ 与A平面垂直，所以</p>
-<p>$$ A\times \vec{e} = 0 \;\;\;\; \Rightarrow \;\;\;\; A^T(b-Ax) = 0 $$</p>
-<p>将括号展开可以得到</p>
-<p>$$ x = (A^TA)^{-1}A^T\cdot b $$</p>
-<p>$$ p = Ax = A(A^TA)^{-1}A^T\cdot b $$</p>
-<p>其中，$P = A(A^TA)^{-1}A^T$称为投影矩阵，可以将 $\vec{b}$ 投影成 $\vec{p}$。</p>
-<p>投影矩阵P具有两个性质：</p>
-<ul>
-<li>$P^T = P$: P是对称矩阵</li>
-<li>$P^2 = P$: 二次投影仍是本身，即投影之后的投影不会改变</li>
-</ul>
-<p>另外，在线性回归模型中，$x$就是最小二乘法求出来的$\theta$，即</p>
-<p>$$ \theta = (X^TX)^{-1}X^Ty $$</p>
-<p><strong>特点</strong></p>
-<ul>
-<li>不需要选择步长$\alpha$</li>
-<li>不需要迭代</li>
-<li>需要计算矩阵$(X^TX)^{-1}$，复杂度$O(n^3)$，当n很大时计算速度慢</li>
-</ul>
-<p><strong>如果$(X^TX)$不可逆</strong>怎么办？</p>
-<ul>
-<li>可能存在冗余特征，使矩阵线性相关</li>
-<li>特征数太多，删除部分特征，或使用正则化(Regularization)</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-Features/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/12/ML-Features/" itemprop="url">数据清洗</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T09:39:47+08:00">
-                2018-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  118
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Scaling-and-Normalization"><a href="#Scaling-and-Normalization" class="headerlink" title="Scaling and Normalization"></a>Scaling and Normalization</h4><p>Feature Scaling: Make sure features are on a similar scale.</p>
-<p>$$ x_i := \frac{x_i}{s_i} $$</p>
-<p>Mean Normalization: Replace $x_i$ with $x_i-\mu_i$ to make features have approximately zero means</p>
-<p>$$ x_i := \frac{x_i-\mu_i}{s_i} $$</p>
-<ul>
-<li>$\mu_i$ Average of all the values for feature(i)</li>
-<li>$s_i$ Range of values(max-min), or Standard Deviation</li>
-</ul>
-<p><strong>对结果的影响</strong></p>
-<ul>
-<li>Scaling是对X的列向量进行缩放，向量方向不变，X列向量张成的平面不变，y的投影不变，e不变，$\theta$改变</li>
-<li>Normalization改变了列向量方向，改变了平面、投影、误差？</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/Calculus-Integration/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/11/Calculus-Integration/" itemprop="url">积分</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T12:31:44+08:00">
-                2018-01-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  489
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="The-Definite-Integral-as-a-Limit-of-Riemann-Sums"><a href="#The-Definite-Integral-as-a-Limit-of-Riemann-Sums" class="headerlink" title="The Definite Integral as a Limit of Riemann Sums"></a>The Definite Integral as a Limit of Riemann Sums</h4><p>$$ \lim_{n\rightarrow ∞} \sum_{k=1}^{n}f(c_{k})\Delta x = I = \int_{a}^{b} f(x)dx $$</p>
-<h4 id="Area-Under-a-Curve-as-a-Definite-Integral"><a href="#Area-Under-a-Curve-as-a-Definite-Integral" class="headerlink" title="Area Under a Curve as a Definite Integral"></a>Area Under a Curve as a Definite Integral</h4><p>If $y=f(x)$ is nonnegative and integrable over a closed interval $[a,b]$, then the <strong>area under the curve $y = f(x)$ over $[a,b]$</strong> is the integral of $f$ from $a$ to $b$</p>
-<p>$$ A = \int_{a}^{b} f(x)dx $$</p>
-<p>if $f$ and $g$ are continuous with $f(x)\geq g(x)$ throughout $[a,b]$, then the area of the region between the curves $y=f(x)$ and $y=g(x)$ from a to b is the integral of (f-g) from $a$ to $b$:</p>
-<p>$$ A = \int_{a}^{b} [f(x) - g(x)]dx $$</p>
-<h4 id="The-Average-of-Mean-Value-of-a-Function"><a href="#The-Average-of-Mean-Value-of-a-Function" class="headerlink" title="The Average of Mean Value of a Function"></a>The Average of Mean Value of a Function</h4><p>If $f$ is integrable on $[a,b]$, the its average value on $[a,b]$, also called its mean value, is</p>
-<p>$$ av(f) = \frac{1}{b-a}\int_{a}^{b} f(x)dx $$</p>
-<h4 id="Little-oh-and-Big-oh"><a href="#Little-oh-and-Big-oh" class="headerlink" title="Little-oh and Big-oh"></a>Little-oh and Big-oh</h4><p>A function $f$ is of small order than $g$ as $x\rightarrow ∞$ if $\lim_{x\rightarrow ∞} \frac{f(x)}{g(x)} = 0$.</p>
-<p>We indicate this by writing $f=o(g)$ (“f is little-oh of g”)</p>
-<p>$f$ is of at most the order of $g$ as $x\rightarrow ∞$ if there is a positive integer $M$ for which</p>
-<p>$$ \frac{f(x)}{g(x)} \leq M $$</p>
-<p>for $x$ sufficiently large. We indicate this by writing $f=O(g)$ (“f is big-oh of g”)</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Existence-of-Definite-Integrals"><a href="#The-Existence-of-Definite-Integrals" class="headerlink" title="The Existence of Definite Integrals"></a>The Existence of Definite Integrals</h4><p>A continuous function is integrable. That is, if a function $f$ is continuous on an interval $[a,b]$, then its definite integral over $[a,b]$ exists.</p>
-<p>连续则可积，不要求可导。</p>
-<h4 id="The-Mean-Value-Theorem-for-Definite-Integrals"><a href="#The-Mean-Value-Theorem-for-Definite-Integrals" class="headerlink" title="The Mean Value Theorem for Definite Integrals"></a>The Mean Value Theorem for Definite Integrals</h4><p>If $f$ is continuous on $[a,b]$, then at some point $c$ in $[a,b]$,</p>
-<p>$$ f(c) = \frac{1}{b-a} \int_{a}^{b} f(x)dx $$</p>
-<h4 id="The-Fundamental-Theorem-of-Calculus"><a href="#The-Fundamental-Theorem-of-Calculus" class="headerlink" title="The Fundamental Theorem of Calculus"></a>The Fundamental Theorem of Calculus</h4><p>If $f$ is continuous on $[a,b]$ then $F(x) = \int_{a}^{x} f(t)dt$ is continuous on $[a,b]$ and differentiable on $(a,b)$ and its derivative is $f(x)$</p>
-<p>$$ F’(x) = \frac{d}{dx} \int_{a}^{x} f(t)dt = f(x) $$</p>
-<p>If $f$ is continuous at every point of $[a,b]$ and $F$ is any antiderivative of $f$ on [a,b], then</p>
-<p>$$ \int_{a}^{b} f(x)dx = F(b) - F(a) $$</p>
-<h4 id="The-Substitution-Rule"><a href="#The-Substitution-Rule" class="headerlink" title="The Substitution Rule"></a>The Substitution Rule</h4><p>If $u=g(x)$ is a differentiable function whose range is an interval $I$ and $f$ is continuous on $I$, then</p>
-<p>$$ \int f(g(x))g’(x)dx = \int f(u)du $$</p>
-<p>If $g’$ is continuous on the interval $[a,b]$ and $f$ is continuous on the range of $g$, then </p>
-<p>$$ \int_{a}^{b} f(g(x)) \cdot g’(x)dx = \int_{g(a)}^{g(b)} f(u)du $$</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/ML-GDA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/11/ML-GDA/" itemprop="url">梯度下降法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T09:38:33+08:00">
-                2018-01-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  284
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="梯度下降法-Gradient-Descent-Algorithm"><a href="#梯度下降法-Gradient-Descent-Algorithm" class="headerlink" title="梯度下降法(Gradient Descent Algorithm)"></a>梯度下降法(Gradient Descent Algorithm)</h4><p><img src="/img/GDA.png" alter="GDA"></p>
-<p>repeat until convergence {</p>
-<p>$$ \theta_{j} := \theta_{j} - \alpha \frac{\partial}{\partial\theta_{j}}J(\theta_{0}, \theta_{1}) $$</p>
-<p>(for j = 0 and j = 1)}(Batch Gradient Descent)</p>
-<p><strong>说明</strong></p>
-<ul>
-<li>$\alpha$ 学习速率(Leaning Rate)，迭代的步长，太小收敛慢，太大可能导致在最优解附近来回波动</li>
-<li>收敛到的局部最优解不一定是全局最优解，但对于最小二乘法的弓型损失函数来说唯一的局部最优解就是全局最优解</li>
-</ul>
-<p><strong>种类</strong></p>
-<ul>
-<li>Batch Gradient Descent: 每次迭代使用全部m个样本，最优梯度方向，计算开销大，可以使用mapreduce</li>
-<li>Stochastic Gradient Descent: 每次迭代使用1个样本，随机梯度方向，适合大样本，需要将输入数据shuffle</li>
-<li>Mini-batch Gradient Descent: 每次迭代使用b个(2~100)样本</li>
-<li>Online Learning: 每次迭代使用1个样本，学习后丢弃样本，适合数据流，模型会跟随输入数据的趋势改变</li>
-</ul>
-<p><strong>判断收敛</strong></p>
-<ul>
-<li>Batch: 观察$J_{train}(\theta)$, 每次跌代后是否变小</li>
-<li>Stochastic: 观察$Cost=\frac{1}{2}(h_{\theta}(x^{(i)})-y^{(i)})^2$均值，每k次迭代后是否变小</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1918,7 +1872,7 @@ v(1:10)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">187</span>
+                  <span class="site-state-item-count">191</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1931,7 +1885,7 @@ v(1:10)
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2020,7 +1974,7 @@ v(1:10)
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">63.6k</span>
+    <span title="Site words total count">64.8k</span>
   
 </div>
 
