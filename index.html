@@ -262,6 +262,559 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/20/Python-pandas-Outliers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/20/Python-pandas-Outliers/" itemprop="url">Python-pandas-Outliers</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T12:02:34+08:00">
+                2018-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  43
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="检测异常值"><a href="#检测异常值" class="headerlink" title="检测异常值"></a>检测异常值</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">col = data[<span class="number">3</span>]</span><br><span class="line">col[np.abs(col) &gt; <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">data[(np.abs(data)&gt;<span class="number">3</span>).any(<span class="number">1</span>)]</span><br><span class="line">data[np.abs(data) &gt; <span class="number">3</span>] = np.sign(data) * <span class="number">3</span> <span class="comment">#np.sign返回1或者-1</span></span><br><span class="line"></span><br><span class="line">data[(data[<span class="string">'A'</span>]&gt;<span class="number">40000</span>)&amp;(data[<span class="string">'B'</span>]&lt;<span class="number">30000</span>)]</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/20/Python-pandas-Duplicate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/20/Python-pandas-Duplicate/" itemprop="url">pandas重复数据处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T12:01:06+08:00">
+                2018-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  73
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="移除重复数据"><a href="#移除重复数据" class="headerlink" title="移除重复数据"></a>移除重复数据</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 判断重复</span></span><br><span class="line">data.duplicated()<span class="comment">#返回布尔型Series，表示各行是否重复</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 移除重复</span></span><br><span class="line">data.drop_duplicates()<span class="comment">#返回移除了重复行的DataFrame，保留第一个</span></span><br><span class="line">data.drop_duplicates([<span class="string">'k1'</span>])<span class="comment">#只根据k1列过滤</span></span><br><span class="line">data.drop_duplicates([<span class="string">'k1'</span>,<span class="string">'k2'</span>], take_last=<span class="keyword">True</span>) <span class="comment">#保留重复值的最后一个</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/17/Python-sklearn-Evaluation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/17/Python-sklearn-Evaluation/" itemprop="url">sklearn-Evaluation</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-17T11:10:07+08:00">
+                2018-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  173
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>评价模型预测结果的API共有3种：</p>
+<ul>
+<li>模型的score方法</li>
+<li>CrossValidation的Scoing参数：指定scoring策略</li>
+<li>Metric函数：实现评价函数</li>
+</ul>
+<h4 id="Scoring参数"><a href="#Scoring参数" class="headerlink" title="Scoring参数"></a>Scoring参数</h4><h6 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h6><table>
+<thead>
+<tr>
+<th style="text-align:left">Scoring</th>
+<th style="text-align:left">Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">‘accuracy’</td>
+<td style="text-align:left">metrics.accuracy_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘average_precision’</td>
+<td style="text-align:left">metrics.average_precision_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘f1’</td>
+<td style="text-align:left">metrics.f1_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘f1_micro’</td>
+<td style="text-align:left">metrics.f1_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘f1_macro’</td>
+<td style="text-align:left">metrics.f1_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘f1_weighted’</td>
+<td style="text-align:left">metrics.f1_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘f1_samples’</td>
+<td style="text-align:left">metrics.f1_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘neg_log_loss’</td>
+<td style="text-align:left">metrics.log_loss</td>
+</tr>
+<tr>
+<td style="text-align:left">‘precision’</td>
+<td style="text-align:left">metrics.precisioin_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘recall’</td>
+<td style="text-align:left">metrics.recall_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘roc_auc’</td>
+<td style="text-align:left">metrics.roc_auc_score</td>
+</tr>
+</tbody>
+</table>
+<h6 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a>聚类</h6><table>
+<thead>
+<tr>
+<th style="text-align:left">Scoring</th>
+<th style="text-align:left">Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">‘adjusted_mututal_info_score’</td>
+<td style="text-align:left">metrics.adjusted_mutual_info_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘adjusted_rand_score’</td>
+<td style="text-align:left">metrics.adjusted_rand_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘completeness_score’</td>
+<td style="text-align:left">metrics.completeness_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘fowlkes_mallows_score’</td>
+<td style="text-align:left">metrics.fowlkes_mallows_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘homogeneity_score’</td>
+<td style="text-align:left">metrics.homogeneity_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘mutual_info_score’</td>
+<td style="text-align:left">metrics.mutual_info_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘normalized_mutual_info_score’</td>
+<td style="text-align:left">metrics.normalized_mutual_info_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘v_measure_score’</td>
+<td style="text-align:left">metrics.v_measure_score</td>
+</tr>
+</tbody>
+</table>
+<h6 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h6><table>
+<thead>
+<tr>
+<th style="text-align:left">Scoring</th>
+<th style="text-align:left">Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">‘explained_variance’</td>
+<td style="text-align:left">metrics.explained_variance_score</td>
+</tr>
+<tr>
+<td style="text-align:left">‘neg_mean_absolute_error’</td>
+<td style="text-align:left">metrics.mean_absolute_error</td>
+</tr>
+<tr>
+<td style="text-align:left">‘neg_mean_squared_error’</td>
+<td style="text-align:left">metrics.mean_squared_error</td>
+</tr>
+<tr>
+<td style="text-align:left">‘neg_mean_squared_log_error’</td>
+<td style="text-align:left">metrics.mean_squared_log_error</td>
+</tr>
+<tr>
+<td style="text-align:left">‘neg_median_absolute_error’</td>
+<td style="text-align:left">metrics.median_absolute_error</td>
+</tr>
+<tr>
+<td style="text-align:left">‘r2’</td>
+<td style="text-align:left">metrics.r2_score</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Metrics"><a href="#Metrics" class="headerlink" title="Metrics"></a>Metrics</h4><p>The sklearn.metrics module implements several loss, score, and utility functions to measure classification performance.<br>Some metrics might require probability estimates of the positive class, confidence values, or binary decisions values.<br>Most implementations allow each sample to provide a weighted contribution to the overall score, through the sample_weight parameter.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/14/Python-pandas-GetDummies/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -979,7 +1532,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  340
+                  384
                 </span>
               
 
@@ -1006,8 +1559,8 @@
       
         
           
-            <h4 id="发现缺失"><a href="#发现缺失" class="headerlink" title="发现缺失"></a>发现缺失</h4><p>pandas使用NaN(not a number)表示缺失的数据，使用isnull()</p>
-<p>DataFrame.isnull()<br>Return a boolean same-sized object indicating if the values are NA</p>
+            <h4 id="发现缺失"><a href="#发现缺失" class="headerlink" title="发现缺失"></a>发现缺失</h4><p>pandas使用NaN(not a number)表示缺失的数据，使用isnull()<br>(numpy使用nan表示缺失数据，用np.isnan(np.nan)判断。)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">DataFrame.isnull()</span><br><span class="line"><span class="comment">#Return a boolean same-sized object indicating if the values are NA</span></span><br><span class="line"></span><br><span class="line">df.isnull().sum() <span class="comment">#返回每列的缺失总数</span></span><br><span class="line">df.isnull().sum() / len(df) * <span class="number">100</span> <span class="comment">#返回每列的缺失百分比</span></span><br></pre></td></tr></table></figure>
 <h4 id="处理缺失"><a href="#处理缺失" class="headerlink" title="处理缺失"></a>处理缺失</h4><h6 id="1-删除数据：drop-dropna"><a href="#1-删除数据：drop-dropna" class="headerlink" title="1.删除数据：drop, dropna"></a>1.删除数据：drop, dropna</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">DataFrame.drop(labels=<span class="keyword">None</span>, axis=<span class="number">0</span>, index=<span class="keyword">None</span>, columns=<span class="keyword">None</span>, level=<span class="keyword">None</span>, inplace=<span class="keyword">False</span>, errors=<span class="string">'raise'</span>)</span><br><span class="line">DataFrame.dropna(axis=<span class="number">0</span>, how=<span class="string">'any'</span>, thresh=<span class="keyword">None</span>, subset=<span class="keyword">None</span>, inplace=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># drop</span></span><br><span class="line">df.drop([<span class="number">0</span>,<span class="number">1</span>])</span><br><span class="line">df.drop([<span class="string">'B'</span>,<span class="string">'C'</span>], axis=<span class="number">1</span>)</span><br><span class="line">df.drop(columns=[<span class="string">'B'</span>,<span class="string">'C'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># dropna</span></span><br><span class="line">df.dropna(axis=<span class="number">1</span>, how=<span class="string">'any'</span>) <span class="comment">#删除有NA的列</span></span><br><span class="line">df.dropna(axis=<span class="number">0</span>, how=<span class="string">'all'</span>) <span class="comment">#删除全部为NA的行</span></span><br><span class="line">df.dropna(thresh=<span class="number">2</span>) <span class="comment">#删除有2个以上NA的行</span></span><br></pre></td></tr></table></figure>
 <p>参数：</p>
 <ul>
@@ -1359,539 +1912,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/04/Python-sklearn-LearningCurve/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/04/Python-sklearn-LearningCurve/" itemprop="url">sklearn.model_selection.learning_curve</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-04T13:42:13+08:00">
-                2018-03-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  271
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="/img/LearningCurve.png"></p>
-<p>用不同样本数的训练集，计算模型在训练集和测试集上的交叉验证分数。<br>可用于观察是否有必要引入更多数据，以及误差来源(high variance / high bias)。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sklearn.model_selection.learning_curve(estimator, X, y, group=<span class="keyword">None</span>, train_size=array([<span class="number">0.1</span>, <span class="number">0.33</span>, <span class="number">0.55</span>, <span class="number">0.78</span>, <span class="number">1.</span>]), cv=<span class="keyword">None</span>, scoring=<span class="keyword">None</span>, exploit_incremental_learning=<span class="keyword">False</span>, n_jobs=<span class="number">1</span>, pre_dispatch=<span class="string">'all'</span>, verbose=<span class="number">0</span>, shuffle=<span class="keyword">False</span>, random_state=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure></p>
-<p>参数：</p>
-<ul>
-<li>estimater: 模型</li>
-<li>X: 特征矩阵，列特征，行采样</li>
-<li>y: 目标值，非监督学习None</li>
-<li>groups: 类标签</li>
-<li>train_sizes: 曲线每个点的训练样本数，可以是比例(0,1]，或者绝对数(int)</li>
-<li>cv: 同cross-validation，默认KFold</li>
-<li>scoring: 评分函数</li>
-<li>exploit_incremental_learning: 如果模型支持增强学习，则可用来加快学习过程</li>
-<li>n_jobs: 并发线程数</li>
-<li>pre_dispatch: 2*n_jobs</li>
-<li>verbose: 冗余信息输出</li>
-<li>shuffle: 默认False，划分前是否将训练数据Shuffle</li>
-<li>random_state: 随机种子</li>
-</ul>
-<p>返回：</p>
-<ul>
-<li>train_sizes_abs: int数组，曲线每个点的训练样本数</li>
-<li>train_scores: 训练集得分</li>
-<li>test_scores: 测试集得分</li>
-</ul>
-<p>实例：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> learning_curve</span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC</span><br><span class="line"></span><br><span class="line">train_sizes, train_scores, valid_scores = learning_curve(SVC(kernel=<span class="string">'linear'</span>),  X, y, train_sizes=[<span class="number">50</span>, <span class="number">80</span>, <span class="number">110</span>], cv=<span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/04/Python-sklearn-LinearModel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/04/Python-sklearn-LinearModel/" itemprop="url">sklearn.linear_model</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-04T13:07:16+08:00">
-                2018-03-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  183
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>名词解析</strong></p>
-<ul>
-<li>parameters(参数)：参变量，描述某种特征值。</li>
-<li>coefficients(系数)：描述某种关系，比如两个变量之间的变化关系。</li>
-</ul>
-<h4 id="LinearRegression"><a href="#LinearRegression" class="headerlink" title="LinearRegression"></a>LinearRegression</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sklearn</span>.<span class="title">linear_model</span>.<span class="title">LinearRegression</span><span class="params">(fit_intercept=True, normalize=False, copy_X=True, n_jobs=<span class="number">1</span>)</span></span></span><br></pre></td></tr></table></figure>
-<p>参数：</p>
-<ul>
-<li>fit_intercept: 默认True，是否计算截距b</li>
-<li>normalize: 默认False，是否对X作l2规范化</li>
-<li>copy_X: 默认True，若为False将修改原数据</li>
-<li>n_jobs: 并发任务数</li>
-</ul>
-<p>属性：</p>
-<ul>
-<li>coef_: 系数数组A</li>
-<li>intercept_: 截距b</li>
-</ul>
-<p>方法：</p>
-<ul>
-<li>fit(X, y, sample_weight=None): 训练模型，可以带权重</li>
-<li>score(X, y, sample_weight=None): 验证并计算得分($1- \frac{u}{v}$，其中u是残差平方和，v是y的方差)，最佳分数为1.0</li>
-<li>predict(X): 预测并返回结果</li>
-<li>set_params(**params): 设定参数</li>
-<li>get_params(deep=True): 获取参数</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/03/Python-sklearn-CrossValidation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/03/Python-sklearn-CrossValidation/" itemprop="url">sklearn-CrossValidation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-03T11:30:38+08:00">
-                2018-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  755
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>如果模型验证和训练使用同一批数据，可能会过拟合，故应将训练集划分。</p>
-<ul>
-<li>单一划分：train_test_split，会使训练样本数减少</li>
-<li>交叉验证：k-fold等，将数据划分成k份，每次留一份验证，循环k次取平均值</li>
-</ul>
-<h2 id="单一划分"><a href="#单一划分" class="headerlink" title="单一划分"></a>单一划分</h2><h4 id="1-train-test-split"><a href="#1-train-test-split" class="headerlink" title="1. train_test_split"></a>1. train_test_split</h4><p>随机划分训练集和测试集。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sklearn.model_selection.train_test_split(*arrays, **options)</span><br></pre></td></tr></table></figure></p>
-<p>参数：</p>
-<ul>
-<li>*arrays: 输入可以是list, ndarray, dataframe或者scipy-sparse matrices</li>
-<li>test_size: 默认0.25，(0.0~1.0)表示比例，整数表示样本数</li>
-<li>train_size: 默认None，(0.0~1.0)表示比例，整数表示样本数</li>
-<li>random_state: 随机种子</li>
-<li>shuffle: 默认True，在划分前是否要Shuffle</li>
-<li>stratify: 默认None，若要分层则传入类标签</li>
-</ul>
-<p>返回：</p>
-<ul>
-<li>splitting: 划分后的list</li>
-</ul>
-<p>实例：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm</span><br><span class="line"></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(data, target, test_size=<span class="number">0.3</span>, random_state=<span class="number">0</span>)</span><br><span class="line">clf = svm.SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1</span>).fit(X_train, y_train)</span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure></p>
-<h2 id="交叉验证"><a href="#交叉验证" class="headerlink" title="交叉验证"></a>交叉验证</h2><h4 id="2-cross-val-score"><a href="#2-cross-val-score" class="headerlink" title="2. cross_val_score"></a>2. cross_val_score</h4><p>划分数据集，交叉验证并返回得分。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sklearn.model_selection.cross_val_score(estimator, X, y=<span class="keyword">None</span>, groups=<span class="keyword">None</span>, scoring=<span class="keyword">None</span>, cv=<span class="keyword">None</span>, n_jobs=<span class="number">1</span>, verbose=<span class="number">0</span>, fit_params=<span class="keyword">None</span>, pre_dispatch=<span class="string">'2*n_jobs'</span>)</span><br></pre></td></tr></table></figure></p>
-<p>参数：</p>
-<ul>
-<li>estimator: 模型</li>
-<li>X: 输入特征iris.data</li>
-<li>y: 预测目标iris.target</li>
-<li>groups: 划分时的类标签</li>
-<li>scoring: 评分函数/字符串</li>
-<li>cv: 折叠次数</li>
-<li>n_jobs: 使用的CPU数</li>
-<li>verbose: 冗余日志输出？</li>
-<li>fit_params: 传递给fit的参数</li>
-<li>pre_cispatch: 并发任务数</li>
-</ul>
-<p>返回：</p>
-<ul>
-<li>scores: 得分数组</li>
-</ul>
-<p>实例：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score</span><br><span class="line"></span><br><span class="line">clf = svm.SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1</span>)</span><br><span class="line">scores = cross_val_score(clf, data, target, cv=<span class="number">5</span>) <span class="comment">#返回array</span></span><br><span class="line">print(<span class="string">"Accuracy: %0.2f"</span> %scores.mean())</span><br></pre></td></tr></table></figure></p>
-<p>cv为整数，默认KFold或StratifiedKFold划分。<br>每次循环时，调用模型clf的score方法，返回的结果作为scores的一个元素。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改score</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line">scores = cross_val_score(clf, data, target, cv=<span class="number">5</span>, scoring=<span class="string">'f1_macro'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#更改划分</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> ShuffleSplit</span><br><span class="line">cv = ShuffleSplit(n_splits=<span class="number">3</span>, test_size=<span class="number">0.3</span>, random_state=<span class="number">0</span>)</span><br><span class="line">scores = cross_val_score(clf, data, target, cv=cv)</span><br></pre></td></tr></table></figure></p>
-<h4 id="3-cross-validate"><a href="#3-cross-validate" class="headerlink" title="3. cross_validate"></a>3. cross_validate</h4><p>和cross_val_score有两点不同：</p>
-<ul>
-<li>允许在evaluation中使用多种metrics</li>
-<li>返回一个字典，而不单单是scores数组</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sklearn.model_selection.cross_validate(estimator, X, y=<span class="keyword">None</span>, groups=<span class="keyword">None</span>, cv=<span class="keyword">None</span>, n_jobs=<span class="number">1</span>, verbose=<span class="number">0</span>, fit_params=<span class="keyword">None</span>, pre_dispatch=<span class="string">'2*n_jobs'</span>, return_train_score=<span class="string">'warn'</span>)</span><br></pre></td></tr></table></figure>
-<p>参数：</p>
-<ul>
-<li>estimator, X, y, groups, cv, n_jobs, verbose, fit_params, pre_dispatch: 同上</li>
-<li>scoring：支持同时返回多个metrics</li>
-<li>return_train_score: 默认’warn’ = True + a warning，0.21中将默认False</li>
-</ul>
-<p>返回：</p>
-<ul>
-<li>scores: 字典，键值包括{‘test_score’, ‘train_score’, ‘fit_time’, ‘score_time’}</li>
-</ul>
-<p>实例：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_validate</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> recall_score</span><br><span class="line">scoring = [<span class="string">'precision_macro'</span>, <span class="string">'recall_macro'</span>] <span class="comment">#定义两种metrics</span></span><br><span class="line">clf = svm.SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1</span>, random_state=<span class="number">0</span>)</span><br><span class="line">scores = cross_validate(clf, data, target, scoring=scoring, cv=<span class="number">5</span>, return_train_score=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回的scores是一个字典，每个value都是长度为cv的数组</span></span><br><span class="line">sorted(scores.kes())</span><br><span class="line">&gt;&gt; [<span class="string">'fit_time'</span>, <span class="string">'score_time'</span>, <span class="string">'test_precision_macro'</span>, <span class="string">'test_rec_micro'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以自定义score</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics.scorer <span class="keyword">import</span> make_scorer</span><br><span class="line">scoring = &#123;<span class="string">'prec_macro'</span>: <span class="string">'precision_macro'</span>, <span class="string">'rec_micro'</span>: make_scorer(recall_score, average=<span class="string">'macro'</span>)&#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="4-cross-val-predict"><a href="#4-cross-val-predict" class="headerlink" title="4. cross_val_predict"></a>4. cross_val_predict</h4><p>返回测试集每个输入实例的预测结果，每个输入实例只能在测试集中使用一次。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sklearn.model_selection.cross_val_predict(estimator, X, y=<span class="keyword">None</span>, groups=<span class="keyword">None</span>, cv=<span class="keyword">None</span>, n_jobs=<span class="number">1</span>, verbose=<span class="number">0</span>, fit_params=<span class="keyword">None</span>, pre_dispatch=<span class="string">'2*n_jobs'</span>, method=<span class="string">'predict'</span>)</span><br></pre></td></tr></table></figure></p>
-<p>参数：</p>
-<ul>
-<li>estimator, X, y, groups, cv, n_jobs, verbose, fit_params, pre_dispatch: 同上</li>
-<li>method: 指定要使用的模型中的方法，默认’predict’</li>
-</ul>
-<p>返回：</p>
-<ul>
-<li>predictions: 调用method的返回结果</li>
-</ul>
-<p>实例：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_predict</span><br><span class="line">predicted = cross_val_predict(clf, data, target, cv=<span class="number">10</span>)</span><br><span class="line">metris.accuracy_score(target, predicted)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1946,7 +1966,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">191</span>
+                  <span class="site-state-item-count">194</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2048,7 +2068,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">64.8k</span>
+    <span title="Site words total count">65.1k</span>
   
 </div>
 

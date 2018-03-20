@@ -262,6 +262,463 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/02/ML-PCA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/02/ML-PCA/" itemprop="url">主成分分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T09:56:13+08:00">
+                2018-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  255
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>主成分分析(Principal Component Analysis)是经典的特征降维技术。<br>寻找k个向量张成的超平面，使原始数据投影到超平面的误差最小。<br>PCA可以用于</p>
+<ul>
+<li>减少存储数据的内存消耗</li>
+<li>加快模型训练速度</li>
+<li>高维数据可视化(k=2，3)</li>
+</ul>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
+<li>数据标准化</li>
+<li>计算covariance matrix<br>$$ \sigma = \frac{1}{m}\sum_{i=1}^{n}(x^{(i)})(x^{(i)})^T $$</li>
+<li>计算 $[U,S,V] = svd(Sigma)$<br>其中前k个向量$U(:,1:K)=U_{reduce}$是映射矩阵，$z=U_{reduce}\ast x$;<br>若要还原x，$x_{approx}=U_{reduce}\ast z$；</li>
+</ol>
+<p><strong>选择k</strong><br>一般要求映射过程保留99%的方差<br>$$ \frac{\frac{1}{m}\sum_{i=1}^m\left|\left|x^{(i)}-x_{approx}^{(i)}\right|\right|^2}{\frac{1}{m}\sum_{i=1}^m\left|left|x^{(i)}\right|\right|^2} \leq 0.01(1%)<br>S是一个n*n矩阵，主元位置$S_{ii}$即代表数据方差，选择$k$使得<br>$$ \frac{\sum_{i=1}^kS_{ii}}{\sum_{i=1}^nS_{ii}} \geq 0.99$$</p>
+<p>使用sklearn:<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line"></span><br><span class="line">estimater = PCA(n_components = <span class="number">2</span>)</span><br><span class="line">X_pca = estimator.fit_transform(X_digits)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/02/ML-Kmeans/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/02/ML-Kmeans/" itemprop="url">K均值聚类</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T09:27:32+08:00">
+                2018-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  400
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>无监督学习的主流应用之一，最经典易用的聚类模型。</p>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><p>1.随机选取K个聚类空间中的点作为初始中心；<br>2.根据每个数据的特征向量，从K个聚类中心中选取距离最近的一个，把该数据标记为从属该聚类中心；<br>3.根据标记后的簇，重新计算每个簇的中心；<br>4.重复2、3直到聚类中心不再变化。</p>
+<p>$$ J = \frac{1}{m}\sum_{i=1}^m\left|\left|x^{(i)}-\mu_{c^{i}}\right|\right|^2$$</p>
+<p><strong>缺陷</strong></p>
+<ul>
+<li>容易收敛到局部最优解：通过多次执行算法，选择性能更好(J最小)的初始中心点</li>
+<li>需要预先设定簇的数量：通过观察簇内距离与簇数量的关系图，选择肘部拐点</li>
+</ul>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">kmeans = KMeans(n_clusters=<span class="number">10</span>)</span><br><span class="line">kmeans.fit(X_train)</span><br><span class="line">y_pred = kmeans.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能评估</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line">metrics.adjusted_rand_score(y_test, y_pred)</span><br></pre></td></tr></table></figure>
+<p><strong>肘部观察法</strong><br>寻找拐点，确定类的数量k，不一定有用。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"><span class="keyword">from</span> scipy.spatial.distance <span class="keyword">import</span> cdist</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成数据，使用均匀分布函数随机三个簇</span></span><br><span class="line">cluster1 = np.random.uniform(<span class="number">0.5</span>, <span class="number">1.5</span>, (<span class="number">2</span>,<span class="number">10</span>))</span><br><span class="line">cluster2 = np.random.uniform(<span class="number">5.5</span>, <span class="number">6.5</span>, (<span class="number">2</span>,<span class="number">10</span>))</span><br><span class="line">cluster3 = np.random.uniform(<span class="number">3.0</span>, <span class="number">4.0</span>, (<span class="number">2</span>,<span class="number">10</span>))</span><br><span class="line">X = np.hstack((cluster1, cluster2, cluster3)).T</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试9种不同聚类中心数量</span></span><br><span class="line">K = range(<span class="number">1</span>,<span class="number">10</span>)</span><br><span class="line">meandistortioins = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> K:</span><br><span class="line">	kmeans = KMeans(n_clusters = k)</span><br><span class="line">	kmeans.fit(X)</span><br><span class="line">	meandistortions.append(sum(np.min(cdist(X, kmeans.cluster_centers_, <span class="string">'euclidean'</span>), axis=<span class="number">1</span>))/X.shape[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘图</span></span><br><span class="line">plt.plot(K, meanditortions, <span class="string">'bx-'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'k'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Average Dispersion'</span>)</span><br><span class="line">plt.title(<span class="string">'Selecting k with Elbow Method'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/01/Calculus-Derivatives/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/01/Calculus-Derivatives/" itemprop="url">导数和微分</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-01T16:25:29+08:00">
+                2018-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  781
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="DEFINITIONS"><a href="#DEFINITIONS" class="headerlink" title="DEFINITIONS"></a>DEFINITIONS</h2><h4 id="Slope-Tangent-Line-and-Derivative"><a href="#Slope-Tangent-Line-and-Derivative" class="headerlink" title="Slope, Tangent Line and Derivative"></a>Slope, Tangent Line and Derivative</h4><p>The <strong>slope of the curve</strong> $y = f(x)$ at the point $P(x_{0}, f(x_{0}))$ is the number</p>
+<p>$$ m = \lim_{h\rightarrow 0} \frac{f(x_{0} + h)-f(x_{0})}{h} $$</p>
+<p>provided the limit exists.</p>
+<p>The <strong>tangent line</strong> to the curve at P is the line through P with this slope.</p>
+<p>The <strong>derivative</strong> of the function $f(x)$ with respect to the variable x is the function $f’$ whose value at x is</p>
+<p>$$ f’(x) = \lim_{h\rightarrow 0 } \frac{f(x+h) - f(x)}{h} $$</p>
+<p>provided the limit exists.</p>
+<p>The process of calculating a derivative is called <strong>differentiation</strong>.</p>
+<p>求导数的过程叫做<strong>微分</strong>。</p>
+<p>导数存在的条件是表达式的左极限等于右极限，即函数的左导数等于右导数。</p>
+<h4 id="Alternative-Formula-for-the-Derivative"><a href="#Alternative-Formula-for-the-Derivative" class="headerlink" title="Alternative Formula for the Derivative"></a>Alternative Formula for the Derivative</h4><p>$$ f’(x) = \lim_{z\rightarrow x} \frac{f(z)-f(x)}{z-x} $$</p>
+<h4 id="Critical-Point"><a href="#Critical-Point" class="headerlink" title="Critical Point"></a>Critical Point</h4><p>An interior point of the domain of a function $f$ where $f’$ is zero or undefined is a <strong>critical point</strong> of $f$.</p>
+<h4 id="Concave-Up-Concave-Down"><a href="#Concave-Up-Concave-Down" class="headerlink" title="Concave Up, Concave Down"></a>Concave Up, Concave Down</h4><p>The graph of a differentiable function $y=f(x)$ is</p>
+<p><strong>concave up</strong> on an open interval if $f’$ is increasing, $f’’ &gt; 0$</p>
+<p><strong>concave down</strong> on an open interval if $f’$ is decreasing, $f’’ &lt; 0$</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/01/Calculus-Derivatives/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/01/Calculus-Continuity/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1299,464 +1756,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/27/ML-SVM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/27/ML-SVM/" itemprop="url">支持向量机</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T14:08:11+08:00">
-                2017-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  780
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>支持向量机分类器(Support Vector Classifier)，根据训练样本的分布，搜索所有可能的线性分类器中最佳的那个。<br>最佳是指分类直线离样本点的距离最远，具有最大的安全边界。<br>Logistic Regression分类中考虑了所有样本点对参数的影响，获得的不一定是最佳分类直线。</p>
-<h4 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h4><p>$$min_{\theta}C\sum_{i=1}^m\left[y^{(i)}cost_1(\theta^Tx^{(i)})+(1-y^{(i)})cost_0(\theta^Tx^{(i)})\right]+\frac{1}{2}\sum_{j=1}^n\theta_j^2$$<br>其中$C=\frac{1}{\lambda}$, Cost(z)的函数图像如下：<br><img src="\img\svmCost.png"></p>
-<p>$\theta^Tx$可看做向量$\vec(\theta)$与向量$\vec(x)$的内积，等于$\vec(p)\cdot\left|\left|\theta\right|\right|$。<br>理想情况下，样本能完全分开使得$cost(z)=1$，代价函数缩减为$min_{\theta}\frac{1}{2}\sum_{j=1}^n\theta_j^2$；<br>为使$\left|\left|\theta\right|\right|$尽可能小，应使得$\vec(p)$尽可能大，$\vec(p)$是$\vec(x)$在$\vec(\theta)$方向上的投影，$\vec(\theta)$垂直于分类直线$\theta^Tx$.</p>
-<h4 id="Kernel核函数"><a href="#Kernel核函数" class="headerlink" title="Kernel核函数"></a>Kernel核函数</h4><p>核函数可以将低维空间数据映射到高维空间，常与SVM配合使用，因为可以采用某些数值计算的优化方法，极大降低计算复杂度。核函数与其他分类模型如Logistic Regression的配合并不好，计算开销大。</p>
-<p>常用的核函数包括线性核函数、多项式核函数、高斯核函数等。其中高斯核函数最常用，可以将数据映射到无穷维，也叫做径向基函数(Radial Basis Function, RBF).构建核函数时，需要满足Mercer定理。</p>
-<p>高斯核函数：$f=similarity(x,l^{(1)}) = exp(-\frac{\left|\left|x-l^{(1)}\right|\right|^2}{2\sigma^2})$</p>
-<h4 id="识别手写数字"><a href="#识别手写数字" class="headerlink" title="识别手写数字"></a>识别手写数字</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_digits</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocession <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> LinearSVC</span><br><span class="line"></span><br><span class="line"><span class="comment"># 准备数据，使用sklearn提供的手写数字，无需清洗</span></span><br><span class="line">digits = load_digits()</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(digits.data, digits.target, test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化</span></span><br><span class="line">ss = StandardScalar()</span><br><span class="line">X_train = ss.fit_transform(X_train)</span><br><span class="line">X_test = ss.transform(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型并预测</span></span><br><span class="line">lsvc = LinearSVC()</span><br><span class="line">lsvc.fit(X_train, y_train)</span><br><span class="line">y_predict = lsvc.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">lsvc.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, y_predict, target_names=digits.target_names.astype(str))</span><br></pre></td></tr></table></figure>
-<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><p>SVR回归，假设f(x)和y之间最多能容忍e的误差，当且仅当f(x)与y之间的差别的绝对值大于e时，才计算损失。<br>相当于以f(x)高维平面为中心，构建一个宽度为2e的间隔带。如果样本在此间隔带内，则认为是正确的。<br>回归的目的就是找到这样一个平面，使尽可能多的样本点落在间隔带内。<br>容忍误差e的目的是防止过拟合。</p>
-<h4 id="预测房价"><a href="#预测房价" class="headerlink" title="预测房价"></a>预测房价</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVR</span><br><span class="line"></span><br><span class="line"><span class="comment"># 线性核函数</span></span><br><span class="line">linear_svr = SVR(kernel=<span class="string">'linear'</span>)</span><br><span class="line">linear_svr.fit(X_train, y_train)</span><br><span class="line">linear_svr_y_predict = linear_svr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 多项式核函数</span></span><br><span class="line">poly_svr = SVR(kernel=<span class="string">'poly'</span>)</span><br><span class="line">poly_svr.fit(X_train, y_train)</span><br><span class="line">poly_svr_y_predict = poly_svr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 径向基核函数</span></span><br><span class="line">rbf_svr = SVR(kernel=<span class="string">'rbf'</span>)</span><br><span class="line">rbf_svr.fit(X_train, y_train)</span><br><span class="line">rbf_svr_y_predict = rbf_svr.predict(X_test)</span><br></pre></td></tr></table></figure>
-<p>核函数可以将原有特征映射到更高维度的空间，在高维空间里实现线性可分。<br>使用不同核函数的模型，性能有非常大的差异。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/27/ML-Logistic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/27/ML-Logistic/" itemprop="url">Logistic Regression</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T13:25:07+08:00">
-                2017-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  599
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>将线性回归函数f映射到(0,1)，得到经典的线性分类器Logistic Regression。<br>虽然名字叫做“回归”，但实际上是一种分类模型。</p>
-<p>$$h_{w,b}(x)=g(f(w,x,b))=\frac{1}{1+e^{-f}}=\frac{1}{1+e^{-(w^{T}x+b)}}$$</p>
-<p><img src="/img/logistic.jpg" alt="Logistic" align="middle">  </p>
-<p>线性分类器是最基本和最常用的分类模型。<br>受限于数据特征和分类目标之间的线性假设。</p>
-<h4 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h4><p>Logistic Regression不能使用和线性回归同样的代价函数，因为Logistic使原代价函数蜿蜒，产生多个局部最小值，不能使用GDA求得最小值。<br>故引入新的代价函数：<br>$$ J(\theta) = \frac{1}{m}\sum_{i=1}^{m}Cost(h_{\theta}(x^{(i)}),y^{(i)}) $$<br>$$ Cost(h_{\theta}(x),y) = -log(h_{\theta}(x))  \;\;\;\;\; if \;\; y = 1 $$<br>$$ Cost(h_{\theta}(x),y) = -log(1-h_{\theta}(x)) \;\;\;\;\; if \;\;  y = 0 $$</p>
-<p><img src="/img/logisticY1.png" width="250"><img src="/img/logisticY0.png" width="250"></p>
-<p>将Cost的分段函数合并，代价函数J可以写作：<br>$$ J(\theta) = -\frac{1}{m} \sum_{i=1}^{m}[y^{(i)} log(h_{\theta}(x^{(i)})) + (1-y^{(i)})log(1-h_{\theta}(x^{(i)}))] $$<br>向量形式：<br>$$ J(\theta) = \frac{1}{m}\cdot (-y^T log(h) - (1-y)^T log(1-h)) $$</p>
-<p>Gradient Descent迭代求解：<br>$$ \theta_j := \theta_j - \frac{\alpha}{m} \sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})x_j^{(i)} $$<br>向量形式：<br>$$ \theta := \theta - \frac{\alpha}{m} X^T(g(X\theta - \vec{y})) $$</p>
-<p>除此之外也有其他的最优化方法。不需要指定$\alpha$，求解速度更快，但是也更复杂。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/27/ML-Logistic/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/09/RegularExpression/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/RegularExpression/" itemprop="url">正则表达式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T10:27:31+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  503
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>正则表达式(regular expression)用于定义一种文本模式，实现功能强大的字符串搜索。</p>
-<h2 id="符号"><a href="#符号" class="headerlink" title="符号"></a>符号</h2><h4 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h4><p>限定符用来指定正则表达式的一个给定组件必须出现多少次。</p>
-<ul>
-<li>*：匹配前面的组件0次或多次，等价于{0,}</li>
-<li>+：匹配前面的组件1次或多次，等价于{1,}</li>
-<li>?：匹配前面的组件0次或1次，等价于{0,1}</li>
-<li>{n}：匹配确定的n次，例如’o{2}’表示匹配’oo’</li>
-<li>{n,}：匹配n次或更多</li>
-<li>{n,m}：至少匹配n次，至多匹配m次</li>
-</ul>
-<h4 id="定位符"><a href="#定位符" class="headerlink" title="定位符"></a>定位符</h4><p>定位符能将正则表达式固定到行首或行尾。</p>
-<ul>
-<li>^：匹配输入字符串开始的位置</li>
-<li>$：匹配输入字符串结尾的位置</li>
-<li>\b：匹配一个字边界，即字与空格间的位置</li>
-<li>\B：非字边界匹配</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/RegularExpression/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1811,7 +1810,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">191</span>
+                  <span class="site-state-item-count">194</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1913,7 +1912,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">64.8k</span>
+    <span title="Site words total count">65.1k</span>
   
 </div>
 
