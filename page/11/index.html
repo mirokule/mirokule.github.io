@@ -262,6 +262,893 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/23/Unity-Instantiate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/23/Unity-Instantiate/" itemprop="url">Unity-Instantiate</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-23T16:34:01+08:00">
+                2016-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  194
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Object-Instantiate"><a href="#Object-Instantiate" class="headerlink" title="Object.Instantiate"></a>Object.Instantiate</h4><p>Returns a clone of the original object.</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">Instantiate</span>(<span class="params">Object original</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">Instantiate</span>(<span class="params">Object original, Transform parent</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">Instantiate</span>(<span class="params">Object original, Transform parent, <span class="keyword">bool</span> worldPositionStays</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">Instantiate</span>(<span class="params">Object original, Vector3 position, Quaternion rotation</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">Instantiate</span>(<span class="params">Object original, Vector3 position, Quaternion rotation, Transform parent</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">InstantiateExample</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> GameObject prefab;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">            Instantiate(prefab, <span class="keyword">new</span> Vector3(i * <span class="number">2.0</span>f, <span class="number">0</span>, <span class="number">0</span>), Quaternion.identity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="GameObject-CreatePrimitive"><a href="#GameObject-CreatePrimitive" class="headerlink" title="GameObject.CreatePrimitive"></a>GameObject.CreatePrimitive</h4><p>基本类型的prefab没有暴露出来，不方便使用instantiate，使用GameObject的内置方法。</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">/在场景中创建一个平面，球体，立方体，胶囊，圆柱体  </span><br><span class="line">GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);  </span><br><span class="line">GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);  </span><br><span class="line">cube.transform.position = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0.5</span>F, <span class="number">0</span>);  </span><br><span class="line">GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);  </span><br><span class="line">sphere.transform.position = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">1.5</span>F, <span class="number">0</span>);  </span><br><span class="line">GameObject capsule = GameObject.CreatePrimitive(PrimitiveType.Capsule);  </span><br><span class="line">capsule.transform.position = <span class="keyword">new</span> Vector3(<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>);  </span><br><span class="line">GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);  </span><br><span class="line">cylinder.transform.position = <span class="keyword">new</span> Vector3(<span class="number">-2</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/23/Unity-UI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/23/Unity-UI/" itemprop="url">Unity-UI</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-23T16:26:15+08:00">
+                2016-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  357
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>GUI: Unity 5之前内置的界面制作系统，只能使用代码。</li>
+<li>NGUI: 第三方插件</li>
+<li>UGUI: Unity 5 引入的可视化界面制作工具</li>
+</ul>
+<h4 id="GUI"><a href="#GUI" class="headerlink" title="GUI"></a>GUI</h4><p>需要在OnGUI()函数中实现，和update()一样每帧调用。<br>GUI的控件一般都需要传入Rect参数来指定屏幕绘制区域，例如Rect(0,0,100,200)，其中(0,0)代表屏幕左上角。</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">OnGUI</span>(<span class="params"></span>)  </span></span><br><span class="line"><span class="function">   </span>&#123;  </span><br><span class="line">       <span class="comment">//GUI.color = Color.red;  </span></span><br><span class="line"> </span><br><span class="line">       GUI.Label(<span class="keyword">new</span> Rect (<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">200</span>), <span class="string">"Hello World!"</span>);  </span><br><span class="line"></span><br><span class="line">       GUI.Label (<span class="keyword">new</span> Rect (<span class="number">100</span>, <span class="number">100</span>, texture.width/<span class="number">4</span>, texture.height/<span class="number">4</span>), texture);  </span><br><span class="line"></span><br><span class="line">       GUI.Box (<span class="keyword">new</span> Rect (<span class="number">10</span>, <span class="number">10</span>, Screen.width * <span class="number">0.5</span>f, Screen.height * <span class="number">0.5</span>f), <span class="string">"This is a title"</span>);  </span><br><span class="line"> </span><br><span class="line">       GUI.Box (<span class="keyword">new</span> Rect (<span class="number">150</span>, <span class="number">170</span>, texture.width/<span class="number">4</span>, texture.height/<span class="number">4</span>), texture);    </span><br><span class="line"></span><br><span class="line">       GUI.Button (<span class="keyword">new</span> Rect (<span class="number">10</span>, <span class="number">10</span>, <span class="number">150</span>, <span class="number">50</span>), <span class="string">"这是一个文字按钮"</span>);  </span><br><span class="line">       <span class="comment">//图片按钮  </span></span><br><span class="line">       GUI.Button (<span class="keyword">new</span> Rect (<span class="number">150</span>, <span class="number">100</span>, texture.width/<span class="number">4</span>, texture.height/<span class="number">4</span>), texture);     </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="UI交互的一般步骤"><a href="#UI交互的一般步骤" class="headerlink" title="UI交互的一般步骤"></a>UI交互的一般步骤</h4><p>(1)在场景中创建UI控件(按钮、文本、控制器)<br>(2)编写控制器脚本，实现操作UI时的功能<br>(3)将脚本附加到控制器上<br>(4)将相关UI控件连接到脚本上,或者将UI控件的event trigger连接到脚本函数上</p>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>1.event trigger连接带参数的脚本函数时，要在面板顶部的Dynamic XXX部分选择该函数，而不是在底部的Static Parameters部分。<br>在Static Parameters中选择时只会发送提前定义的单个字符串，而在Dynamic中选择发送的是输入域中的任何内容。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/23/Unity-RayCast/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/23/Unity-RayCast/" itemprop="url">Unity-RayCast</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-23T15:53:05+08:00">
+                2016-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  225
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h4><p>A ray is an infinite line starting at origin and going in some direction.</p>
+<ul>
+<li><strong>origin</strong>: Vector3</li>
+<li><strong>direction</strong>: Vector3</li>
+<li><strong>GetPoint</strong>: returns a point at distance units along the ray</li>
+<li><strong>ToString</strong></li>
+</ul>
+<h4 id="RaycastHit"><a href="#RaycastHit" class="headerlink" title="RaycastHit"></a>RaycastHit</h4><p>Structure used to get information back from a raycast.</p>
+<ul>
+<li><strong>collider</strong>: the collider that was hit</li>
+<li><strong>point</strong>: the impact point in world space where the ray hit the collider</li>
+<li><strong>distance</strong>: from the ray’s origin to the impact point</li>
+<li><strong>rigidbody</strong>: rigidbody of the collider, null if not exist</li>
+<li><strong>transform</strong>: transform of the rigidbody or collider</li>
+</ul>
+<h4 id="Physics-Raycast"><a href="#Physics-Raycast" class="headerlink" title="Physics.Raycast"></a>Physics.Raycast</h4><ul>
+<li>public static bool Raycast(Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
+<li>public static bool Raycast(Vector3 origin, Vector3 direction, out RaycastHit hitInfo, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
+<li>public static bool Raycast(Ray ray, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
+<li>public static bool Raycast(Ray ray, out RaycastHit hitInfo, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
+</ul>
+<p>returns true when the ray intersects any collider, otherwise false</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (Input.GetMouseButtonDown (<span class="number">0</span>)) &#123;</span><br><span class="line">		Vector3 point = <span class="keyword">new</span> Vector3 (_camera.pixelWidth / <span class="number">2</span>, _camera.pixelHeight / <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">		Ray ray = _camera.ScreenPointToRay (point);</span><br><span class="line">		RaycastHit hitInfo;</span><br><span class="line">		<span class="keyword">if</span> (Physics.Raycast(ray, <span class="keyword">out</span> hitInfo)) &#123;</span><br><span class="line">			GameObject hitObject = hitInfo.transform.gameObject;</span><br><span class="line">			ReactiveTarget target = hitObject.GetComponent&lt;ReactiveTarget&gt; ();</span><br><span class="line">			<span class="keyword">if</span> (target != <span class="literal">null</span>) &#123;</span><br><span class="line">				target.ReactToHit ();</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				StartCoroutine (SphereIndicator (hitInfo.point));</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/23/C#/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/23/C#/" itemprop="url">C#</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-23T11:13:35+08:00">
+                2016-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  456
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.如果没有标明成员函数或成员变量的访问权限级别，<br>C++中，struct中默认的是public，class中默认的是private<br>C#中，struct和class中都是private的。</p>
+<p>2.struct定义的是值类型，值类型的实例在栈上分配内存，由编译器自动分配和释放<br>class定义的是引用类型，引用类型的实例在堆上分配内存，由用户分配和释放</p>
+<p>3.C#可以定义Finalizer和Dispose方法来释放资源，类似于C++的析构函数，但运行时机不确定<br>静态构造函数，在类型第一次被使用前自动调用，且保证只调用一次</p>
+<p>4.C++支持多继承，C#类只能继承一个基类中的实现但可以实现多个接口。</p>
+<p>5.C# 中没有全局方法和全局变量：方法和变量必须包含在类型声明（如 class 或 struct）中。</p>
+<p>6.C# 不能重写非虚方法或静态方法。能重写的基方法必须是 virtual、abstract的。</p>
+<ul>
+<li>virtual：基类必须有实现，子类可以重写或不重写，用于“可以重写的方法”</li>
+<li>abstract：基类必须没有实现，子类必须有实现，类似接口，用于“必须重写的方法”</li>
+<li>override：子类重写的方法，前缀必须加上override</li>
+</ul>
+<p>7.接口是抽象的集合，不能存在实现的功能<br>抽象类不能被实例化，存在抽象方法，具有类的其他特性；可以有已经实现的方法</p>
+<p>8.private类型完全私有，不能被子类继承，只有当前类中的成员能访问；<br>protected类型受保护，能被子类继承，只有当前类的成员、子类成员能访问；<br>public类型完全公开，能被子类继承，大家都可以访问。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/23/AI-PathFinding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/23/AI-PathFinding/" itemprop="url">AI-PathFinding</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-23T11:12:42+08:00">
+                2016-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  905
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="地图划分"><a href="#地图划分" class="headerlink" title="地图划分"></a>地图划分</h2><h5 id="1-Grid-方格"><a href="#1-Grid-方格" class="headerlink" title="1.Grid (方格)"></a>1.Grid (方格)</h5><p>将搜索区域划分成了方形网格。<br>没有障碍物的地方画上方格，选取方格中心作为可以行走的点。</p>
+<p>优点：划分简单，容易结合寻路算法使用。<br>缺点：移动是不连续的；网格数较多时需要资源计算和存储。</p>
+<h5 id="2-Navigation-Mesh-导航网格"><a href="#2-Navigation-Mesh-导航网格" class="headerlink" title="2.Navigation Mesh(导航网格)"></a>2.Navigation Mesh(导航网格)</h5><p>利用了凸多边形的性质：在凸多边形上的一个点走到另一个点，路径一定在多边形内部。</p>
+<p>生成步骤：<br>（1）通过地图的边界点和障碍物的边界点，将地图划分成许多三角形；<br>（2）将相邻的三角形合并形成凸多边形；<br>（3）将凸多边形继续不断合并为凸多边形；<br>（4）将凸多边形每条边的中点放置路径点，将每个多边形的路径点连线。</p>
+<p>优点：降低搜寻计算量，移动更加自然。<br>缺点：实现复杂。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/11/23/AI-PathFinding/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/22/Unity-FPSInput/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/22/Unity-FPSInput/" itemprop="url">Unity-FPSInput</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-22T14:48:07+08:00">
+                2016-11-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  107
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">   <span class="keyword">using</span> UnityEngine;</span><br><span class="line">   <span class="keyword">using</span> System.Collections;</span><br><span class="line"></span><br><span class="line">   [<span class="meta">RequireComponent(typeof(CharacterController))</span>] <span class="comment">// another component must exist</span></span><br><span class="line">   [<span class="meta">AddComponentMenu(<span class="meta-string">"Control Script/FPS Input"</span>)</span>] <span class="comment">// add mentu to "Add Component" in the Inspector</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FPSInput</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> speed = <span class="number">6.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> gravity = <span class="number">-9.8</span>f;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> CharacterController _characterController;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	_characterController = GetComponent&lt;CharacterController&gt; ();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">float</span> deltaX = Input.GetAxis (<span class="string">"Horizontal"</span>) * speed;</span><br><span class="line">	<span class="keyword">float</span> deltaZ = Input.GetAxis (<span class="string">"Vertical"</span>) * speed;</span><br><span class="line">	Vector3 movement = <span class="keyword">new</span> Vector3 (deltaX, <span class="number">0</span>, deltaZ);</span><br><span class="line">	movement = Vector3.ClampMagnitude (movement, speed); <span class="comment">// overall speed clamp</span></span><br><span class="line">	movement.y = gravity; <span class="comment">// keep player on ground</span></span><br><span class="line">	movement *= Time.deltaTime; <span class="comment">// frame independent</span></span><br><span class="line">	movement = transform.TransformDirection (movement); <span class="comment">// from local(1,0,0) to world(0.7, 0, 0.7)</span></span><br><span class="line"></span><br><span class="line">	_characterController.Move (movement);</span><br><span class="line">&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/22/Unity-MouseLook/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -818,932 +1705,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/18/Unity-Camera/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/18/Unity-Camera/" itemprop="url">Unity-Camera</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-18T14:40:40+08:00">
-                2016-11-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  67
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="景深"><a href="#景深" class="headerlink" title="景深"></a>景深</h4><p>(1)将背景图片放在主场景之后一段距离，例如z=20;<br>(2)将Main Camera的渲染模式改为Perspective，即透视<br>这样角色在移动时，背景移动的速度会相对慢很多，带来景深的视觉效果。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/10/05/Unity-PlayerPrefs/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/05/Unity-PlayerPrefs/" itemprop="url">Unity-PlayerPrefs</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-05T15:03:46+08:00">
-                2016-10-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  124
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Stores and accesses player preferences between game sessions.</p>
-<h4 id="Static-Functions"><a href="#Static-Functions" class="headerlink" title="Static Functions"></a>Static Functions</h4><ul>
-<li>DeleteAll    Removes all keys and values from the preferences. Use with caution.</li>
-<li><p>DeleteKey    Removes key and its corresponding value from the preferences.</p>
-</li>
-<li><p>HasKey    Returns true if key exists in the preferences.</p>
-</li>
-<li>GetFloat    Returns the value corresponding to key in the preference file if it exists.</li>
-<li>GetInt    Returns the value corresponding to key in the preference file if it exists.</li>
-<li><p>GetString    Returns the value corresponding to key in the preference file if it exists, return <strong>defaultValue</strong> if not.</p>
-</li>
-<li><p>Save    Writes all modified preferences to disk.</p>
-</li>
-<li>SetFloat    Sets the value of the preference identified by key.</li>
-<li>SetInt    Sets the value of the preference identified by key.</li>
-<li>SetString    Sets the value of the preference identified by key.</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/10/05/Unity-SceneManager/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/05/Unity-SceneManager/" itemprop="url">Unity-SceneManager</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-05T15:01:56+08:00">
-                2016-10-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  173
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Scene management at run-time.</p>
-<h4 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h4><ul>
-<li>sceneCount    The total number of currently loaded scenes.</li>
-<li>sceneCountInBuildSettings    Number of scenes in Build Settings.</li>
-</ul>
-<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><h6 id="Get"><a href="#Get" class="headerlink" title="Get"></a>Get</h6><ul>
-<li>GetActiveScene    Gets the currently active scene.</li>
-<li>GetSceneAt    Get the scene at index in the SceneManager’s list of added scenes.</li>
-<li>GetSceneByBuildIndex    Get a scene struct from a build index.</li>
-<li>GetSceneByName    Searches through the scenes added to the SceneManager for a scene with the given name.</li>
-<li>GetSceneByPath    Searches all scenes added to the SceneManager for a scene that has the given asset path.<h6 id="Load"><a href="#Load" class="headerlink" title="Load"></a>Load</h6></li>
-<li>LoadScene    Loads the scene by its name or index in Build Settings.</li>
-<li>LoadSceneAsync    Loads the scene asynchronously in the background.</li>
-<li>UnloadSceneAsync    Destroyes all GameObjects associated with the given scene and removes the scene from the SceneManager.<h6 id="Create"><a href="#Create" class="headerlink" title="Create"></a>Create</h6></li>
-<li>CreateScene    Create an empty new scene at runtime with the given name.</li>
-<li>SetActiveScene    Set the scene to be active.</li>
-<li>MergeScenes    This will merge the source scene into the destinationScene.</li>
-<li>MoveGameObjectToScene    Move a GameObject from its current scene to a new Scene. <h6 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h6>  // restart current scene<br>  SceneManager.LoadScene (SceneManager.GetActiveScene ().name);</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/27/Unity-Collision/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/09/27/Unity-Collision/" itemprop="url">Unity-Collision</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-27T10:55:43+08:00">
-                2016-09-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  116
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="碰撞"><a href="#碰撞" class="headerlink" title="碰撞"></a>碰撞</h4><p>物体发生碰撞的条件</p>
-<ul>
-<li>两个物体都必须有碰撞器(Collider)</li>
-<li>至少一个物体有刚体(Rigidbody)</li>
-</ul>
-<p>两个物体都不勾选isTrigger，进入OnCollisionEnter<br>两个物体中至少有一个勾选isTrigger，进入OnTriggerEnter，不进入OnCollisionEnter</p>
-<h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><h4 id="触发-is-Trigger"><a href="#触发-is-Trigger" class="headerlink" title="触发(is Trigger)"></a>触发(is Trigger)</h4><ul>
-<li>OnTriggerEnter(Collider collider)</li>
-<li>OnTriggerExit(Collider collider)</li>
-<li>OnTriggerStay(Collider collider)</li>
-</ul>
-<h4 id="碰撞-1"><a href="#碰撞-1" class="headerlink" title="碰撞"></a>碰撞</h4><ul>
-<li>OnCollisionEnter(Collision collision)</li>
-<li>OnCollisionExit(Collision collision)</li>
-<li>OnCollisionStay(Collision collision)</li>
-</ul>
-<h4 id="Collision"><a href="#Collision" class="headerlink" title="Collision"></a>Collision</h4><ul>
-<li>collider: the collider we hit</li>
-<li>contacts: contact points</li>
-<li>gameObject</li>
-<li>impulse</li>
-<li>relativeVelocity</li>
-<li>rigidbody: the rigidbody we hit. null if the collider has no rigidbody attached.</li>
-<li>transform</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/20/Unity-Gizmos/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/09/20/Unity-Gizmos/" itemprop="url">Unity-Gizmos</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-20T16:30:58+08:00">
-                2016-09-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  516
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Gizmos用于在场景中给出一个可视化的调试或辅助设置。所有的Gizmos绘制在脚本的OnDrawGizmos或OnDrawGizmosSelected中完成。<br>OnDrawGizmos在每一帧被调用。<br>OnDrawGizmosSelected在被选中时调用。</p>
-<h4 id="类变量"><a href="#类变量" class="headerlink" title="类变量"></a>类变量</h4><ul>
-<li>static var color : Color    //    描述：设置下次绘制的Gizmos的颜色。</li>
-</ul>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function">function <span class="title">OnDrawGizmosSelected</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	Gizmos.color = Color.red;   </span><br><span class="line">	<span class="keyword">var</span> direction = transform.TransformDirection(Vector3.forward) * <span class="number">5</span>;  <span class="comment">//    在物体的前方绘制一个5米长的线</span></span><br><span class="line">	Gizmos.DrawRay(transform.position, direction);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>-static var matrix : Matrix4x4    //    描述：设置用于渲染所有gizmos的矩阵。</p>
-<h4 id="类方法"><a href="#类方法" class="headerlink" title="类方法"></a>类方法</h4><ul>
-<li>Static function DrawCube(center:Vector3,size:Vector3):void    //    描述:用center和size绘制一个立方体.</li>
-</ul>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function">Function <span class="title">OnDrawGizmosSelected</span>(<span class="params"></span>)</span>&#123;      </span><br><span class="line">    Gizmos.color=Color(<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">5</span>);    <span class="comment">//    在变换位置处绘制一个变透明的蓝色立方体</span></span><br><span class="line">    Gizmos.DrawCube(transform.position,Vector3(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/09/20/Unity-Gizmos/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/13/Unity-Vector/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/09/13/Unity-Vector/" itemprop="url">Unity-Vector</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-13T16:59:28+08:00">
-                2016-09-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  310
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Dot-点积"><a href="#Dot-点积" class="headerlink" title="Dot 点积"></a>Dot 点积</h4><pre><code>u.v = |u||v|cos&lt;u,v&gt; = ux * vx + uy * vy，得到标量
-</code></pre><p>在计算机图形学和游戏编程中，点积的重要用途之一是计算向量在给定方向上的分量(投影)。</p>
-<pre><code>Proj u = (u.v) * v / (|v|*|v|)
-</code></pre><p>另外用于计算夹角<br>点积大于0则两个向量的夹角小于90度,锐角; 点积等于0，直角; 点积小于0,钝角</p>
-<pre><code>Vector3 a = new Vector3(1,1,1);
-Vector3 b = enw Vector3(1,5,1);
-
-float result = Vector3.Dot(a,b);
-float angle = Vector3.Angle(a,b); //夹角，返回[0 - 180]
-</code></pre><h4 id="Cross-叉积"><a href="#Cross-叉积" class="headerlink" title="Cross 叉积"></a>Cross 叉积</h4><p>仅当向量包含3个或更多分量时，叉积才有意义。</p>
-<pre><code>u*v = |u|*|v|*sin&lt;u,v&gt; * n
-</code></pre><p>其中n是uv平面的单位法向量。<br>实际应用中，使用矩形形式计算单位法向量n，很少直接使用叉积。</p>
-<pre><code>// c = a x b，得到向量，向量的模为 |c| = |a||b|sin&lt;a,b&gt;，且向量c垂直于a、b组成的平面，a x b = - b x a(左/右手定则?)
-Vector3 c = Vector3.Cross(a,b);
-
-// 判断顺时针、逆时针方向，指定XZ平面，考察叉积的Y轴分量
-if (c.y &gt; 0)
-{ ... }
-
-// 返回夹角，给angle标明方向
-float sign = Mathf.Sign(Vector3.Dot(c.normalized, Vector3.Cross(a.normalized, b.normalized)));
-float signed_angle = angle * sign;
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1798,7 +1759,7 @@ float signed_angle = angle * sign;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">194</span>
+                  <span class="site-state-item-count">200</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1811,7 +1772,7 @@ float signed_angle = angle * sign;
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1900,7 +1861,7 @@ float signed_angle = angle * sign;
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">65.1k</span>
+    <span title="Site words total count">66.4k</span>
   
 </div>
 

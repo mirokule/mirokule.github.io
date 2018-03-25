@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="使用pandas.get_dummies()可以对离散特征进行one-hot编码。 离散特征的编码分为两种情况：  没有大小意义，比如color:{red, blue, green}，使用one-hot编码 有大小意义，比如size:{X, XL, XXL}，使用数值映射{X:1, XL:2, XXL:3}  import pandas as pddf = pd.DataFrame([...])d">
+<meta name="description" content="使用pandas.get_dummies()可以对用字符标识的离散特征进行one-hot编码。只能处理字符类别，不能处理以数字标识的类别 离散特征的编码分为两种情况：  没有大小意义，比如color:{red, blue, green}，使用one-hot编码 有大小意义，比如size:{X, XL, XXL}，使用map映射{X:1, XL:2, XXL:3}  import pandas as">
 <meta name="keywords" content="Python,pandas">
 <meta property="og:type" content="article">
 <meta property="og:title" content="pandas.get_dummies">
 <meta property="og:url" content="http://mirokule.github.io/2018/03/14/Python-pandas-GetDummies/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="使用pandas.get_dummies()可以对离散特征进行one-hot编码。 离散特征的编码分为两种情况：  没有大小意义，比如color:{red, blue, green}，使用one-hot编码 有大小意义，比如size:{X, XL, XXL}，使用数值映射{X:1, XL:2, XXL:3}  import pandas as pddf = pd.DataFrame([...])d">
+<meta property="og:description" content="使用pandas.get_dummies()可以对用字符标识的离散特征进行one-hot编码。只能处理字符类别，不能处理以数字标识的类别 离散特征的编码分为两种情况：  没有大小意义，比如color:{red, blue, green}，使用one-hot编码 有大小意义，比如size:{X, XL, XXL}，使用map映射{X:1, XL:2, XXL:3}  import pandas as">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-14T05:53:16.047Z">
+<meta property="og:updated_time" content="2018-03-21T03:42:34.238Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pandas.get_dummies">
-<meta name="twitter:description" content="使用pandas.get_dummies()可以对离散特征进行one-hot编码。 离散特征的编码分为两种情况：  没有大小意义，比如color:{red, blue, green}，使用one-hot编码 有大小意义，比如size:{X, XL, XXL}，使用数值映射{X:1, XL:2, XXL:3}  import pandas as pddf = pd.DataFrame([...])d">
+<meta name="twitter:description" content="使用pandas.get_dummies()可以对用字符标识的离散特征进行one-hot编码。只能处理字符类别，不能处理以数字标识的类别 离散特征的编码分为两种情况：  没有大小意义，比如color:{red, blue, green}，使用one-hot编码 有大小意义，比如size:{X, XL, XXL}，使用map映射{X:1, XL:2, XXL:3}  import pandas as">
 
 
 
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  243
+                  268
                 </span>
               
 
@@ -349,11 +349,11 @@
       
 
       
-        <p>使用pandas.get_dummies()可以对离散特征进行one-hot编码。</p>
+        <p>使用pandas.get_dummies()可以对用字符标识的离散特征进行one-hot编码。<br><strong>只能处理字符类别，不能处理以数字标识的类别</strong></p>
 <p>离散特征的编码分为两种情况：</p>
 <ul>
 <li>没有大小意义，比如color:{red, blue, green}，使用one-hot编码</li>
-<li>有大小意义，比如size:{X, XL, XXL}，使用数值映射{X:1, XL:2, XXL:3}</li>
+<li>有大小意义，比如size:{X, XL, XXL}，使用map映射{X:1, XL:2, XXL:3}</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">df = pd.DataFrame([...])</span><br><span class="line">df.columns = [<span class="string">'color'</span>, <span class="string">'size'</span>, <span class="string">'prize'</span>, <span class="string">'class label'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># map</span></span><br><span class="line">size_mapping = &#123;<span class="string">'X'</span>:<span class="number">1</span>, <span class="string">'XL'</span>:<span class="number">2</span>, <span class="string">'XXL'</span>:<span class="number">3</span>&#125;</span><br><span class="line">df[<span class="string">'size'</span>] = df[<span class="string">'size'</span>].map(size_mapping)</span><br><span class="line"></span><br><span class="line"><span class="comment"># one-hot</span></span><br><span class="line">pd.get_dummies(df)</span><br></pre></td></tr></table></figure>
 <h4 id="pandas-get-dummies"><a href="#pandas-get-dummies" class="headerlink" title="pandas.get_dummies"></a>pandas.get_dummies</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pandas.get_dummies(data, prefix=<span class="keyword">None</span>, prefix_sep=<span class="string">'_'</span>, dummy_na=<span class="keyword">False</span>, columns=<span class="keyword">None</span>, sparse=<span class="keyword">False</span>, drop_first=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
@@ -497,7 +497,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">194</span>
+                  <span class="site-state-item-count">200</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -510,7 +510,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -615,7 +615,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">65.1k</span>
+    <span title="Site words total count">66.4k</span>
   
 </div>
 

@@ -262,6 +262,962 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-FeatureEngineering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/ML-FeatureEngineering/" itemprop="url">特征工程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T09:39:47+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  498
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>对输入特征的处理可大致分为：</p>
+<ol>
+<li>特征修补</li>
+<li>特征变换</li>
+<li>特征生成</li>
+</ol>
+<h4 id="1-特征修补"><a href="#1-特征修补" class="headerlink" title="1.特征修补"></a>1.特征修补</h4><p>主要处理数据中的缺失和错误，包括</p>
+<ul>
+<li>重复(Duplicated)：删除重复记录</li>
+<li>异常(Outliers)：删除异常点</li>
+<li>缺失(Missing)：删除或修补缺失字段</li>
+</ul>
+<h4 id="2-特征变换"><a href="#2-特征变换" class="headerlink" title="2.特征变换"></a>2.特征变换</h4><p>处理连续数字、以数字或字符表示的类别字段等。</p>
+<h6 id="类别"><a href="#类别" class="headerlink" title="类别"></a>类别</h6><table>
+<thead>
+<tr>
+<th style="text-align:center">类别字段</th>
+<th style="text-align:center">有大小</th>
+<th style="text-align:center">无大小</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">数字类别</td>
+<td style="text-align:center">保持有序编码，LabelEncoder</td>
+<td style="text-align:center">转为字符类型，one-hot编码</td>
+</tr>
+<tr>
+<td style="text-align:center">字符类别</td>
+<td style="text-align:center">手动映射为有序数字，map</td>
+<td style="text-align:center">one-hot编码,get_dummies</td>
+</tr>
+</tbody>
+</table>
+<p>数字和字符的区别在于，数字可以比较大小，引入有序的信息，会被模型利用。<br>因而有序的字符类别(如L, XL, XXL)实际蕴含的信息是如(2,3,4)的数字;<br>无序的数字类别(如房型20,30,40)实际蕴含的信息是如(A,B,C)的字符。<br>二值(T/N)是一种特殊的类别，视为有序或无序皆可。</p>
+<h6 id="连续数字"><a href="#连续数字" class="headerlink" title="连续数字"></a>连续数字</h6><p>检查偏度，不符合正态分布的，尽量转为正态分布(为了使残差满足正态分布?)<br>转换手段包括但不限于：</p>
+<ul>
+<li>取Log：适合正偏(右侧长尾)</li>
+<li>box-cox变换等: 要求输入为正数，不适用值较少的数字类别</li>
+</ul>
+<h3 id="3-特征生成"><a href="#3-特征生成" class="headerlink" title="3.特征生成"></a>3.特征生成</h3><p>通过特征之间的组合，得到新的特征：</p>
+<ul>
+<li>线性组合：$x_i + x_j + x_k$</li>
+<li>特征相乘：$x_i * x_j$</li>
+<li>特征乘方：$x_i^2$</li>
+</ul>
+<h4 id="Scaling-and-Normalization"><a href="#Scaling-and-Normalization" class="headerlink" title="Scaling and Normalization"></a>Scaling and Normalization</h4><p>Feature Scaling: Make sure features are on a similar scale.</p>
+<p>$$ x_i := \frac{x_i}{s_i} $$</p>
+<p>Mean Normalization: Replace $x_i$ with $x_i-\mu_i$ to make features have approximately zero means</p>
+<p>$$ x_i := \frac{x_i-\mu_i}{s_i} $$</p>
+<ul>
+<li>$\mu_i$ Average of all the values for feature(i)</li>
+<li>$s_i$ Range of values(max-min), or Standard Deviation</li>
+</ul>
+<p><strong>对结果的影响</strong></p>
+<ul>
+<li>Scaling是对X的列向量进行缩放，向量方向不变，X列向量张成的平面不变，y的投影不变，e不变，$\theta$改变</li>
+<li>Normalization改变了列向量方向，改变了平面、投影、误差？</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/Calculus-Integration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/11/Calculus-Integration/" itemprop="url">积分</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T12:31:44+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  489
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="The-Definite-Integral-as-a-Limit-of-Riemann-Sums"><a href="#The-Definite-Integral-as-a-Limit-of-Riemann-Sums" class="headerlink" title="The Definite Integral as a Limit of Riemann Sums"></a>The Definite Integral as a Limit of Riemann Sums</h4><p>$$ \lim_{n\rightarrow ∞} \sum_{k=1}^{n}f(c_{k})\Delta x = I = \int_{a}^{b} f(x)dx $$</p>
+<h4 id="Area-Under-a-Curve-as-a-Definite-Integral"><a href="#Area-Under-a-Curve-as-a-Definite-Integral" class="headerlink" title="Area Under a Curve as a Definite Integral"></a>Area Under a Curve as a Definite Integral</h4><p>If $y=f(x)$ is nonnegative and integrable over a closed interval $[a,b]$, then the <strong>area under the curve $y = f(x)$ over $[a,b]$</strong> is the integral of $f$ from $a$ to $b$</p>
+<p>$$ A = \int_{a}^{b} f(x)dx $$</p>
+<p>if $f$ and $g$ are continuous with $f(x)\geq g(x)$ throughout $[a,b]$, then the area of the region between the curves $y=f(x)$ and $y=g(x)$ from a to b is the integral of (f-g) from $a$ to $b$:</p>
+<p>$$ A = \int_{a}^{b} [f(x) - g(x)]dx $$</p>
+<h4 id="The-Average-of-Mean-Value-of-a-Function"><a href="#The-Average-of-Mean-Value-of-a-Function" class="headerlink" title="The Average of Mean Value of a Function"></a>The Average of Mean Value of a Function</h4><p>If $f$ is integrable on $[a,b]$, the its average value on $[a,b]$, also called its mean value, is</p>
+<p>$$ av(f) = \frac{1}{b-a}\int_{a}^{b} f(x)dx $$</p>
+<h4 id="Little-oh-and-Big-oh"><a href="#Little-oh-and-Big-oh" class="headerlink" title="Little-oh and Big-oh"></a>Little-oh and Big-oh</h4><p>A function $f$ is of small order than $g$ as $x\rightarrow ∞$ if $\lim_{x\rightarrow ∞} \frac{f(x)}{g(x)} = 0$.</p>
+<p>We indicate this by writing $f=o(g)$ (“f is little-oh of g”)</p>
+<p>$f$ is of at most the order of $g$ as $x\rightarrow ∞$ if there is a positive integer $M$ for which</p>
+<p>$$ \frac{f(x)}{g(x)} \leq M $$</p>
+<p>for $x$ sufficiently large. We indicate this by writing $f=O(g)$ (“f is big-oh of g”)</p>
+<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Existence-of-Definite-Integrals"><a href="#The-Existence-of-Definite-Integrals" class="headerlink" title="The Existence of Definite Integrals"></a>The Existence of Definite Integrals</h4><p>A continuous function is integrable. That is, if a function $f$ is continuous on an interval $[a,b]$, then its definite integral over $[a,b]$ exists.</p>
+<p>连续则可积，不要求可导。</p>
+<h4 id="The-Mean-Value-Theorem-for-Definite-Integrals"><a href="#The-Mean-Value-Theorem-for-Definite-Integrals" class="headerlink" title="The Mean Value Theorem for Definite Integrals"></a>The Mean Value Theorem for Definite Integrals</h4><p>If $f$ is continuous on $[a,b]$, then at some point $c$ in $[a,b]$,</p>
+<p>$$ f(c) = \frac{1}{b-a} \int_{a}^{b} f(x)dx $$</p>
+<h4 id="The-Fundamental-Theorem-of-Calculus"><a href="#The-Fundamental-Theorem-of-Calculus" class="headerlink" title="The Fundamental Theorem of Calculus"></a>The Fundamental Theorem of Calculus</h4><p>If $f$ is continuous on $[a,b]$ then $F(x) = \int_{a}^{x} f(t)dt$ is continuous on $[a,b]$ and differentiable on $(a,b)$ and its derivative is $f(x)$</p>
+<p>$$ F’(x) = \frac{d}{dx} \int_{a}^{x} f(t)dt = f(x) $$</p>
+<p>If $f$ is continuous at every point of $[a,b]$ and $F$ is any antiderivative of $f$ on [a,b], then</p>
+<p>$$ \int_{a}^{b} f(x)dx = F(b) - F(a) $$</p>
+<h4 id="The-Substitution-Rule"><a href="#The-Substitution-Rule" class="headerlink" title="The Substitution Rule"></a>The Substitution Rule</h4><p>If $u=g(x)$ is a differentiable function whose range is an interval $I$ and $f$ is continuous on $I$, then</p>
+<p>$$ \int f(g(x))g’(x)dx = \int f(u)du $$</p>
+<p>If $g’$ is continuous on the interval $[a,b]$ and $f$ is continuous on the range of $g$, then </p>
+<p>$$ \int_{a}^{b} f(g(x)) \cdot g’(x)dx = \int_{g(a)}^{g(b)} f(u)du $$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/ML-GDA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/11/ML-GDA/" itemprop="url">梯度下降法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T09:38:33+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  284
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="梯度下降法-Gradient-Descent-Algorithm"><a href="#梯度下降法-Gradient-Descent-Algorithm" class="headerlink" title="梯度下降法(Gradient Descent Algorithm)"></a>梯度下降法(Gradient Descent Algorithm)</h4><p><img src="/img/GDA.png" alter="GDA"></p>
+<p>repeat until convergence {</p>
+<p>$$ \theta_{j} := \theta_{j} - \alpha \frac{\partial}{\partial\theta_{j}}J(\theta_{0}, \theta_{1}) $$</p>
+<p>(for j = 0 and j = 1)}(Batch Gradient Descent)</p>
+<p><strong>说明</strong></p>
+<ul>
+<li>$\alpha$ 学习速率(Leaning Rate)，迭代的步长，太小收敛慢，太大可能导致在最优解附近来回波动</li>
+<li>收敛到的局部最优解不一定是全局最优解，但对于最小二乘法的弓型损失函数来说唯一的局部最优解就是全局最优解</li>
+</ul>
+<p><strong>种类</strong></p>
+<ul>
+<li>Batch Gradient Descent: 每次迭代使用全部m个样本，最优梯度方向，计算开销大，可以使用mapreduce</li>
+<li>Stochastic Gradient Descent: 每次迭代使用1个样本，随机梯度方向，适合大样本，需要将输入数据shuffle</li>
+<li>Mini-batch Gradient Descent: 每次迭代使用b个(2~100)样本</li>
+<li>Online Learning: 每次迭代使用1个样本，学习后丢弃样本，适合数据流，模型会跟随输入数据的趋势改变</li>
+</ul>
+<p><strong>判断收敛</strong></p>
+<ul>
+<li>Batch: 观察$J_{train}(\theta)$, 每次跌代后是否变小</li>
+<li>Stochastic: 观察$Cost=\frac{1}{2}(h_{\theta}(x^{(i)})-y^{(i)})^2$均值，每k次迭代后是否变小</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/06/Calculus-NewtonMethod/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/06/Calculus-NewtonMethod/" itemprop="url">牛顿法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T11:25:22+08:00">
+                2018-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  83
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Procedure-for-Newton’s-Method"><a href="#Procedure-for-Newton’s-Method" class="headerlink" title="Procedure for Newton’s Method"></a>Procedure for Newton’s Method</h4><ol>
+<li><p>Guess a first approximation to a solution of the equation $f(x)=0$.</p>
+</li>
+<li><p>Use the first approximation to get a second, the second to get a third, and so on, using the formula</p>
+</li>
+</ol>
+<p>$$ x_{n+1} = x_{n} - \frac{f(x_{n})}{f’{x_{n}}} $$</p>
+<p>if $f’(x_{n}) \neq 0$</p>
+<p><img src="/img/newton.png" alt="Newton"></p>
+<ul>
+<li>Newton’s method does not always converge</li>
+<li>When Newton’s method converges to a root, it may not be the root you have in mind</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/06/ML-Tensorflow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/06/ML-Tensorflow/" itemprop="url">Tensorflow</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T09:58:28+08:00">
+                2018-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  284
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.使用Tensorflow输出一句话：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化常亮字符串</span></span><br><span class="line">greeting = tf.constant(<span class="string">'Hello!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动会话并执行</span></span><br><span class="line">session = tf.Session()</span><br><span class="line">result = sess.run(greeting)</span><br><span class="line"><span class="keyword">print</span> result</span><br><span class="line">sess.close()</span><br></pre></td></tr></table></figure>
+<p>2.线性函数计算：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">matrix1 = tf.constant([[<span class="number">3.</span>, <span class="number">3.</span>]])</span><br><span class="line">matrix2 = tf.constant([[<span class="number">2.</span>],[<span class="number">2.</span>]])</span><br><span class="line"></span><br><span class="line">product = tf.matmul(maxtrx1, matrix2)</span><br><span class="line">linear = tf.add(product, tf.constant(<span class="number">2.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">	result = sess.run(linear)</span><br><span class="line">	<span class="keyword">print</span> result</span><br></pre></td></tr></table></figure>
+<p>3.自定义线性分类器</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义变量并设定初始值</span></span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">1</span>]))</span><br><span class="line">W = tf.Variable(tf.random_uniform([<span class="number">1</span>,<span class="number">2</span>],<span class="number">-1.0</span>,<span class="number">1.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义目标函数、损失函数</span></span><br><span class="line">y = tf.matmul(W, X_train) + b</span><br><span class="line">loss = tf.reduce_mean(tf.square(y - y_train))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用梯度下降法估计参数，设定步长为0.01</span></span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(<span class="number">0.01</span>)</span><br><span class="line">train = optimizer.minimize(loss)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化所有变量</span></span><br><span class="line">init = tf.initialize_all_variables()</span><br><span class="line">sess = tf.Session()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 迭代训练参数</span></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> srange(<span class="number">0</span>,<span class="number">1000</span>):</span><br><span class="line">	sess.run(train)</span><br><span class="line">	<span class="keyword">if</span> step %<span class="number">200</span> == <span class="number">0</span>:</span><br><span class="line">		<span class="keyword">print</span> step, sess.run(W), sess.run(b)</span><br></pre></td></tr></table></figure>
+<p>4.skflow工具包是对Tensorflow进一步的封装，以求与Scikit-learn使用类似的接口。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> skflow</span><br><span class="line"></span><br><span class="line">tf_lr = skflow.TensorFlowLinearRegressor(steps=<span class="number">10000</span>, learning_rate=<span class="number">0.01</span>, batch_size=<span class="number">50</span>)</span><br><span class="line">tf_lr.fit(X_train, y_train)</span><br><span class="line">tf_lr_y_predict = tf_lr.predict(X_test)</span><br><span class="line"></span><br><span class="line">tf_dnn_regressor - skflow.TensorFlowDNNRegressor(hidden_units=[<span class="number">100</span>,<span class="number">40</span>], steps=<span class="number">10000</span>, learning_rate=<span class="number">0.01</span>, batch_size=<span class="number">50</span>)</span><br><span class="line">tf_dnn_regressor.fit(X_train, y_train)</span><br><span class="line">tf_dnn_regressor_y_predict = tf_dnn_regressor.predict(X_test)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/03/ML-XGBoost/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/03/ML-XGBoost/" itemprop="url">XGBoost</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-03T10:27:59+08:00">
+                2018-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  78
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>提升(Boost)分类器的思路是通过不断迭代，每次迭代生成一棵新的树；将成百上千的树模型组合起来。 </p>
+<p>XGBoost的全称是 eXtreme Gradient Boosting.<br>XGBoost最大的特点在于能够自动利用CPU的多线程并行。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> xgboost <span class="keyword">import</span> XGBClassifier</span><br><span class="line">xgbc = XGBClassifier()</span><br><span class="line">xgbc.fit(X_train, y_train)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/02/ML-PCA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -851,911 +1807,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/30/Calculus-Limit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/30/Calculus-Limit/" itemprop="url">极限</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-30T09:57:51+08:00">
-                2017-12-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  534
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Limit-of-a-Function"><a href="#Limit-of-a-Function" class="headerlink" title="Limit of a Function"></a>Limit of a Function</h4><p>Let $f(x)$ be defined on an open interval about $x_{0}$, except possibly at $x_{0}$ itself. We say that the <strong>limit of $f(x)$ as $x$ approaches $x_{0}$ is the number $L$ </strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $\delta &gt; 0$ such that for all x,</p>
-<p>$$ 0 &lt; \left | x - x_{0} \right | &lt; \delta \Rightarrow \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>对任意小的正数 $\epsilon$，都可以找到一个区间，在这个区间内 $\left | f(x) - L \right | &lt; \epsilon $</p>
-<p>由定义可以证明加法律、乘法律等运算规则。</p>
-<h4 id="One-Sided-Limits"><a href="#One-Sided-Limits" class="headerlink" title="One-Sided Limits"></a>One-Sided Limits</h4><p>1.We say that $f(x)$ has <strong>right-hand limit $L$ at $x_{0}$</strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}^{+}} f(x) = L $$</p>
-<p>if for every number $\epsilon &gt; 0$ there exists a corresponding number $\delta &gt; 0$ such that for all x</p>
-<p>$$ x_{0} &lt; x &lt; x_{0} + \delta \Rightarrow \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>2.We say that $f(x)$ has <strong>left-hand limit $L$ at $x_{0}$</strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}^{-}} f(x) = L $$</p>
-<p>if for every number $\epsilon &gt; 0$ there exists a corresponding number $\delta &gt; 0$ such that for all x</p>
-<p>$$ x_{0} - \delta &lt; x &lt; x_{0}   \Rightarrow   \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>3.当左右极限相等时，在该点有函数极限。</p>
-<p>A function $f(x)$ has a limit as $x$ approaches $c$ if and only if it has left-hand and right-hand limits there and these one-sided limits are equal:</p>
-<p>$$ \lim_{x\rightarrow c} f(x) = L \Leftrightarrow \lim_{x\rightarrow c^{-}} f(x) = L \; and \; \lim{x\rightarrow c^{+}} f(x) = L $$</p>
-<h4 id="Limit-as-x-approaches-∞-or-∞"><a href="#Limit-as-x-approaches-∞-or-∞" class="headerlink" title="Limit as x approaches ∞ or -∞"></a>Limit as x approaches ∞ or -∞</h4><ol>
-<li>We say that $f(x)$ has the <strong>limit $L$ as $x$ approaches infinity</strong> and write</li>
-</ol>
-<p>$$ \lim_{x\rightarrow ∞} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $M$ such that for all $x$</p>
-<p>$$ x &gt; M \Rightarrow \left |f(x) - L \right | &lt; \epsilon $$</p>
-<p>对任意小的正数$\epsilon$，都可以找到区间$(M, ∞)$，在这个区间内 $\left |f(x) - L \right | &lt; \epsilon$</p>
-<ol>
-<li>We say that $f(x)$ has the <strong>limit $L$ as $x$ approaches minus infinity</strong> and write</li>
-</ol>
-<p>$$ \lim_{x\rightarrow -∞} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $N$ such that for all $x$</p>
-<p>$$ x &lt; N \Rightarrow \left |f(x) - L \right | &lt; \epsilon $$</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Sandwich-Theorem-夹逼定理"><a href="#The-Sandwich-Theorem-夹逼定理" class="headerlink" title="The Sandwich Theorem(夹逼定理)"></a>The Sandwich Theorem(夹逼定理)</h4><p>Suppose that $g(x)\leqslant f(x)\leqslant h(x)$ for all $x$ in some open interval containing $c$, except possibly at $x = c$ itself. Suppose also that</p>
-<p>$$\lim_{x\rightarrow c} g(x) = \lim_{x\rightarrow c} h(x) = L$$</p>
-<p>Then $\lim_{x\rightarrow c} f(x) = L$</p>
-<h4 id="函数-frac-sin-theta-theta"><a href="#函数-frac-sin-theta-theta" class="headerlink" title="函数$\frac{sin\theta}{\theta}$"></a>函数$\frac{sin\theta}{\theta}$</h4><p>$$ \lim_{\theta\rightarrow 0}\frac{sin\theta}{\theta} = 1    (\theta \, in \, radians) $$</p>
-<p>因为 $ cos\theta &lt; \frac{sin\theta}{\theta} &lt; 1$，由夹逼定理可证。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/29/ML-LinearRegression/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/29/ML-LinearRegression/" itemprop="url">线性回归</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T10:19:17+08:00">
-                2017-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  237
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Boston房价预测"><a href="#Boston房价预测" class="headerlink" title="Boston房价预测"></a>Boston房价预测</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_boston</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> SGDRegressor</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> r2_score, mean_square_error, mean_absolute_error</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入数据</span></span><br><span class="line">boston = load_boston()</span><br><span class="line">X = boston.data</span><br><span class="line">y = boston.target</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=<span class="number">33</span>, test_size=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化，由于y不再是0和1，也需要标准化</span></span><br><span class="line">ss_X = StandardScaler()</span><br><span class="line">ss_y = StandardScaler()</span><br><span class="line">X_train = ss_X.fit_transform(X_train)</span><br><span class="line">X_test = ss_X.transform(X_test)</span><br><span class="line">y_train = ss_y.fit_transform(y_train)</span><br><span class="line">y_test = ss_y.transform(y_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析法训练参数</span></span><br><span class="line">lr = LinearRegression()</span><br><span class="line">lr.fit(X_train, y_train)</span><br><span class="line">lr_y_predict = lr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度下降法训练参数</span></span><br><span class="line">sgdr = SGDRegressor()</span><br><span class="line">sgdr.fit(X_train, y_train)</span><br><span class="line">sgdr_y_predict = sgdr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">lr.score(X_test, y_test)</span><br><span class="line">r2_score(y_test, lr_y_predict)</span><br><span class="line">mean_square_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(lr_y_predict))</span><br><span class="line">mean_absolute_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(lr_y_predict))</span><br></pre></td></tr></table></figure>
-<p>随机梯度下降法训练出的模型，预测精度不如解析法(Normal Equation?)训练出的模型。<br>但是计算量小，消耗时间少。<br>根据Scikit-learn官网的建议，在数据规模超过10万时，推荐使用随机梯度法估计参数模型。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/29/ML-ModelAssemble/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/29/ML-ModelAssemble/" itemprop="url">模型集成</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T09:40:42+08:00">
-                2017-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  383
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>模型集成是通过使用多个模型，获得比单独模型更好的预测效果。</p>
-<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>集成方法有两种：</p>
-<ul>
-<li>并行：多个模型同步进行，通过投票的方式得出最终的分类决策。例如随机森林，同时搭建多棵决策树，每棵决策树随机选取特征作为节点。</li>
-<li>串行：按照一定次序搭建多个模型，模型间存在依赖关系。每一个后续模型的加入都需要对现有模型的性能提升有贡献。例如梯度提升决策树(Gradient Tree Boosting)</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 随机森林模型</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line">rfc = RandomForestClassifier()</span><br><span class="line">rfc.fit(X_train, y_train)</span><br><span class="line">rfc_y_pred = rfc.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度提升决策树</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingClassifier</span><br><span class="line">gbc = GradientBoostingClassfier()</span><br><span class="line">gbc.fit(X_train, y_train)</span><br><span class="line">gbc_y_pred = gbc.predict(X_test)</span><br></pre></td></tr></table></figure>
-<p>随机森林分类模型一般作为基线系统(Baseline System)，用于和其他模型的性能比较。<br>集成模型训练参数需要更多的时间，往往也有更好的性能和稳定性。</p>
-<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><p>与分类集成的思路相同。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 随机森林</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor</span><br><span class="line">rfr = RandomForestRegressor()</span><br><span class="line">rfr.fit(X_train, y_train)</span><br><span class="line">rfr_y_predict = rfr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 极端森林</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> ExtraTreesRegressor</span><br><span class="line">etr = ExtraTreesRegressor()</span><br><span class="line">etr.fit(X_train, y_train)</span><br><span class="line">etr_y_predict = etr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度提升</span></span><br><span class="line"><span class="comment"># **性能最佳**</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingRegressor</span><br><span class="line">gbr = GradientBoostingRegressor()</span><br><span class="line">gbr.fit(X_train, y_train)</span><br><span class="line">gbr_y_predict = gbr.predict(X_test)</span><br></pre></td></tr></table></figure>
-<p>极端随机森林(Extremely Randomized Trees)在构建每棵树的分裂节点时，先随机收集一部分特征，然后利用信息熵和基尼不纯性等指标挑选最佳的节点特征。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/28/ML-DecisioinTree/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/28/ML-DecisioinTree/" itemprop="url">决策树</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T14:22:31+08:00">
-                2017-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  441
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>使用不同特征组合搭建多层决策树，非线性模型。<br>考虑特征节点的选取顺序时，常用的度量方式包括信息熵(Information Gain)和基尼不纯性(Gini Impurity)。</p>
-<h4 id="泰坦尼克生还预测"><a href="#泰坦尼克生还预测" class="headerlink" title="泰坦尼克生还预测"></a>泰坦尼克生还预测</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_extraction <span class="keyword">import</span> DictVectorizer</span><br><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取数据</span></span><br><span class="line">titanic = pd.read_csv(<span class="string">"http:#biostat.mc.vanderbilt.edu/viki/pub/Main/DataSets/titanic.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 特征提取</span></span><br><span class="line">X = titanic[[<span class="string">'pclass'</span>,<span class="string">'age'</span>,<span class="string">'sex'</span>]]</span><br><span class="line">y = titanic[<span class="string">'survived'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 补充age列的缺失数据</span></span><br><span class="line">X[<span class="string">'age'</span>].fillna(X[<span class="string">'age'</span>].mean(), inplace=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将sex和pclass列的类别值转换为数值特征，用0/1代替</span></span><br><span class="line">vec = DictVectorizer(sparse=<span class="keyword">False</span>)</span><br><span class="line">X_train = vec.fit_transform(X_train.to_dict(orient=<span class="string">'record'</span>))</span><br><span class="line">X_test = vec.fit_transform(X_test.to_dict(orient=<span class="string">'record'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型并预测</span></span><br><span class="line">dtc = DecisionTreeClassifier()</span><br><span class="line">dtc.fit(X_train, y_train)</span><br><span class="line">y_predict = dtc.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">dtc.score(X_test, y_test)</span><br><span class="line">classification_report(y_predict, y_test, target_names=[<span class="string">'died'</span>,<span class="string">'survived'</span>])</span><br></pre></td></tr></table></figure>
-<p>决策树的推断逻辑非常直观，具有清晰的可解释性。<br>在使用时，无需将数据标准化。<br>决策树属于有参数模型，需要花费时间用于训练数据。</p>
-<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><p>回归树叶节点的数据类型不是离散型，而是连续型。<br>严格地讲，回归树不能称为“回归算法”，因为返回的是若干训练数据的均值，而不是连续值。</p>
-<h4 id="房价预测"><a href="#房价预测" class="headerlink" title="房价预测"></a>房价预测</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeRegressor</span><br><span class="line"></span><br><span class="line">dtr = DecisionTreeRegressor()</span><br><span class="line">dtr.fit(X_train, y_train)</span><br><span class="line">dtr_y_predict = dtr.predict(X_test)</span><br></pre></td></tr></table></figure>
-<h2 id="树模型总结"><a href="#树模型总结" class="headerlink" title="树模型总结"></a>树模型总结</h2><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
-<li>可以解决非线性问题</li>
-<li>不要求特征标准化</li>
-<li>决策过程直观，结果易解释</li>
-</ul>
-<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
-<li>容易过拟合</li>
-<li>稳定性差，数据的细微改变可能引起树结构的较大改变</li>
-<li>依托训练数据构建最佳的树模型是NP难问题，在有限时间内无法找到最优解</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/28/ML-KNN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/28/ML-KNN/" itemprop="url">k近邻</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T14:03:55+08:00">
-                2017-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  334
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>kNN(k Nearest Neighbour)寻找与待分类样本在特征空间中距离最近的K个已标记样本作为参考。</p>
-<h4 id="Iris花朵分类"><a href="#Iris花朵分类" class="headerlink" title="Iris花朵分类"></a>Iris花朵分类</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入数据</span></span><br><span class="line">iris = load_iris()</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化</span></span><br><span class="line">ss = StandardScaler()</span><br><span class="line">X_train = ss.fit_transform(X_train)</span><br><span class="line">X_test = ss.transform(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型并预测</span></span><br><span class="line">knc = KNeighborsClassifier()</span><br><span class="line">knc.fit(X_train, y_train)</span><br><span class="line">y_predict = knc.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">knc.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, y_predict, target_names=iris.target_names)</span><br></pre></td></tr></table></figure>
-<p>k近邻算法没有参数训练过程，属于无参数模型(Nonparametric Model)中非常简单的一种。<br>也就是说，并没有使用学习算法分析训练数据，而只是根据样本的分布直接作出分类决策。<br>由于需要对内存中的样本逐一计算距离，具有平方级的计算复杂度，内存消耗大。</p>
-<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><p>使用样本周围k个最近的训练样本的目标数值，得出预测值。<br>可以使用普通的算术平均算法，也可以考虑距离的差异进行加权平均。</p>
-<h4 id="预测房价"><a href="#预测房价" class="headerlink" title="预测房价"></a>预测房价</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbours <span class="keyword">import</span> KNeighborsRegressor</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用算术平均</span></span><br><span class="line">uni_knr = KNeighborsRegressor(weights=<span class="string">'uniform'</span>)</span><br><span class="line">uni_knr.fit(X_train, y_train)</span><br><span class="line">uni_knr_y_predict = uni_knr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用距离加权</span></span><br><span class="line">dis_knr = KNeighborsRegressor(weights=<span class="string">'distance'</span>)</span><br><span class="line">dis_knr.fit(X_train, y_train)</span><br><span class="line">dis_knr_y_predict = dis_knr.predict(X_test_)</span><br></pre></td></tr></table></figure>
-<p>与KNN分类一样，属于无参数模型。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/27/ML-NaiveBayes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/27/ML-NaiveBayes/" itemprop="url">朴素贝叶斯分类器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T14:33:15+08:00">
-                2017-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  478
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>朴素贝叶斯(Naive Bayes)分类器基于贝叶斯理论，不再有线性关系假设。</p>
-<p>$$P(y|\textbf{x}) = \frac{P(\textbf{x}|y)P(y)}{P(\textbf{x})}$$</p>
-<p>其中 $P(\textbf{x})$ 和 $P(y)$ 分别是特征值（单词）和类别（新闻分类）的先验概率，为固定值。<br>分类的依据取决于 $P(\textbf{x}|y)$.<br>因而引入基本<strong>数学假设</strong>：各个维度上的特征被分类的条件概率之间是相互独立的，即</p>
-<p>$$ P(\textbf{x}|y) = P(x_{1},x_{2},\cdot \cdot \cdot x_{n}|y) = P(x_{1}|y)P(x_{2}|y) \cdot \cdot \cdot P(x_{n}|y) $$</p>
-<p>问题转化为统计各个类别（新闻分类）里特征值（单词）的出现频率，即 $P(x_{i}|y)$</p>
-<p>朴素贝叶斯模型有着广泛的实际应用场景，特别是在文本分类的任务里，如互联网新闻分类、垃圾邮件筛选等。<br>在文本分类中，特征是文字而不是数字，不适合使用线性分类模型。</p>
-<h4 id="新闻分类"><a href="#新闻分类" class="headerlink" title="新闻分类"></a>新闻分类</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.dataset <span class="keyword">import</span> fetch_20newsgroups</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer</span><br><span class="line"><span class="keyword">from</span> sklearn.naive_bayes <span class="keyword">import</span> MultinomialNB</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用新闻样例数据</span></span><br><span class="line">news = fetch_20newsgroups(subset=<span class="string">'all'</span>)</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(news.data, news.target, test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 特征抽取，文本特征向量化</span></span><br><span class="line">vec = CountVectorizer()</span><br><span class="line">X_train = vec.fit_transfrom(X_train)</span><br><span class="line">X_test = vec.transform(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型并用于预测</span></span><br><span class="line">mnb = MultinomialNB()</span><br><span class="line">mnb.fit(X_train, y_train)</span><br><span class="line">y_predict = mnb.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">mnb.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, y_predict, target_names=news.target_names)</span><br></pre></td></tr></table></figure>
-<p>由于朴素贝叶斯较强的特征条件独立假设，使模型需要估计的参数规模从幂指数级向线性量级减少，极大地节约了内存消耗和计算时间。<br>同时，这种假设限制了将特征之间的关联考量在内，因而在特征关联性较强的分类任务里性能不佳。<br>朴素贝叶斯模型广泛应用于海量互联网文本分类任务。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1810,7 +1861,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">194</span>
+                  <span class="site-state-item-count">200</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1823,7 +1874,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1912,7 +1963,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">65.1k</span>
+    <span title="Site words total count">66.4k</span>
   
 </div>
 
