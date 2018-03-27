@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="数据转换# 将数据映射为其他值data[&apos;food&apos;].map(str.lower).map(meat_to_animal)data[&apos;food&apos;].map(lambda x: meat_to_animal[x.lower()])# 将轴标签映射为其他值data.index.map(str.upper)data.rename(index=&amp;#123;&apos;oldName&apos;:&apos;newName&apos;&amp;#125">
+<meta name="description" content="Series.MapSeries.map(arg, na_action=None)Map是Series特有的方法，DataFrame中没有。不在字典里的值将被转成NaN，或者_missing_中预设的值。 参数  arg: function, dict, or Series na_action: {None, ‘ignore’}，转换时是否忽略NA  返回  y: Series  实例x = pd">
 <meta name="keywords" content="Python,pandas">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Pandas数据转换">
+<meta property="og:title" content="Map, Apply">
 <meta property="og:url" content="http://mirokule.github.io/2018/02/06/Python-pandas-Map/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="数据转换# 将数据映射为其他值data[&apos;food&apos;].map(str.lower).map(meat_to_animal)data[&apos;food&apos;].map(lambda x: meat_to_animal[x.lower()])# 将轴标签映射为其他值data.index.map(str.upper)data.rename(index=&amp;#123;&apos;oldName&apos;:&apos;newName&apos;&amp;#125">
+<meta property="og:description" content="Series.MapSeries.map(arg, na_action=None)Map是Series特有的方法，DataFrame中没有。不在字典里的值将被转成NaN，或者_missing_中预设的值。 参数  arg: function, dict, or Series na_action: {None, ‘ignore’}，转换时是否忽略NA  返回  y: Series  实例x = pd">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-25T03:30:39.389Z">
+<meta property="og:updated_time" content="2018-03-26T02:35:41.995Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Pandas数据转换">
-<meta name="twitter:description" content="数据转换# 将数据映射为其他值data[&apos;food&apos;].map(str.lower).map(meat_to_animal)data[&apos;food&apos;].map(lambda x: meat_to_animal[x.lower()])# 将轴标签映射为其他值data.index.map(str.upper)data.rename(index=&amp;#123;&apos;oldName&apos;:&apos;newName&apos;&amp;#125">
+<meta name="twitter:title" content="Map, Apply">
+<meta name="twitter:description" content="Series.MapSeries.map(arg, na_action=None)Map是Series特有的方法，DataFrame中没有。不在字典里的值将被转成NaN，或者_missing_中预设的值。 参数  arg: function, dict, or Series na_action: {None, ‘ignore’}，转换时是否忽略NA  返回  y: Series  实例x = pd">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>Pandas数据转换 | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Map, Apply | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Pandas数据转换</h1>
+          <h1 class="post-title" itemprop="name headline">Map, Apply</h1>
         
 
         <div class="post-meta">
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  101
+                  473
                 </span>
               
 
@@ -349,7 +349,56 @@
       
 
       
-        <h4 id="数据转换"><a href="#数据转换" class="headerlink" title="数据转换"></a>数据转换</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将数据映射为其他值</span></span><br><span class="line">data[<span class="string">'food'</span>].map(str.lower).map(meat_to_animal)</span><br><span class="line">data[<span class="string">'food'</span>].map(<span class="keyword">lambda</span> x: meat_to_animal[x.lower()])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将轴标签映射为其他值</span></span><br><span class="line">data.index.map(str.upper)</span><br><span class="line">data.rename(index=&#123;<span class="string">'oldName'</span>:<span class="string">'newName'</span>&#125;, inplace=<span class="keyword">True</span>) <span class="comment">#就地生效</span></span><br><span class="line">data.rename(index=&#123;<span class="string">'o'</span>:<span class="string">'n'</span>&#125;,columns=&#123;<span class="string">'oo'</span>:<span class="string">'nn'</span>&#125;) <span class="comment">#复制数据并修改行列索引</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 填充缺失值</span></span><br><span class="line">data.fillna()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换值</span></span><br><span class="line">data.replace(<span class="number">-999</span>, np.nan)</span><br><span class="line">data.replace([<span class="number">-999</span>,<span class="number">-1000</span>], np.nan)</span><br><span class="line">data.replace([<span class="number">-999</span>,<span class="number">-1000</span>], [np.nan, <span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+        <h4 id="Series-Map"><a href="#Series-Map" class="headerlink" title="Series.Map"></a>Series.Map</h4><p>Series.map(arg, na_action=None)<br>Map是Series特有的方法，DataFrame中没有。<br>不在字典里的值将被转成NaN，或者_missing_中预设的值。</p>
+<p>参数</p>
+<ul>
+<li>arg: function, dict, or Series</li>
+<li>na_action: {None, ‘ignore’}，转换时是否忽略NA</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>y: Series</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], index=[<span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>]</span><br><span class="line">y = pd.Series([<span class="string">'foo'</span>,<span class="string">'bar'</span>,<span class="string">'baz'</span>], index=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">z = &#123;<span class="number">1</span>:<span class="string">'A'</span>, <span class="number">2</span>:<span class="string">'B'</span>, <span class="number">3</span>:<span class="string">'C'</span>&#125;</span><br><span class="line"></span><br><span class="line">x.map(y)</span><br><span class="line">x.map(z)</span><br><span class="line"></span><br><span class="line">s = pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,np.nan])</span><br><span class="line">s2 = s.map(<span class="string">'print: &#123;&#125;'</span>.format, na_action=<span class="string">'ignore'</span>) <span class="comment">#nan将不会被转换</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Series-apply"><a href="#Series-apply" class="headerlink" title="Series.apply"></a>Series.apply</h4><p>Series.apply(func, convert_dtype=True, args=(), **kwds)<br>在Series上应用函数，可以是NumPy ufunc(作用于整列)，也可以是Python function(作用于元素)。</p>
+<p>参数</p>
+<ul>
+<li>function: function</li>
+<li>convert_dtype: 默认True，寻找更好的dtype；若为False则dtype=object</li>
+<li>args: 传递给function的其他参数</li>
+<li>kwds: keyword参数</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>y</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 无参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">square</span><span class="params">(x)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> x**<span class="number">2</span></span><br><span class="line">series.apply(square)</span><br><span class="line">series.apply(<span class="keyword">lambda</span> x: x**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 有参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">subtract</span><span class="params">(x, custom_value)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> x - custom_value</span><br><span class="line">series.apply(subtract, args=(<span class="number">5</span>,))</span><br><span class="line"></span><br><span class="line"><span class="comment"># numpy ufunc</span></span><br><span class="line">series.apply(np.log)</span><br></pre></td></tr></table></figure></p>
+<h4 id="DataFrame-apply"><a href="#DataFrame-apply" class="headerlink" title="DataFrame.apply"></a>DataFrame.apply</h4><p>DataFrame.apply(func, axis=0, broadcast=False, raw=False, reduce=None, args=(), **kwds)<br>作用于行列</p>
+<p>参数</p>
+<ul>
+<li>func: function</li>
+<li>axis: 默认0，作用于每列；若为1则作用于每行</li>
+<li>broadcast: 默认False</li>
+<li>raw: 默认False，将每行列转为Series; 若为True则接受ndarray作为输入</li>
+<li>reduce</li>
+<li>args</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>applied</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.apply(np.sqrt)</span><br><span class="line">df.apply(np.sum, axis=<span class="number">0</span>)</span><br><span class="line">df.apply(np.sum, axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="DataFrame-applymap"><a href="#DataFrame-applymap" class="headerlink" title="DataFrame.applymap"></a>DataFrame.applymap</h4><p>DataFrame.applymap(func)<br>为每个元素传递函数变换，像作用于Series的Map函数一样。</p>
+<p>参数</p>
+<ul>
+<li>func: function</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>applied: DataFrame</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df = pd.DataFrame(np.random.randn(<span class="number">3</span>,<span class="number">3</span>))</span><br><span class="line">df = df.applymap(<span class="keyword">lambda</span> x: <span class="string">'%.2f'</span> % x) <span class="comment">#取小数点后两位</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="数据转换"><a href="#数据转换" class="headerlink" title="数据转换"></a>数据转换</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将数据映射为其他值</span></span><br><span class="line">data[<span class="string">'food'</span>].map(str.lower).map(meat_to_animal)</span><br><span class="line">data[<span class="string">'food'</span>].map(<span class="keyword">lambda</span> x: meat_to_animal[x.lower()])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将轴标签映射为其他值</span></span><br><span class="line">data.index.map(str.upper)</span><br><span class="line">data.rename(index=&#123;<span class="string">'oldName'</span>:<span class="string">'newName'</span>&#125;, inplace=<span class="keyword">True</span>) <span class="comment">#就地生效</span></span><br><span class="line">data.rename(index=&#123;<span class="string">'o'</span>:<span class="string">'n'</span>&#125;,columns=&#123;<span class="string">'oo'</span>:<span class="string">'nn'</span>&#125;) <span class="comment">#复制数据并修改行列索引</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换值</span></span><br><span class="line">data.replace(<span class="number">-999</span>, np.nan)</span><br><span class="line">data.replace([<span class="number">-999</span>,<span class="number">-1000</span>], np.nan)</span><br><span class="line">data.replace([<span class="number">-999</span>,<span class="number">-1000</span>], [np.nan, <span class="number">0</span>])</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -475,7 +524,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">200</span>
+                  <span class="site-state-item-count">203</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -559,7 +608,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据转换"><span class="nav-number">1.</span> <span class="nav-text">数据转换</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Series-Map"><span class="nav-number">1.</span> <span class="nav-text">Series.Map</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Series-apply"><span class="nav-number">2.</span> <span class="nav-text">Series.apply</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DataFrame-apply"><span class="nav-number">3.</span> <span class="nav-text">DataFrame.apply</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DataFrame-applymap"><span class="nav-number">4.</span> <span class="nav-text">DataFrame.applymap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据转换"><span class="nav-number">5.</span> <span class="nav-text">数据转换</span></a></li></ol></div>
             
 
           </div>
@@ -593,7 +642,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">66.4k</span>
+    <span title="Site words total count">68.0k</span>
   
 </div>
 

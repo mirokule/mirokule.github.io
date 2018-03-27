@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="如果模型验证和训练使用同一批数据，可能会过拟合，故应将训练集划分。  单一划分：train_test_split，会使训练样本数减少 交叉验证：k-fold等，将数据划分成k份，每次留一份验证，循环k次取平均值  单一划分1. train_test_split随机划分训练集和测试集。sklearn.model_selection.train_test_split(*arrays, **option">
+<meta name="description" content="如果模型验证和训练使用同一批数据，可能会过拟合，故应将训练集划分。  单一划分：train_test_split，会使训练样本数减少 交叉验证：k-fold等，将数据划分成k份，每次留一份验证，循环k次取平均值  交叉验证要素  划分方式：划分几份，KFold还是Shuffle 评价策略：score选择  单一划分1. train_test_splitsklearn.model_selection">
 <meta name="keywords" content="Python,sklearn">
 <meta property="og:type" content="article">
 <meta property="og:title" content="sklearn-CrossValidation">
 <meta property="og:url" content="http://mirokule.github.io/2018/03/03/Python-sklearn-CrossValidation/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="如果模型验证和训练使用同一批数据，可能会过拟合，故应将训练集划分。  单一划分：train_test_split，会使训练样本数减少 交叉验证：k-fold等，将数据划分成k份，每次留一份验证，循环k次取平均值  单一划分1. train_test_split随机划分训练集和测试集。sklearn.model_selection.train_test_split(*arrays, **option">
+<meta property="og:description" content="如果模型验证和训练使用同一批数据，可能会过拟合，故应将训练集划分。  单一划分：train_test_split，会使训练样本数减少 交叉验证：k-fold等，将数据划分成k份，每次留一份验证，循环k次取平均值  交叉验证要素  划分方式：划分几份，KFold还是Shuffle 评价策略：score选择  单一划分1. train_test_splitsklearn.model_selection">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-04T06:41:07.138Z">
+<meta property="og:updated_time" content="2018-03-26T03:15:30.966Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sklearn-CrossValidation">
-<meta name="twitter:description" content="如果模型验证和训练使用同一批数据，可能会过拟合，故应将训练集划分。  单一划分：train_test_split，会使训练样本数减少 交叉验证：k-fold等，将数据划分成k份，每次留一份验证，循环k次取平均值  单一划分1. train_test_split随机划分训练集和测试集。sklearn.model_selection.train_test_split(*arrays, **option">
+<meta name="twitter:description" content="如果模型验证和训练使用同一批数据，可能会过拟合，故应将训练集划分。  单一划分：train_test_split，会使训练样本数减少 交叉验证：k-fold等，将数据划分成k份，每次留一份验证，循环k次取平均值  交叉验证要素  划分方式：划分几份，KFold还是Shuffle 评价策略：score选择  单一划分1. train_test_splitsklearn.model_selection">
 
 
 
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  755
+                  819
                 </span>
               
 
@@ -354,7 +354,12 @@
 <li>单一划分：train_test_split，会使训练样本数减少</li>
 <li>交叉验证：k-fold等，将数据划分成k份，每次留一份验证，循环k次取平均值</li>
 </ul>
-<h2 id="单一划分"><a href="#单一划分" class="headerlink" title="单一划分"></a>单一划分</h2><h4 id="1-train-test-split"><a href="#1-train-test-split" class="headerlink" title="1. train_test_split"></a>1. train_test_split</h4><p>随机划分训练集和测试集。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sklearn.model_selection.train_test_split(*arrays, **options)</span><br></pre></td></tr></table></figure></p>
+<p>交叉验证要素</p>
+<ul>
+<li>划分方式：划分几份，KFold还是Shuffle</li>
+<li>评价策略：score选择</li>
+</ul>
+<h2 id="单一划分"><a href="#单一划分" class="headerlink" title="单一划分"></a>单一划分</h2><h4 id="1-train-test-split"><a href="#1-train-test-split" class="headerlink" title="1. train_test_split"></a>1. train_test_split</h4><p>sklearn.model_selection.train_test_split(<em>arrays, *</em>options)<br>随机划分训练集和测试集。</p>
 <p>参数：</p>
 <ul>
 <li>*arrays: 输入可以是list, ndarray, dataframe或者scipy-sparse matrices</li>
@@ -369,7 +374,11 @@
 <li>splitting: 划分后的list</li>
 </ul>
 <p>实例：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm</span><br><span class="line"></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(data, target, test_size=<span class="number">0.3</span>, random_state=<span class="number">0</span>)</span><br><span class="line">clf = svm.SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1</span>).fit(X_train, y_train)</span><br><span class="line">clf.score(X_test, y_test)</span><br></pre></td></tr></table></figure></p>
-<h2 id="交叉验证"><a href="#交叉验证" class="headerlink" title="交叉验证"></a>交叉验证</h2><h4 id="2-cross-val-score"><a href="#2-cross-val-score" class="headerlink" title="2. cross_val_score"></a>2. cross_val_score</h4><p>划分数据集，交叉验证并返回得分。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sklearn.model_selection.cross_val_score(estimator, X, y=<span class="keyword">None</span>, groups=<span class="keyword">None</span>, scoring=<span class="keyword">None</span>, cv=<span class="keyword">None</span>, n_jobs=<span class="number">1</span>, verbose=<span class="number">0</span>, fit_params=<span class="keyword">None</span>, pre_dispatch=<span class="string">'2*n_jobs'</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="交叉验证"><a href="#交叉验证" class="headerlink" title="交叉验证"></a>交叉验证</h2><h4 id="2-cross-val-score"><a href="#2-cross-val-score" class="headerlink" title="2. cross_val_score"></a>2. cross_val_score</h4><p>sklearn.model_selection.cross_val_score(estimator, X, y=None, groups=None, scoring=None, cv=None, n_jobs=1, verbose=0, fit_params=None, pre_dispatch=’2*n_jobs’)</p>
+<ul>
+<li>划分方式：cv为整数，默认KFold或StratifiedKFold划分;也可以令cv=其他划分方式</li>
+<li>评价策略：默认使用模型的score方法，也可以用scoring自定义</li>
+</ul>
 <p>参数：</p>
 <ul>
 <li>estimator: 模型</li>
@@ -385,16 +394,14 @@
 </ul>
 <p>返回：</p>
 <ul>
-<li>scores: 得分数组</li>
+<li>scores: 得分数组，长度等于划分次数</li>
 </ul>
-<p>实例：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score</span><br><span class="line"></span><br><span class="line">clf = svm.SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1</span>)</span><br><span class="line">scores = cross_val_score(clf, data, target, cv=<span class="number">5</span>) <span class="comment">#返回array</span></span><br><span class="line">print(<span class="string">"Accuracy: %0.2f"</span> %scores.mean())</span><br></pre></td></tr></table></figure></p>
-<p>cv为整数，默认KFold或StratifiedKFold划分。<br>每次循环时，调用模型clf的score方法，返回的结果作为scores的一个元素。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#更改score</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line">scores = cross_val_score(clf, data, target, cv=<span class="number">5</span>, scoring=<span class="string">'f1_macro'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#更改划分</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> ShuffleSplit</span><br><span class="line">cv = ShuffleSplit(n_splits=<span class="number">3</span>, test_size=<span class="number">0.3</span>, random_state=<span class="number">0</span>)</span><br><span class="line">scores = cross_val_score(clf, data, target, cv=cv)</span><br></pre></td></tr></table></figure></p>
-<h4 id="3-cross-validate"><a href="#3-cross-validate" class="headerlink" title="3. cross_validate"></a>3. cross_validate</h4><p>和cross_val_score有两点不同：</p>
+<p>实例：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score</span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认方式</span></span><br><span class="line">clf = svm.SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1</span>)</span><br><span class="line">scores = cross_val_score(clf, data, target, cv=<span class="number">5</span>) <span class="comment">#返回array</span></span><br><span class="line">print(<span class="string">"Accuracy: %0.2f"</span> %scores.mean())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更改score</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line">scores = cross_val_score(clf, data, target, cv=<span class="number">5</span>, scoring=<span class="string">'f1_macro'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更改划分</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> ShuffleSplit</span><br><span class="line">cv = ShuffleSplit(n_splits=<span class="number">3</span>, test_size=<span class="number">0.3</span>, random_state=<span class="number">0</span>)</span><br><span class="line">scores = cross_val_score(clf, data, target, cv=cv)</span><br></pre></td></tr></table></figure></p>
+<h4 id="3-cross-validate"><a href="#3-cross-validate" class="headerlink" title="3. cross_validate"></a>3. cross_validate</h4><p>sklearn.model_selection.cross_validate(estimator, X, y=None, groups=None, cv=None, n_jobs=1, verbose=0, fit_params=None, pre_dispatch=’2*n_jobs’, return_train_score=’warn’)<br>和cross_val_score有两点不同：</p>
 <ul>
-<li>允许在evaluation中使用多种metrics</li>
-<li>返回一个字典，而不单单是scores数组</li>
+<li>评分策略：允许在evaluation中使用多种metrics</li>
+<li>更多信息：返回一个包含更多评分信息的字典，而不单单是scores数组</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sklearn.model_selection.cross_validate(estimator, X, y=<span class="keyword">None</span>, groups=<span class="keyword">None</span>, cv=<span class="keyword">None</span>, n_jobs=<span class="number">1</span>, verbose=<span class="number">0</span>, fit_params=<span class="keyword">None</span>, pre_dispatch=<span class="string">'2*n_jobs'</span>, return_train_score=<span class="string">'warn'</span>)</span><br></pre></td></tr></table></figure>
 <p>参数：</p>
 <ul>
 <li>estimator, X, y, groups, cv, n_jobs, verbose, fit_params, pre_dispatch: 同上</li>
@@ -405,8 +412,8 @@
 <ul>
 <li>scores: 字典，键值包括{‘test_score’, ‘train_score’, ‘fit_time’, ‘score_time’}</li>
 </ul>
-<p>实例：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_validate</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> recall_score</span><br><span class="line">scoring = [<span class="string">'precision_macro'</span>, <span class="string">'recall_macro'</span>] <span class="comment">#定义两种metrics</span></span><br><span class="line">clf = svm.SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1</span>, random_state=<span class="number">0</span>)</span><br><span class="line">scores = cross_validate(clf, data, target, scoring=scoring, cv=<span class="number">5</span>, return_train_score=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回的scores是一个字典，每个value都是长度为cv的数组</span></span><br><span class="line">sorted(scores.kes())</span><br><span class="line">&gt;&gt; [<span class="string">'fit_time'</span>, <span class="string">'score_time'</span>, <span class="string">'test_precision_macro'</span>, <span class="string">'test_rec_micro'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 也可以自定义score</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics.scorer <span class="keyword">import</span> make_scorer</span><br><span class="line">scoring = &#123;<span class="string">'prec_macro'</span>: <span class="string">'precision_macro'</span>, <span class="string">'rec_micro'</span>: make_scorer(recall_score, average=<span class="string">'macro'</span>)&#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="4-cross-val-predict"><a href="#4-cross-val-predict" class="headerlink" title="4. cross_val_predict"></a>4. cross_val_predict</h4><p>返回测试集每个输入实例的预测结果，每个输入实例只能在测试集中使用一次。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sklearn.model_selection.cross_val_predict(estimator, X, y=<span class="keyword">None</span>, groups=<span class="keyword">None</span>, cv=<span class="keyword">None</span>, n_jobs=<span class="number">1</span>, verbose=<span class="number">0</span>, fit_params=<span class="keyword">None</span>, pre_dispatch=<span class="string">'2*n_jobs'</span>, method=<span class="string">'predict'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>实例：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_validate</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> recall_score</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以同时使用多种评分策略	</span></span><br><span class="line">scoring = [<span class="string">'precision_macro'</span>, <span class="string">'recall_macro'</span>] </span><br><span class="line">clf = svm.SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1</span>, random_state=<span class="number">0</span>)</span><br><span class="line">scores = cross_validate(clf, data, target, scoring=scoring, cv=<span class="number">5</span>, return_train_score=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 除了内置策略，也可以自定义scoring</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics.scorer <span class="keyword">import</span> make_scorer</span><br><span class="line">scoring = &#123;<span class="string">'prec_macro'</span>: <span class="string">'precision_macro'</span>, <span class="string">'rec_micro'</span>: make_scorer(recall_score, average=<span class="string">'macro'</span>)&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回的scores是一个字典，每个value都是长度为cv的数组</span></span><br><span class="line">sorted(scores.kes())</span><br><span class="line">&gt;&gt; [<span class="string">'fit_time'</span>, <span class="string">'score_time'</span>, <span class="string">'test_precision_macro'</span>, <span class="string">'test_rec_micro'</span>]]</span><br></pre></td></tr></table></figure></p>
+<h4 id="4-cross-val-predict"><a href="#4-cross-val-predict" class="headerlink" title="4. cross_val_predict"></a>4. cross_val_predict</h4><p>sklearn.model_selection.cross_val_predict(estimator, X, y=None, groups=None, cv=None, n_jobs=1, verbose=0, fit_params=None, pre_dispatch=’2*n_jobs’, method=’predict’)<br>返回测试集中每个输入实例的预测结果，每个输入实例只能在测试集中使用一次。</p>
 <p>参数：</p>
 <ul>
 <li>estimator, X, y, groups, cv, n_jobs, verbose, fit_params, pre_dispatch: 同上</li>
@@ -449,8 +456,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/01/Python-NumPy-Statistics/" rel="next" title="NumPy统计函数">
-                <i class="fa fa-chevron-left"></i> NumPy统计函数
+              <a href="/2018/03/01/Python-NumPy-Correlation/" rel="next" title="NumPy相关性函数">
+                <i class="fa fa-chevron-left"></i> NumPy相关性函数
               </a>
             
           </div>
@@ -542,7 +549,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">200</span>
+                  <span class="site-state-item-count">203</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -660,7 +667,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">66.4k</span>
+    <span title="Site words total count">68.0k</span>
   
 </div>
 
