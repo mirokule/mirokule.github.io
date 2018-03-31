@@ -262,6 +262,329 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/26/Python-sklearn-Split/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/26/Python-sklearn-Split/" itemprop="url">交叉验证Split划分</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-26T11:26:06+08:00">
+                2018-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  422
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-KFold"><a href="#1-KFold" class="headerlink" title="1.KFold"></a>1.KFold</h4><p>class sklearn.model_selection.KFold(n_splits=3, shuffle=False, random_state=None)<br>将所有数据划成k份，使用k-1份训练，保留1份用于验证。<br>通常建议使用5份或10份；当k=n时，等同于Leave One Out。</p>
+<p>参数</p>
+<ul>
+<li>n_splits: number of folds，最小2</li>
+<li>shuffle: 划分前是否Shuffle</li>
+<li>random_state: 当shuffle==True时使用的种子</li>
+</ul>
+<p>方法</p>
+<ul>
+<li>get_n_splits(X=None, y=None, groups=None): number of splits</li>
+<li>split(X, y=None, groups=None): generate indices to split data into training and test set</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> KFold</span><br><span class="line"></span><br><span class="line">kf = KFold(n_splits=<span class="number">2</span>)</span><br><span class="line">kf.split(data)</span><br><span class="line">kf.get_n_splits(data)</span><br><span class="line">print(kf)</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-Repeated-KFold"><a href="#2-Repeated-KFold" class="headerlink" title="2.Repeated KFold"></a>2.Repeated KFold</h4><p>class sklearn.model_selection.RepeatedKFold(n_splits=5, n_repeats=10, random_state=None)<br>将KFold重复n次，每次可以生成不同的划分。</p>
+<p>参数</p>
+<ul>
+<li>n_splits: number of folds</li>
+<li>n_repeats: number of times repeated</li>
+<li>random_state</li>
+</ul>
+<p>方法</p>
+<ul>
+<li>get_n_splits(X=None, y=None, groups=None)</li>
+<li>split(X, y=None, groups=None)</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> RepeatedKFold</span><br><span class="line">rkf = RepeatedKFold(n_splits=<span class="number">2</span>, n_repeats=<span class="number">2</span>, random_state=<span class="number">12313</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="3-ShuffleSplit"><a href="#3-ShuffleSplit" class="headerlink" title="3.ShuffleSplit"></a>3.ShuffleSplit</h4><p>class sklearn.model_selection.ShuffleSplit(n_splits=10, test_size=’default’, train_size=None, random_state=None)<br>可以分别指定splits和test_size，样本shuffle后再划分。<br>和KFold相比，重复次数和划分方式实现了解耦。</p>
+<p>参数</p>
+<ul>
+<li>n_splits: number of re-shuffling &amp; splitting </li>
+<li>test_size: 如果train_size没有指定，则默认0.1</li>
+<li>train_size: (0.0~1.0)，或者用整数表示的样本数</li>
+<li>random_state:</li>
+</ul>
+<p>方法</p>
+<ul>
+<li>get_n_splits(X=None, y=None, groups=None)</li>
+<li>split(X, y=None, groups=None)</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> ShuffleSplit</span><br><span class="line">ss = ShuffleSplit(n_splits=<span class="number">3</span>, test_size=<span class="number">0.25</span>, random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="4-Leave-One-Out-LOO"><a href="#4-Leave-One-Out-LOO" class="headerlink" title="4.Leave One Out(LOO)"></a>4.Leave One Out(LOO)</h4><p>每次使用n-1个样本训练模型，用剩余的1个样本验证。<br>每次训练出的模型差别不大，测试结果的波动较大。<br>通常不如划分为5份或10份。</p>
+<h4 id="5-Leave-P-Out-LPO"><a href="#5-Leave-P-Out-LPO" class="headerlink" title="5.Leave P Out(LPO)"></a>5.Leave P Out(LPO)</h4><p>每次保留p个样本用于验证，使用n-p个样本训练。<br>与LOO和KFold的区别在于，p&gt;1时测试集可能是<strong>重复</strong>的。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/25/Python-NumPy-Random/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/25/Python-NumPy-Random/" itemprop="url">Numpy.random</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T11:24:54+08:00">
+                2018-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  313
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="numpy-random-rand"><a href="#numpy-random-rand" class="headerlink" title="numpy.random.rand()"></a>numpy.random.rand()</h4><p>生成<strong>[0,1)</strong>之间的随机浮点数或N维浮点数组<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.rand() <span class="comment">#float, 1个[0,1)之间的浮点数</span></span><br><span class="line">np.random.rand(<span class="number">4</span>) <span class="comment">#ndarray, 长度为4的一维数组</span></span><br><span class="line">np.random.rand(<span class="number">2</span>,<span class="number">3</span>) <span class="comment">#ndarray, 2*3的二维数组</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="numpy-random-randn"><a href="#numpy-random-randn" class="headerlink" title="numpy.random.randn()"></a>numpy.random.randn()</h4><p>生成<strong>正态分布</strong>的随机浮点数或N维浮点数组<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.randn() <span class="comment">#1个随机数</span></span><br><span class="line">np.random.randn(<span class="number">5</span>) <span class="comment">#长度为5的一维数组</span></span><br><span class="line">np.random.randn(<span class="number">2</span>,<span class="number">3</span>) <span class="comment">#2*3的二维数组</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="numpy-random-standard-normal-size-None"><a href="#numpy-random-standard-normal-size-None" class="headerlink" title="numpy.random.standard_normal(size=None)"></a>numpy.random.standard_normal(size=None)</h4><p>生成<strong>标准正态分布</strong>的随机浮点数或N维浮点数组<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.standard_normal(<span class="number">2</span>)</span><br><span class="line">np.random.standard_normal((<span class="number">2</span>,<span class="number">3</span>))</span><br><span class="line">np.random.standard_normal([<span class="number">2</span>,<span class="number">3</span>])</span><br></pre></td></tr></table></figure></p>
+<h4 id="numpy-random-randint-low-high-None-size-None-dtype-’l’"><a href="#numpy-random-randint-low-high-None-size-None-dtype-’l’" class="headerlink" title="numpy.random.randint(low, high=None, size=None, dtype=’l’)"></a>numpy.random.randint(low, high=None, size=None, dtype=’l’)</h4><p>若high不为None，取[low, high)之间随机整数；<br>若high为None，取[0,low)之间随机整数。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.randint(<span class="number">2</span>) <span class="comment">#1个[0,2)之间的随机整数</span></span><br><span class="line">np.random.randint(<span class="number">2</span>, size=<span class="number">5</span>) <span class="comment">#长度为5的随机数组，取值范围[0,2)</span></span><br><span class="line">np.random.randint(<span class="number">2</span>,<span class="number">6</span>) <span class="comment">#1个[2,6)之间的随机整数</span></span><br><span class="line">np.random.randint(<span class="number">2</span>,<span class="number">6</span>,(<span class="number">2</span>,<span class="number">3</span>)) <span class="comment">#2*3的二维数组，取值范围[2,6)</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="随机采样"><a href="#随机采样" class="headerlink" title="随机采样"></a>随机采样</h4><p>numpy.random.permutation产生指定长度的随机整数数组，可用于数据重排列。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 重排</span></span><br><span class="line">sampler = np.random.permutation(<span class="number">5</span>)</span><br><span class="line">df.take(sampler) </span><br><span class="line"></span><br><span class="line"><span class="comment"># 采样</span></span><br><span class="line">df.take(np.random.permutation(len(df))[:<span class="number">3</span>])</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/25/Python-pandas-Type/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1470,479 +1793,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/17/Python-sklearn-Scoring/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/17/Python-sklearn-Scoring/" itemprop="url">sklearn模型评分策略</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-17T11:10:07+08:00">
-                2018-03-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  357
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>模型的评分策略API共有3种：</p>
-<ul>
-<li>模型的score方法</li>
-<li>CrossValidation的Scoing参数：内置的scoring策略，由metrics实现</li>
-<li>Metric函数：底层评价函数的实现，可以基于metric构建新的评分策略</li>
-</ul>
-<h4 id="Scoring参数"><a href="#Scoring参数" class="headerlink" title="Scoring参数"></a>Scoring参数</h4><h6 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h6><table>
-<thead>
-<tr>
-<th style="text-align:left">Scoring</th>
-<th style="text-align:left">Function</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">‘accuracy’</td>
-<td style="text-align:left">metrics.accuracy_score</td>
-<td style="text-align:left">准确度</td>
-</tr>
-<tr>
-<td style="text-align:left">‘precision’</td>
-<td style="text-align:left">metrics.precisioin_score</td>
-<td style="text-align:left">精确度P=tp/(tp+fp)</td>
-</tr>
-<tr>
-<td style="text-align:left">‘recall’</td>
-<td style="text-align:left">metrics.recall_score</td>
-<td style="text-align:left">召回率R=tp/(tp+fn)</td>
-</tr>
-<tr>
-<td style="text-align:left">‘f1’</td>
-<td style="text-align:left">metrics.f1_score</td>
-<td style="text-align:left">二分类f1=2PR/(P+R)</td>
-</tr>
-<tr>
-<td style="text-align:left">‘f1_micro’</td>
-<td style="text-align:left">metrics.f1_score</td>
-<td style="text-align:left">多分类整体计算的f1</td>
-</tr>
-<tr>
-<td style="text-align:left">‘f1_macro’</td>
-<td style="text-align:left">metrics.f1_score</td>
-<td style="text-align:left">多分类按标签计算后取平均的f1</td>
-</tr>
-<tr>
-<td style="text-align:left">‘f1_weighted’</td>
-<td style="text-align:left">metrics.f1_score</td>
-<td style="text-align:left">多分类按标签计算后加权平均的f1</td>
-</tr>
-<tr>
-<td style="text-align:left">‘f1_samples’</td>
-<td style="text-align:left">metrics.f1_score</td>
-<td style="text-align:left">多分类按样本计算后取平均的f1</td>
-</tr>
-<tr>
-<td style="text-align:left">‘average_precision’</td>
-<td style="text-align:left">metrics.average_precision_score</td>
-<td style="text-align:left">$AP=\Sigma_n(R_n-R_{n-1})P_n$</td>
-</tr>
-<tr>
-<td style="text-align:left">‘neg_log_loss’</td>
-<td style="text-align:left">metrics.log_loss</td>
-<td style="text-align:left">logistic loss</td>
-</tr>
-<tr>
-<td style="text-align:left">‘roc_auc’</td>
-<td style="text-align:left">metrics.roc_auc_score</td>
-<td style="text-align:left">ROC曲线下方面积AUC</td>
-</tr>
-</tbody>
-</table>
-<h6 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a>聚类</h6><table>
-<thead>
-<tr>
-<th style="text-align:left">Scoring</th>
-<th style="text-align:left">Function</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">‘mutual_info_score’</td>
-<td style="text-align:left">metrics.mutual_info_score</td>
-<td style="text-align:left">互信息</td>
-</tr>
-<tr>
-<td style="text-align:left">‘adjusted_mututal_info_score’</td>
-<td style="text-align:left">metrics.adjusted_mutual_info_score</td>
-<td style="text-align:left">调整互信息</td>
-</tr>
-<tr>
-<td style="text-align:left">‘normalized_mutual_info_score’</td>
-<td style="text-align:left">metrics.normalized_mutual_info_score</td>
-<td style="text-align:left">标准互信息</td>
-</tr>
-<tr>
-<td style="text-align:left">‘homogeneity_score’</td>
-<td style="text-align:left">metrics.homogeneity_score</td>
-<td style="text-align:left">同质性H</td>
-</tr>
-<tr>
-<td style="text-align:left">‘completeness_score’</td>
-<td style="text-align:left">metrics.completeness_score</td>
-<td style="text-align:left">完整性C</td>
-</tr>
-<tr>
-<td style="text-align:left">‘v_measure_score’</td>
-<td style="text-align:left">metrics.v_measure_score</td>
-<td style="text-align:left">v=2HC/(H+C)</td>
-</tr>
-<tr>
-<td style="text-align:left">‘adjusted_rand_score’</td>
-<td style="text-align:left">metrics.adjusted_rand_score</td>
-<td style="text-align:left">兰德指数</td>
-</tr>
-<tr>
-<td style="text-align:left">‘fowlkes_mallows_score’</td>
-<td style="text-align:left">metrics.fowlkes_mallows_score</td>
-<td style="text-align:left">FMI</td>
-</tr>
-</tbody>
-</table>
-<h6 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h6><table>
-<thead>
-<tr>
-<th style="text-align:left">Scoring</th>
-<th style="text-align:left">Function</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">‘neg_mean_absolute_error’</td>
-<td style="text-align:left">metrics.mean_absolute_error</td>
-<td style="text-align:left">平均绝对误差MAE</td>
-</tr>
-<tr>
-<td style="text-align:left">‘neg_mean_squared_error’</td>
-<td style="text-align:left">metrics.mean_squared_error</td>
-<td style="text-align:left">均方误差MSE</td>
-</tr>
-<tr>
-<td style="text-align:left">‘neg_mean_squared_log_error’</td>
-<td style="text-align:left">metrics.mean_squared_log_error</td>
-<td style="text-align:left">均方对数误差</td>
-</tr>
-<tr>
-<td style="text-align:left">‘neg_median_absolute_error’</td>
-<td style="text-align:left">metrics.median_absolute_error</td>
-<td style="text-align:left">平均绝对离差MedAE</td>
-</tr>
-<tr>
-<td style="text-align:left">‘explained_variance’</td>
-<td style="text-align:left">metrics.explained_variance_score</td>
-<td style="text-align:left">解释方差</td>
-</tr>
-<tr>
-<td style="text-align:left">‘r2’</td>
-<td style="text-align:left">metrics.r2_score</td>
-<td style="text-align:left">$R^2拟合优度$</td>
-</tr>
-</tbody>
-</table>
-<h4 id="Metrics"><a href="#Metrics" class="headerlink" title="Metrics"></a>Metrics</h4><p>Metrics提供了一些基本的函数实现，用于计算预测值和真实值之间的误差：</p>
-<ul>
-<li>_score结尾：返回最大值，越大越好</li>
-<li>_error结尾：返回最小值，越小越好；用make_scorer创建新策略时，要将greater_is_better设为False</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/14/Python-pandas-GetDummies/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/14/Python-pandas-GetDummies/" itemprop="url">pandas.get_dummies</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-14T13:28:06+08:00">
-                2018-03-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  268
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>使用pandas.get_dummies()可以对用字符标识的离散特征进行one-hot编码。<br><strong>只能处理字符类别，不能处理以数字标识的类别</strong></p>
-<p>离散特征的编码分为两种情况：</p>
-<ul>
-<li>没有大小意义，比如color:{red, blue, green}，使用one-hot编码</li>
-<li>有大小意义，比如size:{X, XL, XXL}，使用map映射{X:1, XL:2, XXL:3}</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">df = pd.DataFrame([...])</span><br><span class="line">df.columns = [<span class="string">'color'</span>, <span class="string">'size'</span>, <span class="string">'prize'</span>, <span class="string">'class label'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># map</span></span><br><span class="line">size_mapping = &#123;<span class="string">'X'</span>:<span class="number">1</span>, <span class="string">'XL'</span>:<span class="number">2</span>, <span class="string">'XXL'</span>:<span class="number">3</span>&#125;</span><br><span class="line">df[<span class="string">'size'</span>] = df[<span class="string">'size'</span>].map(size_mapping)</span><br><span class="line"></span><br><span class="line"><span class="comment"># one-hot</span></span><br><span class="line">pd.get_dummies(df)</span><br></pre></td></tr></table></figure>
-<h4 id="pandas-get-dummies"><a href="#pandas-get-dummies" class="headerlink" title="pandas.get_dummies"></a>pandas.get_dummies</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pandas.get_dummies(data, prefix=<span class="keyword">None</span>, prefix_sep=<span class="string">'_'</span>, dummy_na=<span class="keyword">False</span>, columns=<span class="keyword">None</span>, sparse=<span class="keyword">False</span>, drop_first=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
-<p>属性</p>
-<ul>
-<li>data: Series, DataFrame</li>
-<li>prefix: 拆分后的列名前缀</li>
-<li>prefix_sep: 前缀分隔符</li>
-<li>dummy_na: 默认False，若为True则单独列出NaN</li>
-<li>columns: 列名，默认None，转换全部列</li>
-<li>sparse: 默认False，是否返回SparseDataFrame</li>
-<li>drop_fist: 默认False，是否忽略第一个属性，使k个类别返回k-1个变量</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>dummes: DataFrame, SparseDataFrame</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s1 = [<span class="string">'a'</span>, <span class="string">'b'</span>, np.nan]</span><br><span class="line"></span><br><span class="line">pd.get_dummies(s1)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">  a b</span></span><br><span class="line"><span class="string">0 1 0</span></span><br><span class="line"><span class="string">1 0 1</span></span><br><span class="line"><span class="string">2 0 0</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">pd.get_dummies(s1, dummy_na=<span class="keyword">True</span>)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">  a b NaN</span></span><br><span class="line"><span class="string">0 1 0 0</span></span><br><span class="line"><span class="string">1 0 1 0</span></span><br><span class="line"><span class="string">2 0 0 1</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1992,7 +1847,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">209</span>
+                  <span class="site-state-item-count">211</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2094,7 +1949,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">71.3k</span>
+    <span title="Site words total count">72.0k</span>
   
 </div>
 
