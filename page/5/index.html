@@ -262,6 +262,306 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/02/Python-DataStructure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/02/Python-DataStructure/" itemprop="url">Python数据结构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T09:33:18+08:00">
+                2018-02-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  366
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="元组-Tuple"><a href="#元组-Tuple" class="headerlink" title="元组(Tuple)"></a>元组(Tuple)</h4><p>一维，定长，不可修改，用<strong>()</strong>标识。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 直接生成或用tuple()函数构造</span></span><br><span class="line">tup = <span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span></span><br><span class="line">tup = (<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>),<span class="number">7</span>,(<span class="number">8</span>,<span class="number">9</span>)</span><br><span class="line">tup = tuple([<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>])</span><br><span class="line">tup = tuple(<span class="string">'string'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 扩展</span></span><br><span class="line">tup = (<span class="number">4</span>, <span class="keyword">None</span>, <span class="string">'foo'</span>) + (<span class="number">2</span>,(<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">tup = (<span class="number">1</span>,<span class="number">2</span>) * <span class="number">3</span> <span class="comment">#tup=(1,2,1,2,1,2)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问</span></span><br><span class="line">tup[<span class="number">0</span>]</span><br><span class="line">a,b,(c,d) = tup <span class="comment">#拆包</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="列表-List"><a href="#列表-List" class="headerlink" title="列表(List)"></a>列表(List)</h4><p>一维，变长，可修改，用<strong>[]</strong>标识。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 直接生成或用list()函数构造</span></span><br><span class="line">lis = [<span class="number">2</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="keyword">None</span>]</span><br><span class="line">lis = list(tup)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加合并</span></span><br><span class="line">lis.insert(<span class="string">'body'</span>)</span><br><span class="line">lis.append(<span class="string">'tail'</span>)</span><br><span class="line">lis.extend([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])</span><br><span class="line">lis = [<span class="number">4</span>,<span class="keyword">None</span>,<span class="string">'go'</span>] + [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">zip(lis1, lis2) <span class="comment">#将元素配对，生成新的元组列表</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除</span></span><br><span class="line">lis.pop(<span class="number">2</span>) <span class="comment">#删除并返回指定位置的元素</span></span><br><span class="line">lis.remove(<span class="string">'foo'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 排序</span></span><br><span class="line">lis.sort()</span><br><span class="line">lis.sort(key=len) <span class="comment">#按元素长度排序</span></span><br><span class="line">sorted(lis) <span class="comment">#返回有序</span></span><br><span class="line">reversed(lis) <span class="comment">#返回倒序</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 切片</span></span><br><span class="line">lis[<span class="number">2</span>:<span class="number">10</span>:<span class="number">2</span>] <span class="comment">#起始：终止：步长</span></span><br><span class="line">lis[<span class="number">-7</span>:<span class="number">-3</span>] <span class="comment">#负数从末尾开始索引</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 内置Enumerate</span></span><br><span class="line"><span class="keyword">for</span> i,value <span class="keyword">in</span> enumerate(lis):</span><br><span class="line">	print(i,value)</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/02/Python-DataStructure/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/28/LinearAlgebra-EigenVector/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/28/LinearAlgebra-EigenVector/" itemprop="url">特征值和特征向量</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T11:27:41+08:00">
+                2018-01-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  727
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p><strong>特征值</strong><br>若存在数$\lambda$使得$Ax=\lambda x$成立，则称$\lambda$为$A$的特征值，$x$称为对应于$\lambda$的特征向量。<br>空间理解：变换$x\mapsto Ax$没有使向量$x$改变方向。<br>$\lambda$是$A$的特征值当且仅当方程$(A-\lambda I)x=0$有非平凡解。所有解的集合是矩阵$A-\lambda I$的零空间，由零向量和所有对应于$lambda$的特征向量组成，称为$A$的对应于$\lambda$的特征空间。<br>特征空间的维数称作对应特征值$\lambda$的重数，也就是方程的根的重数。</p>
+<p><strong>特征方程</strong><br>数值方程$det(A-\lambda I)=0$称为A的特征方程；$det(A-\lambda I)$是n次多项式，称为A的特征多项式。<br>数$\lambda$是n*n矩阵A的特征值的充要条件是$\lambda$是特征方程$det(A-\lambda I)=0$的根。<br>如果考虑复根，特征方程恰好有n个根。</p>
+<p><strong>相似变换</strong><br>假如A和B是n*n矩阵，如果存在可逆矩阵P，使得$P^{-1}AP=B$，则称A相似于B，A和B是相似的，把A变成$P^{-1}AP$的变换称为相似变换。<br>相似矩阵A和B有相同的特征多项式，从而有相同的特征值。</p>
+<p><strong>对称矩阵</strong><br>满足$A^T=A$的矩阵称作对称矩阵。对称矩阵的主对角线元素是任意的，其他元素在两边成对出现。<br>对称矩阵是正交可对角化的充分必要条件。</p>
+<p><strong>二次型</strong><br>$\mathbb{R}^n$上的二次型是一个定义在$\mathbb{R}^n$上的函数，它在向量$x$处的值可由表达式$Q(x)=x^TAx$计算，此处A是一个n*n对称矩阵，称为关于二次型的矩阵。</p>
+<ul>
+<li>如果对所有$x\neq 0$，有$Q(x)&gt;0$，则称二次型是正定的，当且仅当A的所有特征值都是正数；</li>
+<li>如果对所有$x\neq 0$，有$Q(x)&lt;0$，则称二次型是负定的，当且仅当A的所有特征值都是负数；</li>
+<li>如果$Q(x)$既有正值又有负值，则称二次型是不定的，当且仅当A既有正特征值，又有负特征值。</li>
+</ul>
+<h4 id="定理"><a href="#定理" class="headerlink" title="定理"></a>定理</h4><ol>
+<li>三角矩阵的主对角线的元素是其特征值。</li>
+<li>对应不同特征值的特征向量线性无关。</li>
+<li>对角化定理：n*n矩阵A可对角化的充分必要条件是A有n个线性无关的特征向量。</li>
+<li>由2和3可推出：有n个相异特征值$\lambda$的n*n矩阵可对角化。</li>
+<li>n*n矩阵A的秩$r(A)=k$，则$\lambda = 0$至少为A的$n-k$重特征值；若A可相似对角化，则$\lambda = 0$恰好是A的$n-k$重特征值。</li>
+<li>如果A是对称矩阵，那么不同特征空间的任意两个特征向量是正交的。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/28/ML-CollaborativeFiltering/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1494,330 +1794,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/13/Calculus-Sequence/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/13/Calculus-Sequence/" itemprop="url">数列和级数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-13T10:33:07+08:00">
-                2018-01-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  766
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="DEFINITIONS"><a href="#DEFINITIONS" class="headerlink" title="DEFINITIONS"></a>DEFINITIONS</h2><h4 id="Converges-Diverges-Limit"><a href="#Converges-Diverges-Limit" class="headerlink" title="Converges, Diverges, Limit"></a>Converges, Diverges, Limit</h4><p>The sequence ${a_n}$ converges to the number $L$ if to every positive number $\epsilon$ there corresponds an integer $N$ such that for all $n$,</p>
-<p>$$ n &gt; N \;\;\;\; \Rightarrow \;\;\;\; \left|a_n-L\right| &lt; \epsilon. $$</p>
-<p>L is limit of the sequence.</p>
-<p>If no such number $L$ exists, we say that ${a_n}$ diverges.</p>
-<h4 id="Deverges-to-Infinity"><a href="#Deverges-to-Infinity" class="headerlink" title="Deverges to Infinity"></a>Deverges to Infinity</h4><p>The sequence ${a_n}$ diverges to infinity if for every number $M$ there is an integer $N$ such that for all $n$ larger than $N$, $a_n &gt; M$. If this condition holds we write</p>
-<p>$$ \lim_{n\rightarrow ∞} a_n = ∞ \;\;\;\; or \;\;\;\; a_n\rightarrow ∞. $$</p>
-<h4 id="Nondecreasing-Sequence"><a href="#Nondecreasing-Sequence" class="headerlink" title="Nondecreasing Sequence"></a>Nondecreasing Sequence</h4><p>A sequence ${a_n}$ with the property that $a_n \leq a_{n+1}$ for all $n$ is called a nondecreasing sequence.</p>
-<h4 id="Power-Series"><a href="#Power-Series" class="headerlink" title="Power Series"></a>Power Series</h4><p>A power series about $x=0$ is a series of the form<br>$$ \sum_{n=0}^{∞}c_nx^n = c_0+c_1x+c_2x^2+\cdot \cdot \cdot +c_nx^n+\cdot \cdot \cdot $$<br>A power series about $x=a$ is a series of the form<br>$$ \sum_{n=0}^{∞}c_n(x-a)^n = c_0+c_1(x-a)+c_2(x-a)^2+\cdot \cdot \cdot +c_n(x-a)^n+\cdot \cdot \cdot $$</p>
-<h4 id="Tayloer-Series"><a href="#Tayloer-Series" class="headerlink" title="Tayloer Series"></a>Tayloer Series</h4><p>The Taylor series generated by $f$ at $x=a$ is<br>$$ \sum_{k=0}^{∞} \frac{f^{(k)(a)}}{k!}(x-a)^k $$</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/13/Calculus-Sequence/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/Octave/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/12/Octave/" itemprop="url">Octave常用命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T13:53:57+08:00">
-                2018-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  444
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="符号"><a href="#符号" class="headerlink" title="符号%"></a>符号%</h4><p>Octave和Matlab代码注释使用符号 <strong>%</strong></p>
-<p>数组索引从 <strong>1</strong> 开始</p>
-<h4 id="帮助"><a href="#帮助" class="headerlink" title="帮助"></a>帮助</h4><pre><code>help command // 可以查询command的详细用法
-</code></pre><h4 id="读写数据"><a href="#读写数据" class="headerlink" title="读写数据"></a>读写数据</h4><pre><code>pwd // 显示当前path
-cd NewPath // 更改路径
-
-load filename // load(&apos;filename&apos;)
-save filename v // 将变量v的数据写入文件
-who
-whos // 更多详细信息
-clear v // 删除变量
-</code></pre><h4 id="生成矩阵"><a href="#生成矩阵" class="headerlink" title="生成矩阵"></a>生成矩阵</h4><pre><code>A = [1,2;2,3;4,5]
-v = [1 2 3 4 5] // 行向量
-v = [1;2;3;4;5] // 列向量
-v = 1:0.5:5 // 按步长增加
-
-B = ones(3,3)
-B = zeros(3,3)
-B = rand(2,2) // 随机数
-B = randn(1,3) // 随机整数    
-I = eye(3) // 单位矩阵
-
-sz = size(A)
-len = length(v) // 最长的维度
-A(3,2) // 元素$A_{32}$
-A(3,:) // 第3行所有元素
-A([1 3],:) // 第1、3行的所有元素
-A(:) // 将所有元素变成一列
-A = (A, v) // 在A矩阵右侧增加一列
-v(1:10)
-</code></pre>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/12/Octave/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1872,7 +1848,7 @@ v(1:10)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">211</span>
+                  <span class="site-state-item-count">213</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1974,7 +1950,7 @@ v(1:10)
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">72.0k</span>
+    <span title="Site words total count">73.3k</span>
   
 </div>
 

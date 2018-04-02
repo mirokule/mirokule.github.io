@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,sklearn," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据集的标准化(Standardization)对sklearn的大部分机器学习算法来说都是一种常规要求(common requirement)。如果单个特征没有或多或少地接近于标准正态分布N(0,1)的高斯分布，那么它可能并不会在项目中表现出很好的性能。例如，许多学习算法中目标函数的基础都是假设所有特征都是零均值，并且具有同一阶数的方差。如果某个特征的方差比其他特征大几个数量级，那么它就会在算法">
+<meta name="keywords" content="Python,sklearn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据缩放Scale">
+<meta property="og:url" content="http://mirokule.github.io/2018/04/02/Python-sklearn-Scale/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="数据集的标准化(Standardization)对sklearn的大部分机器学习算法来说都是一种常规要求(common requirement)。如果单个特征没有或多或少地接近于标准正态分布N(0,1)的高斯分布，那么它可能并不会在项目中表现出很好的性能。例如，许多学习算法中目标函数的基础都是假设所有特征都是零均值，并且具有同一阶数的方差。如果某个特征的方差比其他特征大几个数量级，那么它就会在算法">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-02T03:38:38.389Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据缩放Scale">
+<meta name="twitter:description" content="数据集的标准化(Standardization)对sklearn的大部分机器学习算法来说都是一种常规要求(common requirement)。如果单个特征没有或多或少地接近于标准正态分布N(0,1)的高斯分布，那么它可能并不会在项目中表现出很好的性能。例如，许多学习算法中目标函数的基础都是假设所有特征都是零均值，并且具有同一阶数的方差。如果某个特征的方差比其他特征大几个数量级，那么它就会在算法">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2018/04/02/Python-sklearn-Scale/"/>
+
+
+
+
+
+  <title>数据缩放Scale | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/02/Python-sklearn-Scale/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据缩放Scale</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T09:48:45+08:00">
+                2018-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  769
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>数据集的标准化(Standardization)对sklearn的大部分机器学习算法来说都是一种常规要求(common requirement)。<br>如果单个特征没有或多或少地接近于标准正态分布N(0,1)的高斯分布，那么它可能并不会在项目中表现出很好的性能。<br>例如，许多学习算法中目标函数的基础都是假设所有特征都是零均值，并且具有同一阶数的方差。<br>如果某个特征的方差比其他特征大几个数量级，那么它就会在算法中占据主导位置，导致学习器不能从其他特征学习。</p>
+<h4 id="0-经验"><a href="#0-经验" class="headerlink" title="0.经验"></a>0.经验</h4><ul>
+<li><p>均值为0的输入/输出数据通常对算法友好；<br>将特征缩放到[0,1]通常是一个槽糕的决定；<br>强迫算法输出为[0,1]也是一个槽糕的决定；</p>
+</li>
+<li><p>如果模型中使用了<strong>距离</strong>，则必须将特征缩放到同样尺度(如RBF)；<br>如果特征是线性组合的，则缩放不是必需的(如MLP)，因为通过改变w和b可以得到同样的输出；<br>但合适的缩放确实可以带来一系列好处：使训练更快、避免saturation等</p>
+</li>
+<li><p>两种最有效的缩放：</p>
+<ul>
+<li>均值0，标准差1: StandardScaler</li>
+<li>[-1, 1]: MaxAbsScaler</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-标准化"><a href="#1-标准化" class="headerlink" title="1. 标准化"></a>1. 标准化</h4><p>目标：缩放到均值0，标准差1<br>实际应用中，我们通常忽略特征分布的形状，直接通过减去均值来使特征去中心化，再通过除以标准差来使特征缩放。</p>
+<ul>
+<li>函数scale(X, axis=0, with_mean=True, with_std=True, copy=True): 快捷缩放</li>
+<li>类StandardScaler(copy=True, with_mean=True, with_std=True): 实现Transformer API，可复用，可集成进Pipeline</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line"></span><br><span class="line"><span class="comment"># Scale</span></span><br><span class="line">X_scaled = preprocessing.scale(X)</span><br><span class="line"><span class="comment"># (1, 2, 0) -&gt; (0, 1.22, -1.22)</span></span><br><span class="line"><span class="comment"># (-1,0, 1) -&gt; (-1.22, 0, 1.22)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># StandardScaler</span></span><br><span class="line">scaler = preprocessing.StandardScaler().fit(X)</span><br><span class="line">scaler.transform(X)</span><br></pre></td></tr></table></figure>
+<h4 id="2-缩放至特定范围"><a href="#2-缩放至特定范围" class="headerlink" title="2. 缩放至特定范围"></a>2. 缩放至特定范围</h4><p>目标：缩放到指定的范围(minmax)，通常是[0,1]；或者将绝对值缩放到指定范围(maxabs)，通常是[-1,1]</p>
+<ul>
+<li>函数minmax_scale(X, feature_range=(0,1), axis=0, copy=Ture)</li>
+<li>函数maxabs_scale(X, axis=0, copy=True)</li>
+<li>类MinMaxScaler(feature_range(0,1), copy=True)</li>
+<li>类MaxAbsScaler(copy=True)：没有破坏稀疏性，0依旧是0</li>
+</ul>
+<p>MinMax缩放公式<br>$$ X_{std} = \frac{X - X_{min}(axis=0)}{X_{max}(axis=0) - X_{min}(axis=0)} $$<br>$$ X_{scaled} = X_{std} * (max - min) + min $$</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># MinMax</span></span><br><span class="line">min_max_scaler = preprocessing.MinMaxScaler()</span><br><span class="line">X_train_minmax = min_max_scaler.fit_transform(X_train)</span><br><span class="line"><span class="comment"># (1, 2, 0) -&gt; (0.5, 1, 0)</span></span><br><span class="line"><span class="comment"># (-1,0, 1) -&gt; (0, 0.5, 1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># MaxAbs</span></span><br><span class="line">max_abs_scaler = preprocessing.MaxAbsScaler()</span><br><span class="line">X_train_maxabs = max_abs_scaler.fit_transform(X_train)</span><br><span class="line"><span class="comment"># (1, 2, 0) -&gt; (0.5, 1, 0)</span></span><br><span class="line"><span class="comment"># (-1,0, 1) -&gt; (-1, 0, 1)</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-稀疏数据缩放"><a href="#3-稀疏数据缩放" class="headerlink" title="3. 稀疏数据缩放"></a>3. 稀疏数据缩放</h4><p>去中心化将使数据平移，破坏稀疏数据的稀疏结构。<br>推荐的处理方式：</p>
+<ul>
+<li>maxabs_scale, MaxAbsScaler()</li>
+<li>scale, StandardScaler()：将with_centerring设置为False</li>
+</ul>
+<h4 id="4-含异常值的数据缩放"><a href="#4-含异常值的数据缩放" class="headerlink" title="4. 含异常值的数据缩放"></a>4. 含异常值的数据缩放</h4><p>当数据中含有较多异常值时，使用整体的均值和标准差缩放并不是一个好的选择。<br>Robust Scale只使用中间部分数据的均值和方差，可以剔除异常值的影响。</p>
+<ul>
+<li>函数robust_scale(X, axis=0, with_centering=True, with_scaling=True, quantile_range=(25.0, 75.0), copy=True)</li>
+<li>类RobustScaler(with_centering=True, with_scaling=True, quantile_range=(25.0,75.0), copy=True)</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/sklearn/" rel="tag"># sklearn</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/31/Python-sklearn-GridSearchCV/" rel="next" title="GridSearchCV">
+                <i class="fa fa-chevron-left"></i> GridSearchCV
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/02/ML-Stacking/" rel="prev" title="Stacking实现">
+                Stacking实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">213</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#0-经验"><span class="nav-number">1.</span> <span class="nav-text">0.经验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-标准化"><span class="nav-number">2.</span> <span class="nav-text">1. 标准化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-缩放至特定范围"><span class="nav-number">3.</span> <span class="nav-text">2. 缩放至特定范围</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-稀疏数据缩放"><span class="nav-number">4.</span> <span class="nav-text">3. 稀疏数据缩放</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-含异常值的数据缩放"><span class="nav-number">5.</span> <span class="nav-text">4. 含异常值的数据缩放</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">73.3k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

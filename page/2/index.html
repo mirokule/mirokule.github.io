@@ -262,6 +262,374 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/27/Python-pandas-Stats/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/Python-pandas-Stats/" itemprop="url">pandas统计函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T14:26:29+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  289
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="基本统计函数"><a href="#基本统计函数" class="headerlink" title="基本统计函数"></a>基本统计函数</h2><ul>
+<li>count: 计数</li>
+<li>describe: 描述</li>
+</ul>
+<h6 id="和，差，积"><a href="#和，差，积" class="headerlink" title="和，差，积"></a>和，差，积</h6><ul>
+<li>sum, prod: 和，乘积</li>
+<li>cumsum, cumprod: 累计和，累计乘积</li>
+<li>diff: 平移后取差值，相当于df.shift(n)-df</li>
+</ul>
+<h6 id="最值，均值，分位数"><a href="#最值，均值，分位数" class="headerlink" title="最值，均值，分位数"></a>最值，均值，分位数</h6><ul>
+<li>max, min: 最大值，最小值</li>
+<li>cummax, cummin: 累计最大值，累计最小值</li>
+<li>quantile: 分位数</li>
+<li>mean, median, mode: 均值，中位数，众数</li>
+<li>mad: 平均离差</li>
+</ul>
+<h6 id="偏度，方差，相关性"><a href="#偏度，方差，相关性" class="headerlink" title="偏度，方差，相关性"></a>偏度，方差，相关性</h6><ul>
+<li>var, std: 方差，标准差</li>
+<li>cov, corr, corrwith: 协方差，相关系数，和另一个df的相关系数</li>
+<li>skew, kurt: 偏度，峰度</li>
+</ul>
+<h6 id="数据规整"><a href="#数据规整" class="headerlink" title="数据规整"></a>数据规整</h6><ul>
+<li>abs: 绝对值</li>
+<li>round: 取小数位数</li>
+<li>clip, clip_upper, clip_lower: 限定最大/最小值</li>
+</ul>
+<h6 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h6><ul>
+<li>all, any: 是否全部/存在为True</li>
+</ul>
+<h2 id="函数实现"><a href="#函数实现" class="headerlink" title="函数实现"></a>函数实现</h2><h4 id="1-skew"><a href="#1-skew" class="headerlink" title="1.skew"></a>1.skew</h4><p>DataFrame.skew(axis=None, skipna=None, level=None, numeric_only=None, **kwargs)</p>
+<p>参数</p>
+<ul>
+<li>axis: {index(0), columns(1)}</li>
+<li>skipna: 是否排除NaN</li>
+<li>level: 多层列/索引中，指定层级</li>
+<li>numeric_only: 只对float,int,boolean列计算</li>
+</ul>
+<h4 id="2-corr"><a href="#2-corr" class="headerlink" title="2.corr"></a>2.corr</h4><p>DataFrame.corr(method=’pearson’, min_periods=1)<br>返回pairwise correlations of columns, excluding NA/null values.</p>
+<p>参数</p>
+<ul>
+<li>method: {‘pearson’, ‘kendall’, ‘spearman’}</li>
+<li>min_periods: 执行运算的最小样本数</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>y: DataFrame</li>
+</ul>
+<h4 id="3-round"><a href="#3-round" class="headerlink" title="3.round"></a>3.round</h4><p>DataFrame.round(decimals=0, <em>args, *</em>kwargs)<br>保留小数点后N位。</p>
+<p>参数</p>
+<ul>
+<li>decimals: 小数位数</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.round(<span class="number">2</span>)</span><br><span class="line">df.round(&#123;<span class="string">'col1'</span>:<span class="number">1</span>, <span class="string">'col2'</span>:<span class="number">3</span>&#125;)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/27/Python-pandas-Sort/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/Python-pandas-Sort/" itemprop="url">pandas排序相关函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T13:52:51+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  257
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-sort-values"><a href="#1-sort-values" class="headerlink" title="1.sort_values"></a>1.sort_values</h4><p>DataFrame.sort_values(by, axis=0, ascending=True, inplace=False, kind=’quicksort’, na_position=’last’)<br>对某列或某几列values排序，返回排序后的DataFrame.</p>
+<p>参数</p>
+<ul>
+<li>by: str, list, 排序依据的列名</li>
+<li>axis: 默认0对行排序，1对列</li>
+<li>ascending: 默认True升序</li>
+<li>inplace: 默认False返回拷贝</li>
+<li>kind: {‘quicksort’,’mergesort’,’heapsort’}排序算法</li>
+<li>na_position: {‘first’, ‘last’}，把NaN放在开头还是末尾</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>sorted_obj: DataFrame</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.sort_values(by=[<span class="string">'col1'</span>,<span class="string">'col2'</span>])</span><br><span class="line">df.sort_values(by=[<span class="string">'col1'</span>], ascending=<span class="keyword">False</span>)</span><br><span class="line">df.sort_values(by=[<span class="string">'col1'</span>], na_position=<span class="string">'first'</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-sort-index"><a href="#2-sort-index" class="headerlink" title="2.sort_index"></a>2.sort_index</h4><p>DataFrame.sort_values(axis=0, level=None, ascending=True, inplace=False, kind=’quicksort’, na_position=’last’, sort_remaining=True, by=None)</p>
+<p>参数</p>
+<ul>
+<li>axis, ascending, inplace, kind, na_position: 同上</li>
+<li>level: 多层索引中指定index level</li>
+<li>sort_remaining: 多层索引中，对指定level排序后，继续对剩余的index排序</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>sorted_obj: DataFrame</li>
+</ul>
+<h4 id="3-nlargest"><a href="#3-nlargest" class="headerlink" title="3.nlargest"></a>3.nlargest</h4><p>DataFrame.nlargest(n, columns, keep=’first’)<br>返回排序后最大的N个样本(整行)。</p>
+<p>参数</p>
+<ul>
+<li>n: 返回值的个数</li>
+<li>columns: str, list，排序依据的列名</li>
+<li>keep: {‘first’,’last’}若有重复值，取开头的还是末尾的</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>return: DataFrame</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.nlargest(<span class="number">3</span>,<span class="string">'col1'</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="4-nsmallest"><a href="#4-nsmallest" class="headerlink" title="4.nsmallest"></a>4.nsmallest</h4><p>DataFrame.nsmallest(n, columns, keep=’first’)<br>参考nlargest.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/26/Python-sklearn-Split/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -325,7 +693,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  422
+                  446
                 </span>
               
 
@@ -364,7 +732,7 @@
 <li>get_n_splits(X=None, y=None, groups=None): number of splits</li>
 <li>split(X, y=None, groups=None): generate indices to split data into training and test set</li>
 </ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> KFold</span><br><span class="line"></span><br><span class="line">kf = KFold(n_splits=<span class="number">2</span>)</span><br><span class="line">kf.split(data)</span><br><span class="line">kf.get_n_splits(data)</span><br><span class="line">print(kf)</span><br></pre></td></tr></table></figure></p>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> KFold</span><br><span class="line"></span><br><span class="line">kf = KFold(n_splits=<span class="number">2</span>)</span><br><span class="line">kf.split(data)</span><br><span class="line">kf.get_n_splits(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环</span></span><br><span class="line"><span class="keyword">for</span> train_index, test_index <span class="keyword">in</span> kf.split(X):</span><br><span class="line">	print(<span class="string">"Train:"</span>, train_index, <span class="string">"Test:"</span>, test_index)</span><br><span class="line"><span class="comment"># TRAIN:[2 3], TEST:[0,1]</span></span><br><span class="line"><span class="comment"># TRAIN:[0 1], TEST:[2,3]</span></span><br></pre></td></tr></table></figure></p>
 <h4 id="2-Repeated-KFold"><a href="#2-Repeated-KFold" class="headerlink" title="2.Repeated KFold"></a>2.Repeated KFold</h4><p>class sklearn.model_selection.RepeatedKFold(n_splits=5, n_repeats=10, random_state=None)<br>将KFold重复n次，每次可以生成不同的划分。</p>
 <p>参数</p>
 <ul>
@@ -1515,284 +1883,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/20/Python-pandas-Outliers/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/20/Python-pandas-Outliers/" itemprop="url">Python-pandas-Outliers</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T12:02:34+08:00">
-                2018-03-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  43
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="检测异常值"><a href="#检测异常值" class="headerlink" title="检测异常值"></a>检测异常值</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">col = data[<span class="number">3</span>]</span><br><span class="line">col[np.abs(col) &gt; <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">data[(np.abs(data)&gt;<span class="number">3</span>).any(<span class="number">1</span>)]</span><br><span class="line">data[np.abs(data) &gt; <span class="number">3</span>] = np.sign(data) * <span class="number">3</span> <span class="comment">#np.sign返回1或者-1</span></span><br><span class="line"></span><br><span class="line">data[(data[<span class="string">'A'</span>]&gt;<span class="number">40000</span>)&amp;(data[<span class="string">'B'</span>]&lt;<span class="number">30000</span>)]</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/20/Python-pandas-Duplicate/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/20/Python-pandas-Duplicate/" itemprop="url">pandas重复数据处理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T12:01:06+08:00">
-                2018-03-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  73
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="移除重复数据"><a href="#移除重复数据" class="headerlink" title="移除重复数据"></a>移除重复数据</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 判断重复</span></span><br><span class="line">data.duplicated()<span class="comment">#返回布尔型Series，表示各行是否重复</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 移除重复</span></span><br><span class="line">data.drop_duplicates()<span class="comment">#返回移除了重复行的DataFrame，保留第一个</span></span><br><span class="line">data.drop_duplicates([<span class="string">'k1'</span>])<span class="comment">#只根据k1列过滤</span></span><br><span class="line">data.drop_duplicates([<span class="string">'k1'</span>,<span class="string">'k2'</span>], take_last=<span class="keyword">True</span>) <span class="comment">#保留重复值的最后一个</span></span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1847,7 +1937,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">211</span>
+                  <span class="site-state-item-count">213</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1949,7 +2039,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">72.0k</span>
+    <span title="Site words total count">73.3k</span>
   
 </div>
 
