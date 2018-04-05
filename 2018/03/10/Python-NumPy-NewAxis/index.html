@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="np.newaxis可以给np.ndarray增加一个轴，在使用和功能上等价于None，其实就是None的一个别名。&amp;gt;&amp;gt; type(np.newaxis)NoneType&amp;gt;&amp;gt; np.newaxis == NoneTrue# 给一维数组增加轴，变成二维&amp;gt;&amp;gt; a = np.arange(3)array([0,1,2])&amp;gt;&amp;gt; a.shape(3,)&amp;gt;">
+<meta name="description" content="NumPy中可以用于数组升维的函数有：  newaxis expand_dims  newaxis()np.newaxis可以给np.ndarray增加一个轴，在使用和功能上等价于None，其实就是None的一个别名。 # 相当于Nonetype(np.newaxis) #NoneTypenp.newaxis == None #True# 给一维数组增加轴，变成二维a = np.arange(3)">
 <meta name="keywords" content="Python,NumPy">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NumPy.newaxis">
+<meta property="og:title" content="NumPy数组升维">
 <meta property="og:url" content="http://mirokule.github.io/2018/03/10/Python-NumPy-NewAxis/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="np.newaxis可以给np.ndarray增加一个轴，在使用和功能上等价于None，其实就是None的一个别名。&amp;gt;&amp;gt; type(np.newaxis)NoneType&amp;gt;&amp;gt; np.newaxis == NoneTrue# 给一维数组增加轴，变成二维&amp;gt;&amp;gt; a = np.arange(3)array([0,1,2])&amp;gt;&amp;gt; a.shape(3,)&amp;gt;">
+<meta property="og:description" content="NumPy中可以用于数组升维的函数有：  newaxis expand_dims  newaxis()np.newaxis可以给np.ndarray增加一个轴，在使用和功能上等价于None，其实就是None的一个别名。 # 相当于Nonetype(np.newaxis) #NoneTypenp.newaxis == None #True# 给一维数组增加轴，变成二维a = np.arange(3)">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-10T03:00:54.863Z">
+<meta property="og:updated_time" content="2018-04-05T07:52:25.918Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="NumPy.newaxis">
-<meta name="twitter:description" content="np.newaxis可以给np.ndarray增加一个轴，在使用和功能上等价于None，其实就是None的一个别名。&amp;gt;&amp;gt; type(np.newaxis)NoneType&amp;gt;&amp;gt; np.newaxis == NoneTrue# 给一维数组增加轴，变成二维&amp;gt;&amp;gt; a = np.arange(3)array([0,1,2])&amp;gt;&amp;gt; a.shape(3,)&amp;gt;">
+<meta name="twitter:title" content="NumPy数组升维">
+<meta name="twitter:description" content="NumPy中可以用于数组升维的函数有：  newaxis expand_dims  newaxis()np.newaxis可以给np.ndarray增加一个轴，在使用和功能上等价于None，其实就是None的一个别名。 # 相当于Nonetype(np.newaxis) #NoneTypenp.newaxis == None #True# 给一维数组增加轴，变成二维a = np.arange(3)">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>NumPy.newaxis | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>NumPy数组升维 | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">NumPy.newaxis</h1>
+          <h1 class="post-title" itemprop="name headline">NumPy数组升维</h1>
         
 
         <div class="post-meta">
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  146
+                  148
                 </span>
               
 
@@ -349,7 +349,15 @@
       
 
       
-        <p>np.newaxis可以给np.ndarray增加一个轴，在使用和功能上等价于None，其实就是None的一个别名。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt;&gt; type(np.newaxis)</span><br><span class="line">NoneType</span><br><span class="line">&gt;&gt; np.newaxis == None</span><br><span class="line">True</span><br><span class="line"></span><br><span class="line"># 给一维数组增加轴，变成二维</span><br><span class="line">&gt;&gt; a = np.arange(3)</span><br><span class="line">array([0,1,2])</span><br><span class="line">&gt;&gt; a.shape</span><br><span class="line">(3,)</span><br><span class="line"></span><br><span class="line">&gt;&gt; a[:, np.newaxis]</span><br><span class="line">array([[0],</span><br><span class="line">	[1],</span><br><span class="line">	[2]])</span><br><span class="line">&gt;&gt; a[:, np.newaxis].shape</span><br><span class="line">(3,1)</span><br><span class="line"></span><br><span class="line"># 索引多维数组的某一列时，返回的是一维向量</span><br><span class="line">&gt;&gt; A = np.array([[1,2,3,4],[5,6,7,8],[9,10,11,12]])</span><br><span class="line">&gt;&gt; a = A[:,1]</span><br><span class="line">array([2,6,10]) #一行</span><br><span class="line">&gt;&gt; a.shape</span><br><span class="line">(3,)</span><br><span class="line"></span><br><span class="line"># 索引多列时，返回的是高维切片</span><br><span class="line">&gt;&gt; a = A[:, [1,3]]</span><br><span class="line">array([[2,4],</span><br><span class="line">	[6,8],</span><br><span class="line">	[10,12]])</span><br></pre></td></tr></table></figure></p>
+        <p>NumPy中可以用于数组升维的函数有：</p>
+<ul>
+<li>newaxis</li>
+<li>expand_dims</li>
+</ul>
+<h4 id="newaxis"><a href="#newaxis" class="headerlink" title="newaxis()"></a>newaxis()</h4><p>np.newaxis可以给np.ndarray增加一个轴，在使用和功能上等价于None，其实就是None的一个别名。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 相当于None</span></span><br><span class="line">type(np.newaxis) <span class="comment">#NoneType</span></span><br><span class="line">np.newaxis == <span class="keyword">None</span> <span class="comment">#True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 给一维数组增加轴，变成二维</span></span><br><span class="line">a = np.arange(<span class="number">3</span>) <span class="comment">#array([0,1,2])</span></span><br><span class="line">a.shape  <span class="comment">#(3,)</span></span><br><span class="line">a[:, np.newaxis] <span class="comment">#array([[0],[1],[2]])</span></span><br><span class="line">a[:, np.newaxis].shape <span class="comment">#(3,1)</span></span><br></pre></td></tr></table></figure>
+<h4 id="expand-dims"><a href="#expand-dims" class="headerlink" title="expand_dims()"></a>expand_dims()</h4><p>numpy.expand_dims(a, axis)<br>增加一个轴,和nexaxis的作用一样。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = np.array([<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line">x.shape <span class="comment">#(2,)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 相当于x[np.newaxis, :]</span></span><br><span class="line">y = np.expand_dims(x, axis=<span class="number">0</span>)</span><br><span class="line">y.shape <span class="comment">#(1,2)</span></span><br><span class="line"></span><br><span class="line">y = np.expand_dims(x, axis=<span class="number">1</span>)</span><br><span class="line">y.shape <span class="comment">#(2,1)</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -446,8 +454,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -466,7 +483,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">213</span>
+                  <span class="site-state-item-count">215</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -541,6 +558,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#newaxis"><span class="nav-number">1.</span> <span class="nav-text">newaxis()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#expand-dims"><span class="nav-number">2.</span> <span class="nav-text">expand_dims()</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -568,7 +601,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">73.3k</span>
+    <span title="Site words total count">73.9k</span>
   
 </div>
 
