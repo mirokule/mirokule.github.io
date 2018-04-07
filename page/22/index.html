@@ -262,6 +262,447 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/08/11/UITableView-Pull-to-Refresh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/11/UITableView-Pull-to-Refresh/" itemprop="url">UITableView Pull-to-Refresh</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-11T15:25:37+08:00">
+                2015-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  60
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="ViewDidLoad"><a href="#ViewDidLoad" class="headerlink" title="ViewDidLoad"></a>ViewDidLoad</h4><p>In viewDidLoad(), add the following code:</p>
+<pre><code>self.refreshControl = UIRefreshControl()
+self.refreshControl?.backgroundColor = UIColor.purpleColor()
+self.refreshControl?.tintColor = UIColor.whiteColor()
+self.refreshControl?.addTarget(self, action: Selector(&quot;actionHandler&quot;), forControlEvents: UIControlEvents.ValueChanged)
+</code></pre><p>When the tableview is pulled down sufficiently, the refresh controll triggers the UIControlEvents.ValueChanged.</p>
+<h4 id="ActionHandler"><a href="#ActionHandler" class="headerlink" title="ActionHandler"></a>ActionHandler</h4><p>It’s your responsibility to hide the refresh control.</p>
+<pre><code>func actionHandler() {
+    ...
+    self.refreshControl?.endRefreshing()
+}
+</code></pre><p>Nice.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/08/10/Swift-StringJoinMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/10/Swift-StringJoinMap/" itemprop="url">String Join and Map</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-10T19:56:05+08:00">
+                2015-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  27
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <pre><code>let animals = [&quot;cat&quot;, &quot;dog&quot;, &quot;Elephant&quot;]
+</code></pre><h3 id="Join"><a href="#Join" class="headerlink" title="Join"></a>Join</h3><pre><code>println(&quot;;&quot;.join(animals))
+println(join(&quot;;&quot;, animals))
+
+//output:
+&quot;cat;dog;Elephant&quot;
+</code></pre><h3 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h3><pre><code>println(&quot;\n&quot;.join(animals.map({&quot;*&quot; + $0})))
+
+//output:
+*cat
+*dog
+*Elephant
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/08/10/Swift-Enum/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/10/Swift-Enum/" itemprop="url">Enum</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-10T19:37:06+08:00">
+                2015-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  82
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Declaration"><a href="#Declaration" class="headerlink" title="Declaration"></a>Declaration</h4><p>enum in swift can have raw value</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Frequency</span>: <span class="title">Int</span> </span>&#123;</span><br><span class="line">   	<span class="keyword">case</span> <span class="type">Never</span> = <span class="number">0</span>, min15, min30, min45, min60, min90, min120, min240, min480</span><br><span class="line">   </span><br><span class="line">   	<span class="keyword">var</span> timeString: <span class="type">String</span> &#123;</span><br><span class="line">   	    <span class="keyword">let</span> strings = [<span class="string">"Never"</span>, <span class="string">"15min"</span>, <span class="string">"30min"</span>, <span class="string">"45min"</span>, <span class="string">"1hour"</span>, <span class="string">"1.5hours"</span>, <span class="string">"2hours"</span>, <span class="string">"4hours"</span>, <span class="string">"8hours"</span>]</span><br><span class="line">   	    <span class="keyword">return</span> strings[<span class="keyword">self</span>.rawValue]</span><br><span class="line">   	&#125;</span><br><span class="line">   </span><br><span class="line">   	<span class="keyword">var</span> timeNum: <span class="type">Int</span> &#123;</span><br><span class="line">   	    <span class="keyword">let</span> nums = [<span class="number">0</span>, <span class="number">15</span>, <span class="number">30</span>, <span class="number">45</span>, <span class="number">60</span>, <span class="number">90</span>, <span class="number">120</span>, <span class="number">240</span>, <span class="number">480</span>]</span><br><span class="line">   	    <span class="keyword">return</span> nums[<span class="keyword">self</span>.rawValue]</span><br><span class="line">   	&#125;</span><br><span class="line">   </span><br><span class="line"><span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">random</span><span class="params">()</span></span> -&gt; <span class="type">Frequency</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="type">Frequency</span>(rawValue: <span class="type">Int</span>(arc4random_uniform(<span class="built_in">count</span>)))!</span><br><span class="line">&#125;</span><br><span class="line">   	</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">let</span> <span class="built_in">count</span> = <span class="number">9</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Using"><a href="#Using" class="headerlink" title="Using"></a>Using</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="type">Frequency</span>(rawValue: <span class="number">3</span>)</span><br><span class="line"><span class="built_in">println</span>(f.timeString)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/08/05/Xcode-Localization/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1034,7 +1475,7 @@ func datepickerValueChanged() {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">215</span>
+                  <span class="site-state-item-count">218</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1047,7 +1488,7 @@ func datepickerValueChanged() {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1136,7 +1577,7 @@ func datepickerValueChanged() {
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">73.9k</span>
+    <span title="Site words total count">74.5k</span>
   
 </div>
 
