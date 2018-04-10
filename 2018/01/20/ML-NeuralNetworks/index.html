@@ -88,7 +88,7 @@
 <meta property="og:description" content="$a_i^{(j)}$ = “activation” of unit $i$ in layer $j$$\Theta^{(j)}$ = matrix of weights controlling function mapping from layer $j$ to layer $j+1$ 前向传播$$ a_1^{(2)}=g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://mirokule.github.io/img/nn.png">
-<meta property="og:updated_time" content="2018-02-02T02:21:39.819Z">
+<meta property="og:updated_time" content="2018-04-09T06:15:10.651Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络">
 <meta name="twitter:description" content="$a_i^{(j)}$ = “activation” of unit $i$ in layer $j$$\Theta^{(j)}$ = matrix of weights controlling function mapping from layer $j$ to layer $j+1$ 前向传播$$ a_1^{(2)}=g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^">
@@ -326,7 +326,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  522
+                  611
                 </span>
               
 
@@ -354,6 +354,7 @@
         <p><img src="/img/nn.png" width="400px"></p>
 <p>$a_i^{(j)}$ = “activation” of unit $i$ in layer $j$<br>$\Theta^{(j)}$ = matrix of weights controlling function mapping from layer $j$ to layer $j+1$</p>
 <h4 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h4><p>$$ a_1^{(2)}=g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3) $$<br>$$ a_2^{(2)}=g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3) $$<br>$$ a_3^{(2)}=g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3) $$<br>如果$j$层有$s_j$个单元，$j+1$层有$s_{j+1}$个单元，那么$\Theta^{(j)}$是一个$s_{j+1}*(s_j+1)$的矩阵，“+1”是因为要引入$j$层的隐藏单元，偏差项$x_0$。定义<br>$$z_k^{(i)} = \Theta_{k,0}^{(i-1)}x_0 + \Theta_{k,1}^{(i-1)}x_1+\cdot \cdot \cdot + \Theta_{k,n}^{(1)}x_n$$<br>则算法可以简写成<br>$$ z^{(j)} = \Theta^{(j-1)}a^{(j-1)} $$<br>$$ a^{(j)} = g(z^{(j)}) $$</p>
+<p><strong>随机初始值</strong><br>开始训练前，若设定$\Theta$初始值全为0，则所有层各节点的学习结果完全相同。<br>为避免这一结果，需要将$\omega$初始化为不同的较小的值，$\b$可初始化为0.<br>若$\omega$初始值较大，则sigmoid的输入值较大，梯度较小，收敛速度慢。</p>
 <p><strong>多分类</strong><br>One-vs-all，对于K个类别，$y=[0,1,…0]^T$是$k$维向量，对应输出层$k$个单元。</p>
 <p><strong>代价函数$J(\Theta)$</strong><br>$$ J(\Theta) = -\frac{1}{m}\sum_{i=1}^m\sum_{k=1}^K\left[y_k^{(i)}log((h_{\Theta}(x^{(i)}))_k) + (1-y_k^{(i)})log(1-(h_{\Theta}(x^{(i)}))_k) \right]+\frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_l+1}(\Theta_{j,i}^{(l)})^2  $$<br>其中<br>$$ cost(t) = y_k^{(t)}log(h_{\Theta}(x^{(t)})) + (1-y^{(t)})log(1-h_{\Theta}(x^{(t)})) $$<br>$\delta_j^{(l)}$是$a_j^{(l)}$的“误差”，是$cost(t)$的偏导数：<br>$$ \delta_j^{(l)} = \frac{\partial}{\partial z_j^{(l)}}cost(t) $$</p>
 <h4 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h4><p>反向传播是为了计算偏导数$\frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta)$，从而得到$min_{\Theta}J(\Theta)$</p>
@@ -497,7 +498,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">218</span>
+                  <span class="site-state-item-count">224</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -510,7 +511,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -615,7 +616,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">74.5k</span>
+    <span title="Site words total count">77.1k</span>
   
 </div>
 
