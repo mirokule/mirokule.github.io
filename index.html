@@ -262,6 +262,665 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/DL-CNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/14/DL-CNN/" itemprop="url">卷积神经网络</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T14:57:49+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  479
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>卷积神经网络(Convolutional Neural Networks, CNN)多用于图像处理，因为卷积特别适合图像特征提取，降低计算复杂度。</p>
+<h4 id="卷积-Convolution"><a href="#卷积-Convolution" class="headerlink" title="卷积(Convolution)"></a>卷积(Convolution)</h4><p>深度学习里俗称的”卷积“同数学上的”卷积“定义不同。<br>这里的”卷积“运算实际上是互相关(Cross-Correlation)，没有对核进行翻转。而数学定义上的”卷积“要对核翻转。因为大部分图像处理的核都是对称的，没有翻转并不影响最终结果。<br>使用卷积可以对图像进行边缘检测。<br><img src="/img/convolution.gif"></p>
+<ul>
+<li>输入：一张RGB图片对应一个(n, n, 3)矩阵</li>
+<li>核：(f,f,3)矩阵用于卷积</li>
+<li>Padding: 为原始图片添加边缘，防止处理后图片缩小<ul>
+<li>Valid: p = 0，不加边缘</li>
+<li>Same: p = (f-1)/2，使处理前后尺寸相同</li>
+</ul>
+</li>
+<li>Strided: 步长，每次卷积后跨越多少个单位</li>
+</ul>
+<p>卷积后的输出尺寸为 $n_{out} = \left \lfloor \frac{n+2p-f}{s}+1 \right \rfloor$</p>
+<h4 id="池化-Pooling"><a href="#池化-Pooling" class="headerlink" title="池化(Pooling)"></a>池化(Pooling)</h4><p>对不同位置的特征进行聚合统计，获得更低维度的特征。<br><img src="/img/pooling.gif"><br>聚合方式有两种：</p>
+<ul>
+<li>Max Pooling: 取切片区域内最大的元素</li>
+<li>Average Pooling: 取切片区域内的平均值</li>
+</ul>
+<p>输出尺寸 $n_{out} = \left \lfloor \frac{n_{prev} - f}{s} + 1 \right \rfloor $</p>
+<h4 id="卷积神经网络"><a href="#卷积神经网络" class="headerlink" title="卷积神经网络"></a>卷积神经网络</h4><p>将卷积层和池化层放入神经网络中，可以有许多不同的网络结构。<br><img src="/img/cnn.png"></p>
+<p>卷积层前向传播：</p>
+<ul>
+<li>A_prev: (m, $n_{H_{prev}}$, $n_{W_{prev}}$, $n_{C_{prev}}$)</li>
+<li>W: (f, f, $n_{C_{prev}}$, $n_C$) 每层有$n_C$个核</li>
+<li>b: (1, 1, 1, $n_C$)</li>
+<li>Z: (m, $n_H$, $n_W$, $n_C$) </li>
+</ul>
+<p>其中<br>$$ n_H = \lfloor \frac{n_{H_{prev}} - f + 2 \times pad}{stride} \rfloor +1 $$<br>$$ n_W = \lfloor \frac{n_{W_{prev}} - f + 2 \times pad}{stride} \rfloor +1 $$<br>$$ n_C = \text{number of filters used in the convolution}$$</p>
+<p>池化层没有参数：</p>
+<ul>
+<li>A_prev: (m, $n_{H_{prev}}$, $n_{W_{prev}}$, $n_{C_{prev}}$)</li>
+<li>A: (m, $n_H$, $n_W$, $n_C$) </li>
+</ul>
+<p>其中<br>$$ n_H = \lfloor \frac{n_{H_{prev}} - f}{stride} \rfloor +1 $$<br>$$ n_W = \lfloor \frac{n_{W_{prev}} - f}{stride} \rfloor +1 $$<br>$$ n_C = n_{C_{prev}}$$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/TF-Functions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/14/TF-Functions/" itemprop="url">TensorFlow常用函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T14:33:49+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  152
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="数学运算"><a href="#数学运算" class="headerlink" title="数学运算"></a>数学运算</h4><p><strong>标量</strong></p>
+<ul>
+<li>tf.add(a,b): 加法</li>
+<li>tf.multiply(a,b): 乘法</li>
+</ul>
+<p><strong>矩阵</strong></p>
+<ul>
+<li>tf.ones(shape)</li>
+<li>tf.reduce_mean(): 取平均</li>
+<li>tf.matmul(W,X): 矩阵乘法</li>
+<li>tf.transpose(X): 矩阵转置</li>
+</ul>
+<p><strong>其他</strong></p>
+<ul>
+<li>tf.sigmoid(x)</li>
+<li>tf.one_hot(labels, depth, axis)</li>
+<li>tf.set_random_seed(1)</li>
+</ul>
+<h4 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h4><p><strong>损失函数</strong></p>
+<ul>
+<li>tf.nn.sigmoid_cross_entropy_with_logits(logits=z, labels=y): 二分类Logistic Loss</li>
+<li>tf.nn.softmax_cross_entropy_with_logits(logits=z, lables=y): 多分类Softmax Loss</li>
+</ul>
+<p><strong>激活层</strong></p>
+<ul>
+<li>tf.nn.relu(Z): ReLU层</li>
+<li>tf.nn.conv2d(X,W1,strides=[1,s,s,1],padding=’SAME’]: 卷积层</li>
+<li>tf.nn.max_pool(A, ksize=[1,f,f,1], strides=[1,s,s,1], padding=’SAME’): Max_Pool层</li>
+</ul>
+<p><strong>Contrib</strong></p>
+<ul>
+<li>tf.contrib.layers.flatten(P): 展平P到一维</li>
+<li>tf.contrib.layers.fully_connect(F,num_outputs): 全连接层</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/TF-Optimizer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/14/TF-Optimizer/" itemprop="url">优化器Optimizer</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T10:06:10+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  169
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-tf-train-Optimizer"><a href="#1-tf-train-Optimizer" class="headerlink" title="1. tf.train.Optimizer"></a>1. tf.train.Optimizer</h4><p>优化器类(optimizers)的基类。<br>基本上不会直接使用这个类。</p>
+<h4 id="2-tf-train-GradientDescentOptimizer"><a href="#2-tf-train-GradientDescentOptimizer" class="headerlink" title="2. tf.train.GradientDescentOptimizer"></a>2. tf.train.GradientDescentOptimizer</h4><p>实现梯度下降算法的优化器。</p>
+<p>方法</p>
+<ul>
+<li><strong>init</strong>(learning_rate, use_locking=False, name=’GradientDescent’): 构造函数</li>
+<li>minimize(loss,global_step=None,var_list=None,gate_gradients=GATE_OP,aggregation_method=None,<br>colocate_gradients_with_ops=False,name=None,grad_loss=None): 迭代的一步，loss是目标函数</li>
+<li>compute_gradients(loss,var_list=None,gate_gradients=GATE_OP,aggregation_method=None,<br>colocate_gradients_with_ops=False,grad_loss=None): minimize的第一个步骤</li>
+<li>apply_gradients(grads_and_vars,global_step=None,name=None): minimize的第二个步骤</li>
+<li>get_name()</li>
+</ul>
+<h4 id="3-tf-train-MomentumOptimizer"><a href="#3-tf-train-MomentumOptimizer" class="headerlink" title="3. tf.train.MomentumOptimizer"></a>3. tf.train.MomentumOptimizer</h4><p>实现动量算法的优化器</p>
+<p>方法</p>
+<ul>
+<li><strong>init</strong>(learning_rate, momentum, use_locking=False, name=’Momentum’, use_nesterov=False)</li>
+</ul>
+<h4 id="4-tf-train-AdamOptimizer"><a href="#4-tf-train-AdamOptimizer" class="headerlink" title="4. tf.train.AdamOptimizer"></a>4. tf.train.AdamOptimizer</h4><p>实现Adam算法的优化器</p>
+<p>方法</p>
+<ul>
+<li><strong>init</strong>(learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-08, use_locking=False, name=’Adam’)</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/TF-ConstantVariable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/14/TF-ConstantVariable/" itemprop="url">Constant, Variable, Placeholder</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T08:56:40+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  316
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-Constant"><a href="#1-Constant" class="headerlink" title="1. Constant"></a>1. Constant</h4><p>cons = tf.constant(value, dtype=tf.float32, shape=None, name=None, verify_shape=False)</p>
+<p>参数</p>
+<ul>
+<li>value: 初始值，必须是一个张量</li>
+<li>dtype: 默认为value的数据类型</li>
+<li>shape: 默认为value的shape</li>
+<li>name: 常量名</li>
+<li>verify_shape: 是否验证value的shape和指定shape是否相等，不相等时会抛出异常</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = tf.constant(<span class="number">2</span>)</span><br><span class="line">b = tf.constant(<span class="number">13</span>)</span><br><span class="line">add = tf.add(a,b)</span><br><span class="line"></span><br><span class="line">W = tf.constant(np.random.randn(<span class="number">3</span>,<span class="number">4</span>), name=<span class="string">"W"</span>)</span><br><span class="line">b = tf.constant(np.random.randn(<span class="number">3</span>,<span class="number">1</span>), name=<span class="string">"b"</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-PlaceHolder"><a href="#2-PlaceHolder" class="headerlink" title="2. PlaceHolder"></a>2. PlaceHolder</h4><p>placeholder也是一种常量，不同的是在运行时注入数据。<br>pla = tf.placeholder(dtype=tf.float32, shape=(), name=””)</p>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.placeholder(tf.int64, name=<span class="string">"X"</span>)</span><br><span class="line">sess.run(<span class="number">2</span>*x, feed_dict=&#123;x:<span class="number">12</span>&#125;)</span><br><span class="line"></span><br><span class="line">X = tf.placeholder(tf.float32, shape=(n_h, n_w, <span class="keyword">None</span>), name=<span class="string">"X"</span>)</span><br><span class="line">Y = tf.placeholder(tf.float32, shape=(n_y, <span class="keyword">None</span>), name=<span class="string">"X"</span>)</span><br><span class="line">sess.run([optimizer, cost], feed_dict=&#123;X: batch_X, Y: batch_Y&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="3-Variable"><a href="#3-Variable" class="headerlink" title="3. Variable"></a>3. Variable</h4><p>变量Variable使用前需要初始化。<br>TensorFlow中有两个关于variable的构造函数：</p>
+<ul>
+<li>tf.Variable(): 每次都创建新对象；创建时若命名冲突将覆盖原有对象</li>
+<li>tf.get_variable(): 若命名对象存在则返回，否则创建新对象；创建时若命名冲突则报错</li>
+</ul>
+<p>W1 = tf.Variable(initial_value=None, …)<br>W2 = tf.get_variable(name, initializer=None, …)</p>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Variable</span></span><br><span class="line">w = tf.Variable(tf.zeros([<span class="number">3</span>,<span class="number">4</span>]), dtype=tf.float64, name=<span class="string">"W"</span>)</span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line">session.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment">## get_variable</span></span><br><span class="line">W1 = tf.get_variable(<span class="string">"W1"</span>, [<span class="number">12</span>,<span class="number">25</span>], initializer = tf.contrib.layers.xavier_initializer(seed=<span class="number">1</span>))</span><br><span class="line">b1 = tf.get_variable(<span class="string">"b1"</span>, [<span class="number">12</span>,<span class="number">1</span>], initializer = tf.zeros_initializer())</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/13/ML-ErrorAnalysis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1191,645 +1850,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/11/DL-Adam/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/11/DL-Adam/" itemprop="url">Adam梯度下降</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T09:07:45+08:00">
-                2018-04-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  741
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Adam算法全称是Adaptive Moment Estimation(自适应矩估计)，是超越其他自适应技术的优化方法。<br>Adam结合了<strong>RMSProp</strong>和<strong>Momentum</strong></p>
-<h4 id="1-Momentum"><a href="#1-Momentum" class="headerlink" title="1. Momentum"></a>1. Momentum</h4><p><strong>指数平均</strong><br>指数平均(Exponentially Weight Average)是一种将输入平滑的趋向类指标。<br>$$ v_t = \beta v_{t-1} + (1-\beta)\theta_t $$<br>可以近似看做$\frac{1}{1-\beta}$天的平均，例如$\beta=0.9$，则$v_t$近似看做最近10天的平均值。<br>$\beta$越大，$v_t$曲线越光滑；通常取为0.9.</p>
-<p><strong>动量梯度下降(Momentum)</strong><br>将指数平均应用到梯度下降算法，每次迭代更新时使用近似均值，来降低波动。<br>$$ \begin{cases}<br>v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\<br>W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}<br>\end{cases}$$</p>
-<p>$$\begin{cases}<br>v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\<br>b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}}<br>\end{cases}$$</p>
-<p><strong>Bias Correction</strong><br>移动平均的起始点低，因为$v_{t-1}$数值较小。<br>可以通过$v_t = \frac{v_t}{1-\beta^t}$予以校正。</p>
-<h4 id="2-RMSProp"><a href="#2-RMSProp" class="headerlink" title="2. RMSProp"></a>2. RMSProp</h4><p>均方根(Root Mean Square prop)用参数除以近似标准差，降低更新方向上的波动。</p>
-<p>$$ \begin{cases}<br>S_{dW^{[l]}} = \beta S_{dW^{[l]}} + (1 - \beta) (dW^{[l]})^2 \\<br>W^{[l]} = W^{[l]} - \alpha \frac{dW^{[l]}}{\sqrt{S_{dW^{[l]}}}}<br>\end{cases}$$</p>
-<p>$$\begin{cases}<br>S_{db^{[l]}} = \beta S_{db^{[l]}} + (1 - \beta) (db^{[l]})^2 \\<br>b^{[l]} = b^{[l]} - \alpha \frac{db^{[l]}}{\sqrt{S_{db^{[l]}}}}<br>\end{cases}$$</p>
-<p>实际应用时会给分母加上$\epsilon = 10^{-8}$，保证分母不为0.</p>
-<h4 id="3-Adam"><a href="#3-Adam" class="headerlink" title="3. Adam"></a>3. Adam</h4><p>同时使用了近似均值和近似标准差：<br>$$\begin{cases}<br>v_{dW^{[l]}} = \beta_1 v_{dW^{[l]}} + (1 - \beta_1) \frac{\partial \mathcal{J} }{ \partial W^{[l]} } \\<br>v^{corrected}_{dW^{[l]}} = \frac{v_{dW^{[l]}}}{1 - (\beta_1)^t} \\<br>s_{dW^{[l]}} = \beta_2 s_{dW^{[l]}} + (1 - \beta_2) (\frac{\partial \mathcal{J} }{\partial W^{[l]} })^2 \\<br>s^{corrected}_{dW^{[l]}} = \frac{s_{dW^{[l]}}}{1 - (\beta_1)^t} \\<br>W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{dW^{[l]}}}{\sqrt{s^{corrected}_{dW^{[l]}}}\;\;+\;\;\varepsilon}<br>\end{cases}$$</p>
-<p><strong>算法</strong></p>
-<ol>
-<li>计算梯度的指数平均 $v$ 和 $v^{corrected}$ </li>
-<li>计算梯度平方的指数平均 $s$ 和 $s^{corrected}$ </li>
-<li>将1和2的信息结合，更新参数</li>
-<li>$\beta_1$通常取0.9，$\beta_2$通常取0.999，$\epsilon$通常取$10^{-8}$</li>
-</ol>
-<p><strong>实现</strong><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> l <span class="keyword">in</span> range(L):</span><br><span class="line">    <span class="comment"># Moving average of the gradients. Inputs: "v, grads, beta1". Output: "v".</span></span><br><span class="line">    v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = beta1 * v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta1) * grads[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)]</span><br><span class="line">    v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = beta1 * v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta1) * grads[<span class="string">"db"</span> + str(l+<span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Compute bias-corrected first moment estimate. Inputs: "v, beta1, t". Output: "v_corrected".</span></span><br><span class="line">    v_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line">    v_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Moving average of the squared gradients. Inputs: "s, grads, beta2". Output: "s".</span></span><br><span class="line">    s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = beta2 * s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta2) * (grads[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line">    s[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = beta2 * s[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta2) * (grads[<span class="string">"db"</span> + str(l+<span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Compute bias-corrected second raw moment estimate. Inputs: "s, beta2, t". Output: "s_corrected".</span></span><br><span class="line">    s_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line">    s_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Update parameters. Inputs: "parameters, learning_rate, v_corrected, s_corrected, epsilon". Output: "parameters".</span></span><br><span class="line">    parameters[<span class="string">"W"</span> + str(l+<span class="number">1</span>)] = parameters[<span class="string">"W"</span> + str(l+<span class="number">1</span>)] - learning_rate * v_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / np.sqrt(s_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + epsilon)</span><br><span class="line">    parameters[<span class="string">"b"</span> + str(l+<span class="number">1</span>)] = parameters[<span class="string">"b"</span> + str(l+<span class="number">1</span>)] - learning_rate * v_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] / np.sqrt(s_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + epsilon)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-Overfit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/10/DL-Overfit/" itemprop="url">神经网络过拟合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T09:33:41+08:00">
-                2018-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  338
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。</p>
-<p>过拟合的处理方法包括：</p>
-<ul>
-<li>增加训练样本：Data Augmentation数据扩增</li>
-<li>正则化<ul>
-<li>L2</li>
-<li>Drop Out</li>
-</ul>
-</li>
-<li>Early Stopping：不符合‘一次解决一个问题’的原则</li>
-</ul>
-<h4 id="1-L2正则化"><a href="#1-L2正则化" class="headerlink" title="1. L2正则化"></a>1. L2正则化</h4><p>在损失函数的末尾增加正则项：<br>$$ C = C_0 + \frac{\lambda}{2m} \sum_{\omega}\omega^2$$<br>原参数的导数变为：<br>$$ \frac{\partial C}{\partial \omega} = \frac{\partial C_0}{\partial \omega} + \frac{\lambda}{m}\omega $$<br>$$ \frac{\partial C}{\partial b} = \frac{\partial C_0}{\partial b} $$<br>每次迭代时，会使$\omega$变得更小，称作weight decay.</p>
-<h4 id="2-Drop-Out"><a href="#2-Drop-Out" class="headerlink" title="2. Drop Out"></a>2. Drop Out</h4><p>随机舍弃部分神经元，减少网络中的节点数。<br>算法流程：</p>
-<ol>
-<li>设定阈值prob_keep</li>
-<li>每轮迭代时，生成新的随机数矩阵D</li>
-<li>将D中大于阈值的数置0，小于阈值的置1：D = D &lt; prob_keep</li>
-<li>将D作为mask，作用到神经元输出：A = A * D</li>
-<li>缩放输出，保持总量不变：A = A / prob_keep(Inverted Dropout)</li>
-<li>后向传播的dA同样mask：dA = dA * D</li>
-<li>缩放dA：dA = dA / prob_keep</li>
-</ol>
-<p>说明：</p>
-<ul>
-<li>drop out只在训练时使用，测试时不使用</li>
-<li>前向传播和后向传播都要drop out</li>
-<li>drop out打破了参数之间的共适应，近似理解为每次只调整部分参数</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-Initializing/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/10/DL-Initializing/" itemprop="url">神经网络权重初始化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T08:20:04+08:00">
-                2018-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  400
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>深度学习中的权重初始化对模型收敛速度和模型质量有重要影响</strong>。</p>
-<ul>
-<li>对tanh，W可初始化为$randn(n^{[l]}, n^{[l-1]}) \ast \sqrt{\frac{1}{n^{[l-1]}}}$ (Xavier Initialization)</li>
-<li>对ReLU，W可初始化为$randn(n^{[l]}, n^{[l-1]}) \ast \sqrt{\frac{2}{n^{[l-1]}}}$ (He Initialization)</li>
-<li>也可以初始化为$randn(n^{[l]}, n^{[l-1]}) + \sqrt{\frac{1}{n^{[l-1]}\,+\,n^{[l]}}}$ </li>
-</ul>
-<h4 id="简化模型"><a href="#简化模型" class="headerlink" title="简化模型"></a>简化模型</h4><p>每层只有一个神经元的神经网络：<br><img src="/img/singleNN.png"><br>损失函数为$C$，各层输出分别是$a_1, a_2, a_3, a_4$<br>根据求导的链式法则有：<br>$$ \frac{\partial C}{\partial \omega_1}=a_0\sigma’(z_1)\omega_2\sigma’(z_2)\omega_3\sigma’(z_3)\omega_4\sigma’(z_4)\frac{\partial C}{\partial a_4} $$<br>$$ \frac{\partial C}{\partial b_1}=\sigma’(z_1)\omega_2\sigma’(z_2)\omega_3\sigma’(z_3)\omega_4\sigma’(z_4)\frac{\partial C}{\partial a_4} $$</p>
-<h4 id="0-全部为0"><a href="#0-全部为0" class="headerlink" title="0. 全部为0"></a>0. 全部为0</h4><p>全部初始化为0是不可接受的，这会导致所有节点的行为相同，网络失效。<br>后向传播时，梯度也全为0，参数无法更新。</p>
-<h4 id="1-随机初始化"><a href="#1-随机初始化" class="headerlink" title="1. 随机初始化"></a>1. 随机初始化</h4><p>随机初始化的分布选择不当，也会导致网络优化陷入困境。</p>
-<ul>
-<li>参数过大，会带来梯度爆炸</li>
-<li>参数过小，会带来梯度消失</li>
-</ul>
-<h4 id="2-Xavier初始化"><a href="#2-Xavier初始化" class="headerlink" title="2. Xavier初始化"></a>2. Xavier初始化</h4><p>主要思想：保持输入和输出的方差一致，这就避免了所有输出值都趋向于0</p>
-<ul>
-<li>配合tanh等函数能获得比较好的结果</li>
-<li>ReLU和PReLU效果不好</li>
-</ul>
-<h4 id="3-He初始化"><a href="#3-He初始化" class="headerlink" title="3. He初始化"></a>3. He初始化</h4><p>主要思想：假定ReLU网络中每一层只有一半的神经元被激活，所以要保持方差不变，只需要在Xavier的基础上除以2</p>
-<ul>
-<li>配合ReLU效果较好</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-ActivationFunction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/10/DL-ActivationFunction/" itemprop="url">激活函数(Activation Function)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T07:27:43+08:00">
-                2018-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  444
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>激活函数用于在学习器中引入非线性因素。<br>$$ Y = Activation(\Sigma(weight \ast input) + bias) $$<br>不引入非线性因素的神经网络，本质上仍是一个线性回归模型。</p>
-<p>激活函数主要有以下几种：</p>
-<ul>
-<li>sigmoid: 适合分类器</li>
-<li>tanh: sigmoid改进版</li>
-<li>ReLU: 大多数情况下适用，只能在隐藏层中使用</li>
-<li>Leaky ReLU: 避免死神经元</li>
-</ul>
-<h4 id="选择经验"><a href="#选择经验" class="headerlink" title="选择经验"></a>选择经验</h4><p>选择激活函数时，可以先从<strong>ReLU</strong>开始。<br>如果ReLU没有提供最优结果，再尝试其他激活函数。</p>
-<h4 id="1-sigmoid"><a href="#1-sigmoid" class="headerlink" title="1. sigmoid"></a>1. sigmoid</h4><p>曾将广泛使用的激活函数，由于自身缺陷，目前已很少使用。</p>
-<ul>
-<li>当输入远离原点时，梯度太小；多层神经网络中，太小的各层梯度叠加后会消失，使学习速度缓慢</li>
-<li>输出不以0为中心</li>
-<li>要进行指数运算</li>
-</ul>
-<p>目前仅在将值分类到特定类别时使用，比如最终输出$y\in(0,1)$的网络中的最后一层。<br>$$ sigmoid(x) = \frac{1}{1+e^{-x}} $$<br><img src="/img/sigmoid.png"></p>
-<h4 id="2-tanh"><a href="#2-tanh" class="headerlink" title="2. tanh"></a>2. tanh</h4><p>tanh是sigmoid的一个放大版本，梯度比sigmoid更陡。<br>tanh解决了所有值符号相同的问题，输出区间(-1,1)，为0为中心。<br>$$ tanh(x) = 2\ast sigmoid(2x) - 1 $$<br>$$ tanh(x) = \frac{2}{1+e^{-2x}} - 1 $$<br><img src="/img/tanh.png"></p>
-<h4 id="3-ReLU"><a href="#3-ReLU" class="headerlink" title="3. ReLU"></a>3. ReLU</h4><p>ReLU是使用最广泛的激活函数。<br>最大的优点在于不会同时激活所有的神经元，这种稀疏性使其变得高效且易于计算。<br>$$ ReLU(x) = max(0, x) $$<br><img src="/img/relu.png"></p>
-<h4 id="4-Leaky-ReLU-PReLU"><a href="#4-Leaky-ReLU-PReLU" class="headerlink" title="4. Leaky ReLU / PReLU"></a>4. Leaky ReLU / PReLU</h4><p>在ReLU中，当x小于0时梯度为0，使得该区域的神经元死亡。<br>为了解决这个问题，用斜线代替水平线，去除零梯度。<br>$$ PReLU(x) = ax\; for \; x &lt; 0 $$<br>$$ PReLU(x) = x\; for \; x \geq 0 $$<br>这里a是一个很小的值，比如0.01.<br><img src="/img/prelu.png"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1884,7 +1904,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">231</span>
+                  <span class="site-state-item-count">235</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1897,7 +1917,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1986,7 +2006,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">79.6k</span>
+    <span title="Site words total count">80.7k</span>
   
 </div>
 
