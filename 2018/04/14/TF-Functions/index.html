@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Machine Learning,Deep Learning,TensorFlow," />
+  <meta name="keywords" content="Deep Learning,TensorFlow," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="数学运算标量  tf.add(a,b): 加法 tf.multiply(a,b): 乘法  矩阵  tf.ones(shape) tf.reduce_mean(): 取平均 tf.matmul(W,X): 矩阵乘法 tf.transpose(X): 矩阵转置  其他  tf.sigmoid(x) tf.one_hot(labels, depth, axis) tf.set_random_seed(">
-<meta name="keywords" content="Machine Learning,Deep Learning,TensorFlow">
+<meta name="description" content="数学运算标量  tf.add(a,b): 加法 tf.multiply(a,b): 乘法 tf.pow(a,b): 乘方 tf.maximum(a,b): 返回较大的那个  矩阵  tf.ones(shape) tf.reduce_mean(): 取平均 tf.reduce_max(input, axis=None): 返回最大值，缩减一个维度 tf.argmax(input, axis=None">
+<meta name="keywords" content="Deep Learning,TensorFlow">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TensorFlow常用函数">
 <meta property="og:url" content="http://mirokule.github.io/2018/04/14/TF-Functions/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="数学运算标量  tf.add(a,b): 加法 tf.multiply(a,b): 乘法  矩阵  tf.ones(shape) tf.reduce_mean(): 取平均 tf.matmul(W,X): 矩阵乘法 tf.transpose(X): 矩阵转置  其他  tf.sigmoid(x) tf.one_hot(labels, depth, axis) tf.set_random_seed(">
+<meta property="og:description" content="数学运算标量  tf.add(a,b): 加法 tf.multiply(a,b): 乘法 tf.pow(a,b): 乘方 tf.maximum(a,b): 返回较大的那个  矩阵  tf.ones(shape) tf.reduce_mean(): 取平均 tf.reduce_max(input, axis=None): 返回最大值，缩减一个维度 tf.argmax(input, axis=None">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-14T06:57:00.543Z">
+<meta property="og:updated_time" content="2018-04-17T07:53:04.073Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TensorFlow常用函数">
-<meta name="twitter:description" content="数学运算标量  tf.add(a,b): 加法 tf.multiply(a,b): 乘法  矩阵  tf.ones(shape) tf.reduce_mean(): 取平均 tf.matmul(W,X): 矩阵乘法 tf.transpose(X): 矩阵转置  其他  tf.sigmoid(x) tf.one_hot(labels, depth, axis) tf.set_random_seed(">
+<meta name="twitter:description" content="数学运算标量  tf.add(a,b): 加法 tf.multiply(a,b): 乘法 tf.pow(a,b): 乘方 tf.maximum(a,b): 返回较大的那个  矩阵  tf.ones(shape) tf.reduce_mean(): 取平均 tf.reduce_max(input, axis=None): 返回最大值，缩减一个维度 tf.argmax(input, axis=None">
 
 
 
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  152
+                  227
                 </span>
               
 
@@ -353,11 +353,15 @@
 <ul>
 <li>tf.add(a,b): 加法</li>
 <li>tf.multiply(a,b): 乘法</li>
+<li>tf.pow(a,b): 乘方</li>
+<li>tf.maximum(a,b): 返回较大的那个</li>
 </ul>
 <p><strong>矩阵</strong></p>
 <ul>
 <li>tf.ones(shape)</li>
 <li>tf.reduce_mean(): 取平均</li>
+<li>tf.reduce_max(input, axis=None): 返回最大值，缩减一个维度</li>
+<li>tf.argmax(input, axis=None): 最大值的索引</li>
 <li>tf.matmul(W,X): 矩阵乘法</li>
 <li>tf.transpose(X): 矩阵转置</li>
 </ul>
@@ -366,6 +370,8 @@
 <li>tf.sigmoid(x)</li>
 <li>tf.one_hot(labels, depth, axis)</li>
 <li>tf.set_random_seed(1)</li>
+<li>tf.gather(params, indices): 选取指定索引的数据</li>
+<li>tf.boolean_mask(tensor, mask): 适用mask</li>
 </ul>
 <h4 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h4><p><strong>损失函数</strong></p>
 <ul>
@@ -382,6 +388,10 @@
 <ul>
 <li>tf.contrib.layers.flatten(P): 展平P到一维</li>
 <li>tf.contrib.layers.fully_connect(F,num_outputs): 全连接层</li>
+</ul>
+<p><strong>Image</strong></p>
+<ul>
+<li>tf.image.non_max_suppression(boxes, scores, max_output_size, iou_threshold): Non-Max Suppression</li>
 </ul>
 
       
@@ -400,8 +410,6 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
-          
             <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
           
             <a href="/tags/TensorFlow/" rel="tag"># TensorFlow</a>
@@ -417,8 +425,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/14/TF-Optimizer/" rel="next" title="优化器Optimizer">
-                <i class="fa fa-chevron-left"></i> 优化器Optimizer
+              <a href="/2018/04/14/TF-Optimizer/" rel="next" title="TensorFlow优化器Optimizer">
+                <i class="fa fa-chevron-left"></i> TensorFlow优化器Optimizer
               </a>
             
           </div>
@@ -510,7 +518,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">235</span>
+                  <span class="site-state-item-count">238</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -523,7 +531,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -628,7 +636,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">80.7k</span>
+    <span title="Site words total count">82.4k</span>
   
 </div>
 

@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://mirokule.github.io/img/tanh.png">
 <meta property="og:image" content="http://mirokule.github.io/img/relu.png">
 <meta property="og:image" content="http://mirokule.github.io/img/prelu.png">
-<meta property="og:updated_time" content="2018-04-10T00:10:41.446Z">
+<meta property="og:updated_time" content="2018-04-17T08:11:43.911Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="激活函数(Activation Function)">
 <meta name="twitter:description" content="激活函数用于在学习器中引入非线性因素。$$ Y = Activation(\Sigma(weight \ast input) + bias) $$不引入非线性因素的神经网络，本质上仍是一个线性回归模型。 激活函数主要有以下几种：  sigmoid: 适合分类器 tanh: sigmoid改进版 ReLU: 大多数情况下适用，只能在隐藏层中使用 Leaky ReLU: 避免死神经元  选择经验选择激">
@@ -362,17 +362,21 @@
 <li>ReLU: 大多数情况下适用，只能在隐藏层中使用</li>
 <li>Leaky ReLU: 避免死神经元</li>
 </ul>
-<h4 id="选择经验"><a href="#选择经验" class="headerlink" title="选择经验"></a>选择经验</h4><p>选择激活函数时，可以先从<strong>ReLU</strong>开始。<br>如果ReLU没有提供最优结果，再尝试其他激活函数。</p>
+<p><strong>选择经验</strong><br>选择激活函数时，可以先从<strong>ReLU</strong>开始。<br>如果ReLU没有提供最优结果，再尝试其他激活函数。</p>
 <h4 id="1-sigmoid"><a href="#1-sigmoid" class="headerlink" title="1. sigmoid"></a>1. sigmoid</h4><p>曾将广泛使用的激活函数，由于自身缺陷，目前已很少使用。</p>
 <ul>
 <li>当输入远离原点时，梯度太小；多层神经网络中，太小的各层梯度叠加后会消失，使学习速度缓慢</li>
 <li>输出不以0为中心</li>
 <li>要进行指数运算</li>
 </ul>
-<p>目前仅在将值分类到特定类别时使用，比如最终输出$y\in(0,1)$的网络中的最后一层。<br>$$ sigmoid(x) = \frac{1}{1+e^{-x}} $$<br><img src="/img/sigmoid.png"></p>
-<h4 id="2-tanh"><a href="#2-tanh" class="headerlink" title="2. tanh"></a>2. tanh</h4><p>tanh是sigmoid的一个放大版本，梯度比sigmoid更陡。<br>tanh解决了所有值符号相同的问题，输出区间(-1,1)，为0为中心。<br>$$ tanh(x) = 2\ast sigmoid(2x) - 1 $$<br>$$ tanh(x) = \frac{2}{1+e^{-2x}} - 1 $$<br><img src="/img/tanh.png"></p>
-<h4 id="3-ReLU"><a href="#3-ReLU" class="headerlink" title="3. ReLU"></a>3. ReLU</h4><p>ReLU是使用最广泛的激活函数。<br>最大的优点在于不会同时激活所有的神经元，这种稀疏性使其变得高效且易于计算。<br>$$ ReLU(x) = max(0, x) $$<br><img src="/img/relu.png"></p>
-<h4 id="4-Leaky-ReLU-PReLU"><a href="#4-Leaky-ReLU-PReLU" class="headerlink" title="4. Leaky ReLU / PReLU"></a>4. Leaky ReLU / PReLU</h4><p>在ReLU中，当x小于0时梯度为0，使得该区域的神经元死亡。<br>为了解决这个问题，用斜线代替水平线，去除零梯度。<br>$$ PReLU(x) = ax\; for \; x &lt; 0 $$<br>$$ PReLU(x) = x\; for \; x \geq 0 $$<br>这里a是一个很小的值，比如0.01.<br><img src="/img/prelu.png"></p>
+<p><img src="/img/sigmoid.png"><br>$$ sigmoid(x) = \frac{1}{1+e^{-x}} $$<br>目前仅在将值分类到特定类别时使用，比如最终输出$y\in(0,1)$的网络中的最后一层。</p>
+<h4 id="2-tanh"><a href="#2-tanh" class="headerlink" title="2. tanh"></a>2. tanh</h4><p>tanh是sigmoid的一个放大版本，梯度比sigmoid更陡。<br>tanh解决了所有值符号相同的问题，输出区间(-1,1)，为0为中心。<br><img src="/img/tanh.png"></p>
+<p>$$ tanh(x) = 2\ast sigmoid(2x) - 1 $$<br>$$ tanh(x) = \frac{2}{1+e^{-2x}} - 1 $$</p>
+<h4 id="3-ReLU"><a href="#3-ReLU" class="headerlink" title="3. ReLU"></a>3. ReLU</h4><p>ReLU是使用最广泛的激活函数。<br>最大的优点在于不会同时激活所有的神经元，这种稀疏性使其变得高效且易于计算。<br><img src="/img/relu.png"></p>
+<p>$$ ReLU(x) = max(0, x) $$</p>
+<h4 id="4-Leaky-ReLU-PReLU"><a href="#4-Leaky-ReLU-PReLU" class="headerlink" title="4. Leaky ReLU / PReLU"></a>4. Leaky ReLU / PReLU</h4><p>在ReLU中，当x小于0时梯度为0，使得该区域的神经元死亡。<br>为了解决这个问题，用斜线代替水平线，去除零梯度。<br><img src="/img/prelu.png"></p>
+<p>$$ PReLU(x) = ax\; for \; x &lt; 0 $$<br>$$ PReLU(x) = x\; for \; x \geq 0 $$</p>
+<p>这里a是一个很小的值，比如0.01.</p>
 
       
     </div>
@@ -498,7 +502,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">235</span>
+                  <span class="site-state-item-count">238</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -511,7 +515,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -582,7 +586,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#选择经验"><span class="nav-number">1.</span> <span class="nav-text">选择经验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-sigmoid"><span class="nav-number">2.</span> <span class="nav-text">1. sigmoid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-tanh"><span class="nav-number">3.</span> <span class="nav-text">2. tanh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-ReLU"><span class="nav-number">4.</span> <span class="nav-text">3. ReLU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Leaky-ReLU-PReLU"><span class="nav-number">5.</span> <span class="nav-text">4. Leaky ReLU / PReLU</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-sigmoid"><span class="nav-number">1.</span> <span class="nav-text">1. sigmoid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-tanh"><span class="nav-number">2.</span> <span class="nav-text">2. tanh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-ReLU"><span class="nav-number">3.</span> <span class="nav-text">3. ReLU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Leaky-ReLU-PReLU"><span class="nav-number">4.</span> <span class="nav-text">4. Leaky ReLU / PReLU</span></a></li></ol></div>
             
 
           </div>
@@ -616,7 +620,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">80.7k</span>
+    <span title="Site words total count">82.4k</span>
   
 </div>
 

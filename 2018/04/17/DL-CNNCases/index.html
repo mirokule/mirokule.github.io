@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Machine Learning,Deep Learning,CNN," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="CNN有多种经典实现：  LeNet-5：1998 AlexNet：2012 VGG：2014 Inception(GoogleLeNet)：2014 ResNet：2015  1. LeNet-5LeNet-5是用于手写字体识别的一个经典CNN，论文发表于1998年。LeNet处理32×32像素的灰度图片，即输入尺寸为(32×32×1)。LeNet网络共有7层：  卷积层C1：过滤器尺寸(5×5">
+<meta name="keywords" content="Machine Learning,Deep Learning,CNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CNN实例">
+<meta property="og:url" content="http://mirokule.github.io/2018/04/17/DL-CNNCases/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="CNN有多种经典实现：  LeNet-5：1998 AlexNet：2012 VGG：2014 Inception(GoogleLeNet)：2014 ResNet：2015  1. LeNet-5LeNet-5是用于手写字体识别的一个经典CNN，论文发表于1998年。LeNet处理32×32像素的灰度图片，即输入尺寸为(32×32×1)。LeNet网络共有7层：  卷积层C1：过滤器尺寸(5×5">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://mirokule.github.io/img/LeNet-5.png">
+<meta property="og:image" content="http://mirokule.github.io/img/AlexNet.png">
+<meta property="og:image" content="http://mirokule.github.io/img/VGG1.png">
+<meta property="og:image" content="http://mirokule.github.io/img/VGG2.png">
+<meta property="og:image" content="http://mirokule.github.io/img/Inception1.png">
+<meta property="og:image" content="http://mirokule.github.io/img/Inception2.png">
+<meta property="og:image" content="http://mirokule.github.io/img/ResNet1.png">
+<meta property="og:image" content="http://mirokule.github.io/img/ResNet2.png">
+<meta property="og:updated_time" content="2018-04-17T01:55:07.968Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CNN实例">
+<meta name="twitter:description" content="CNN有多种经典实现：  LeNet-5：1998 AlexNet：2012 VGG：2014 Inception(GoogleLeNet)：2014 ResNet：2015  1. LeNet-5LeNet-5是用于手写字体识别的一个经典CNN，论文发表于1998年。LeNet处理32×32像素的灰度图片，即输入尺寸为(32×32×1)。LeNet网络共有7层：  卷积层C1：过滤器尺寸(5×5">
+<meta name="twitter:image" content="http://mirokule.github.io/img/LeNet-5.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2018/04/17/DL-CNNCases/"/>
+
+
+
+
+
+  <title>CNN实例 | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/17/DL-CNNCases/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CNN实例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-17T08:15:16+08:00">
+                2018-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,013
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>CNN有多种经典实现：</p>
+<ul>
+<li>LeNet-5：1998</li>
+<li>AlexNet：2012</li>
+<li>VGG：2014</li>
+<li>Inception(GoogleLeNet)：2014</li>
+<li>ResNet：2015</li>
+</ul>
+<h4 id="1-LeNet-5"><a href="#1-LeNet-5" class="headerlink" title="1. LeNet-5"></a>1. LeNet-5</h4><p>LeNet-5是用于手写字体识别的一个经典CNN，论文发表于1998年。<br><img src="/img/LeNet-5.png"><br>LeNet处理32×32像素的灰度图片，即输入尺寸为(32×32×1)。<br>LeNet网络共有7层：</p>
+<ul>
+<li>卷积层C1：过滤器尺寸(5×5×1×6)，输出(28×28×6)</li>
+<li>池化层S1：MaxPooling，尺寸(2×2)，步长2，输出(14×14×6)</li>
+<li>卷积层C2：过滤器尺寸(5×5×6×16)，输出(10×10×16)</li>
+<li>池化层S2：MaxPooling，尺寸(2×2)，步长2，输出(5×5×16)</li>
+<li>全连接层FC1/卷积层C3：使用(5×5×16×120)的过滤器，和输入尺寸相同，相当于全连接。输出节点120个。</li>
+<li>全连接层FC2：输出节点84个，共有参数120×84+84=10164个</li>
+<li>全连接层FC3：输出节点10个，共有参数84×10+10=850个，对应数字分类0~9</li>
+</ul>
+<h4 id="2-AlexNet"><a href="#2-AlexNet" class="headerlink" title="2. AlexNet"></a>2. AlexNet</h4><p>由Alex提出的CNN网络结构获得了imagenet图像分类大赛2012届的冠军，AlexNet由此得名。<br><img src="/img/AlexNet.png"><br>AlexNet可以处理RGB图片，输入尺寸(224×224×3)，预处理后变为(227×227×3)<br>AlexNet由两台GPU服务器完成，共有2个流程，每层数据分为2组。<br>每个流程有8层，5个卷积层和3个全连接层。</p>
+<ul>
+<li>卷积层Conv1：过滤器尺寸(11×11×3×96)，步长4，输出(55×55×96);<br>  使用激励函数ReLU;<br>  MaxPooling尺寸(3×3)，步长2，输出(27×27×96);<br>  归一化处理，尺度(5×5)</li>
+<li>卷积层Conv2：过滤器尺寸(5×5×96×256)，padding=2(SAME)，输出(27×27×256);<br>  使用激励函数ReLU;<br>  MaxPooling尺寸(3×3)，步长2，输出(13×13×256);<br>  归一化处理，尺度(5×5)</li>
+<li>卷积层Conv3：过滤器尺寸(3×3×256×384)，padding=1(SAME)，输出(13×13×384);<br>  使用激励函数ReLU</li>
+<li>卷积层Conv4：过滤器尺寸(3×3×384×384)，padding=1(SAME)，输出(13×13×384);<br>  使用激励函数ReLU</li>
+<li>卷积层Conv5：过滤器尺寸(3×3×384×256)，padding=1(SAME)，输出(13×13×256);<br>  使用激励函数ReLU;<br>  MaxPooling尺寸(3×3)，步长2，输出(6×6×256)</li>
+<li>全连接层FC1：使用4096个(6×6×256)过滤器，每个过滤器输出到一个节点，共4096个节点；<br>  使用激励函数ReLU；<br>  使用DropOut正则化，dropout_ratio=0.5</li>
+<li>全连接层FC2：与FC1类似</li>
+<li>全连接层FC3：1000个节点与4096个输入节点全连接，得到最终输出</li>
+</ul>
+<h4 id="3-VGG"><a href="#3-VGG" class="headerlink" title="3. VGG"></a>3. VGG</h4><p>VGG是由AlexNet发展而来的，有更多的参数，更深的层次。<br><img src="/img/VGG1.png"><br>VGG有多种配置，根据层数的多少有VGG-11，VGG-13，VGG-16，VGG-19等。<br>最常见的是VGG-16，有13个卷积层，3个全连接层。<br><img src="/img/VGG2.png"><br>VGG使用的卷积核都比较小(3×3)，即表中的conv3；还有比较特殊的1×1的卷积核conv1(用于缩减channel)。<br>使用多个较小的卷积层，一方面可以减少参数，另一方面作者认为相当于进行了更多的非线性映射，可以增加网络的拟合能力。<br>所有隐层的激活单元都是ReLu，只有一种使用了局部响应归一化层(Local Response Normalization)，最终输出层是softmax。</p>
+<h4 id="4-Inception"><a href="#4-Inception" class="headerlink" title="4. Inception"></a>4. Inception</h4><p>又称GoogleLeNet，在2014年ImageNet比赛中力压VGG获得冠军。<br>该网络中含有Incpetion结构，将不同尺寸filter的卷积结果堆叠在一起，放在输出的不同chanel里。<br><img src="/img/Inception1.png"><br>GoogleLeNet的成功证明了用更多的卷积、更深的层次能够得到更好的效果(并没有证明用浅层网络不能得到同样的效果)。<br>参数总量虽然不大，计算量非常大。<br><img src="/img/Inception2.png"></p>
+<h4 id="5-ResNet"><a href="#5-ResNet" class="headerlink" title="5. ResNet"></a>5. ResNet</h4><p>梯度消失问题使深层神经网络的训练相当困难。随着网络深度的不断增加，性能会趋于饱和，甚至开始下降。<br>ResNet的基本思想是引入能够跳过一层或多层的”ShortCut Connection”，如下图所示：<br><img src="/img/ResNet1.png"><br>输出有两部分组成：</p>
+<ul>
+<li>Identity Mapping：曲线部分，X</li>
+<li>Residual Mapping：直线部分，F(x)</li>
+</ul>
+<p>ResNet也有多种不同的实现结构，其中ResNet50和ResNet101比较常见。<br><img src="/img/ResNet2.png"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+            <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+          
+            <a href="/tags/CNN/" rel="tag"># CNN</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/16/Keras/" rel="next" title="Keras">
+                <i class="fa fa-chevron-left"></i> Keras
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/17/DL-CNNTips/" rel="prev" title="CNN使用经验">
+                CNN使用经验 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">238</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-LeNet-5"><span class="nav-number">1.</span> <span class="nav-text">1. LeNet-5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-AlexNet"><span class="nav-number">2.</span> <span class="nav-text">2. AlexNet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-VGG"><span class="nav-number">3.</span> <span class="nav-text">3. VGG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Inception"><span class="nav-number">4.</span> <span class="nav-text">4. Inception</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-ResNet"><span class="nav-number">5.</span> <span class="nav-text">5. ResNet</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">82.4k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

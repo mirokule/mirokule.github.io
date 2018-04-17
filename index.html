@@ -262,6 +262,498 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/17/DL-CNNTips/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/17/DL-CNNTips/" itemprop="url">CNN使用经验</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-17T10:38:19+08:00">
+                2018-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  199
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>提升CNN网络表现除了更大更深的结构外，还有以下技巧：</p>
+<ul>
+<li>借助迁移学习：训练深层网络通常较慢，借助相关问题已经训练好的网络，修改最后几层来适应本问题。之前训练好的参数会加快本次训练收敛的速度</li>
+<li>Data Augmentation：通过图片处理，获得更多的训练数据<br>变形：镜像、切片、旋转、加噪声等<br>变色：颜色迁移, PCA颜色变换等</li>
+</ul>
+<p>另外有些方法会消耗更多算力，不一定在实际生产中采用，但可以提高Benchmark或用于竞赛：</p>
+<ul>
+<li>Ensembing: 训练多个神经网络然后集成</li>
+<li>Multi-Crop at test time: 将测试图片切片(例如10-crop)，对每个切片分别预测</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/17/DL-CNNCases/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/17/DL-CNNCases/" itemprop="url">CNN实例</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-17T08:15:16+08:00">
+                2018-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,013
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>CNN有多种经典实现：</p>
+<ul>
+<li>LeNet-5：1998</li>
+<li>AlexNet：2012</li>
+<li>VGG：2014</li>
+<li>Inception(GoogleLeNet)：2014</li>
+<li>ResNet：2015</li>
+</ul>
+<h4 id="1-LeNet-5"><a href="#1-LeNet-5" class="headerlink" title="1. LeNet-5"></a>1. LeNet-5</h4><p>LeNet-5是用于手写字体识别的一个经典CNN，论文发表于1998年。<br><img src="/img/LeNet-5.png"><br>LeNet处理32×32像素的灰度图片，即输入尺寸为(32×32×1)。<br>LeNet网络共有7层：</p>
+<ul>
+<li>卷积层C1：过滤器尺寸(5×5×1×6)，输出(28×28×6)</li>
+<li>池化层S1：MaxPooling，尺寸(2×2)，步长2，输出(14×14×6)</li>
+<li>卷积层C2：过滤器尺寸(5×5×6×16)，输出(10×10×16)</li>
+<li>池化层S2：MaxPooling，尺寸(2×2)，步长2，输出(5×5×16)</li>
+<li>全连接层FC1/卷积层C3：使用(5×5×16×120)的过滤器，和输入尺寸相同，相当于全连接。输出节点120个。</li>
+<li>全连接层FC2：输出节点84个，共有参数120×84+84=10164个</li>
+<li>全连接层FC3：输出节点10个，共有参数84×10+10=850个，对应数字分类0~9</li>
+</ul>
+<h4 id="2-AlexNet"><a href="#2-AlexNet" class="headerlink" title="2. AlexNet"></a>2. AlexNet</h4><p>由Alex提出的CNN网络结构获得了imagenet图像分类大赛2012届的冠军，AlexNet由此得名。<br><img src="/img/AlexNet.png"><br>AlexNet可以处理RGB图片，输入尺寸(224×224×3)，预处理后变为(227×227×3)<br>AlexNet由两台GPU服务器完成，共有2个流程，每层数据分为2组。<br>每个流程有8层，5个卷积层和3个全连接层。</p>
+<ul>
+<li>卷积层Conv1：过滤器尺寸(11×11×3×96)，步长4，输出(55×55×96);<br>  使用激励函数ReLU;<br>  MaxPooling尺寸(3×3)，步长2，输出(27×27×96);<br>  归一化处理，尺度(5×5)</li>
+<li>卷积层Conv2：过滤器尺寸(5×5×96×256)，padding=2(SAME)，输出(27×27×256);<br>  使用激励函数ReLU;<br>  MaxPooling尺寸(3×3)，步长2，输出(13×13×256);<br>  归一化处理，尺度(5×5)</li>
+<li>卷积层Conv3：过滤器尺寸(3×3×256×384)，padding=1(SAME)，输出(13×13×384);<br>  使用激励函数ReLU</li>
+<li>卷积层Conv4：过滤器尺寸(3×3×384×384)，padding=1(SAME)，输出(13×13×384);<br>  使用激励函数ReLU</li>
+<li>卷积层Conv5：过滤器尺寸(3×3×384×256)，padding=1(SAME)，输出(13×13×256);<br>  使用激励函数ReLU;<br>  MaxPooling尺寸(3×3)，步长2，输出(6×6×256)</li>
+<li>全连接层FC1：使用4096个(6×6×256)过滤器，每个过滤器输出到一个节点，共4096个节点；<br>  使用激励函数ReLU；<br>  使用DropOut正则化，dropout_ratio=0.5</li>
+<li>全连接层FC2：与FC1类似</li>
+<li>全连接层FC3：1000个节点与4096个输入节点全连接，得到最终输出</li>
+</ul>
+<h4 id="3-VGG"><a href="#3-VGG" class="headerlink" title="3. VGG"></a>3. VGG</h4><p>VGG是由AlexNet发展而来的，有更多的参数，更深的层次。<br><img src="/img/VGG1.png"><br>VGG有多种配置，根据层数的多少有VGG-11，VGG-13，VGG-16，VGG-19等。<br>最常见的是VGG-16，有13个卷积层，3个全连接层。<br><img src="/img/VGG2.png"><br>VGG使用的卷积核都比较小(3×3)，即表中的conv3；还有比较特殊的1×1的卷积核conv1(用于缩减channel)。<br>使用多个较小的卷积层，一方面可以减少参数，另一方面作者认为相当于进行了更多的非线性映射，可以增加网络的拟合能力。<br>所有隐层的激活单元都是ReLu，只有一种使用了局部响应归一化层(Local Response Normalization)，最终输出层是softmax。</p>
+<h4 id="4-Inception"><a href="#4-Inception" class="headerlink" title="4. Inception"></a>4. Inception</h4><p>又称GoogleLeNet，在2014年ImageNet比赛中力压VGG获得冠军。<br>该网络中含有Incpetion结构，将不同尺寸filter的卷积结果堆叠在一起，放在输出的不同chanel里。<br><img src="/img/Inception1.png"><br>GoogleLeNet的成功证明了用更多的卷积、更深的层次能够得到更好的效果(并没有证明用浅层网络不能得到同样的效果)。<br>参数总量虽然不大，计算量非常大。<br><img src="/img/Inception2.png"></p>
+<h4 id="5-ResNet"><a href="#5-ResNet" class="headerlink" title="5. ResNet"></a>5. ResNet</h4><p>梯度消失问题使深层神经网络的训练相当困难。随着网络深度的不断增加，性能会趋于饱和，甚至开始下降。<br>ResNet的基本思想是引入能够跳过一层或多层的”ShortCut Connection”，如下图所示：<br><img src="/img/ResNet1.png"><br>输出有两部分组成：</p>
+<ul>
+<li>Identity Mapping：曲线部分，X</li>
+<li>Residual Mapping：直线部分，F(x)</li>
+</ul>
+<p>ResNet也有多种不同的实现结构，其中ResNet50和ResNet101比较常见。<br><img src="/img/ResNet2.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/16/Keras/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/16/Keras/" itemprop="url">Keras</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-16T14:42:20+08:00">
+                2018-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  435
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Keras是由Python编写的高层神经网络API，后端可选TensorFlow、Theano或者CNTK。</p>
+<p><strong>数据格式</strong><br>由于后端框架对数据格式的定义不同，Keras要面对两种不同格式的数据。<br>Keras默认的数据组织形式在~/.keras/keras.json中规定，可查看该文件的image_data_format一项，也可在代码中通过K.image_data_format()函数返回。<br>以m张32*32像素的RGB图片为例：</p>
+<ul>
+<li>channels_first: (m, 3, 32, 32)将通道维度放在像素维度之前，Theano、Caffe采用</li>
+<li>channels_last: (m, 32, 32, 3)将通道维度放在最后，TensorFlow采用</li>
+</ul>
+<p><strong>模型种类</strong></p>
+<ul>
+<li>序贯模型(Sequential)：单输入单输出，没有跨层连接</li>
+<li>函数式模型(Functional)：支持多输入多输出和任意连接，将Sequential视为一个特例</li>
+</ul>
+<p><strong>典型流程</strong></p>
+<ol>
+<li><p>创建模型<br>和TensorFlow一样，需要先定义计算图。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Activation</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一次性定义</span></span><br><span class="line">model = Sequential([Dense(<span class="number">32</span>, units=<span class="number">7840</span>),</span><br><span class="line">		Activation(<span class="string">'relu'</span>),</span><br><span class="line">		Dense(<span class="number">10</span>),</span><br><span class="line">		Activation(<span class="string">'softmax'</span>)])</span><br><span class="line"><span class="comment"># 逐个加入</span></span><br><span class="line">model.add(Dense(<span class="number">32</span>, input_shape=(<span class="number">784</span>,)))</span><br><span class="line">model.add(Activation(<span class="string">'relu'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译模型<br>训练模型之前，需要通过compile来配置学习过程。compile接收三个参数：</p>
+<ul>
+<li>优化器optimizer: 如rmsprop、adagrad，或一个Optimizer类的对象</li>
+<li>损失函数Loss: 如rucategorical_crossentropy、mse</li>
+<li>指标列表metrics: 分类问题一般设置为metrics=[‘accuracy’]<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 多分类问题</span></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'categorical_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"><span class="comment"># 二分类问题</span></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'binary_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"><span class="comment"># 回归问题</span></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'mse'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义Metrics</span></span><br><span class="line"><span class="keyword">import</span> keras.backend <span class="keyword">as</span> K</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mean_pred</span><span class="params">(y_true, y_pred)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> K.mean(y_pred)</span><br><span class="line">model. model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'binary_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>, mean_pred])</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>训练模型<br>Keras使用Numpy数组作为输入数据类型。<br>训练模型一般使用fit函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.fit(data, labels, epochs=<span class="number">10</span>, batch_size=<span class="number">32</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>评估/测试</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.evaluate(x=X_test, y=Y_test)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/DL-CNN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -497,7 +989,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  152
+                  227
                 </span>
               
 
@@ -528,11 +1020,15 @@
 <ul>
 <li>tf.add(a,b): 加法</li>
 <li>tf.multiply(a,b): 乘法</li>
+<li>tf.pow(a,b): 乘方</li>
+<li>tf.maximum(a,b): 返回较大的那个</li>
 </ul>
 <p><strong>矩阵</strong></p>
 <ul>
 <li>tf.ones(shape)</li>
 <li>tf.reduce_mean(): 取平均</li>
+<li>tf.reduce_max(input, axis=None): 返回最大值，缩减一个维度</li>
+<li>tf.argmax(input, axis=None): 最大值的索引</li>
 <li>tf.matmul(W,X): 矩阵乘法</li>
 <li>tf.transpose(X): 矩阵转置</li>
 </ul>
@@ -541,6 +1037,8 @@
 <li>tf.sigmoid(x)</li>
 <li>tf.one_hot(labels, depth, axis)</li>
 <li>tf.set_random_seed(1)</li>
+<li>tf.gather(params, indices): 选取指定索引的数据</li>
+<li>tf.boolean_mask(tensor, mask): 适用mask</li>
 </ul>
 <h4 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h4><p><strong>损失函数</strong></p>
 <ul>
@@ -557,6 +1055,10 @@
 <ul>
 <li>tf.contrib.layers.flatten(P): 展平P到一维</li>
 <li>tf.contrib.layers.fully_connect(F,num_outputs): 全连接层</li>
+</ul>
+<p><strong>Image</strong></p>
+<ul>
+<li>tf.image.non_max_suppression(boxes, scores, max_output_size, iou_threshold): Non-Max Suppression</li>
 </ul>
 
           
@@ -625,7 +1127,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/14/TF-Optimizer/" itemprop="url">优化器Optimizer</a></h1>
+                <a class="post-title-link" href="/2018/04/14/TF-Optimizer/" itemprop="url">TensorFlow优化器Optimizer</a></h1>
         
 
         <div class="post-meta">
@@ -1405,451 +1907,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/DL-BatchNormalization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/12/DL-BatchNormalization/" itemprop="url">Batch Normalization</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T15:22:58+08:00">
-                2018-04-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  151
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>批规范化(Batch Normalization)是将神经网络每层的输入信号规范化，得到特定均值和方差强度的输入。<br>批规范化应作用于非线性环节之前，即缩放$z^{[l]}$.</p>
-<p><strong>算法</strong><br>$$ \begin{cases}<br>\mu = \frac{1}{m} \sum_{i=1}^m z^{(i)} \\<br>\sigma = \frac{1}{m} \sum_{i=1}^m(z^{(i)} - \mu)^2 \\<br>z^{norm} = \frac{z^{(i)} - \mu}{\sqrt{\sigma^2+\epsilon}} \\<br>\hat{z} = \gamma z^{norm} + \beta<br>\end{cases} $$</p>
-<p>其中$\gamma$和$\beta$是需要训练的超参数</p>
-<p><strong>优势</strong></p>
-<ul>
-<li>解决梯度消失和爆炸，使每层的信号强度受控</li>
-<li>有助于解决covariate shift(?)，即分布不一致的数据</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/DL-LearningRateDecay/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/12/DL-LearningRateDecay/" itemprop="url">学习速率衰减(Learning Rate Decay)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T15:13:39+08:00">
-                2018-04-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  125
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>学习速率$\alpha$是所有超参数中最重要的一个。<br>随着GDA迭代的进行，参数逐渐逼近最优解的时候，有必要将$\alpha$逐渐缩小，使每次迭代的步长缩短，避免在最优解附近来回震荡。<br>逐渐减少学习速率的方法有很多种，比如<br>$$ \alpha = \frac{1}{1 + decay \cdot epoch} \alpha_0 $$<br>$$ \alpha = 0.95^{epoch} \alpha_0 $$<br>$$ \alpha = \frac{k}{\sqrt{epoch}} \alpha_0 $$<br>或者直接在迭代几十次后对$\alpha$赋值：<br>$$ \alpha = 0.5 \cdot \alpha_0 $$</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/Python-NumPy-ShufflePermutation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/12/Python-NumPy-ShufflePermutation/" itemprop="url">Shuffle和Permutation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T14:52:35+08:00">
-                2018-04-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  205
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>NumPy中随机打乱数组可以使用shuffle()或者permutation()来完成。两者区别是：</p>
-<ul>
-<li>shuffle的参数只能是array_like，而permutation还可以是int，返回numpy.arange(int)</li>
-<li>shuffle返回None，就地生效，而permutation返回打乱后的数组拷贝</li>
-</ul>
-<h4 id="1-shuffle"><a href="#1-shuffle" class="headerlink" title="1.shuffle"></a>1.shuffle</h4><p>numpy.random.shuffle(x)<br>就地生效，in-place；<br>对多维数组，只重排第一轴(axis=0)</p>
-<p>参数</p>
-<ul>
-<li>x: array_like</li>
-</ul>
-<p>返回: None</p>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr = np.arange(<span class="number">5</span>)</span><br><span class="line">np.random.shuffle(arr) <span class="comment">#arr=[1 3 2 4 0]</span></span><br><span class="line"></span><br><span class="line">arr = np.arange(<span class="number">9</span>).reshape((<span class="number">3</span>,<span class="number">3</span>))</span><br><span class="line">np.random.shuffle(arr)</span><br></pre></td></tr></table></figure></p>
-<h4 id="2-permutation"><a href="#2-permutation" class="headerlink" title="2.permutation"></a>2.permutation</h4><p>numpy.random.permutation(x)<br>返回打乱顺序后的拷贝，内部也使用了shuffle；<br>多维数组，只针对第一轴(axis=0)打乱顺序</p>
-<p>参数</p>
-<ul>
-<li>x：int或array_like</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>out: ndarray</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.permutation(<span class="number">5</span>) <span class="comment">#array[1,4,2,3,0]</span></span><br><span class="line">np.random.permutation([<span class="number">1</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">11</span>]) <span class="comment">#array[11,4,9,1]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于数据重排	</span></span><br><span class="line">sampler = np.random.permutation(<span class="number">5</span>)</span><br><span class="line">df.take(sampler)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1904,7 +1961,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">235</span>
+                  <span class="site-state-item-count">238</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1917,7 +1974,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2006,7 +2063,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">80.7k</span>
+    <span title="Site words total count">82.4k</span>
   
 </div>
 
