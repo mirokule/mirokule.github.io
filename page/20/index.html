@@ -262,6 +262,590 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/01/SCN-Force-Torque/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/01/SCN-Force-Torque/" itemprop="url">SceneKit Force and Torque</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T15:57:29+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  70
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Force"><a href="#Force" class="headerlink" title="Force"></a>Force</h4><p>Can affect linear and angular momentum.</p>
+<pre><code>    let force = SCNVector3(x: randomX, y: randomY, z: 0)
+    let position = SCNVector3(x: 0.05, y: 0.05, z: 0.05)
+geometryNode.physicsBody?.applyForce(force, atPosition: position, impulse: true)
+</code></pre><h4 id="Torque"><a href="#Torque" class="headerlink" title="Torque"></a>Torque</h4><p>Only affects angular momentum.</p>
+<pre><code>let torque = SCNVector4(x: 0.1, y: 0.1, z: 0.1, w: 1.0)
+</code></pre><p>The w-componet determines the rotation angle, that is, the magnitude of the torque.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/01/SCN-GeometryNode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/01/SCN-GeometryNode/" itemprop="url">SceneKit Geometry Node</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T15:35:35+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  51
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>3D primitives in SceneKit: cone, torus, capsule, tube, pyramid, box, sphere, cylinder.</p>
+<pre><code>var geometry: SCNGeometry = SCNSphere(radius: 1.0)
+
+let geometryNode = SCNNode(geometry: geometry)
+geometryNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: nil)
+
+scnScene.rootNode.addChildNode(geometryNode)
+</code></pre><p>If shape of physicsBody is nil, Scene Kit will generate shape according to boundings of geometry.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/01/SCNCamera/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/01/SCNCamera/" itemprop="url">SCNCamera</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T15:32:56+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  40
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Set up a camera with SCNCamera, attach it to a SCNNode, and then add to the rootNode of the scene.</p>
+<pre><code>func setupCamera() {
+    cameraNode = SCNNode()
+    cameraNode.camera = SCNCamera()
+    cameraNode.position = SCNVector3(x: 0, y: 2, z: 10)
+
+    scnScene.rootNode.addChildNode(cameraNode)
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/01/SCNView/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/01/SCNView/" itemprop="url">SCNView and SCNScene</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T15:27:39+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  59
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="SCNView"><a href="#SCNView" class="headerlink" title="SCNView"></a>SCNView</h4><p>Consider SCNView something like skView. SCNView contains SCNScene and can display various information.</p>
+<pre><code>scnView.showsStatistics = true
+scnView.allowsCameraControl = true
+scnView.autoenablesDefaultLighting = true
+
+scnView.scene = scnScene
+</code></pre><h4 id="SCNScene"><a href="#SCNScene" class="headerlink" title="SCNScene"></a>SCNScene</h4><p>SCNScene is something like skScene. SCNScene has a rootNode which should be parent node of other nodes in the scene.</p>
+<pre><code>scnScene.background.contents = &quot;GeometryFighter.scnassets/Textures/Background_Diffuse.png&quot;
+scnScene.rootNode.addChildNode(cameraNode)
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/01/22/CAEmitterLayer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1157,608 +1741,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/04/UIViewAnimatioins/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/11/04/UIViewAnimatioins/" itemprop="url">UIViewAnimatioins</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-04T09:56:00+08:00">
-                2015-11-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  124
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="UIViewAnimation"><a href="#UIViewAnimation" class="headerlink" title="UIViewAnimation"></a>UIViewAnimation</h4><ul>
-<li><strong>animateWithDuration:…</strong></li>
-<li><strong>transitionWithView:…</strong></li>
-<li><strong>transitionFromView:…</strong></li>
-<li><strong>animateKeyframesWithDuration:…</strong></li>
-<li><strong>addKeyframeWithRelatvieStartTime:…</strong></li>
-</ul>
-<h4 id="UIViewAnimationOptions"><a href="#UIViewAnimationOptions" class="headerlink" title="UIViewAnimationOptions"></a>UIViewAnimationOptions</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">UIViewAnimationOptions</span> : <span class="title">OptionSetType</span> </span>&#123;</span><br><span class="line"><span class="keyword">init</span>(rawValue rawValue: <span class="type">UInt</span>)</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">LayoutSubviews</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">AllowUserInteraction</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">BeginFromCurrentState</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">Repeat</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">Autoreverse</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">OverrideInheritedDuration</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">OverrideInheritedCurve</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">AllowAnimatedContent</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">ShowHideTransitionViews</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">OverrideInheritedOptions</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">CurveEaseInOut</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">CurveEaseIn</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">CurveEaseOut</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">CurveLinear</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">TransitionNone</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">TransitionFlipFromLeft</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">TransitionFlipFromRight</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">TransitionCurlUp</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">TransitionCurlDown</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">TransitionCrossDissolve</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">TransitionFlipFromTop</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">var</span> <span class="type">TransitionFlipFromBottom</span>: <span class="type">UIViewAnimationOptions</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/03/CAKeyframeAnimation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/11/03/CAKeyframeAnimation/" itemprop="url">CAKeyframeAnimation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-03T16:00:02+08:00">
-                2015-11-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  118
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>CAKeyframeAnimation inherts from CAAnimation and CAPropertyAnimation.</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> wobble = <span class="type">CAKeyframeAnimation</span>(keyPath: <span class="string">"transform.rotation"</span>)</span><br><span class="line">wobble.duration = <span class="number">0.25</span></span><br><span class="line">wobble.repearCount = <span class="number">4</span></span><br><span class="line">wobble.values = [<span class="number">0</span>, -<span class="type">M_PI_4</span>/<span class="number">4</span>, <span class="number">0</span>, <span class="type">M_PI_4</span>/<span class="number">4</span>, <span class="number">0</span>]</span><br><span class="line">wobble.keyTimes = [<span class="number">0</span>, <span class="number">0.25</span>, <span class="number">0.5</span>, <span class="number">0.75</span>, <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">layer.addAnimation(wobble, forKey: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="Property"><a href="#Property" class="headerlink" title="Property"></a>Property</h4><ul>
-<li><strong>values</strong>: keyframe values of the animatioin</li>
-<li><strong>keyTimes</strong></li>
-<li><strong>timingFunction</strong></li>
-</ul>
-<h4 id="Animating-Struct-Property"><a href="#Animating-Struct-Property" class="headerlink" title="Animating Struct Property"></a>Animating Struct Property</h4><p>For struct, using NSValue</p>
-<p>example 1#</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> move = <span class="type">CABasiceAnimation</span>(keyPath: <span class="string">"position"</span>)</span><br><span class="line">move.fromValue = <span class="type">NSValue</span>(<span class="type">CGPoint</span>: <span class="type">CGPoint</span>(x: <span class="number">100.0</span>, y: <span class="number">100.0</span>))</span><br></pre></td></tr></table></figure>
-<p>example 2#</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> fly = <span class="type">CAKeyframeAnimation</span>(keyPath: <span class="string">"position"</span>)</span><br><span class="line">fly.values = [<span class="type">CGPoint</span>(x: -<span class="number">50.0</span>, y: <span class="number">0.0</span>), <span class="type">CGPoint</span>(x: <span class="number">0.0</span>, y: <span class="number">50.0</span>), <span class="type">CGPoint</span>(x: <span class="number">50.0</span>, y: <span class="number">100.0</span>)].<span class="built_in">map</span> &#123; <span class="type">NSValue</span>(<span class="type">CGPoint</span>: $<span class="number">0</span>) &#125;</span><br><span class="line">fly.keyTimes = [<span class="number">0</span>, <span class="number">0.5</span>, <span class="number">1.0</span>]</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/03/CAAnimationGroup/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/11/03/CAAnimationGroup/" itemprop="url">CAAnimationGroup</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-03T15:51:53+08:00">
-                2015-11-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  77
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>CAAnimationGroup inherts from CAAnimation, allows multiple animations to run concurrently.</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> rotate = <span class="type">CABasiceAnimation</span>(keyPath: <span class="string">"transform.rotation"</span>)</span><br><span class="line">rotate.fromValue = <span class="type">CGFloat</span>(<span class="type">M_PI_4</span>)</span><br><span class="line">rotate.toValue = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> fade = <span class="type">CABasiceAnimation</span>(keyPath: <span class="string">"opacity"</span>)</span><br><span class="line">fade.fromValue = <span class="number">0</span></span><br><span class="line">fade.fromValue = <span class="number">1.0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> move = <span class="type">CABasiceAnimation</span>(keyPath: <span class="string">"position.y"</span>)</span><br><span class="line">move.fromValue = <span class="number">0</span></span><br><span class="line">move.toValue = <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> groupAnimation = <span class="type">CAAnimationGroup</span>()</span><br><span class="line">groupAnimation.beginTime = <span class="type">CACurrentMediaTime</span>() + <span class="number">0.5</span></span><br><span class="line">groupAnimation.duration = <span class="number">0.5</span></span><br><span class="line">groupAnimation.fillMode = kCAFillModeBackwards</span><br><span class="line">groupAnimation.timingFunction = <span class="type">CAMediaTimingFunction</span>(name: kCAMediaTimingFunctionEaseIn)</span><br><span class="line">groupAnimation.animations = [move, ratate, fade]</span><br><span class="line"></span><br><span class="line">layer.addAnimation(groupAnimation, forKey: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/02/CAMediaTiming/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/11/02/CAMediaTiming/" itemprop="url">CAMediaTiming</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-02T09:55:47+08:00">
-                2015-11-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  41
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>CAMediaTiming</strong> is a protocol which describes the mapping of time values.</p>
-<ul>
-<li><strong>beginTime</strong></li>
-<li><p><strong>timeOffset</strong></p>
-</li>
-<li><p><strong>repeatCount</strong></p>
-</li>
-<li><p><strong>repeatDuration</strong></p>
-</li>
-<li><p><strong>duration</strong></p>
-</li>
-<li><p><strong>speed</strong></p>
-</li>
-<li><p><strong>autoreverses</strong></p>
-</li>
-<li><strong>fillMode</strong></li>
-</ul>
-<h4 id="Fill-Modes"><a href="#Fill-Modes" class="headerlink" title="Fill Modes"></a>Fill Modes</h4><ul>
-<li><strong>kCAFillModeRemoved</strong>: now, <strong>begin</strong> -&gt; <strong>end</strong>, future</li>
-<li><strong>kCAFillModeForwards</strong>: now, <strong>begin</strong> -&gt; end -&gt; <strong>future</strong></li>
-<li><strong>kCAFillModeBackwards</strong>: <strong>now</strong> -&gt; begin -&gt; <strong>end</strong>, future</li>
-<li><strong>kCAFillModeBoth</strong>: <strong>now</strong> -&gt; begin -&gt; end -&gt; <strong>future</strong></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1808,7 +1795,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">238</span>
+                  <span class="site-state-item-count">242</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1821,7 +1808,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1910,7 +1897,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">82.4k</span>
+    <span title="Site words total count">84.2k</span>
   
 </div>
 
