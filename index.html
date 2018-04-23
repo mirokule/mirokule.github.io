@@ -262,6 +262,350 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/22/Keras-Case-Emojifier/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/22/Keras-Case-Emojifier/" itemprop="url">Keras实例：构建情感判断器Emojifier</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-22T09:26:44+08:00">
+                2018-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  455
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本文是用Keras实现的情感判断器Emojifier，使用了LSTM、Word Embedding等。<br>通过输入一段文字，判断文字情感，并用emoji符号表示。<br>使用已经训练好的embedding矩阵。</p>
+<h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><ol>
+<li>将多个输入句子X(m,1)转为index数字表示(使用字典，长度10k)</li>
+<li>将每个单词的index数字转为GloVe编码(word embedding，长度300)</li>
+<li>训练RNN网络，得到softmax输出</li>
+</ol>
+<h4 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h4><h6 id="1-sentence-gt-indices"><a href="#1-sentence-gt-indices" class="headerlink" title="1. sentence -&gt; indices"></a>1. sentence -&gt; indices</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sentences_to_indices</span><span class="params">(X, word_to_index, max_len)</span>:</span></span><br><span class="line">    m = X.shape[<span class="number">0</span>] <span class="comment"># X.shape = (m,1)                                   </span></span><br><span class="line">    X_indices = np.zeros((m, max_len)) <span class="comment"># padding每个句子长度都为max_len</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(m):                               </span><br><span class="line">        sentence_words = X[i].lower().split()</span><br><span class="line">       </span><br><span class="line">        j = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> sentence_words:</span><br><span class="line">            X_indices[i, j] = word_to_index[w]</span><br><span class="line">            j = j+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> X_indices</span><br></pre></td></tr></table></figure>
+<h6 id="2-indices-gt-vectors"><a href="#2-indices-gt-vectors" class="headerlink" title="2. indices -&gt; vectors"></a>2. indices -&gt; vectors</h6><p>定义了embedding层，在步骤3构建计算图时使用。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pretrained_embedding_layer</span><span class="params">(word_to_vec_map, word_to_index)</span>:</span></span><br><span class="line">    <span class="comment"># 获得输入输出维度</span></span><br><span class="line">    vocab_len = len(word_to_index) + <span class="number">1</span>      <span class="comment"># keras要求+1 </span></span><br><span class="line">    emb_dim = word_to_vec_map[<span class="string">"cucumber"</span>].shape[<span class="number">0</span>]     </span><br><span class="line">   </span><br><span class="line">    <span class="comment"># 初始化权重矩阵 </span></span><br><span class="line">    emb_matrix = np.zeros((vocab_len, emb_dim))</span><br><span class="line">    <span class="comment"># 权重矩阵赋值</span></span><br><span class="line">    <span class="keyword">for</span> word, index <span class="keyword">in</span> word_to_index.items():</span><br><span class="line">        emb_matrix[index, :] = word_to_vec_map[word]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义embedding层的输入输出</span></span><br><span class="line">    embedding_layer = Embedding(vocab_len, emb_dim, trainable=<span class="keyword">False</span>)</span><br><span class="line">    <span class="comment"># 编译并赋予权重</span></span><br><span class="line">    embedding_layer.build((<span class="keyword">None</span>,))</span><br><span class="line">    embedding_layer.set_weights([emb_matrix])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> embedding_layer</span><br></pre></td></tr></table></figure></p>
+<h6 id="3-构建计算图"><a href="#3-构建计算图" class="headerlink" title="3. 构建计算图"></a>3. 构建计算图</h6><p><img src="/img/emojifier-v2.png"><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Emojify</span><span class="params">(input_shape, word_to_vec_map, word_to_index)</span>:</span></span><br><span class="line">    <span class="comment"># 定义模型输入Input() </span></span><br><span class="line">    sentence_indices = Input(shape=input_shape, dtype=<span class="string">'int32'</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 通过Embedding layer将输入indices转为GloVe Vectors (word embedding)</span></span><br><span class="line">    embedding_layer = pretrained_embedding_layer(word_to_vec_map, word_to_index)</span><br><span class="line">    embeddings = embedding_layer(sentence_indices)  </span><br><span class="line">   </span><br><span class="line">    <span class="comment"># 由于有第2层，所以第1层的LSTM在每个时刻t都要输出 </span></span><br><span class="line">    X = LSTM(<span class="number">128</span>, return_sequences=<span class="keyword">True</span>)(embeddings)</span><br><span class="line">    X = Dropout(<span class="number">0.5</span>)(X)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 第2层LSTM只在最后一个时刻输出</span></span><br><span class="line">    X = LSTM(<span class="number">128</span>, return_sequences=<span class="keyword">False</span>)(X)</span><br><span class="line">    X = Dropout(<span class="number">0.5</span>)(X)</span><br><span class="line">    X = Dense(<span class="number">5</span>)(X)</span><br><span class="line">    X = Activation(<span class="string">'softmax'</span>)(X)</span><br><span class="line">   </span><br><span class="line">    <span class="comment"># 定义模型 </span></span><br><span class="line">    model = Model(inputs=sentence_indices, outputs=X)</span><br><span class="line">    <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure></p>
+<p>模型摘要<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model = Emojify_V2((maxLen,), word_to_vec_map, word_to_index)</span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/emojifier-output.png"></p>
+<h6 id="4-编译，训练，预测"><a href="#4-编译，训练，预测" class="headerlink" title="4. 编译，训练，预测"></a>4. 编译，训练，预测</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 模型编译</span></span><br><span class="line">model.compile(loss=<span class="string">'categorical_crossentropy'</span>, optimizer=<span class="string">'adam'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型训练</span></span><br><span class="line">model.fit(X_train_indices, Y_train_oh, epochs = <span class="number">50</span>, batch_size = <span class="number">32</span>, shuffle=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型验证</span></span><br><span class="line">loss, acc = model.evaluate(X_test_indices, Y_test_oh)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型预测</span></span><br><span class="line">pred = model.predict(X_test_indices)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/21/DL-WordEmbedding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/21/DL-WordEmbedding/" itemprop="url">Word Embedding</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-21T15:13:44+08:00">
+                2018-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,543
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Word Embedding是要从数据中自动学习到输入空间到Distributed Representation空间的映射f.</p>
+<h3 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h3><p>单词的One-hot编码失去了单词词意之间的联系。<br>例如man和woman的距离应该小于man和apple的距离，而在one-hot编码中，每个单词之间的距离都一样。<br>为了解决这个问题，引入Word Embedding编码，可以看做是一种类别编码。<br>例如embedding矩阵有300个维度，每个单词在这300个维度上都有一个分数，同类单词的分数应该相近。</p>
+<p>用E来表示embedding矩阵，那么有$E\cdot O_j = e_j$。<br>其中$O_j$是单词的one-hot编码，$e_j$是单词的embedding编码。<br>embedding编码不仅引入单词语意的相关性，还缩短了编码长度(onehot词汇表10k -&gt; embedding维度300).<br>可以通过t-SNE等非线性变换方式将每个单词的300维embedding编码投射到2-D平面上，观察不同单词之间的距离。</p>
+<p>如果要量化单词之间的相似性，方法有二：</p>
+<ul>
+<li>cosine相似性：计算向量夹角$ \frac{u^Tv}{\mid\mid u-v \mid\mid} $</li>
+<li>差值距离：$\mid\mid u-v \mid\mid^2$</li>
+</ul>
+<h6 id="提升泛化能力"><a href="#提升泛化能力" class="headerlink" title="提升泛化能力"></a>提升泛化能力</h6><p>Word Embedding极大提升了<strong>训练数据较少</strong>时模型的泛化能力。<br>将模型的输入由单词的one-hot编码改为embedding编码后，即便模型遇到一个从未见过的新词，也可以通过embedding编码推断出新词的类别、近似语意。<br><strong>注意</strong>：对输入数据较多的模型，比如翻译等，word embedding并不适用。</p>
+<h3 id="如何得到embedding矩阵"><a href="#如何得到embedding矩阵" class="headerlink" title="如何得到embedding矩阵"></a>如何得到embedding矩阵</h3><p>学习任务的输入是10k one-hot编码(x)，输出是300类别编码(y)。<br>在训练开始时我们并不知道Y是什么，没有样本，所以这是一个无监督学习。无监督学习的常用方法有二：</p>
+<ol>
+<li>挖掘输入X之间的关系，比如聚类；</li>
+<li>以目标输出Y构建一个新的任务：$g: y \rightarrow z$，其中z值已知。这样用数据X可以训练得到$k: x \rightarrow z$，也就是$z = g(f(x))$，中间的表达式$y=f(x)$是我们真正想要的目标。</li>
+</ol>
+<p>Word Embedding的训练方法偏向2.</p>
+<h4 id="1-Word2Vec"><a href="#1-Word2Vec" class="headerlink" title="1. Word2Vec"></a>1. Word2Vec</h4><p>Word2Vec模型中，主要有Skip-Gram和CBOW两种模型。<br>从直观上看，Skip-Gram是给定input word来预测上下文，而CBOW是给定上下文来预测input word。<br>本文以Skip-Gram为例。</p>
+<p><strong>Fake Task</strong><br>如上节所述，对非监督学习，我们要训练一个目标是任务z的神经网络，而神经网络的隐藏层参数才是真正的目标y。<br>神经网络的设计要求(x,z)可知可训练，那么就取(输入单词，上下文单词)来作为训练数据。神经网络的Fake Task z是通过输入一个单词，预测哪些单词最可能在其上下文出现。输出是多个单词的出现概率，使用softmax。<br>直观理解：语意相近的单词，比如kitty和cat，在训练数据中和它们一起出现的上下文单词也相近，对应网络中softmax的输出相近，因而隐藏层参数也相近。</p>
+<p><strong>输入数据</strong><br><img src="/img/skipGram.jpeg"><br>以上图距离为例，依次选取每个单词作为input word。设定窗口宽带为2，则从上下文就能得到形如(input, output)的训练数据。<br>得到单词对后，将其one-hot编码。假设词汇表有10k单词，那么模型的输入、输出都是10k维向量。</p>
+<p><strong>隐藏层</strong><br><img src="/img/word2vec.jpeg"><br>假设要用300个特征来表示一个单词，那么隐藏层的参数维度是(10k × 300)，没有使用激活函数。<br>当神经网络训练完毕后，这个隐藏层的(10k × 300)参数矩阵就是我们的目标y——embedding矩阵。<br>在实际计算中，由于输入是10k维度的稀疏矩阵，且one-hot编码只有1维是数字1，因而并不会消耗资源计算矩阵乘法，而是直接选取参数矩阵的某行。</p>
+<p><strong>网络训练</strong><br>(10k × 300)网络共有300万个参数，使用梯度下降法训练是相当慢的。更糟糕的是需要大量的样本数据来避免过拟合。<br>可以采用一些优化手段：</p>
+<ul>
+<li>将单词组合作为一个单词：比如New York</li>
+<li>对高频次单词抽样来减少训练样本数：the、to这种单词无助于语义理解，应以一定概率(或者全部)删除</li>
+<li>Negative Sampling：对每个样本(input, output)，从不是output的9999个单词中选取k个作为负样本一起加入训练，这样每次更新只针对参数矩阵的k+1行。例如k=5，那么每次更新300×6=1800个参数。</li>
+</ul>
+<h4 id="2-GloVe"><a href="#2-GloVe" class="headerlink" title="2. GloVe"></a>2. GloVe</h4><p>没有使用神经网络，而是统计规律。</p>
+<p><strong>共现矩阵</strong><br>定义 $X_{i,k}$ 是单词i的上下文中出现单词k的次数；<br>$X_i = \sum_k X_{i,k}$ 是单词i的上下文中出现单词k的总次数；<br>$P_{i,k} = P(k|i) = \frac{X_{i,k}}{X_i}$ 是单词k出现在单词i上下文的条件概率；<br>$ratio_{i,j,k} = \frac{P_{i,k}}{P_{j,k}}$ 是单词k出现在单词i、单词j上下文的概率之比。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$ratio_{i,j,k}$</th>
+<th style="text-align:center">单词j,k相关</th>
+<th style="text-align:center">单词j,k不相关</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">单词i,k相关</td>
+<td style="text-align:center">趋近1</td>
+<td style="text-align:center">很大</td>
+</tr>
+<tr>
+<td style="text-align:center">单词i,k不相关</td>
+<td style="text-align:center">很小</td>
+<td style="text-align:center">趋近1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>目标函数</strong><br>假设我们得到了词向量$v_i, v_j, v_k$，通过某种函数计算的$ratio_{i,j,k}$ 与上表统计规律相符的话，就意味着词向量中蕴含了共现矩阵的信息。<br>经过一系列推导，得到目标函数如下：<br>$$ J = \sum_{i,j}^Nf(X_{i,j})(v_j^Tv_j + b_i + b_j - log(X_{i,j}))^2 $$</p>
+<p>其中权重函数$f(x)$应满足如下条件：</p>
+<ol>
+<li>$f(0)=0$：避免log(0)运算</li>
+<li>$f(x)$是非减函数：出现次数越多，权重越大</li>
+<li>$f(x)$对较大的x不能取太大的值：the、to这类单词</li>
+</ol>
+<p>综合这3点将$f(x)$定义为：<br>$$ f(x)=<br>\begin{cases}<br>(\frac{x}{x_{max}})^\alpha , \;\;if \;x&lt; x_{max} \\<br>1, \;\;if \;x\geq x_{max}<br>\end{cases} $$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/21/DL-RNN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1567,346 +1911,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/TF-Functions/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/14/TF-Functions/" itemprop="url">TensorFlow常用函数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T14:33:49+08:00">
-                2018-04-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  227
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="数学运算"><a href="#数学运算" class="headerlink" title="数学运算"></a>数学运算</h4><p><strong>标量</strong></p>
-<ul>
-<li>tf.add(a,b): 加法</li>
-<li>tf.multiply(a,b): 乘法</li>
-<li>tf.pow(a,b): 乘方</li>
-<li>tf.maximum(a,b): 返回较大的那个</li>
-</ul>
-<p><strong>矩阵</strong></p>
-<ul>
-<li>tf.ones(shape)</li>
-<li>tf.reduce_mean(): 取平均</li>
-<li>tf.reduce_max(input, axis=None): 返回最大值，缩减一个维度</li>
-<li>tf.argmax(input, axis=None): 最大值的索引</li>
-<li>tf.matmul(W,X): 矩阵乘法</li>
-<li>tf.transpose(X): 矩阵转置</li>
-</ul>
-<p><strong>其他</strong></p>
-<ul>
-<li>tf.sigmoid(x)</li>
-<li>tf.one_hot(labels, depth, axis)</li>
-<li>tf.set_random_seed(1)</li>
-<li>tf.gather(params, indices): 选取指定索引的数据</li>
-<li>tf.boolean_mask(tensor, mask): 适用mask</li>
-</ul>
-<h4 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h4><p><strong>损失函数</strong></p>
-<ul>
-<li>tf.nn.sigmoid_cross_entropy_with_logits(logits=z, labels=y): 二分类Logistic Loss</li>
-<li>tf.nn.softmax_cross_entropy_with_logits(logits=z, lables=y): 多分类Softmax Loss</li>
-</ul>
-<p><strong>激活层</strong></p>
-<ul>
-<li>tf.nn.relu(Z): ReLU层</li>
-<li>tf.nn.conv2d(X,W1,strides=[1,s,s,1],padding=’SAME’]: 卷积层</li>
-<li>tf.nn.max_pool(A, ksize=[1,f,f,1], strides=[1,s,s,1], padding=’SAME’): Max_Pool层</li>
-</ul>
-<p><strong>Contrib</strong></p>
-<ul>
-<li>tf.contrib.layers.flatten(P): 展平P到一维</li>
-<li>tf.contrib.layers.fully_connect(F,num_outputs): 全连接层</li>
-</ul>
-<p><strong>Image</strong></p>
-<ul>
-<li>tf.image.non_max_suppression(boxes, scores, max_output_size, iou_threshold): Non-Max Suppression</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/TF-Optimizer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/14/TF-Optimizer/" itemprop="url">TensorFlow优化器Optimizer</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T10:06:10+08:00">
-                2018-04-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  169
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-tf-train-Optimizer"><a href="#1-tf-train-Optimizer" class="headerlink" title="1. tf.train.Optimizer"></a>1. tf.train.Optimizer</h4><p>优化器类(optimizers)的基类。<br>基本上不会直接使用这个类。</p>
-<h4 id="2-tf-train-GradientDescentOptimizer"><a href="#2-tf-train-GradientDescentOptimizer" class="headerlink" title="2. tf.train.GradientDescentOptimizer"></a>2. tf.train.GradientDescentOptimizer</h4><p>实现梯度下降算法的优化器。</p>
-<p>方法</p>
-<ul>
-<li><strong>init</strong>(learning_rate, use_locking=False, name=’GradientDescent’): 构造函数</li>
-<li>minimize(loss,global_step=None,var_list=None,gate_gradients=GATE_OP,aggregation_method=None,<br>colocate_gradients_with_ops=False,name=None,grad_loss=None): 迭代的一步，loss是目标函数</li>
-<li>compute_gradients(loss,var_list=None,gate_gradients=GATE_OP,aggregation_method=None,<br>colocate_gradients_with_ops=False,grad_loss=None): minimize的第一个步骤</li>
-<li>apply_gradients(grads_and_vars,global_step=None,name=None): minimize的第二个步骤</li>
-<li>get_name()</li>
-</ul>
-<h4 id="3-tf-train-MomentumOptimizer"><a href="#3-tf-train-MomentumOptimizer" class="headerlink" title="3. tf.train.MomentumOptimizer"></a>3. tf.train.MomentumOptimizer</h4><p>实现动量算法的优化器</p>
-<p>方法</p>
-<ul>
-<li><strong>init</strong>(learning_rate, momentum, use_locking=False, name=’Momentum’, use_nesterov=False)</li>
-</ul>
-<h4 id="4-tf-train-AdamOptimizer"><a href="#4-tf-train-AdamOptimizer" class="headerlink" title="4. tf.train.AdamOptimizer"></a>4. tf.train.AdamOptimizer</h4><p>实现Adam算法的优化器</p>
-<p>方法</p>
-<ul>
-<li><strong>init</strong>(learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-08, use_locking=False, name=’Adam’)</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1961,7 +1965,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">242</span>
+                  <span class="site-state-item-count">244</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2063,7 +2067,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">84.2k</span>
+    <span title="Site words total count">86.2k</span>
   
 </div>
 
