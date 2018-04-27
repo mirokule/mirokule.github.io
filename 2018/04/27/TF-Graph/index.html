@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Deep Learning,TensorFlow," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="计算图是排列成一个图的一系列TensorFlow指令。由两种类型的对象组成：  指令(op)：图的节点。说明消耗和生成张量的计算。 张量：图的边，流经图的值。  图中的每个指令都拥有唯一的名称。张量是根据生成它们的指令命名的，后面跟着输出索引，例如”add:0” tf.Graphtf.Graph 包含两类相关信息：  图结构：图的节点和边，指明了各个指令组合在一起的方式，但不规定它们的使用方式。">
+<meta name="keywords" content="Deep Learning,TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算图Graph">
+<meta property="og:url" content="http://mirokule.github.io/2018/04/27/TF-Graph/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="计算图是排列成一个图的一系列TensorFlow指令。由两种类型的对象组成：  指令(op)：图的节点。说明消耗和生成张量的计算。 张量：图的边，流经图的值。  图中的每个指令都拥有唯一的名称。张量是根据生成它们的指令命名的，后面跟着输出索引，例如”add:0” tf.Graphtf.Graph 包含两类相关信息：  图结构：图的节点和边，指明了各个指令组合在一起的方式，但不规定它们的使用方式。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://mirokule.github.io/img/tensors_flowing.gif">
+<meta property="og:updated_time" content="2018-04-27T07:12:16.894Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算图Graph">
+<meta name="twitter:description" content="计算图是排列成一个图的一系列TensorFlow指令。由两种类型的对象组成：  指令(op)：图的节点。说明消耗和生成张量的计算。 张量：图的边，流经图的值。  图中的每个指令都拥有唯一的名称。张量是根据生成它们的指令命名的，后面跟着输出索引，例如”add:0” tf.Graphtf.Graph 包含两类相关信息：  图结构：图的节点和边，指明了各个指令组合在一起的方式，但不规定它们的使用方式。">
+<meta name="twitter:image" content="http://mirokule.github.io/img/tensors_flowing.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2018/04/27/TF-Graph/"/>
+
+
+
+
+
+  <title>计算图Graph | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/27/TF-Graph/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算图Graph</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-27T09:56:04+08:00">
+                2018-04-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  632
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>计算图是排列成一个图的一系列TensorFlow指令。由两种类型的对象组成：</p>
+<ul>
+<li>指令(op)：图的节点。说明消耗和生成张量的计算。</li>
+<li>张量：图的边，流经图的值。</li>
+</ul>
+<p><img src="/img/tensors_flowing.gif"><br>图中的每个指令都拥有唯一的名称。张量是根据生成它们的指令命名的，后面跟着输出索引，例如”add:0”</p>
+<h3 id="tf-Graph"><a href="#tf-Graph" class="headerlink" title="tf.Graph"></a>tf.Graph</h3><p>tf.Graph 包含两类相关信息：</p>
+<ul>
+<li>图结构：图的节点和边，指明了各个指令组合在一起的方式，但不规定它们的使用方式。</li>
+<li>图集合：TensorFlow提供了一种通用机制，将创建的对象加入特定的集合中，并与键关联。</li>
+</ul>
+<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>TensorFlow提供了一个默认图，此图是上下文中所有API函数的明确参数。<br>API函数可以构建新的 tf.Operation (节点)和 tf.Tensor (边) 对象并将它们添加到 tf.Graph 实例。例如：</p>
+<ul>
+<li>tf.constant(42): 创建单个 tf.Operation，生成值42，并返回一个表示常量值得 tf.Tensor</li>
+<li>tf.matmul(x,y): 创建单个 tf.Operation，将 tf.Tensor 对象x和y的值相乘，并返回表示结果的 tf.Tensor</li>
+<li>tf.train.Optimizer.minimize: 将指令和张量添加到计算梯度的默认图，返回一个 tf.Operation</li>
+</ul>
+<p><strong>多个图</strong><br>使用 tf.Graph.as_default 上下文管理器，安装另一个 tf.Graph 来作为默认图<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">g_1 = tf.Graph()</span><br><span class="line"><span class="keyword">with</span> g_1.as_default():</span><br><span class="line">	c = tf.constant(<span class="string">"node in g_1"</span>)</span><br><span class="line">	sess_1 = tf.Session()</span><br><span class="line"></span><br><span class="line">g_2 = tf.Graph()</span><br><span class="line"><span class="keyword">with</span> g_2.as_default():</span><br><span class="line">	d = tf.constant(<span class="string">"node in g_2"</span>)</span><br><span class="line">sess_2 = tf.Session(graph=g_2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查当前的默认图</span></span><br><span class="line">g = tf.get_deafult_graph()</span><br><span class="line">print(g.get_operations())</span><br></pre></td></tr></table></figure></p>
+<h3 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h3><p>tf.Graph 对象为其包含的 tf.Operation 对象定义一个命名空间。<br>TensorFlow会自动为图中的每个指令选择唯一名称，可以由用户指定。<br>tf.Tensor 对象以输出张量的 tf.Operation 命名，名称格式为”&lt;OP_NAME&gt;:&lt;i&gt;”，其中：</p>
+<ul>
+<li>OP_NAME 是生成该张量的指令的名称</li>
+<li>i 是一个整数，表示该张量在指令的输出中的索引</li>
+</ul>
+<p>改写指令名称的方法有二：</p>
+<ul>
+<li>name：每个创建operation或返回tensor的API函数都可以接受name参数</li>
+<li>tf.name_scope：向特定上下文中创建的所有指令添加名称范围前缀。名称范围前缀用”/“分隔，重复的将使用”_1”、”_2”区分</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c_0 = tf.constant(<span class="number">0</span>, name=<span class="string">"c"</span>) <span class="comment"># c</span></span><br><span class="line">c_1 = tf.constant(<span class="number">2</span>, name=<span class="string">"c"</span>) <span class="comment"># c_1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">"outer"</span>):</span><br><span class="line">	c_2 = tf.constant(<span class="number">2</span>, name=<span class="string">"c"</span>) <span class="comment"># outer/c</span></span><br><span class="line">	<span class="keyword">with</span> tf.name_scope(<span class="string">"inner"</span>):</span><br><span class="line">		c_3 = tf.constant(<span class="number">3</span>, name=<span class="string">"c"</span>) <span class="comment"># outer/inner/c</span></span><br><span class="line">	c_4 = tf.constant(<span class="number">4</span>, name=<span class="string">"c"</span>) <span class="comment"># out/c_1</span></span><br><span class="line">	<span class="keyword">with</span> tf.name_scope(<span class="string">"inner"</span>):</span><br><span class="line">		c_5 = tf.constant(<span class="number">5</span>, name=<span class="string">"c"</span>) <span class="comment"># outer/inner_1/c</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+          
+            <a href="/tags/TensorFlow/" rel="tag"># TensorFlow</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/27/TF-Tensor/" rel="next" title="张量Tensor">
+                <i class="fa fa-chevron-left"></i> 张量Tensor
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/27/TF-Session/" rel="prev" title="会话Session">
+                会话Session <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">249</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#tf-Graph"><span class="nav-number">1.</span> <span class="nav-text">tf.Graph</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建"><span class="nav-number">2.</span> <span class="nav-text">构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命名"><span class="nav-number">3.</span> <span class="nav-text">命名</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">89.1k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
