@@ -262,6 +262,489 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/21/DL-RNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/21/DL-RNN/" itemprop="url">RNN</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-21T08:41:49+08:00">
+                2018-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  511
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>循环神经网络(Recurrent Neural Networks, RNN)是一种通过隐藏层节点周期性的连接，来捕捉序列化数据中动态信息的神经网络。<br><img src="/img/RNNTime.jpg"><br>经典RNN在预测&lt;t&gt;时刻的信息时，使用了前面&lt;t-k&gt;时刻的信息，没有使用后面&lt;t+k&gt;时刻的信息。<br>与之对应的变种：</p>
+<ul>
+<li>Bidirectional RNN：数据双向流动，后面的信息也参与前面信息的预测</li>
+<li>Deep RNNS：在每个时刻t，引入更多的层级。由于输入维度很大，通常不超过3层。</li>
+</ul>
+<h4 id="基本算法"><a href="#基本算法" class="headerlink" title="基本算法"></a>基本算法</h4><h6 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h6><p><img src="/img/RNN.png"><br><img src="/img/rnn_step_forward.png"></p>
+<h6 id="后向传播"><a href="#后向传播" class="headerlink" title="后向传播"></a>后向传播</h6><p><img src="/img/rnn_step_backprop.png"></p>
+<h4 id="结构类型"><a href="#结构类型" class="headerlink" title="结构类型"></a>结构类型</h4><p><img src="/img/rnn_n2n.jpeg"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">输入输出</th>
+<th style="text-align:center">输出单值</th>
+<th style="text-align:center">输出序列</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">输入单值</td>
+<td style="text-align:center">图片分类</td>
+<td style="text-align:center">生成诗歌/语音/音乐</td>
+</tr>
+<tr>
+<td style="text-align:center">输入序列</td>
+<td style="text-align:center">根据文章判断类型/情感</td>
+<td style="text-align:center">自然语言/语音处理</td>
+</tr>
+</tbody>
+</table>
+<h4 id="长期依赖问题-Long-Term-Dependency"><a href="#长期依赖问题-Long-Term-Dependency" class="headerlink" title="长期依赖问题(Long-Term Dependency)"></a>长期依赖问题(Long-Term Dependency)</h4><p>描述：&lt;t&gt;时刻的预测，需要前面&lt;t-N&gt;时刻的信息参照，其中N是很大的数。<br>比如语言模型中，主语后面接了一个很长的定语从句，然后出现了谓词，要根据主语判断谓词的单复数。<br>解决方法：网络中引入memory cell($c^{&lt;t&gt;}$)，将&lt;t&gt;时刻的特定信息保存下来。</p>
+<h6 id="1-LSTM"><a href="#1-LSTM" class="headerlink" title="1. LSTM"></a>1. LSTM</h6><p><img src="/img/LSTM.png"></p>
+<ul>
+<li>$c^{t}$: 当前时刻的记忆内容</li>
+<li>$\tilde{c}^{&lt;t&gt;}$: 当前时刻的备胎(由输入得到)，需进一步计算决定是否更新记忆</li>
+<li>$a^{t}$: 当前时刻的输出，进入下一时刻的Cell，或者变换后作为输出$y^{&lt;t&gt;}$</li>
+<li>$\Gamma_f^{&lt;t&gt;}$: Forget gate，为0时则忘记上一时刻的记忆内容$c^{&lt;t-1&gt;}$</li>
+<li>$\Gamma_u^{&lt;t&gt;}$: Update gate，为1时则使用当前时刻的候选$\tilde{c}^{&lt;t&gt;}$来更新记忆$c^{&lt;t&gt;}$</li>
+<li>$\Gamma_o^{&lt;t&gt;}$: Output gate，为1时则使用当前时刻的记忆$c^{&lt;t&gt;}$生成输出$a^{&lt;t&gt;}$</li>
+</ul>
+<h6 id="2-GRU"><a href="#2-GRU" class="headerlink" title="2. GRU"></a>2. GRU</h6><p><img src="/img/GRU.png"><br>GRU作为LSTM的一种变体，将Forget Gate和Update Gate合并到了一起。<br>有些结构还引入了Relative Gate等改动。<br>构造简单，效果出众，训练速度快，近年非常流行。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/19/DL-CNNNeuralStyle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/19/DL-CNNNeuralStyle/" itemprop="url">CNN图像风格迁移</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-19T07:38:29+08:00">
+                2018-04-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  302
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>算法</strong><br>输入两张图片，一张提供内容(C)，另一张提供风格(S)；<br>输出一张合成图片(G)，是内容C和风格S的叠加。<br>G初始为任意值，通过不断迭代G，使目标函数不断缩小。<br><img src="/img/styleTransfer.jpeg"></p>
+<p><strong>目标函数</strong><br>$$J(G) = \alpha J_{content}(C,G) + \beta J_{style}(S,G)$$</p>
+<p>$J_{content}(C,G)$：</p>
+<ol>
+<li>选择训练好的卷积网络</li>
+<li>选择网络中部的隐藏层l(太深或太浅都不行)</li>
+<li>对比两张图片的$a^{[l]}$<br>$$ J_{content}(C,G) = \frac{1}{2} \left| a^{[l]C} - a^{[l]G} \right|^2 $$</li>
+</ol>
+<p>$J_{style}(S,G)$：如何衡量”style”? </p>
+<ol>
+<li>定义style = 不同channel之间的相关性，例如{锐角，直线，圆点}经常同时出现，{钝角，波浪线}很少同时出现</li>
+<li>计算单张图片的相关性矩阵$G^{[l]}$，矩阵尺寸$n_c^{[l]} \ast n_c^{[l]}$<br>定义 $a_{i,j,k}^{[l]}$ = activation at (i,j,k);<br>那么 $G_{kk’}^{[l]} = \sum_{i=1}^{n_H^{[l]}} \sum_{j=1}^{n_w^{[l]}} a_{ijk}^{[l]} a_{ijk’}^{[l]}$</li>
+<li>损失函数定义为两张图片相关性矩阵G的差异：<br>$$ J_{style}^{[l]}(S,G) = \frac{1}{(2n_H^{[l]}n_W^{[l]}n_c^{[l]})^2}\left| G^{[l]S} - G^{[l]G} \right|^2$$<br>$$ J_{style}(S,G) = \sum_l \lambda^{[l]} J_{style}^{[l]}(S,G) $$</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/18/DL-CNNFaceRecognition/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/18/DL-CNNFaceRecognition/" itemprop="url">CNN人脸识别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-18T11:08:43+08:00">
+                2018-04-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  446
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>问题分类：</p>
+<ul>
+<li>Verification(验证)：1 to 1，给定一张人脸图片和一个身份，判断是否相符</li>
+<li>Recognition(识别)：1 to K，给定一张人脸图片，判断此人是否在数据库里；<br>由于要进行K次verification，对算法的准确性要求更高。</li>
+</ul>
+<h4 id="简单想法"><a href="#简单想法" class="headerlink" title="简单想法"></a>简单想法</h4><p>输出层采用softmax，有多少员工就对应多少分类。<br>通过训练好的网络，给定一张图片，通过输出的类别来判断是谁。<br><strong>问题</strong></p>
+<ol>
+<li>训练样本不足。不能获取员工的大量照片。</li>
+<li>输出分类固定。当员工人数变动时，需要重新训练网络。</li>
+</ol>
+<h4 id="Siamese-Network"><a href="#Siamese-Network" class="headerlink" title="Siamese Network"></a>Siamese Network</h4><p><strong>原理：相似性判别函数</strong><br>训练一个函数来判断两张图片的相似性：<br>d(img1, img2) = degree of difference between images<br>如果d(img1, img2)小于阈值，则认为两张图片是同一个人。</p>
+<p><strong>实现</strong><br>将深层网络的输出作为图片的编码，$f(x^{(i)})$<br>不同的图片需要经过同样的网络编码，使距离可比较。<br>训练网络参数，使得相同图片的编码相近，不同图片的编码相离。</p>
+<p><strong>目标函数1：Triplet Loss</strong><br>同时输入3张图片：Anchor、Positive、Negative<br>想要$d(A,P) + \alpha \leq d(A,N)$，其中$\alpha$是安全边界(margin)。<br>所以目标函数为<br>$$L(A,P,N) = max(d(A,P) - d(A,N) + \alpha, 0)$$</p>
+<p><strong>目标函数2：Logistic Loss</strong><br>输入2张图片，判断编码是否相等，相等为1，不相等为0.<br>$$\hat{y} = sigmoid(\sum_{k=1}^{128} \left | f(x^{(i)})_k - f(x^{(j)})_k \right | + b) $$</p>
+<p><strong>训练</strong><br>选择d(A,P)和d(A,N)相近的图片，加快模型学习效率。<br>即通过较难样本的学习，从而在较简单样本的测试中获得较好的性能。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/18/DL-CNNRecogonition/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1424,523 +1907,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/TF-ConstantVariable/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/14/TF-ConstantVariable/" itemprop="url">Constant, Variable, Placeholder</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T08:56:40+08:00">
-                2018-04-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  316
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-Constant"><a href="#1-Constant" class="headerlink" title="1. Constant"></a>1. Constant</h4><p>cons = tf.constant(value, dtype=tf.float32, shape=None, name=None, verify_shape=False)</p>
-<p>参数</p>
-<ul>
-<li>value: 初始值，必须是一个张量</li>
-<li>dtype: 默认为value的数据类型</li>
-<li>shape: 默认为value的shape</li>
-<li>name: 常量名</li>
-<li>verify_shape: 是否验证value的shape和指定shape是否相等，不相等时会抛出异常</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = tf.constant(<span class="number">2</span>)</span><br><span class="line">b = tf.constant(<span class="number">13</span>)</span><br><span class="line">add = tf.add(a,b)</span><br><span class="line"></span><br><span class="line">W = tf.constant(np.random.randn(<span class="number">3</span>,<span class="number">4</span>), name=<span class="string">"W"</span>)</span><br><span class="line">b = tf.constant(np.random.randn(<span class="number">3</span>,<span class="number">1</span>), name=<span class="string">"b"</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="2-PlaceHolder"><a href="#2-PlaceHolder" class="headerlink" title="2. PlaceHolder"></a>2. PlaceHolder</h4><p>placeholder也是一种常量，不同的是在运行时注入数据。<br>pla = tf.placeholder(dtype=tf.float32, shape=(), name=””)</p>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.placeholder(tf.int64, name=<span class="string">"X"</span>)</span><br><span class="line">sess.run(<span class="number">2</span>*x, feed_dict=&#123;x:<span class="number">12</span>&#125;)</span><br><span class="line"></span><br><span class="line">X = tf.placeholder(tf.float32, shape=(n_h, n_w, <span class="keyword">None</span>), name=<span class="string">"X"</span>)</span><br><span class="line">Y = tf.placeholder(tf.float32, shape=(n_y, <span class="keyword">None</span>), name=<span class="string">"X"</span>)</span><br><span class="line">sess.run([optimizer, cost], feed_dict=&#123;X: batch_X, Y: batch_Y&#125;)</span><br></pre></td></tr></table></figure></p>
-<h4 id="3-Variable"><a href="#3-Variable" class="headerlink" title="3. Variable"></a>3. Variable</h4><p>变量Variable使用前需要初始化。<br>TensorFlow中有两个关于variable的构造函数：</p>
-<ul>
-<li>tf.Variable(): 每次都创建新对象；创建时若命名冲突将覆盖原有对象</li>
-<li>tf.get_variable(): 若命名对象存在则返回，否则创建新对象；创建时若命名冲突则报错</li>
-</ul>
-<p>W1 = tf.Variable(initial_value=None, …)<br>W2 = tf.get_variable(name, initializer=None, …)</p>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Variable</span></span><br><span class="line">w = tf.Variable(tf.zeros([<span class="number">3</span>,<span class="number">4</span>]), dtype=tf.float64, name=<span class="string">"W"</span>)</span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line">session.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment">## get_variable</span></span><br><span class="line">W1 = tf.get_variable(<span class="string">"W1"</span>, [<span class="number">12</span>,<span class="number">25</span>], initializer = tf.contrib.layers.xavier_initializer(seed=<span class="number">1</span>))</span><br><span class="line">b1 = tf.get_variable(<span class="string">"b1"</span>, [<span class="number">12</span>,<span class="number">1</span>], initializer = tf.zeros_initializer())</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/13/ML-ErrorAnalysis/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/13/ML-ErrorAnalysis/" itemprop="url">误差分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T09:28:45+08:00">
-                2018-04-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  633
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-误差样本分析"><a href="#1-误差样本分析" class="headerlink" title="1.误差样本分析"></a>1.误差样本分析</h4><p><strong>误差来源</strong></p>
-<ol>
-<li>逐一检验被错误分类的样本，标识错误原因{大雾，下雨，变形，错误标签}</li>
-<li>按错误原因排序{变形，下雨，错误标签，大雾}</li>
-<li>优先解决占比高的错误原因{变形，下雨，错误标签，大雾}</li>
-</ol>
-<p><strong>错误标签</strong></p>
-<ul>
-<li>训练集(train set)：robust to random erros<ul>
-<li>错误随机分布，比例不高：无需处理</li>
-<li>系统性错误(将某一类全部标错)：需要处理</li>
-</ul>
-</li>
-<li>验证集(dev set)：看错误标签在误差来源中的比例；若能显著提高预测精度，则纠正标签</li>
-<li>测试集(test set)：和验证集保持分布一致，若验证集纠正则测试集也同步纠正</li>
-</ul>
-<p>注意：纠正标签后，训练集和验证集/测试集的分布可能会变得不同</p>
-<h4 id="2-分布不一致的数据"><a href="#2-分布不一致的数据" class="headerlink" title="2.分布不一致的数据"></a>2.分布不一致的数据</h4><p><strong>数据划分</strong><br>有时数据会有不同的来源，比如实际采集的图片和网上下载的图片。<br>不同来源数据的分布是不同的，在拆分训练集\验证集\测试集时需遵循以下原则：</p>
-<ul>
-<li>测试集：和实际目标保持同分布</li>
-<li>验证集：和测试集保持同分布</li>
-<li>训练集：分布不一致的数据全部进入训练集，避免预测目标的偏差</li>
-</ul>
-<p><strong>分布不一致带来的误差</strong><br>分布不一致的数据全部进入训练集，使得模型从训练集进入验证集后，某种程度上相当于切换了问题域。<br>验证集/测试集有不同的识别率上限，虽然差异不像迁移学习那么大，但也足以带来新的误差。<br>所以验证集的误差可能来自两方面：</p>
-<ul>
-<li>Overfit：传统的high variance </li>
-<li>Data Mismatch：验证集的问题可能更难(误差上升)，或者更简单(误差下降)</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">Error</th>
-<th style="text-align:left">Source</th>
-<th style="text-align:left">Comment</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">human error</td>
-<td style="text-align:left">1%</td>
-<td style="text-align:left">接近训练集的上限Bayes</td>
-</tr>
-<tr>
-<td style="text-align:left">Training error</td>
-<td style="text-align:left">3%</td>
-<td style="text-align:left">误差来自avoidable bias</td>
-</tr>
-<tr>
-<td style="text-align:left">Train-Dev error</td>
-<td style="text-align:left">6.5%</td>
-<td style="text-align:left">和训练集分布相同，误差来自variance(overfit train)</td>
-</tr>
-<tr>
-<td style="text-align:left">Dev error</td>
-<td style="text-align:left">9%</td>
-<td style="text-align:left">误差来自data mismatch</td>
-</tr>
-<tr>
-<td style="text-align:left">Test error</td>
-<td style="text-align:left">11.5%</td>
-<td style="text-align:left">和验证集分布相同，误差来自variance(overfit dev)</td>
-</tr>
-</tbody>
-</table>
-<p><strong>误差处理</strong></p>
-<ul>
-<li>理解数据分布哪里不一致：是否有噪音、遮挡、滤镜等</li>
-<li>在训练集中引入类似验证集/测试集的数据：采集、人工合成等</li>
-</ul>
-<p>注意：人工合成中，将少量特征F组合进巨量样本中后，可能会使模型对这些特征F过拟合，失去泛化能力</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/13/ML-TransferLearning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/13/ML-TransferLearning/" itemprop="url">迁移学习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T07:58:34+08:00">
-                2018-04-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  319
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="迁移学习"><a href="#迁移学习" class="headerlink" title="迁移学习"></a>迁移学习</h4><p>迁移学习(Transfer Learning)是把已经训练好的模型参数迁移到新的模型。<br>考虑到学习任务的相关性，通过迁移我们期望已有模型的参数可以加快新模型的训练速度。</p>
-<p>符合以下条件的模型A可以迁移到模型B</p>
-<ul>
-<li>A和B有相同的输入</li>
-<li>A的训练数据远大于B</li>
-<li>A的低阶特征有助于学习B</li>
-</ul>
-<h4 id="多任务学习"><a href="#多任务学习" class="headerlink" title="多任务学习"></a>多任务学习</h4><p>多任务学习(Multi-Task Learning)是在一个网络中，将多个目标同时学好。<br>输出层有多个神经元，可以同时为1，不需要像softmax那样归一化处理。<br>多任务学习要求不同的学习目标之间有相关性，和迁移学习有相似之处。<br>实际应用中，多任务学习的适用场景较少，多用于计算机视觉图像领域。</p>
-<h4 id="End-to-End-Deep-Learning"><a href="#End-to-End-Deep-Learning" class="headerlink" title="End-to-End Deep Learning"></a>End-to-End Deep Learning</h4><p>将传统机器学习中的各个环节(如特征抽取、转换、预测)省略，直接使用神经网络完成从输入端到输出端(end-to-end)的所有步骤。<br>需要足够大的网络和足够多的训练样本。<br>优点是原理简单。<br>缺点是训练困难，黑盒不易理解。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1990,7 +1961,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">249</span>
+                  <span class="site-state-item-count">252</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2092,7 +2063,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">89.1k</span>
+    <span title="Site words total count">91.5k</span>
   
 </div>
 

@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Machine Learning," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="假设空间H作用于数据量为N的样本集D，h的数量看上去是无穷的，但真正有效(effective)的h的数量确实有限的，这个数量记做$m_H(N)$.H中每一个h作用于D都能算出一个$E_{in}$来，共有$m_H(N)$个不同的$E_{in}$ Dichotomy二分类问题中给定样本集D，如果D是线性可分的，就把一种分类方式称作一个Dichotomy(对分)。一个Dichotomy中包含了所有可以分">
+<meta name="keywords" content="Machine Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VC维">
+<meta property="og:url" content="http://mirokule.github.io/2018/04/28/ML-VCDimension/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="假设空间H作用于数据量为N的样本集D，h的数量看上去是无穷的，但真正有效(effective)的h的数量确实有限的，这个数量记做$m_H(N)$.H中每一个h作用于D都能算出一个$E_{in}$来，共有$m_H(N)$个不同的$E_{in}$ Dichotomy二分类问题中给定样本集D，如果D是线性可分的，就把一种分类方式称作一个Dichotomy(对分)。一个Dichotomy中包含了所有可以分">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://mirokule.github.io/img/vc_bound.png">
+<meta property="og:updated_time" content="2018-04-28T07:44:40.175Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VC维">
+<meta name="twitter:description" content="假设空间H作用于数据量为N的样本集D，h的数量看上去是无穷的，但真正有效(effective)的h的数量确实有限的，这个数量记做$m_H(N)$.H中每一个h作用于D都能算出一个$E_{in}$来，共有$m_H(N)$个不同的$E_{in}$ Dichotomy二分类问题中给定样本集D，如果D是线性可分的，就把一种分类方式称作一个Dichotomy(对分)。一个Dichotomy中包含了所有可以分">
+<meta name="twitter:image" content="http://mirokule.github.io/img/vc_bound.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2018/04/28/ML-VCDimension/"/>
+
+
+
+
+
+  <title>VC维 | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/28/ML-VCDimension/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">VC维</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T14:58:27+08:00">
+                2018-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  766
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>假设空间H作用于数据量为N的样本集D，h的数量看上去是无穷的，但真正有效(effective)的h的数量确实有限的，这个数量记做$m_H(N)$.<br>H中每一个h作用于D都能算出一个$E_{in}$来，共有$m_H(N)$个不同的$E_{in}$</p>
+<h5 id="Dichotomy"><a href="#Dichotomy" class="headerlink" title="Dichotomy"></a>Dichotomy</h5><p>二分类问题中给定样本集D，如果D是线性可分的，就把一种分类方式称作一个Dichotomy(对分)。<br>一个Dichotomy中包含了所有可以分出这个局面的h，相当于把假设空间H里的所有h按照不同的分类结果来分组。<br>样本集D上的所有划分组成了dichotomy set.</p>
+<h5 id="Growth-Function"><a href="#Growth-Function" class="headerlink" title="Growth Function"></a>Growth Function</h5><p>对特定样本数N，可以有多个采样集D，每个D对应不同的dichotomy set。<br>将这些dichotomy set的最大值，定义为N的成长函数Growth Function: m(N)。<br>增长函数表示假设空间H对D中样本赋予标记的最大可能结果数。</p>
+<h5 id="Shatter"><a href="#Shatter" class="headerlink" title="Shatter"></a>Shatter</h5><p>Shatter(打散)指假设空间H能够实现D中全部示例的对分，即增长函数=$2^N$<br>另一种定义：对于一个假设空间H，如果存在m个数据样本能够被假设空间H中的函数按所有可能的$2^h$种形式分开，则称假设空间H能够把m个数据样本打散。</p>
+<h5 id="Break-Point"><a href="#Break-Point" class="headerlink" title="Break Point"></a>Break Point</h5><p>使Growth Function &lt; $2^H$成立的N的最小值。<br>若k是Break Point，那么k+1, k+2, …对应的Growth Function都会小于$2^N$</p>
+<h5 id="VC-Bound"><a href="#VC-Bound" class="headerlink" title="VC Bound"></a>VC Bound</h5><p>将成长函数的上界，记为B(N,k)，意为：maximum possible m_H(N) when break point = k.</p>
+<ul>
+<li>B(2,2) = 3</li>
+<li>B(3,2) = 4</li>
+<li>B(N,1) = 1</li>
+<li>B(N,k) = $2^N$ for N&lt;k; $2^N-1$ for N=k</li>
+</ul>
+<p>最后利用数学归纳法，可以证明得到下面的bounding function(N&gt;k)<br>$$ m_H(N) \leq \sum_{i=0}^{k-1} \binom{N}{i} $$</p>
+<p><img src="/img/vc_bound.png"><br>如果假设空间存在有限的break point，那么$m_H(2N)$会被最高幂次为k-1的多项式上界给约束住。<br>随着N的逐渐增大，指数式的下降会比多项式的增长更快，所以此时VCBound是有限的。<br>更深的意义在于，N足够大时，对H中的任意一个假设h，$E_{in}(h)$都将接近于$E_{out}(h)$，这表示机器学习可行的第一个条件是有可能成立的。</p>
+<h5 id="Vapink-Chervonenkis-Dimension"><a href="#Vapink-Chervonenkis-Dimension" class="headerlink" title="Vapink-Chervonenkis Dimension"></a>Vapink-Chervonenkis Dimension</h5><p>假设空间H的VC维是能被H打散的最大的样本集的大小，记做$d_{vc}(H)$。<br>若对任意数目的数据样本都有函数能将它们shatter，则假设空间的VC维为无穷大。<br>VC维的大小只与模型和假设空间有关，反应了假设空间H的强大程度(powerfulness)。VC维越大，H越强，能打散更多的点。</p>
+<p>根据定义，可以得到一个明显的结论：<br>$$ k = d_{vc}(H) + 1$$</p>
+<p>一个实践规律：VC维与假设参数w的自由变量数目大约相等。<br>模型较复杂($d_vc$较大)时，需要更多的训练数据。实际经验里，一般$N\approx 10\times d_{vc}$</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/28/TF-Variable/" rel="next" title="变量Variable">
+                <i class="fa fa-chevron-left"></i> 变量Variable
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">252</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#Dichotomy"><span class="nav-number">1.</span> <span class="nav-text">Dichotomy</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Growth-Function"><span class="nav-number">2.</span> <span class="nav-text">Growth Function</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Shatter"><span class="nav-number">3.</span> <span class="nav-text">Shatter</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Break-Point"><span class="nav-number">4.</span> <span class="nav-text">Break Point</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#VC-Bound"><span class="nav-number">5.</span> <span class="nav-text">VC Bound</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Vapink-Chervonenkis-Dimension"><span class="nav-number">6.</span> <span class="nav-text">Vapink-Chervonenkis Dimension</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">91.5k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -262,6 +262,490 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-ActivationFunction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/10/DL-ActivationFunction/" itemprop="url">激活函数(Activation Function)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T07:27:43+08:00">
+                2018-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  444
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>激活函数用于在学习器中引入非线性因素。<br>$$ Y = Activation(\Sigma(weight \ast input) + bias) $$<br>不引入非线性因素的神经网络，本质上仍是一个线性回归模型。</p>
+<p>激活函数主要有以下几种：</p>
+<ul>
+<li>sigmoid: 适合分类器</li>
+<li>tanh: sigmoid改进版</li>
+<li>ReLU: 大多数情况下适用，只能在隐藏层中使用</li>
+<li>Leaky ReLU: 避免死神经元</li>
+</ul>
+<p><strong>选择经验</strong><br>选择激活函数时，可以先从<strong>ReLU</strong>开始。<br>如果ReLU没有提供最优结果，再尝试其他激活函数。</p>
+<h4 id="1-sigmoid"><a href="#1-sigmoid" class="headerlink" title="1. sigmoid"></a>1. sigmoid</h4><p>曾将广泛使用的激活函数，由于自身缺陷，目前已很少使用。</p>
+<ul>
+<li>当输入远离原点时，梯度太小；多层神经网络中，太小的各层梯度叠加后会消失，使学习速度缓慢</li>
+<li>输出不以0为中心</li>
+<li>要进行指数运算</li>
+</ul>
+<p><img src="/img/sigmoid.png"><br>$$ sigmoid(x) = \frac{1}{1+e^{-x}} $$<br>目前仅在将值分类到特定类别时使用，比如最终输出$y\in(0,1)$的网络中的最后一层。</p>
+<h4 id="2-tanh"><a href="#2-tanh" class="headerlink" title="2. tanh"></a>2. tanh</h4><p>tanh是sigmoid的一个放大版本，梯度比sigmoid更陡。<br>tanh解决了所有值符号相同的问题，输出区间(-1,1)，为0为中心。<br><img src="/img/tanh.png"></p>
+<p>$$ tanh(x) = 2\ast sigmoid(2x) - 1 $$<br>$$ tanh(x) = \frac{2}{1+e^{-2x}} - 1 $$</p>
+<h4 id="3-ReLU"><a href="#3-ReLU" class="headerlink" title="3. ReLU"></a>3. ReLU</h4><p>ReLU是使用最广泛的激活函数。<br>最大的优点在于不会同时激活所有的神经元，这种稀疏性使其变得高效且易于计算。<br><img src="/img/relu.png"></p>
+<p>$$ ReLU(x) = max(0, x) $$</p>
+<h4 id="4-Leaky-ReLU-PReLU"><a href="#4-Leaky-ReLU-PReLU" class="headerlink" title="4. Leaky ReLU / PReLU"></a>4. Leaky ReLU / PReLU</h4><p>在ReLU中，当x小于0时梯度为0，使得该区域的神经元死亡。<br>为了解决这个问题，用斜线代替水平线，去除零梯度。<br><img src="/img/prelu.png"></p>
+<p>$$ PReLU(x) = ax\; for \; x &lt; 0 $$<br>$$ PReLU(x) = x\; for \; x \geq 0 $$</p>
+<p>这里a是一个很小的值，比如0.01.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-GradientChecking/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/10/DL-GradientChecking/" itemprop="url">梯度检验(GradientChecking)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T06:52:46+08:00">
+                2018-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  419
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>反向传播算法中，梯度的推导公式容易产生错误。此时需要从定义出发，检验梯度的计算式是否正确。</p>
+<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>根据导数的数学定义：<br>$$ \frac{dJ}{d\theta} = \lim_{\epsilon\rightarrow 0}\frac{J(\theta+\epsilon)-J(\theta-\epsilon)}{2\epsilon} $$<br>可以推导出梯度检验的公式：<br>$$ g(\theta) \approx \frac{}{}\frac{J(\theta+\epsilon)-J(\theta-\epsilon)}{2\epsilon} $$</p>
+<p>在实际应用中，通常将$\epsilon$设为一个很小的常量，比如在$10^{-4}$；<br>通过将后向传播算出的梯度值与梯度检验算出的梯度值比较，可以验证后向传播中的计算式是否有误。<br>$$ difference = \frac {\mid\mid grad - gradapprox \mid\mid_2}{\mid\mid grad \mid\mid_2 + \mid\mid gradapprox \mid\mid_2} $$</p>
+<h4 id="神经网络的梯度检验"><a href="#神经网络的梯度检验" class="headerlink" title="神经网络的梯度检验"></a>神经网络的梯度检验</h4><p>在神经网络中，需要验证梯度的参数W、b是矩阵而非标量，此时可将矩阵映射为一维向量，然后对向量中的每个元素循环计算。<br><img src="/img/dlGradientCheck.png"><br><img src="/img/dlModel.png"></p>
+<h6 id="计算过程"><a href="#计算过程" class="headerlink" title="计算过程"></a>计算过程</h6><ul>
+<li><code>J_plus[i]</code>:<ol>
+<li>Set $\theta^{+}$ to <code>np.copy(parameters_values)</code></li>
+<li>Set $\theta^{+}_i$ to $\theta^{+}_i + \varepsilon$</li>
+<li>Calculate $J^{+}_i$ using to <code>forward_propagation_n(x, y, vector_to_dictionary(</code>$\theta^{+}$ <code>))</code>.     </li>
+</ol>
+</li>
+<li><code>J_minus[i]</code>: do the same thing with $\theta^{-}$</li>
+<li>$gradapprox[i] = \frac{J^{+}_i - J^{-}_i}{2 \varepsilon}$</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_parameters):</span><br><span class="line">    <span class="comment"># Compute J_plus[i]. Inputs: "parameters_values, epsilon". Output = "J_plus[i]".</span></span><br><span class="line">    thetaplus = np.copy(parameters_values)                                      </span><br><span class="line">    thetaplus[i][<span class="number">0</span>] = parameters_values[i][<span class="number">0</span>] + epsilon                                </span><br><span class="line">    J_plus[i], _ = forward_propagation_n(X, Y, vector_to_dictionary(thetaplus))                               </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute J_minus[i]. Inputs: "parameters_values, epsilon". Output = "J_minus[i]".</span></span><br><span class="line">    thetaminus = np.copy(parameters_values)                                 </span><br><span class="line">    thetaminus[i][<span class="number">0</span>] = parameters_values[i][<span class="number">0</span>] - epsilon                           </span><br><span class="line">    J_minus[i], _ = forward_propagation_n(X, Y, vector_to_dictionary(thetaminus))                                </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute gradapprox[i]</span></span><br><span class="line">    gradapprox[i] = (J_plus[i] - J_minus[i]) / (<span class="number">2</span> * epsilon)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Compare gradapprox to backward propagation gradients by computing difference.</span></span><br><span class="line">numerator = np.linalg.norm(grad - gradapprox)                                           </span><br><span class="line">denominator = np.linalg.norm(grad) + np.linalg.norm(gradapprox)                                         </span><br><span class="line">difference = numerator / denominator</span><br></pre></td></tr></table></figure>
+<h6 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h6><p>Gradient Checking计算过程较慢，当验证公式无误后应关闭，不参加常规的训练过程。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/08/DL-Model/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/08/DL-Model/" itemprop="url">深度学习算法流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T15:19:41+08:00">
+                2018-04-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  275
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>狭义的深度学习是指有很多隐藏层，每层有很多节点的神经网络。</p>
+<h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h4><p><img src="/img/deepLearning.png"></p>
+<ol>
+<li>初始化参数$W,b$<ul>
+<li>$W^{[l]}.shape = (n^{[l]}, n^{[l-1]})$</li>
+<li>$b^{[l]}.shape = (n^{[1]}, 1))$</li>
+</ul>
+</li>
+<li>前向传播：从前向后逐层计算$A^{[l]}$，缓存各层中间结果$W^{[l]},b^{[l]},Z^{[l]}$<ul>
+<li>$Z^{[l]} = W^{[l]}A^{[l-1]} + b^{[l]}$</li>
+<li>$A^{[l]} = g(Z^{[l]})$</li>
+</ul>
+</li>
+<li>计算损失函数：<br>$$cost(A^{[L]}, Y) = -\frac{1}{m}\sum_{i=1}^{m}(y^{(i)}log(a^{[L]i}) + (1-y^{i})log(1-a^{[L]i}))$$</li>
+<li>后向传播：从后向前逐层计算偏导数$dA^{[l]}, dZ^{[l]}, dW^{[l]}, db^{[l]}$<ul>
+<li>$dZ^{[l]} = dA^{[l]}\ast g’(Z^{[l]})$</li>
+<li>$dW^{[l]} = \frac{1}{m}dZ^{[l]}A^{[l-1]T}$</li>
+<li>$db^{[l]} = \frac{1}{m}\sigma_{i=1}^{m}dZ^{[l]i}$</li>
+<li>$dA^{[l-1]} = W^{[l]T}dZ^{[l]}$</li>
+</ul>
+</li>
+<li><p>更新参数：</p>
+<ul>
+<li>$W^{[l]}=W^{[l]}-\alpha\,dW^{[l]}$</li>
+<li>$b^{[l]}=b^{[l]}-\alpha\,db^{[l]}$</li>
+</ul>
+</li>
+<li><p>重复2-5，直到$cost(A^{[L]}, Y)$不再减少或满足要求</p>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 主循环</span></span><br><span class="line">parameters = initialize_parameters_deep(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="comment"># Forward propagation: [LINEAR -&gt; RELU]*(L-1) -&gt; LINEAR -&gt; SIGMOID.</span></span><br><span class="line">    AL, caches = L_model_forward(X, parameters)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute cost.</span></span><br><span class="line">    cost = compute_cost(AL, Y)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Backward propagation.</span></span><br><span class="line">    grads = L_model_backward(AL, Y, caches)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># Update parameters.</span></span><br><span class="line">    parameters = update_parameters(parameters, grads, learning_rate)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/07/Python-NumPy-Multiply/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1515,509 +1999,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/31/Python-sklearn-GridSearchCV/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/31/Python-sklearn-GridSearchCV/" itemprop="url">GridSearchCV</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-31T11:31:17+08:00">
-                2018-03-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  195
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>class sklearn.model_selection.GridSearchCV(estimator, param_grid, scoring=None, fit_params=None, n_jobs=1, iid=True, refit=True, cv=None, verbose=0, pre_dispatch=’2*n_jobs’, error_score=’raise’, return_train_score=’warn’)<br>对指定参数的穷举搜索。</p>
-<p>参数</p>
-<ul>
-<li>estimator: 需要实现sklearn estimator interface</li>
-<li>param_grid: 要调校的参数名称及可选值</li>
-<li>scoring: 评分策略</li>
-<li>fit_params: 废弃</li>
-<li>n_jobs: 并行任务数</li>
-<li>pre_dispatch: 并行过程中分发的任务数？</li>
-<li>iid: identically distributed</li>
-<li>cv: int, cross-validation generator</li>
-<li>refit: 使用得到的最优参数，重新训练模型</li>
-<li>verbose: 输出信息冗余度</li>
-<li>error_score: 错误处理</li>
-<li>return_train_score: 是否返回训练集得分</li>
-</ul>
-<p>属性</p>
-<ul>
-<li>cv_results_</li>
-<li>best_estimator_</li>
-<li>best_score_</li>
-<li>best_params_</li>
-<li>best_index_</li>
-<li>scoree_</li>
-<li>n_splits_</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>decision_function(X)</li>
-<li>fit(X[,y,groups])</li>
-<li>transform(X)</li>
-<li>inverse_transform(Xt)</li>
-<li>predict(X)</li>
-<li>predict_proba(X)</li>
-<li>predict_log_proba(X)</li>
-<li>score(X[,y])</li>
-<li>get_params([deep])</li>
-<li>set_params(**params)</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line">parameters = &#123;<span class="string">'kernel'</span>:(<span class="string">'linear'</span>,<span class="string">'rbf'</span>), <span class="string">'C'</span>:[<span class="number">1</span>,<span class="number">10</span>]&#125;</span><br><span class="line">clf = GridSearchCV(svc, parameters)</span><br><span class="line">clf.fit(iris.data, iris.target)</span><br><span class="line">sorted(clf.cv_results_.keys())</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/31/ML-XGBoost-Parameters/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/31/ML-XGBoost-Parameters/" itemprop="url">XGBoost参数说明及调试</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-31T10:24:17+08:00">
-                2018-03-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  791
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><h5 id="General-Parameters-常规参数"><a href="#General-Parameters-常规参数" class="headerlink" title="General Parameters(常规参数)"></a>General Parameters(常规参数)</h5><ul>
-<li>booster[default=gbtree]: 基分类器, {gbtree, gblinear}, tree通常好于linear</li>
-<li>silent[default=0]: 为1则没有运行信息输出</li>
-<li>nthread[default to maximum number of threads available if not set]: 线程数</li>
-</ul>
-<h5 id="Booster-Parameters-模型参数"><a href="#Booster-Parameters-模型参数" class="headerlink" title="Booster Parameters(模型参数)"></a>Booster Parameters(模型参数)</h5><ul>
-<li>eta[default=0.3]: skrinkage，学习速率；越大越不容易收敛，越小越慢，通常0.01-0.2</li>
-<li>min_child_weight[default=1]: 叶节点中所有样本权重的和，参数值越小越容易过拟合</li>
-<li>max_depth[default=6]: 树的最大深度，越深越容易过拟合，通常3-10</li>
-<li>max_leaf_nodes: 最大叶节点数，设置该参数将覆盖max_depth</li>
-<li>gamma[default=0]: 指定节点分裂时所需要的loss function reduction，只有reductiion大于该值时才会继续分裂</li>
-<li>max_delta_step[default=0]: 更新步长，0表示没有约束，正值使更新步骤更加平缓，通常用不到</li>
-<li>subsample[default=1]: 给每棵树的样本采样比例，较低的值防止过拟合，但是太低也会欠拟合，通常0.5-1</li>
-<li>colsample_bytree[default=1]: 列采样比例，一般为0.5~1</li>
-<li>lambda[default=1]: L2正则化参数，越大越不容易过拟合</li>
-<li>alpha[default=0]: L1正则化参数，越大越不容易过拟合</li>
-<li>scale_pos_weight[default-1]: 取值大于0时，在类别样本不平衡的情况下有助于快速收敛</li>
-</ul>
-<h5 id="Learning-Task-Parameters-学习任务参数"><a href="#Learning-Task-Parameters-学习任务参数" class="headerlink" title="Learning Task Parameters(学习任务参数)"></a>Learning Task Parameters(学习任务参数)</h5><ul>
-<li>objectivep[default=reg:linear]: 最小化损失函数类型</li>
-<li>eval_metric: 评价函数，{rmse, mae, logloss, error, auc,…}</li>
-<li>seed: 随机种子</li>
-</ul>
-<h3 id="参数调试"><a href="#参数调试" class="headerlink" title="参数调试"></a>参数调试</h3><h4 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h4><ol>
-<li>调节参数会使预测效果变好，但并不能带来质的飞跃；</li>
-<li>XGBoost和GBDT的预测效果差别不大；</li>
-<li>能极大提升预测结果的手段包括：<ul>
-<li>feature engineering</li>
-<li>ensemble of models</li>
-</ul>
-</li>
-</ol>
-<h5 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h5><ol>
-<li>调高Learning rate，使训练时间缩短</li>
-<li>决定树的最优数量n_estimators</li>
-<li>Tree-specific parameters: max_depth, min_child_weight, gamma, subsample, colsample_bytree</li>
-<li>Regularization parameters: lambda, alpha</li>
-<li>调整其他可选参数</li>
-<li>调低Learning rate，重新运行得到最终结果</li>
-</ol>
-<h5 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"><span class="keyword">from</span> sgboost.sklearn <span class="keyword">import</span> XGBClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.grid_search <span class="keyword">import</span> GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> cross_validation, metrics</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调高Learing Rate</span></span><br><span class="line">predictors = [x <span class="keyword">for</span> x <span class="keyword">in</span> train.columns <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> [target, IDcol]]</span><br><span class="line">xgb1 = XGBClassifier(learing_rate=<span class="number">0.1</span>, ...)</span><br><span class="line">modelfit(xgb1, train, predictors)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 先用大粒度</span></span><br><span class="line">param_test1 = &#123; <span class="string">'max_depth'</span>: range(<span class="number">3</span>,<span class="number">10</span>,<span class="number">2</span>),</span><br><span class="line">		<span class="string">'min_child_weight'</span>: range(<span class="number">1</span>,<span class="number">6</span>,<span class="number">2</span>) &#125;</span><br><span class="line">gsearch1 = GridSearchCV(estimator = XGBClassifier( learning_rate =<span class="number">0.1</span>, n_estimators=<span class="number">140</span>, max_depth=<span class="number">5</span>,</span><br><span class="line">		min_child_weight=<span class="number">1</span>, gamma=<span class="number">0</span>, subsample=<span class="number">0.8</span>, colsample_bytree=<span class="number">0.8</span>,</span><br><span class="line">		objective= <span class="string">'binary:logistic'</span>, nthread=<span class="number">4</span>, scale_pos_weight=<span class="number">1</span>, seed=<span class="number">27</span>), </span><br><span class="line">		param_grid = param_test1, scoring=<span class="string">'roc_auc'</span>,n_jobs=<span class="number">4</span>,iid=<span class="keyword">False</span>, cv=<span class="number">5</span>)</span><br><span class="line">gsearch1.fit(train[predictors],train[target])</span><br><span class="line">gsearch1.grid_scores_, gsearch1.best_params_, gsearch1.best_score_</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再用小粒度</span></span><br><span class="line">param_test2 = &#123; <span class="string">'max_depth'</span>: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],</span><br><span class="line">		<span class="string">'min_child_weight'</span>: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>] &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># gamma</span></span><br><span class="line">param_test3 = &#123; <span class="string">'gamma'</span>: [i/<span class="number">10.0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">5</span>)] &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># subsample, colsample_bytree</span></span><br><span class="line">param_test4 = &#123; <span class="string">'subsample'</span>: [i/<span class="number">10.0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>,<span class="number">10</span>)],</span><br><span class="line">		<span class="string">'colsample_bytree'</span>: [i/<span class="number">10.0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>,<span class="number">10</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># regularization</span></span><br><span class="line">param_test5 = &#123; <span class="string">'alpha'</span>: [<span class="number">0</span>, <span class="number">0.01</span>, <span class="number">0.1</span>, <span class="number">1</span>, <span class="number">10</span>] &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 降低Learning Rate</span></span><br><span class="line">xgb4 = XGBClassifier(learning_rate=<span class="number">0.01</span>, ...)</span><br></pre></td></tr></table></figure>
-<p>modelfit<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">modelfit</span><span class="params">(alg, dtrain, predictors,useTrainCV=True, cv_folds=<span class="number">5</span>, early_stopping_rounds=<span class="number">50</span>)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> useTrainCV:</span><br><span class="line">    xgb_param = alg.get_xgb_params()</span><br><span class="line">    xgtrain = xgb.DMatrix(dtrain[predictors].values, label=dtrain[target].values)</span><br><span class="line">    cvresult = xgb.cv(xgb_param, xgtrain, num_boost_round=alg.get_params()[<span class="string">'n_estimators'</span>], nfold=cv_folds,</span><br><span class="line">        metrics=<span class="string">'auc'</span>, early_stopping_rounds=early_stopping_rounds, show_progress=<span class="keyword">False</span>)</span><br><span class="line">    alg.set_params(n_estimators=cvresult.shape[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the algorithm on the data</span></span><br><span class="line">alg.fit(dtrain[predictors], dtrain[<span class="string">'Disbursed'</span>],eval_metric=<span class="string">'auc'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># Predict training set:</span></span><br><span class="line">dtrain_predictions = alg.predict(dtrain[predictors])</span><br><span class="line">dtrain_predprob = alg.predict_proba(dtrain[predictors])[:,<span class="number">1</span>]</span><br><span class="line">    </span><br><span class="line"><span class="comment"># Print model report:</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"\nModel Report"</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"Accuracy : %.4g"</span> % metrics.accuracy_score(dtrain[<span class="string">'Disbursed'</span>].values, dtrain_predictions)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"AUC Score (Train): %f"</span> % metrics.roc_auc_score(dtrain[<span class="string">'Disbursed'</span>], dtrain_predprob)</span><br><span class="line">                </span><br><span class="line">feat_imp = pd.Series(alg.booster().get_fscore()).sort_values(ascending=<span class="keyword">False</span>)</span><br><span class="line">feat_imp.plot(kind=<span class="string">'bar'</span>, title=<span class="string">'Feature Importances'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Feature Importance Score'</span>)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/30/ML-GBDT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/30/ML-GBDT/" itemprop="url">梯度提升树(GBDT)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T08:53:06+08:00">
-                2018-03-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  152
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>GBDT(Gradient Boosting Decision Tree)是集成学习Boosting的一种。<br>但是和AdaBoost更改样本权重的算法不同，GBDT每次迭代的输入是上一轮的误差<br>模型共训练m轮，每轮产生一个弱分类器；弱分类器一般选择CART树。<br>模型可以描述为<br>$$ F_m(x) = \sum_{m=1}^{M}T(x;\theta_m) $$<br>损失函数<br>$$ \hat{\theta} = \underset{\theta_m}{arg\,min}\sum_{i=1}^{N}L(y_i,F_{m-1}(x_i)+T(x_i;\theta_m)) $$<br>每轮迭代时，都去拟合损失函数在当前模型下的负梯度，<strong>让损失函数沿着梯度方向下降</strong>是算法的关键。</p>
-<p><img src="/img/GBDT.png"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2067,7 +2053,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">249</span>
+                  <span class="site-state-item-count">252</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2169,7 +2155,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">89.1k</span>
+    <span title="Site words total count">91.5k</span>
   
 </div>
 

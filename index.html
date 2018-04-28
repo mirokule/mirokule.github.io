@@ -262,6 +262,495 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/28/ML-VCDimension/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/28/ML-VCDimension/" itemprop="url">VC维</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T14:58:27+08:00">
+                2018-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  766
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>假设空间H作用于数据量为N的样本集D，h的数量看上去是无穷的，但真正有效(effective)的h的数量确实有限的，这个数量记做$m_H(N)$.<br>H中每一个h作用于D都能算出一个$E_{in}$来，共有$m_H(N)$个不同的$E_{in}$</p>
+<h5 id="Dichotomy"><a href="#Dichotomy" class="headerlink" title="Dichotomy"></a>Dichotomy</h5><p>二分类问题中给定样本集D，如果D是线性可分的，就把一种分类方式称作一个Dichotomy(对分)。<br>一个Dichotomy中包含了所有可以分出这个局面的h，相当于把假设空间H里的所有h按照不同的分类结果来分组。<br>样本集D上的所有划分组成了dichotomy set.</p>
+<h5 id="Growth-Function"><a href="#Growth-Function" class="headerlink" title="Growth Function"></a>Growth Function</h5><p>对特定样本数N，可以有多个采样集D，每个D对应不同的dichotomy set。<br>将这些dichotomy set的最大值，定义为N的成长函数Growth Function: m(N)。<br>增长函数表示假设空间H对D中样本赋予标记的最大可能结果数。</p>
+<h5 id="Shatter"><a href="#Shatter" class="headerlink" title="Shatter"></a>Shatter</h5><p>Shatter(打散)指假设空间H能够实现D中全部示例的对分，即增长函数=$2^N$<br>另一种定义：对于一个假设空间H，如果存在m个数据样本能够被假设空间H中的函数按所有可能的$2^h$种形式分开，则称假设空间H能够把m个数据样本打散。</p>
+<h5 id="Break-Point"><a href="#Break-Point" class="headerlink" title="Break Point"></a>Break Point</h5><p>使Growth Function &lt; $2^H$成立的N的最小值。<br>若k是Break Point，那么k+1, k+2, …对应的Growth Function都会小于$2^N$</p>
+<h5 id="VC-Bound"><a href="#VC-Bound" class="headerlink" title="VC Bound"></a>VC Bound</h5><p>将成长函数的上界，记为B(N,k)，意为：maximum possible m_H(N) when break point = k.</p>
+<ul>
+<li>B(2,2) = 3</li>
+<li>B(3,2) = 4</li>
+<li>B(N,1) = 1</li>
+<li>B(N,k) = $2^N$ for N&lt;k; $2^N-1$ for N=k</li>
+</ul>
+<p>最后利用数学归纳法，可以证明得到下面的bounding function(N&gt;k)<br>$$ m_H(N) \leq \sum_{i=0}^{k-1} \binom{N}{i} $$</p>
+<p><img src="/img/vc_bound.png"><br>如果假设空间存在有限的break point，那么$m_H(2N)$会被最高幂次为k-1的多项式上界给约束住。<br>随着N的逐渐增大，指数式的下降会比多项式的增长更快，所以此时VCBound是有限的。<br>更深的意义在于，N足够大时，对H中的任意一个假设h，$E_{in}(h)$都将接近于$E_{out}(h)$，这表示机器学习可行的第一个条件是有可能成立的。</p>
+<h5 id="Vapink-Chervonenkis-Dimension"><a href="#Vapink-Chervonenkis-Dimension" class="headerlink" title="Vapink-Chervonenkis Dimension"></a>Vapink-Chervonenkis Dimension</h5><p>假设空间H的VC维是能被H打散的最大的样本集的大小，记做$d_{vc}(H)$。<br>若对任意数目的数据样本都有函数能将它们shatter，则假设空间的VC维为无穷大。<br>VC维的大小只与模型和假设空间有关，反应了假设空间H的强大程度(powerfulness)。VC维越大，H越强，能打散更多的点。</p>
+<p>根据定义，可以得到一个明显的结论：<br>$$ k = d_{vc}(H) + 1$$</p>
+<p>一个实践规律：VC维与假设参数w的自由变量数目大约相等。<br>模型较复杂($d_vc$较大)时，需要更多的训练数据。实际经验里，一般$N\approx 10\times d_{vc}$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/28/TF-Variable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/28/TF-Variable/" itemprop="url">变量Variable</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T10:16:59+08:00">
+                2018-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  891
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>变量通过 tf.Variable 类进行操作，可以通过运行op改变它的值。<br>与 tf.Tensor 对象不同，tf.Variable 存在于单个 session.run 调用的上下文之外。</p>
+<h3 id="创建变量"><a href="#创建变量" class="headerlink" title="创建变量"></a>创建变量</h3><p>创建变量的最佳方式是调用 tf.get_variable 函数。<br>这个函数的本意是获取已存在的变量，因而必须指定变量名称。当变量不存在时，将会创建一个。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 提供名称和形状，默认tf.float32，初始化使用tf.glorot_uniform_initializer</span></span><br><span class="line">my_variable = tf.get_variable(<span class="string">"my_variable"</span>, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定dtype和initializer</span></span><br><span class="line">my_int_variable = tf.get_variable(<span class="string">"my_int_variable"</span>, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], dtype=tf.int32, initializer=tf.zeros_initializer)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化为Tensor的值，不能指定形状</span></span><br><span class="line">my_ten_variable = tf.get_variable(<span class="string">"other_var"</span>, dtype=tf.int32, initializer=tf.constant([<span class="number">23</span>,<span class="number">42</span>]))</span><br></pre></td></tr></table></figure></p>
+<h3 id="变量集合"><a href="#变量集合" class="headerlink" title="变量集合"></a>变量集合</h3><p>默认情况下，每个 tf.Variable 都放置在以下两个集合中：</p>
+<ul>
+<li>tf.GraphKeys.GLOBAL_VARIABLES：可在多个设备间共享</li>
+<li>tf.GraphKeys.TRAINABLE_VARIABLES：将计算梯度并迭代更新</li>
+</ul>
+<p>如果不希望变量被训练，可以将其添加到 tf.GraphKeys.LOCAL_VARIABLES 集合中：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 直接添加</span></span><br><span class="line">my_local = tf.get_variable(<span class="string">"local"</span>, shape=(), collections=[tf.GraphKeys.LOCAL_VARIABLES])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定不可训练</span></span><br><span class="line">my_nontrainable = tf.get_variable(<span class="string">"nontrainable"</span>, shape=(), trainable=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加变量到指定的集合中</span></span><br><span class="line">tf.add_to_collection(<span class="string">"my_collection"</span>, my_local)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取集合内的所有对象</span></span><br><span class="line">tf.get_collection(<span class="string">"my_collection"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>自定义的集合不需要显式创建，直接用在add_to_collection()方法中即可。</p>
+<h3 id="变量初始化"><a href="#变量初始化" class="headerlink" title="变量初始化"></a>变量初始化</h3><p>变量在使用前必须初始化。<br>高级框架如 tf.estimator.Estimator, tf.contrib.slim, Keras 等在训练前会自动初始化变量；而使用低级别API编程时需要手动初始化变量。</p>
+<p>要在训练前一次性初始化所有可训练变量，使用 tf.global_variable_initializer()。该函数会返回一个op，负责初始化 tf.GraphKeys.GLOBAL_VARIABLES 集合中的所有变量。运行这个op就会将集合里的所有变量初始化。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 全部初始化</span></span><br><span class="line">session.run(tf.global_variables_initializer())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 单个变量初始化</span></span><br><span class="line">session.run(my_variable.initializer)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询哪些变量尚未初始化</span></span><br><span class="line">print(session.run(tf.report_uninitialized_variables()))</span><br></pre></td></tr></table></figure></p>
+<p>注意：tf.global_variable_initializer 并不会指定变量的初始化顺序。如果某个变量的初始值取决于另一变量，那么初始化时很有可能出现错误。<br>解决方法：在变量未完全初始化的上下文中使用某个变量的值时，用 variable.initialized_value() 替代 variable .</p>
+<h3 id="使用变量"><a href="#使用变量" class="headerlink" title="使用变量"></a>使用变量</h3><p>要在计算图中使用 tf.Variable 的值，只需将其视为普通的 tf.Tensor。<br>要为变量赋值，可以使用 assign, assgin_add 以及 tf.Variable 类中的友元。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用变量</span></span><br><span class="line">v = tf.get_variable(<span class="string">"v"</span>, shape=(), initializer=tf.zeros.initializer())</span><br><span class="line">w = v + <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 变量赋值</span></span><br><span class="line">assignment = v.assign_add(<span class="number">1</span>)</span><br><span class="line">sess.run(assignment)</span><br></pre></td></tr></table></figure>
+<h3 id="共享变量"><a href="#共享变量" class="headerlink" title="共享变量"></a>共享变量</h3><p>TensorFlow 支持两种共享变量的方法：</p>
+<ul>
+<li>显式传递 tf.Variable 对象</li>
+<li>在 tf.variable_scope 对象内隐式包装 tf.Variable 对象</li>
+</ul>
+<p>在真实模型中，每个层被多次创建时，重名的变量必须指明是要创建新变量，还是沿用已有的变量。<br>创建新变量：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">con_relu</span><span class="params">(input, kernel_shape, bias_shape)</span>:</span></span><br><span class="line">	weights = tf.get_variable(<span class="string">"weights"</span>, kernel_shape, initializer=tf.random_normal_initializer()</span><br><span class="line">	biases = tf.get_variable(<span class="string">"biases"</span>, bias_shape, initializer=tf.constant_initializer(<span class="number">0</span>))</span><br><span class="line">	conv = tf.nn.conv2d(input, weights, strides=[<span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line">	<span class="keyword">return</span> tf.nn.relu(conv+biases)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_image_filter</span><span class="params">(input_images)</span>:</span></span><br><span class="line">	<span class="keyword">with</span> tf.variable_scope(<span class="string">"conv1"</span>):</span><br><span class="line">		relu1 = conv_relu(input_images, [<span class="number">5</span>,<span class="number">5</span>,<span class="number">32</span>,<span class="number">32</span>], [<span class="number">32</span>])</span><br><span class="line">	<span class="keyword">with</span> tf.variable_scope(<span class="string">"conv2"</span>):</span><br><span class="line">		relu2 = conv_relu(input_iamges, [<span class="number">5</span>,<span class="number">5</span>,<span class="number">32</span>,<span class="number">32</span>], [<span class="number">32</span>])</span><br></pre></td></tr></table></figure></p>
+<p>共享变量(沿用已有的)：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 调用 scope.reuse_variables() 以触发重用</span></span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(<span class="string">"model"</span>) <span class="keyword">as</span> scope:</span><br><span class="line">	output1 = my_image_filter(input1)</span><br><span class="line">	scope.reuse_variables()</span><br><span class="line">	output2 = my_image_filter(input2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用相同名称的作用域</span></span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(<span class="string">"model"</span>):</span><br><span class="line">	output1 = my_image_filter(input1)</span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(<span class="string">"model"</span>, reuse=<span class="keyword">True</span>):</span><br><span class="line">	output2 = my_image_filter(input2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接写名称是危险的，因此也可以根据另一作用域初始化</span></span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(<span class="string">"model"</span>) <span class="keyword">as</span> scope:</span><br><span class="line">	output1 = my_image_filter(input1)</span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(scope, reuse=<span class="keyword">True</span>):</span><br><span class="line">	output2 = my_image_filter(input2)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/28/ML-HoeffdingInequality/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/28/ML-HoeffdingInequality/" itemprop="url">霍夫丁不等式与机器学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T08:29:40+08:00">
+                2018-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  820
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="霍夫丁不等式"><a href="#霍夫丁不等式" class="headerlink" title="霍夫丁不等式"></a>霍夫丁不等式</h3><p>概率论中的霍夫丁不等式(Hoeffding’s Inequality)用来衡量抽样与整体的分布偏差：<br>$$ P[\left| v-\mu \right| &gt; \epsilon] \leq 2 e^{-2N\epsilon^2}$$<br>若抽样样本数N足够大，抽样分布v就很可能接近整体分布$\mu$</p>
+<h3 id="固定假设h-x"><a href="#固定假设h-x" class="headerlink" title="固定假设h(x)"></a>固定假设h(x)</h3><p>引入到机器学习领域，固定假设$h(x)$，将待抽样的小球定义为：</p>
+<ul>
+<li>橙色：若$h(x) \neq f(x)$</li>
+<li>绿色：若$h(x) = f(x)$</li>
+</ul>
+<p>那么每个训练集$D$可以看做是一次抽样，$E_{in}$是训练集的误差，$E_{out}$是整体误差。<br>根据霍夫丁不等式，如果抽样样本数N足够大，那么$E_{in}$背离$E_{out}$的几率就很小。<br>$$ P[\left| E_{in}(h) - E_{out}(h) \right| &gt; \epsilon] \leq 2 e^{-2N\epsilon^2}$$</p>
+<h3 id="真实的机器学习"><a href="#真实的机器学习" class="headerlink" title="真实的机器学习"></a>真实的机器学习</h3><p>在真实的机器学习问题中，$h(x)$不是固定的，而是由算法A选择的。<br>虽然单个$h(x)$的$E_{in}$和$E_{out}$不容易背离，但是算法A要检验多个$h(x)$，那么算法A就可能会遇到$E_{in}$和$E_{out}$背离的情况。<br>这种使$h(x)$的$E_{in}$和$E_{out}$背离的抽样集D称作 <strong>BAD Sample</strong>。</p>
+<p><img src="/img/BadExample.png"><br>表中$D_{1126}$ 这样的抽样集作为训练数据是比较优质的。<br>如果抽样集D对某个$h(x)$来说是Bad Sample，那么D对整个假设空间H来说也是Bad Sample。因为算法A使用抽样集D作为训练数据，来对假设空间H筛选时，不能找到最优的$h(x)$.<br>给定抽样集D，它是假设空间H的Bad Sample的概率为：<br>$$ \begin{split}<br>P_D[Bad\; D]&amp;= P_D[Bad\; D for\; h_1\; or\; h_2\; or\;…\;or\; h_M] \\<br>&amp;\leq P_D[Bad\; D\; for\; h_1] + P_D[Bad\; D\; for\; h_2] +…+ P_D[Bad\; D\; for\; h_M] \\<br>&amp;\leq 2e^{-2N\epsilon^2} + 2e^{-2N\epsilon^2} +…+ 2e^{-2N\epsilon^2} \\<br>&amp;\leq 2Me^{-2N\epsilon^2}<br>\end{split} $$</p>
+<p>也就是说，假设空间H中备选假设的数量M越少，样本数据量N越大，那么抽样集D成为坏样本的概率就越小。<br>在一个可接受的概率水平上，算法A只需要挑出$E_{in}$最小的那个$h(x)$作为g就可以了。<br><strong>注意</strong>：union bound提升了概率上限，事实上有很多重叠，并不是独立事件。</p>
+<h5 id="M的取值"><a href="#M的取值" class="headerlink" title="M的取值"></a>M的取值</h5><p>假设空间H里的备选假设数量M，会在两方面影响机器学习：</p>
+<ul>
+<li>能否确保训练样本和测试样本的错误率足够接近：由上文公式推断</li>
+<li>能否使训练样本上的错误率足够小：g要接近f</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align:left">M太小</th>
+<th style="text-align:left">M太大</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$E_{in}$接近$E_{out}$</td>
+<td style="text-align:left">能，BAD概率较小</td>
+<td style="text-align:left">不能，BAD概率较大</td>
+</tr>
+<tr>
+<td>$E_{in}足够小$</td>
+<td style="text-align:left">不能，选择太少</td>
+<td style="text-align:left">能，选择足够多</td>
+</tr>
+</tbody>
+</table>
+<p>解决思路：找到一个更合理的$m_H$替代M。因为union bound提升了概率上限，使我们过高估计了BAD概率。<br>对样本数为N的训练集，我们可以将M个备选假设分为若干类，每一类里的假设$h(x)$对N个样本的分类结果都相同。<br>类别的总数记做effective(N)。可以证明$effective(N)\leq 2^N$。<br>这样就可以用effective(N)替代M，概率不等式的右侧不再是一个无上限的参数。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/27/TF-TensorBoard/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1403,494 +1892,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/21/DL-RNN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/21/DL-RNN/" itemprop="url">RNN</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-21T08:41:49+08:00">
-                2018-04-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  511
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>循环神经网络(Recurrent Neural Networks, RNN)是一种通过隐藏层节点周期性的连接，来捕捉序列化数据中动态信息的神经网络。<br><img src="/img/RNNTime.jpg"><br>经典RNN在预测&lt;t&gt;时刻的信息时，使用了前面&lt;t-k&gt;时刻的信息，没有使用后面&lt;t+k&gt;时刻的信息。<br>与之对应的变种：</p>
-<ul>
-<li>Bidirectional RNN：数据双向流动，后面的信息也参与前面信息的预测</li>
-<li>Deep RNNS：在每个时刻t，引入更多的层级。由于输入维度很大，通常不超过3层。</li>
-</ul>
-<h4 id="基本算法"><a href="#基本算法" class="headerlink" title="基本算法"></a>基本算法</h4><h6 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h6><p><img src="/img/RNN.png"><br><img src="/img/rnn_step_forward.png"></p>
-<h6 id="后向传播"><a href="#后向传播" class="headerlink" title="后向传播"></a>后向传播</h6><p><img src="/img/rnn_step_backprop.png"></p>
-<h4 id="结构类型"><a href="#结构类型" class="headerlink" title="结构类型"></a>结构类型</h4><p><img src="/img/rnn_n2n.jpeg"></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">输入输出</th>
-<th style="text-align:center">输出单值</th>
-<th style="text-align:center">输出序列</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">输入单值</td>
-<td style="text-align:center">图片分类</td>
-<td style="text-align:center">生成诗歌/语音/音乐</td>
-</tr>
-<tr>
-<td style="text-align:center">输入序列</td>
-<td style="text-align:center">根据文章判断类型/情感</td>
-<td style="text-align:center">自然语言/语音处理</td>
-</tr>
-</tbody>
-</table>
-<h4 id="长期依赖问题-Long-Term-Dependency"><a href="#长期依赖问题-Long-Term-Dependency" class="headerlink" title="长期依赖问题(Long-Term Dependency)"></a>长期依赖问题(Long-Term Dependency)</h4><p>描述：&lt;t&gt;时刻的预测，需要前面&lt;t-N&gt;时刻的信息参照，其中N是很大的数。<br>比如语言模型中，主语后面接了一个很长的定语从句，然后出现了谓词，要根据主语判断谓词的单复数。<br>解决方法：网络中引入memory cell($c^{&lt;t&gt;}$)，将&lt;t&gt;时刻的特定信息保存下来。</p>
-<h6 id="1-LSTM"><a href="#1-LSTM" class="headerlink" title="1. LSTM"></a>1. LSTM</h6><p><img src="/img/LSTM.png"></p>
-<ul>
-<li>$c^{t}$: 当前时刻的记忆内容</li>
-<li>$\tilde{c}^{&lt;t&gt;}$: 当前时刻的备胎(由输入得到)，需进一步计算决定是否更新记忆</li>
-<li>$a^{t}$: 当前时刻的输出，进入下一时刻的Cell，或者变换后作为输出$y^{&lt;t&gt;}$</li>
-<li>$\Gamma_f^{&lt;t&gt;}$: Forget gate，为0时则忘记上一时刻的记忆内容$c^{&lt;t-1&gt;}$</li>
-<li>$\Gamma_u^{&lt;t&gt;}$: Update gate，为1时则使用当前时刻的候选$\tilde{c}^{&lt;t&gt;}$来更新记忆$c^{&lt;t&gt;}$</li>
-<li>$\Gamma_o^{&lt;t&gt;}$: Output gate，为1时则使用当前时刻的记忆$c^{&lt;t&gt;}$生成输出$a^{&lt;t&gt;}$</li>
-</ul>
-<h6 id="2-GRU"><a href="#2-GRU" class="headerlink" title="2. GRU"></a>2. GRU</h6><p><img src="/img/GRU.png"><br>GRU作为LSTM的一种变体，将Forget Gate和Update Gate合并到了一起。<br>有些结构还引入了Relative Gate等改动。<br>构造简单，效果出众，训练速度快，近年非常流行。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/19/DL-CNNNeuralStyle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/19/DL-CNNNeuralStyle/" itemprop="url">CNN图像风格迁移</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-19T07:38:29+08:00">
-                2018-04-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  302
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>算法</strong><br>输入两张图片，一张提供内容(C)，另一张提供风格(S)；<br>输出一张合成图片(G)，是内容C和风格S的叠加。<br>G初始为任意值，通过不断迭代G，使目标函数不断缩小。<br><img src="/img/styleTransfer.jpeg"></p>
-<p><strong>目标函数</strong><br>$$J(G) = \alpha J_{content}(C,G) + \beta J_{style}(S,G)$$</p>
-<p>$J_{content}(C,G)$：</p>
-<ol>
-<li>选择训练好的卷积网络</li>
-<li>选择网络中部的隐藏层l(太深或太浅都不行)</li>
-<li>对比两张图片的$a^{[l]}$<br>$$ J_{content}(C,G) = \frac{1}{2} \left| a^{[l]C} - a^{[l]G} \right|^2 $$</li>
-</ol>
-<p>$J_{style}(S,G)$：如何衡量”style”? </p>
-<ol>
-<li>定义style = 不同channel之间的相关性，例如{锐角，直线，圆点}经常同时出现，{钝角，波浪线}很少同时出现</li>
-<li>计算单张图片的相关性矩阵$G^{[l]}$，矩阵尺寸$n_c^{[l]} \ast n_c^{[l]}$<br>定义 $a_{i,j,k}^{[l]}$ = activation at (i,j,k);<br>那么 $G_{kk’}^{[l]} = \sum_{i=1}^{n_H^{[l]}} \sum_{j=1}^{n_w^{[l]}} a_{ijk}^{[l]} a_{ijk’}^{[l]}$</li>
-<li>损失函数定义为两张图片相关性矩阵G的差异：<br>$$ J_{style}^{[l]}(S,G) = \frac{1}{(2n_H^{[l]}n_W^{[l]}n_c^{[l]})^2}\left| G^{[l]S} - G^{[l]G} \right|^2$$<br>$$ J_{style}(S,G) = \sum_l \lambda^{[l]} J_{style}^{[l]}(S,G) $$</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/18/DL-CNNFaceRecognition/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/18/DL-CNNFaceRecognition/" itemprop="url">CNN人脸识别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-18T11:08:43+08:00">
-                2018-04-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  446
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>问题分类：</p>
-<ul>
-<li>Verification(验证)：1 to 1，给定一张人脸图片和一个身份，判断是否相符</li>
-<li>Recognition(识别)：1 to K，给定一张人脸图片，判断此人是否在数据库里；<br>由于要进行K次verification，对算法的准确性要求更高。</li>
-</ul>
-<h4 id="简单想法"><a href="#简单想法" class="headerlink" title="简单想法"></a>简单想法</h4><p>输出层采用softmax，有多少员工就对应多少分类。<br>通过训练好的网络，给定一张图片，通过输出的类别来判断是谁。<br><strong>问题</strong></p>
-<ol>
-<li>训练样本不足。不能获取员工的大量照片。</li>
-<li>输出分类固定。当员工人数变动时，需要重新训练网络。</li>
-</ol>
-<h4 id="Siamese-Network"><a href="#Siamese-Network" class="headerlink" title="Siamese Network"></a>Siamese Network</h4><p><strong>原理：相似性判别函数</strong><br>训练一个函数来判断两张图片的相似性：<br>d(img1, img2) = degree of difference between images<br>如果d(img1, img2)小于阈值，则认为两张图片是同一个人。</p>
-<p><strong>实现</strong><br>将深层网络的输出作为图片的编码，$f(x^{(i)})$<br>不同的图片需要经过同样的网络编码，使距离可比较。<br>训练网络参数，使得相同图片的编码相近，不同图片的编码相离。</p>
-<p><strong>目标函数1：Triplet Loss</strong><br>同时输入3张图片：Anchor、Positive、Negative<br>想要$d(A,P) + \alpha \leq d(A,N)$，其中$\alpha$是安全边界(margin)。<br>所以目标函数为<br>$$L(A,P,N) = max(d(A,P) - d(A,N) + \alpha, 0)$$</p>
-<p><strong>目标函数2：Logistic Loss</strong><br>输入2张图片，判断编码是否相等，相等为1，不相等为0.<br>$$\hat{y} = sigmoid(\sum_{k=1}^{128} \left | f(x^{(i)})_k - f(x^{(j)})_k \right | + b) $$</p>
-<p><strong>训练</strong><br>选择d(A,P)和d(A,N)相近的图片，加快模型学习效率。<br>即通过较难样本的学习，从而在较简单样本的测试中获得较好的性能。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1940,7 +1946,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">249</span>
+                  <span class="site-state-item-count">252</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2042,7 +2048,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">89.1k</span>
+    <span title="Site words total count">91.5k</span>
   
 </div>
 
