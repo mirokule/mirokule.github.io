@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Deep Learning,Keras," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="初始化方法定义了对Keras层设置初始化权重的方法。不同的层可能使用不同的关键字，一般是 kernel_initializer 和 bias_initializer.# 使用字符串指定model.add(Dense(64, kernel_initializer=&apos;random_normal&apos;, bias_initializer=&apos;zero&apos;))# 使用函数指定from keras import i">
+<meta name="keywords" content="Deep Learning,Keras">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keras初始化方法Initializer">
+<meta property="og:url" content="http://mirokule.github.io/2018/05/02/Keras-Initializer/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="初始化方法定义了对Keras层设置初始化权重的方法。不同的层可能使用不同的关键字，一般是 kernel_initializer 和 bias_initializer.# 使用字符串指定model.add(Dense(64, kernel_initializer=&apos;random_normal&apos;, bias_initializer=&apos;zero&apos;))# 使用函数指定from keras import i">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-02T07:30:35.866Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Keras初始化方法Initializer">
+<meta name="twitter:description" content="初始化方法定义了对Keras层设置初始化权重的方法。不同的层可能使用不同的关键字，一般是 kernel_initializer 和 bias_initializer.# 使用字符串指定model.add(Dense(64, kernel_initializer=&apos;random_normal&apos;, bias_initializer=&apos;zero&apos;))# 使用函数指定from keras import i">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2018/05/02/Keras-Initializer/"/>
+
+
+
+
+
+  <title>Keras初始化方法Initializer | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/02/Keras-Initializer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Keras初始化方法Initializer</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T14:21:55+08:00">
+                2018-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  603
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>初始化方法定义了对Keras层设置初始化权重的方法。<br>不同的层可能使用不同的关键字，一般是 kernel_initializer 和 bias_initializer.<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用字符串指定</span></span><br><span class="line">model.add(Dense(<span class="number">64</span>, kernel_initializer=<span class="string">'random_normal'</span>, bias_initializer=<span class="string">'zero'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用函数指定</span></span><br><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> initializers</span><br><span class="line">model.add(Dense(<span class="number">64</span>, kernel_initializer=initializers.random_normal(stddev=<span class="number">0.01</span>)))</span><br></pre></td></tr></table></figure></p>
+<h4 id="Initializer"><a href="#Initializer" class="headerlink" title="Initializer"></a>Initializer</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.initializers.Initializer()</span><br></pre></td></tr></table></figure>
+<p>Initializer的基类，不能直接使用，所有的Initializer均继承该类。</p>
+<h4 id="Zeros-Ones-Constant"><a href="#Zeros-Ones-Constant" class="headerlink" title="Zeros, Ones, Constant"></a>Zeros, Ones, Constant</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 0</span></span><br><span class="line">keras.initializers.Zeros()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1</span></span><br><span class="line">keras.initializers.Ones()</span><br><span class="line"></span><br><span class="line"><span class="comment"># constant</span></span><br><span class="line">keras.initializers.Constant(value=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>初始化为指定的固定值0, 1 或者 value</p>
+<h4 id="Identity-Orthogonal"><a href="#Identity-Orthogonal" class="headerlink" title="Identity, Orthogonal"></a>Identity, Orthogonal</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.initializers.Identity(gain=<span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line">keras.initializers.Orthogonal(gain=<span class="number">1.0</span>, seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>Identity：使用单位矩阵初始化，仅适用2D方阵。gain是单位矩阵的Multiplicative Factor<br>Orthogonal：使用正交矩阵初始化。</p>
+<h4 id="RandomNormal-RandomUniform"><a href="#RandomNormal-RandomUniform" class="headerlink" title="RandomNormal, RandomUniform"></a>RandomNormal, RandomUniform</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.initializers.RandomNormal(mean=<span class="number">0.0</span>, stddev=<span class="number">0.05</span>, seed=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">keras.initializers.RandomUniform(minval=<span class="number">-0.05</span>, maxval=<span class="number">0.05</span>, seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>Random Normal: 正态分布初始化，参数(均值，标准差，随机种子)<br>Random Uniform: 均匀分布初始化，参数(下界，上界，随机种子)</p>
+<h4 id="TruncatedNormal"><a href="#TruncatedNormal" class="headerlink" title="TruncatedNormal"></a>TruncatedNormal</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.initializers.TruncatedNormal(mean=<span class="number">0.0</span>, stddev=<span class="number">0.05</span>, seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>Truncated(截尾) Normal的不同之处在于，与均值相差2个标准差以上的点会被舍弃。<br>推荐神经网络的权重使用。</p>
+<h4 id="VarianceScaling"><a href="#VarianceScaling" class="headerlink" title="VarianceScaling"></a>VarianceScaling</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.initializers.VarianceScaling(scale=<span class="number">1.0</span>, mode=<span class="string">'fan_in'</span>, distribution=<span class="string">'normal'</span>, seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>该初始方法能够自适应目标张量的shape。</p>
+<ul>
+<li>distribution=’normal’: Truncated normal, mean=0, std=$\sqrt{\frac{scale}{n}}$</li>
+<li>distribution=’uniform’: [-limit, limit]的均匀分布，其中$limit=\sqrt{\frac{3\times scale}{n}}$</li>
+</ul>
+<p>其中，n从mode选择的’fan_in’, ‘fan_out’, ‘fan_avg’中选取；scale是缩放因子。</p>
+<h4 id="lecun-normal-lecun-uniform"><a href="#lecun-normal-lecun-uniform" class="headerlink" title="lecun_normal, lecun_uniform"></a>lecun_normal, lecun_uniform</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">lecun_normal(seed=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">lecun_uniform(seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>LeCun normal: Truncated normal, mean=0, std=$\sqrt{\frac{1}{fan_{in}}}$<br>LeCun uniform: [-limit, limit]的均匀分布，其中$limit = \sqrt{\frac{3}{fan_{in}}}$<br>$fan_{in}$是权重tensor的输入单元数。</p>
+<h4 id="he-normal-he-uniform"><a href="#he-normal-he-uniform" class="headerlink" title="he_normal, he_uniform"></a>he_normal, he_uniform</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">he_normal(seed=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">he_uniform(seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>He normal: Truncated normal, mean=0, std=$\sqrt{\frac{2}{fan_{in}}}$<br>He uniform: [-limit, limit]的均匀分布，其中$limit = \sqrt{\frac{6}{fan_{in}}}$<br>$fan_{in}$是权重tensor的输入单元数。</p>
+<h4 id="glorot-normal-glorot-uniform"><a href="#glorot-normal-glorot-uniform" class="headerlink" title="glorot_normal, glorot_uniform"></a>glorot_normal, glorot_uniform</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">glorot_normal(seed=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">glorot_uniform(seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>又称作 Xavier Normal Initializer 和 Xavier Uniform Initializer.<br>glorot normal: Truncated normal, mean=0, std=$\sqrt{\frac{2}{fan_{in}+fan_{out}}}$<br>glorot normal: [-limit, limit]的均匀分布，其中$limit = \sqrt{\frac{6}{fan_{in}+fan_{out}}}$<br>$fan_{in}$是权重tensor的输入单元数，$fan_{out}$是输出单元数。</p>
+<h4 id="自定义初始化方法"><a href="#自定义初始化方法" class="headerlink" title="自定义初始化方法"></a>自定义初始化方法</h4><p>初始化方法必须是callable的，并且接受 shape 和 dtype 两个参数，返回符合要求的张量。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> backend <span class="keyword">as</span> K</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_init</span><span class="params">(shape, dtype=None)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> K.random_normal(shape, dtype=dtype)</span><br><span class="line"></span><br><span class="line">model.add(Dense(<span class="number">64</span>, init=my_init))</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+          
+            <a href="/tags/Keras/" rel="tag"># Keras</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/02/Keras-Metrics/" rel="next" title="Keras性能评估Metrics">
+                <i class="fa fa-chevron-left"></i> Keras性能评估Metrics
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/02/Keras-Activation/" rel="prev" title="Keras激活函数Activation">
+                Keras激活函数Activation <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">257</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Initializer"><span class="nav-number">1.</span> <span class="nav-text">Initializer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Zeros-Ones-Constant"><span class="nav-number">2.</span> <span class="nav-text">Zeros, Ones, Constant</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Identity-Orthogonal"><span class="nav-number">3.</span> <span class="nav-text">Identity, Orthogonal</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RandomNormal-RandomUniform"><span class="nav-number">4.</span> <span class="nav-text">RandomNormal, RandomUniform</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TruncatedNormal"><span class="nav-number">5.</span> <span class="nav-text">TruncatedNormal</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VarianceScaling"><span class="nav-number">6.</span> <span class="nav-text">VarianceScaling</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lecun-normal-lecun-uniform"><span class="nav-number">7.</span> <span class="nav-text">lecun_normal, lecun_uniform</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#he-normal-he-uniform"><span class="nav-number">8.</span> <span class="nav-text">he_normal, he_uniform</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#glorot-normal-glorot-uniform"><span class="nav-number">9.</span> <span class="nav-text">glorot_normal, glorot_uniform</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义初始化方法"><span class="nav-number">10.</span> <span class="nav-text">自定义初始化方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">93.4k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
