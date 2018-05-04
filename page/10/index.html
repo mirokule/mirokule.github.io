@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/20/ML-NeuralNetworks/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/27/Python-IPython/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -281,7 +281,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/20/ML-NeuralNetworks/" itemprop="url">神经网络</a></h1>
+                <a class="post-title-link" href="/2018/02/27/Python-IPython/" itemprop="url">IPython</a></h1>
         
 
         <div class="post-meta">
@@ -293,8 +293,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-20T11:39:00+08:00">
-                2018-01-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T09:39:57+08:00">
+                2018-02-27
               </time>
             
 
@@ -325,7 +325,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  611
+                  644
                 </span>
               
 
@@ -352,30 +352,971 @@
       
         
           
-            <p><img src="/img/nn.png" width="400px"></p>
-<p>$a_i^{(j)}$ = “activation” of unit $i$ in layer $j$<br>$\Theta^{(j)}$ = matrix of weights controlling function mapping from layer $j$ to layer $j+1$</p>
-<h4 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h4><p>$$ a_1^{(2)}=g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3) $$<br>$$ a_2^{(2)}=g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3) $$<br>$$ a_3^{(2)}=g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3) $$<br>如果$j$层有$s_j$个单元，$j+1$层有$s_{j+1}$个单元，那么$\Theta^{(j)}$是一个$s_{j+1}*(s_j+1)$的矩阵，“+1”是因为要引入$j$层的隐藏单元，偏差项$x_0$。定义<br>$$z_k^{(i)} = \Theta_{k,0}^{(i-1)}x_0 + \Theta_{k,1}^{(i-1)}x_1+\cdot \cdot \cdot + \Theta_{k,n}^{(1)}x_n$$<br>则算法可以简写成<br>$$ z^{(j)} = \Theta^{(j-1)}a^{(j-1)} $$<br>$$ a^{(j)} = g(z^{(j)}) $$</p>
-<p><strong>随机初始值</strong><br>开始训练前，若设定$\Theta$初始值全为0，则所有层各节点的学习结果完全相同。<br>为避免这一结果，需要将$\omega$初始化为不同的较小的值，$\b$可初始化为0.<br>若$\omega$初始值较大，则sigmoid的输入值较大，梯度较小，收敛速度慢。</p>
-<p><strong>多分类</strong><br>One-vs-all，对于K个类别，$y=[0,1,…0]^T$是$k$维向量，对应输出层$k$个单元。</p>
-<p><strong>代价函数$J(\Theta)$</strong><br>$$ J(\Theta) = -\frac{1}{m}\sum_{i=1}^m\sum_{k=1}^K\left[y_k^{(i)}log((h_{\Theta}(x^{(i)}))_k) + (1-y_k^{(i)})log(1-(h_{\Theta}(x^{(i)}))_k) \right]+\frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_l+1}(\Theta_{j,i}^{(l)})^2  $$<br>其中<br>$$ cost(t) = y_k^{(t)}log(h_{\Theta}(x^{(t)})) + (1-y^{(t)})log(1-h_{\Theta}(x^{(t)})) $$<br>$\delta_j^{(l)}$是$a_j^{(l)}$的“误差”，是$cost(t)$的偏导数：<br>$$ \delta_j^{(l)} = \frac{\partial}{\partial z_j^{(l)}}cost(t) $$</p>
-<h4 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h4><p>反向传播是为了计算偏导数$\frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta)$，从而得到$min_{\Theta}J(\Theta)$</p>
+            <p>1.表面上看，IPython就像是一个增强的交互式Python解释器，可以使用Tab键自动完成。<br>在变量的前面或后面加上一个问号(?)就可以将有关该对象的一些通用信息显示出来，使用双问号(??)还可以显示出该函数的源代码。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">b?</span><br><span class="line">add_numbers?</span><br><span class="line"></span><br><span class="line">add_numbers??</span><br></pre></td></tr></table></figure></p>
+<p>2.IPython团队还开发了一个基于Qt框架的GUI控制台，其目的是为终端应用程序提供诸如内嵌图片、多行编辑、语法高亮之类的富文本编辑功能。使用下列命令可为其添加绘图功能：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ipython qtconsole --pylab=inline</span><br></pre></td></tr></table></figure></p>
+<p>3.IPython Notebook是一个运行在命令行上的轻量级服务器进程，使用基于JSON的文档格式.ipynb，可以轻松分享代码、输出结果以及图片等内容。</p>
+<h4 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h4><ul>
+<li>Ctrl-P 后向搜索命令历史</li>
+<li>Ctrl-N 前向搜索命令历史</li>
+<li>Ctrl-Shift-V 从剪贴板粘贴文本</li>
+<li>Ctrl-C 中断当前执行的代码</li>
+<li>Ctrl-A 将光标移动到行首</li>
+<li>Ctrl-E 将光标移动到行尾</li>
+<li>Ctrl-F 将光标向前移动一个字符</li>
+<li>Ctrl-B 将光标向后移动一个字符</li>
+<li>Ctrl-K 清除从光标开始到行尾</li>
+<li>Ctrl-U 清除当前行</li>
+<li>Ctrl-L 清屏</li>
+</ul>
+<h4 id="魔术命令"><a href="#魔术命令" class="headerlink" title="魔术命令"></a>魔术命令</h4><p>魔术命令(Magic Command)是以百分号(%)为前缀的命令，为常见任务提供便利。<br>使用问号(?)同样可以查看命令选项。</p>
+<ul>
+<li>%run 可以执行一个py脚本</li>
+<li>%time 执行一条语句，报告执行时间</li>
+<li>%timeit 多次执行同一语句，报告执行时间</li>
+<li>%debug 进入调试器</li>
+<li>%pdb 在异常发生后自动进入调试器</li>
+<li>%paste 执行剪贴板中的代码</li>
+<li>%cpaste 打开一个特殊提示符以便手工粘贴待执行的Python代码</li>
+<li>%hist 打印命令的输入历史</li>
+<li>%who、%whos、%who_ls 显示命名空间中定义的变量</li>
+<li>%reset 删除命名空间中的全部变量</li>
+<li>%quickref 显示IPython的快速参考</li>
+<li>%magic 显示所有魔术命令的详细文档</li>
+</ul>
+<p>IPython的另一个重要特点是跟操作系统shell结合得非常紧密，可以在IPython中直接使用Linux系统命令，而不用像Python那样import os。调用shell命令的魔术命令：</p>
+<ul>
+<li>%pwd 返回当前工作目录</li>
+<li>%cd directory 更改当前工作目录</li>
+<li>%pushd directory 将当前目录入栈，并转向目标目录</li>
+<li>%popd 弹出栈顶目录，并转向该目录</li>
+<li>%alias alias_name cmd 为系统shell命令定义别名</li>
+<li>!cmd 在系统shell中执行cmd</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/06/Python-pandas-Map/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/06/Python-pandas-Map/" itemprop="url">Map, Apply</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T14:23:43+08:00">
+                2018-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  473
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Series-Map"><a href="#Series-Map" class="headerlink" title="Series.Map"></a>Series.Map</h4><p>Series.map(arg, na_action=None)<br>Map是Series特有的方法，DataFrame中没有。<br>不在字典里的值将被转成NaN，或者_missing_中预设的值。</p>
+<p>参数</p>
+<ul>
+<li>arg: function, dict, or Series</li>
+<li>na_action: {None, ‘ignore’}，转换时是否忽略NA</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>y: Series</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], index=[<span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>]</span><br><span class="line">y = pd.Series([<span class="string">'foo'</span>,<span class="string">'bar'</span>,<span class="string">'baz'</span>], index=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">z = &#123;<span class="number">1</span>:<span class="string">'A'</span>, <span class="number">2</span>:<span class="string">'B'</span>, <span class="number">3</span>:<span class="string">'C'</span>&#125;</span><br><span class="line"></span><br><span class="line">x.map(y)</span><br><span class="line">x.map(z)</span><br><span class="line"></span><br><span class="line">s = pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,np.nan])</span><br><span class="line">s2 = s.map(<span class="string">'print: &#123;&#125;'</span>.format, na_action=<span class="string">'ignore'</span>) <span class="comment">#nan将不会被转换</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Series-apply"><a href="#Series-apply" class="headerlink" title="Series.apply"></a>Series.apply</h4><p>Series.apply(func, convert_dtype=True, args=(), **kwds)<br>在Series上应用函数，可以是NumPy ufunc(作用于整列)，也可以是Python function(作用于元素)。</p>
+<p>参数</p>
+<ul>
+<li>function: function</li>
+<li>convert_dtype: 默认True，寻找更好的dtype；若为False则dtype=object</li>
+<li>args: 传递给function的其他参数</li>
+<li>kwds: keyword参数</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>y</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 无参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">square</span><span class="params">(x)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> x**<span class="number">2</span></span><br><span class="line">series.apply(square)</span><br><span class="line">series.apply(<span class="keyword">lambda</span> x: x**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 有参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">subtract</span><span class="params">(x, custom_value)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> x - custom_value</span><br><span class="line">series.apply(subtract, args=(<span class="number">5</span>,))</span><br><span class="line"></span><br><span class="line"><span class="comment"># numpy ufunc</span></span><br><span class="line">series.apply(np.log)</span><br></pre></td></tr></table></figure></p>
+<h4 id="DataFrame-apply"><a href="#DataFrame-apply" class="headerlink" title="DataFrame.apply"></a>DataFrame.apply</h4><p>DataFrame.apply(func, axis=0, broadcast=False, raw=False, reduce=None, args=(), **kwds)<br>作用于行列</p>
+<p>参数</p>
+<ul>
+<li>func: function</li>
+<li>axis: 默认0，作用于每列；若为1则作用于每行</li>
+<li>broadcast: 默认False</li>
+<li>raw: 默认False，将每行列转为Series; 若为True则接受ndarray作为输入</li>
+<li>reduce</li>
+<li>args</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>applied</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.apply(np.sqrt)</span><br><span class="line">df.apply(np.sum, axis=<span class="number">0</span>)</span><br><span class="line">df.apply(np.sum, axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="DataFrame-applymap"><a href="#DataFrame-applymap" class="headerlink" title="DataFrame.applymap"></a>DataFrame.applymap</h4><p>DataFrame.applymap(func)<br>为每个元素传递函数变换，像作用于Series的Map函数一样。</p>
+<p>参数</p>
+<ul>
+<li>func: function</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>applied: DataFrame</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df = pd.DataFrame(np.random.randn(<span class="number">3</span>,<span class="number">3</span>))</span><br><span class="line">df = df.applymap(<span class="keyword">lambda</span> x: <span class="string">'%.2f'</span> % x) <span class="comment">#取小数点后两位</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="数据转换"><a href="#数据转换" class="headerlink" title="数据转换"></a>数据转换</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将数据映射为其他值</span></span><br><span class="line">data[<span class="string">'food'</span>].map(str.lower).map(meat_to_animal)</span><br><span class="line">data[<span class="string">'food'</span>].map(<span class="keyword">lambda</span> x: meat_to_animal[x.lower()])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将轴标签映射为其他值</span></span><br><span class="line">data.index.map(str.upper)</span><br><span class="line">data.rename(index=&#123;<span class="string">'oldName'</span>:<span class="string">'newName'</span>&#125;, inplace=<span class="keyword">True</span>) <span class="comment">#就地生效</span></span><br><span class="line">data.rename(index=&#123;<span class="string">'o'</span>:<span class="string">'n'</span>&#125;,columns=&#123;<span class="string">'oo'</span>:<span class="string">'nn'</span>&#125;) <span class="comment">#复制数据并修改行列索引</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换值</span></span><br><span class="line">data.replace(<span class="number">-999</span>, np.nan)</span><br><span class="line">data.replace([<span class="number">-999</span>,<span class="number">-1000</span>], np.nan)</span><br><span class="line">data.replace([<span class="number">-999</span>,<span class="number">-1000</span>], [np.nan, <span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/06/Python-pandas-ConcatMerge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/06/Python-pandas-ConcatMerge/" itemprop="url">Pandas数据合并</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T13:42:28+08:00">
+                2018-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  345
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>数据对象可以通过几种不同的方式合并：</p>
+<ul>
+<li>pd.merge: join</li>
+<li>pd.concat: concatenation, binding, stacking</li>
+<li>pd.combine_first: 补充</li>
+</ul>
+<h4 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h4><p>数据库风格的合并，将两张表按某些相同值连接。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列-列连接，索引会被丢弃</span></span><br><span class="line">pd.merge(df1, df2, on=<span class="string">'key'</span>)</span><br><span class="line">pd.merge(df1, df2, left_on=<span class="string">'key1'</span>, right_on=<span class="string">'key2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># merge默认inner join</span></span><br><span class="line">pd.merge(df1, df2, how=<span class="string">'outer'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># suffixes用于指定附加到重复列名上的字符串</span></span><br><span class="line">pd.merge(left, right, on=<span class="string">'key1'</span>, suffixes=(<span class="string">'_left'</span>,<span class="string">'_right'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将索引用作连接键</span></span><br><span class="line">pd.merge(left, right, left_on=<span class="string">'key'</span>, right_index=<span class="keyword">True</span>)</span><br><span class="line">left.join(right, how=<span class="string">'outer'</span>)<span class="comment">#按索引合并，默认左连接</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="concat"><a href="#concat" class="headerlink" title="concat"></a>concat</h4><p>Numpy中有一个用于合并原始Numpy数组的concatenation函数：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.concatenate([arr,arr], axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
+<p>Pandas中的concat可以将值和索引粘合在一起：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.concat([s1, s2, s3]) <span class="comment">#将Series数据堆叠在一起</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定轴向堆叠，得到DataFrame</span></span><br><span class="line">pd.concat([s1, s2, s3], axis=<span class="number">1</span>) </span><br><span class="line">pd.concat([s1, s4], axis=<span class="number">1</span>, join=<span class="string">'inner'</span>) <span class="comment">#内连接，得到交集</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定索引</span></span><br><span class="line">pd.concat([s1, s4], axis=<span class="number">1</span>, join_axes=[[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>]])</span><br><span class="line">pd.concat([s1, s2], keys=[<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 堆积之后index可能重复，需要重置</span></span><br><span class="line">df.index.duplicated().sum()</span><br><span class="line">df.reset_index(drop=<span class="keyword">True</span>, inplace=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="combine-first"><a href="#combine-first" class="headerlink" title="combine_first"></a>combine_first</h4><p>索引全部或部分重叠的两个数据集，用B数据集为A数据集里的缺失数据“打补丁”。<br>在Numpy中，可以使用where函数<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.where(pd.isnull(a), b, a)</span><br></pre></td></tr></table></figure></p>
+<p>在pandas中，combine_first函数实现的是同样的方法，而且会数据对齐：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df1.combine_first(df2)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/02/Python-Functions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/02/Python-Functions/" itemprop="url">Python函数和类</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T09:42:49+08:00">
+                2018-02-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  66
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_numbers</span><span class="params">(x,y,z=None)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> z==<span class="keyword">None</span>:</span><br><span class="line">		<span class="keyword">return</span> x+y</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> x+y+z</span><br><span class="line"></span><br><span class="line"><span class="comment"># Lambda函数</span></span><br><span class="line">my_function = <span class="keyword">lambda</span> a,b,c : a+b</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列表推导式</span></span><br><span class="line">my_list = [number <span class="keyword">for</span> number <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">1000</span>) <span class="keyword">if</span> number % <span class="number">2</span> == <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">	department = <span class="string">"Computer Science"</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">set_name</span><span class="params">(self, new_name)</span>:</span></span><br><span class="line">		self.name = new_name</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">set_location</span><span class="params">(self, new_location)</span>:</span></span><br><span class="line">		self.location = new_location</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/02/Python-DataStructure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/02/Python-DataStructure/" itemprop="url">Python数据结构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T09:33:18+08:00">
+                2018-02-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  366
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="元组-Tuple"><a href="#元组-Tuple" class="headerlink" title="元组(Tuple)"></a>元组(Tuple)</h4><p>一维，定长，不可修改，用<strong>()</strong>标识。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 直接生成或用tuple()函数构造</span></span><br><span class="line">tup = <span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span></span><br><span class="line">tup = (<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>),<span class="number">7</span>,(<span class="number">8</span>,<span class="number">9</span>)</span><br><span class="line">tup = tuple([<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>])</span><br><span class="line">tup = tuple(<span class="string">'string'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 扩展</span></span><br><span class="line">tup = (<span class="number">4</span>, <span class="keyword">None</span>, <span class="string">'foo'</span>) + (<span class="number">2</span>,(<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">tup = (<span class="number">1</span>,<span class="number">2</span>) * <span class="number">3</span> <span class="comment">#tup=(1,2,1,2,1,2)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问</span></span><br><span class="line">tup[<span class="number">0</span>]</span><br><span class="line">a,b,(c,d) = tup <span class="comment">#拆包</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="列表-List"><a href="#列表-List" class="headerlink" title="列表(List)"></a>列表(List)</h4><p>一维，变长，可修改，用<strong>[]</strong>标识。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 直接生成或用list()函数构造</span></span><br><span class="line">lis = [<span class="number">2</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="keyword">None</span>]</span><br><span class="line">lis = list(tup)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加合并</span></span><br><span class="line">lis.insert(<span class="string">'body'</span>)</span><br><span class="line">lis.append(<span class="string">'tail'</span>)</span><br><span class="line">lis.extend([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])</span><br><span class="line">lis = [<span class="number">4</span>,<span class="keyword">None</span>,<span class="string">'go'</span>] + [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">zip(lis1, lis2) <span class="comment">#将元素配对，生成新的元组列表</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除</span></span><br><span class="line">lis.pop(<span class="number">2</span>) <span class="comment">#删除并返回指定位置的元素</span></span><br><span class="line">lis.remove(<span class="string">'foo'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 排序</span></span><br><span class="line">lis.sort()</span><br><span class="line">lis.sort(key=len) <span class="comment">#按元素长度排序</span></span><br><span class="line">sorted(lis) <span class="comment">#返回有序</span></span><br><span class="line">reversed(lis) <span class="comment">#返回倒序</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 切片</span></span><br><span class="line">lis[<span class="number">2</span>:<span class="number">10</span>:<span class="number">2</span>] <span class="comment">#起始：终止：步长</span></span><br><span class="line">lis[<span class="number">-7</span>:<span class="number">-3</span>] <span class="comment">#负数从末尾开始索引</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 内置Enumerate</span></span><br><span class="line"><span class="keyword">for</span> i,value <span class="keyword">in</span> enumerate(lis):</span><br><span class="line">	print(i,value)</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/02/Python-DataStructure/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/28/LinearAlgebra-EigenVector/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/28/LinearAlgebra-EigenVector/" itemprop="url">特征值和特征向量</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T11:27:41+08:00">
+                2018-01-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  727
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p><strong>特征值</strong><br>若存在数$\lambda$使得$Ax=\lambda x$成立，则称$\lambda$为$A$的特征值，$x$称为对应于$\lambda$的特征向量。<br>空间理解：变换$x\mapsto Ax$没有使向量$x$改变方向。<br>$\lambda$是$A$的特征值当且仅当方程$(A-\lambda I)x=0$有非平凡解。所有解的集合是矩阵$A-\lambda I$的零空间，由零向量和所有对应于$lambda$的特征向量组成，称为$A$的对应于$\lambda$的特征空间。<br>特征空间的维数称作对应特征值$\lambda$的重数，也就是方程的根的重数。</p>
+<p><strong>特征方程</strong><br>数值方程$det(A-\lambda I)=0$称为A的特征方程；$det(A-\lambda I)$是n次多项式，称为A的特征多项式。<br>数$\lambda$是n*n矩阵A的特征值的充要条件是$\lambda$是特征方程$det(A-\lambda I)=0$的根。<br>如果考虑复根，特征方程恰好有n个根。</p>
+<p><strong>相似变换</strong><br>假如A和B是n*n矩阵，如果存在可逆矩阵P，使得$P^{-1}AP=B$，则称A相似于B，A和B是相似的，把A变成$P^{-1}AP$的变换称为相似变换。<br>相似矩阵A和B有相同的特征多项式，从而有相同的特征值。</p>
+<p><strong>对称矩阵</strong><br>满足$A^T=A$的矩阵称作对称矩阵。对称矩阵的主对角线元素是任意的，其他元素在两边成对出现。<br>对称矩阵是正交可对角化的充分必要条件。</p>
+<p><strong>二次型</strong><br>$\mathbb{R}^n$上的二次型是一个定义在$\mathbb{R}^n$上的函数，它在向量$x$处的值可由表达式$Q(x)=x^TAx$计算，此处A是一个n*n对称矩阵，称为关于二次型的矩阵。</p>
+<ul>
+<li>如果对所有$x\neq 0$，有$Q(x)&gt;0$，则称二次型是正定的，当且仅当A的所有特征值都是正数；</li>
+<li>如果对所有$x\neq 0$，有$Q(x)&lt;0$，则称二次型是负定的，当且仅当A的所有特征值都是负数；</li>
+<li>如果$Q(x)$既有正值又有负值，则称二次型是不定的，当且仅当A既有正特征值，又有负特征值。</li>
+</ul>
+<h4 id="定理"><a href="#定理" class="headerlink" title="定理"></a>定理</h4><ol>
+<li>三角矩阵的主对角线的元素是其特征值。</li>
+<li>对应不同特征值的特征向量线性无关。</li>
+<li>对角化定理：n*n矩阵A可对角化的充分必要条件是A有n个线性无关的特征向量。</li>
+<li>由2和3可推出：有n个相异特征值$\lambda$的n*n矩阵可对角化。</li>
+<li>n*n矩阵A的秩$r(A)=k$，则$\lambda = 0$至少为A的$n-k$重特征值；若A可相似对角化，则$\lambda = 0$恰好是A的$n-k$重特征值。</li>
+<li>如果A是对称矩阵，那么不同特征空间的任意两个特征向量是正交的。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/28/ML-CollaborativeFiltering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/28/ML-CollaborativeFiltering/" itemprop="url">协同过滤</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T10:03:22+08:00">
+                2018-01-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  416
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>用户偏好</strong><br>从用户对物品的评分中，学习用户的偏好向量，从而预测用户对新物品的评分并推荐<br>$$J(\theta) = \frac{1}{2}\sum_{j=1}^{n_u}\sum_{i:r(i,j)=1}((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})^2+\frac{\lambda}{2}\sum_{j=1}^{n_u}\sum_{k=1}^n(\theta_k^{(j)})^2 $$</p>
+<p>$x^{(i)}$ 物品i的特征向量<br>$\theta^{(j)}$ 用户j的偏好向量<br>$r(i,j)$ 用户j是否对物品i评价<br>$y^{(i,j)}$ 用户j对物品i的评分，当$r(i,j)=1$时有效</p>
+<p><strong>物品特征</strong><br>$x^{(i)}$可以由专家给出，也可以通过用户评分来自主学习<br>$$ J(x) = \frac{1}{2}\sum_{i=1}^{n_m}\sum_{j:r(i,j)=1}((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})^2+\frac{\lambda}{2}\sum_{i=1}^{n_m}\sum_{k=1}^n(x_k^{(i)})^2 $$</p>
+<p><strong>协同过滤</strong><br>根据评分数据$y$，同时估计$\theta$和$x$<br>$$ J(x,\theta) = \frac{1}{2}\sum_{(i,j):r(i,j)=1}((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})^2 +\frac{\lambda}{2}\sum_{i=1}^{n_m}\sum_{k=1}^n(x_k^{i})^2 +\frac{\lambda}{2}\sum_{j=1}^{n_u}\sum_{k=1}^n(\theta_k^{j})^2 $$<br>算法步骤：</p>
 <ol>
-<li>给定训练集${(x^{(1),y^{(1)}})\cdot \cdot \cdot(x^{(m)},y^{(m)})}$</li>
-<li>设定初始值$\Delta_{i,j}^{(l)}:=0$ </li>
-<li>For $i=1$ to $m$<ol>
-<li>$a^{(1)} := x^{(i)}$</li>
-<li>用前向传播算法计算$a^{(l)},\;\; l=2,3…L$</li>
-<li>$\delta^{(L)} = a^{(L)} - y^(i)$</li>
-<li>计算$\delta ^{(L-1)}, \delta ^{(L-2)}…\delta ^{(2)}$<br>$$\delta ^{(l)}=((\Theta^{(l)})^T \delta ^{(l+1)}) .\ast a^{(l)} .\ast (1-a^{(l)}) = ((\Theta^{(l)})^T \delta ^{(l+1)}) .\ast g’(z^{(l)})$$</li>
-<li>更新$\Delta_{i,j}^{(l)} := \Delta_{i,j}^{(l)}+a_j^{(l)}\delta_i^{(l+1)}$</li>
+<li>初始化所有$\theta,x$为”small random values”</li>
+<li>梯度迭代求解最优化问题</li>
+<li>对用户没有标记过的物品，预测评分$\theta^Tx$</li>
 </ol>
-</li>
-<li>循环结束得到$D_{i,j}^{(l)}=\frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta)$<ol>
-<li>$D_{i,j}^{(l)} := \frac{1}{m}\Delta_{(i,j)}^{(l)}\;\;if\;\; j=0$</li>
-<li>$D_{i,j}^{(l)} := \frac{1}{m}\left(\Delta_{(i,j)}^{(l)}+\lambda\Theta_{i,j}^{(l)}\right)\;\;if\;\; j\neq0$</li>
-</ol>
-</li>
-</ol>
+<p>对没有任何标记的新用户，其偏好向量为<strong>0</strong>，对任何新物品的预测评分也为<strong>0</strong>;<br>新用户的评分应该中立，而不是厌恶，故修改评分为物品评分的均值$0+\mu_i$<br>对其他用户，也要做对应修改，故在训练模型前有必要对评分进行均值标准化处理，使评分分布从[0~5]变为[-0.25~0.25]。</p>
 
           
         
@@ -424,7 +1365,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/20/Calculus-PartialDerivatives/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/27/ML-AnomalyDetection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -443,7 +1384,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/20/Calculus-PartialDerivatives/" itemprop="url">多元微分</a></h1>
+                <a class="post-title-link" href="/2018/01/27/ML-AnomalyDetection/" itemprop="url">异常点检测</a></h1>
         
 
         <div class="post-meta">
@@ -455,8 +1396,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-20T08:07:28+08:00">
-                2018-01-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-27T14:55:32+08:00">
+                2018-01-27
               </time>
             
 
@@ -487,7 +1428,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  547
+                  238
                 </span>
               
 
@@ -514,1048 +1455,19 @@
       
         
           
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Partial-Derivative-with-Respect-to-x"><a href="#Partial-Derivative-with-Respect-to-x" class="headerlink" title="Partial Derivative with Respect to x"></a>Partial Derivative with Respect to x</h4><p>The partial derivative of $f(x,y)$ with respect to x at the point $(x_0,y_0)$ is<br>$$ \frac{\partial f}{\partial x}|_{x_0,y_0} = \lim_{h\rightarrow 0}\frac{f(x_0+h,y_0)-f(x_0,y_0)}{h} $$<br>provided the limit exists.</p>
-<h4 id="Differentiable-Function"><a href="#Differentiable-Function" class="headerlink" title="Differentiable Function"></a>Differentiable Function</h4><p>A function $z=f(x,y)$ is differentiable at $(x_0,y_0)$ if $f_x(x_0,y_0)$ and $f_y(x_0,y_0)$ exist and $\Delta z$ satisfies an equation of the form<br>$$ \Delta z = f_x(x_0,y_0)\Delta x + f_y(x_0,y_0)\Delta y + \epsilon_1\Delta x + \epsilon_2\Delta y $$<br>in which each of $\epsilon_1,\epsilon_2\rightarrow 0$ as both $\Delta x,\Delta y\rightarrow 0$. We call $f$ differentiable if it is differentiable at every point in its domain.<br>如果每个变量的偏导数存在且连续，则多元函数可微。</p>
-<h4 id="Directional-Derivative"><a href="#Directional-Derivative" class="headerlink" title="Directional Derivative"></a>Directional Derivative</h4><p>The derivative of $f$ at $P_0(x_0,y_0)$ in the direction of the unit vector $u=u_1i+u_2j$ is the number<br>$$ \left(\frac{df}{ds}\right)_{u,P_0} = \lim_{s\rightarrow 0}\frac{f(x_0+su_1,y_0+su_2)-f(x_0,y_0)}{s}$$<br>provided the limit exists.<br>$$ \left(\frac{df}{ds}\right)_{u,P_0} = (\triangledown f)_{P_0}\cdot u $$<br>方向导数等于梯度和方向的内积。</p>
-<h4 id="Gradient-Vector"><a href="#Gradient-Vector" class="headerlink" title="Gradient Vector"></a>Gradient Vector</h4><p>The gradient vector of $f(x,y)$ at a point $P_0(x_0,y_0)$ is the vector<br>$$ \triangledown f = \frac{\partial f}{\partial x}i + \frac{\partial f}{\partial y}j $$<br>obtained by evaluating the partial derivatives of $f$ at $P_0$.</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Mixed-Derivative-Theorem"><a href="#The-Mixed-Derivative-Theorem" class="headerlink" title="The Mixed Derivative Theorem"></a>The Mixed Derivative Theorem</h4><p>If $f(x,y)$ and its partial derivatives $f_x,f_y,f_{xy},f_{yx}$ are defined throughout an open region containing a point $(a,b)$ and are all continuous at $(a,b)$, then<br>$$ f_{xy}(a,b) = f_{yx}(a,b) $$</p>
-<h4 id="Chain-Rule-for-Functions-of-Two-Independent-Variables"><a href="#Chain-Rule-for-Functions-of-Two-Independent-Variables" class="headerlink" title="Chain Rule for Functions of Two Independent Variables"></a>Chain Rule for Functions of Two Independent Variables</h4><p>If $w=f(x,y)$ has continuous partial derivatives $f_x$ and $f_y$ and if $x=x(t), y=y(t)$ are differentiable functions of $t$, then the composite $w=f(x(t),y(t))$ is a differentiable function of $t$ and<br>$$ \frac{dw}{dt} = \frac{\partial f}{\partial x}\frac{dx}{dt} + \frac{\partial f}{\partial y}\frac{dy}{dt} $$</p>
-<h4 id="First-Derivative-Test-for-Local-Extreme-Values"><a href="#First-Derivative-Test-for-Local-Extreme-Values" class="headerlink" title="First Derivative Test for Local Extreme Values"></a>First Derivative Test for Local Extreme Values</h4><p>If $f(x,y)$ has a local maximum or minimum value at an interior point $(a,b)$ of its domain and if the first partial derivatives exist there, then $f_x(a,b)=0$ and $f_y(a,b)=0$.</p>
-<h4 id="Seconde-Derivative-Test-for-Local-Extreme-Values"><a href="#Seconde-Derivative-Test-for-Local-Extreme-Values" class="headerlink" title="Seconde Derivative Test for Local Extreme Values"></a>Seconde Derivative Test for Local Extreme Values</h4><p>Suppose that $f(x,y)$ and its first and second partial derivatives are continuous throughout a disk centered at $(a,b)$ and that $f_x(a,b)=f_y(a,b)=0$. Then<br>i. $f$ has a local maximum at $(a,b)$ if $f_{xx}<0,\;f_{xx}f_{yy}-f_{xy}^2>0$ at $(a,b)$.<br>ii. $f$ has a local minimum at $(a,b)$ if $f_{xx}&gt;0,\;f_{xx}f_{yy}-f_{xy}^2&gt;0$ at $(a,b)$.<br>iii. $f$ has a saddle point at $(a,b)$ if $f_{xx}f_{yy}-f_{xy}^2&lt;0$ at $(a,b)$.<br>iv. The test is inconclusive at $(a,b)$ if $f_{xx}f_{yy}-f_{xy}^2=0$ at $(a,b)$.</0,\;f_{xx}f_{yy}-f_{xy}^2></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/18/ML-Overfitting/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/18/ML-Overfitting/" itemprop="url">过拟合与欠拟合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T07:47:02+08:00">
-                2018-01-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  761
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>当模型过度追求对训练数据的拟合时，会失去对新数据的预测精度，称为过拟合(Overfitting)。<br>当模型对训练数据的拟合不足，在训练集上的误差较大时，称为欠拟合(Underfitting)。</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center"></th>
-<th style="text-align:center">测试误差小</th>
-<th style="text-align:center">测试误差大</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">训练误差小</td>
-<td style="text-align:center">完美</td>
-<td style="text-align:center">过拟合：模型学习能力过度</td>
-</tr>
-<tr>
-<td style="text-align:center">训练误差大</td>
-<td style="text-align:center">不可能</td>
-<td style="text-align:center">欠拟合：模型学习能力不足</td>
-</tr>
-</tbody>
-</table>
-<h4 id="识别"><a href="#识别" class="headerlink" title="识别"></a>识别</h4><p><img src="\img\DiagnosingJ.png"></p>
-<p>欠拟合(Underfitting): High bias(偏差), $J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等<br>过拟合(Overfitting): High variance(方差), $J_{train}(\Theta)$较小，$J_{CV}(\Theta)$很大，两者有明显差距</p>
-<p><strong>学习曲线</strong>：不同样本数量下的误差值，可以观察样本量是否足够，进而分辨Bias/Variance<br><img src="\img\highBias.png"><br>High Bias<br>低样本量时，$J_{train}(\Theta)$很小，$J_{CV}(\Theta)$很大<br>高样本量时，$J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等</p>
-<p><img src="\img\highVariance.png"><br>High Variance<br>低样本量时，$J_{train}(\Theta)$很小，$J_{CV}(\Theta)$很大<br>高样本量时，$J_{train}(\Theta)$持续增加，$J_{CV}(\Theta)$持续减少，两者仍有明显差距</p>
-<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><ul>
-<li>改变特征数<ul>
-<li>过拟合：减少特征数，手动或者通过算法选择(PCA)</li>
-<li>欠拟合：增加特征数，比如$x_i^n$</li>
-</ul>
-</li>
-<li>增加样本量<ul>
-<li>过拟合：增加样本量m可以降低$J_{CV}(\Theta)$</li>
-<li>欠拟合：无效</li>
-</ul>
-</li>
-<li>正则化(Regularization)<br>$$ J(\theta) = \frac{1}{2m} \left[\sum_{i=1}^{m}(h_\theta(x^{(i)})-y^{(i)})^2 + \lambda\sum_{j=1}^{n}\theta_j^2\right] $$<ul>
-<li>过拟合：$\lambda$过小，应增加$\lambda$</li>
-<li>欠拟合：$\lambda$过大，应减少$\lambda$</li>
-</ul>
-</li>
-</ul>
-<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
-<li>创建一系列备选的$\lambda \in \left {0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24 \right }$(k个)</li>
-<li>创建不同维度的模型(d个)</li>
-<li>对每个$\lambda$，训练每个模型的参数$\Theta$(k*d个)</li>
-<li>用每套参数$\Theta$计算误差$J_{CV}(\Theta)$(模拟$J_{test}(\Theta)$，故计算时不使用$\lambda$)(k*d个)</li>
-<li>选择$J_{CV}(\Theta)$最小的模型(1个)</li>
-<li>应用到测试集，得到$J_{test}(\Theta)$</li>
-</ol>
-<h4 id="线性回归正则化"><a href="#线性回归正则化" class="headerlink" title="线性回归正则化"></a>线性回归正则化</h4><p><strong>1.Gradient Descent</strong><br>Repeat {<br>$$ \theta_0 := \theta_0 - \alpha\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}))x_0^{(i)} $$<br>$$ \theta_j := \theta_j - \alpha\left[\left(\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}))x_j^{(i)} \right)+\frac{\lambda}{m}\theta_j \right] $$<br>}<br>其中$\theta_j$的迭代式可以写成：<br>$$ \theta_j := \theta_j(1-\alpha\frac{\lambda}{m}) -\alpha\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}))x_j^{(i)} $$<br>第一项中的 $1-\alpha\frac{\lambda}{m}$ 永远小于1，每次迭代都会减小$\theta$；<br>第二项和原来一样。</p>
-<p><strong>2.Normal Equation</strong><br>$$ \theta = (X^TX+\lambda\cdot L)^{-1}X^Ty $$<br>其中L是$a_{11}=0$的(n+1)阶单位矩阵。<br>当$m&lt;n$时，矩阵$X^TX$不可逆；但是加上$\lambda\cdot L$后，矩阵$X^TX+\lambda\cdot L$可逆。</p>
-<h4 id="Logistic回归正则化"><a href="#Logistic回归正则化" class="headerlink" title="Logistic回归正则化"></a>Logistic回归正则化</h4><p>新的代价函数<br>$$ J(\theta) = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)}log(h_{\theta}(x^{(i)}))+(1-y^{(i)})log(1-h_{\theta}(x^{(i)})) \right] +\frac{\lambda}{2m}\sum_{j=1}^{n}\theta_j^2 $$<br>注意$\sum_{j=1}^{n}\theta_j^2$从$n=1$开始，不包括$\theta_0$<br>$\theta$的迭代式和线性回归一样。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/14/Physics/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/14/Physics/" itemprop="url">基础物理学</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-14T14:34:27+08:00">
-                2018-01-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  924
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="力学"><a href="#力学" class="headerlink" title="力学"></a>力学</h2><h4 id="惯性参考系"><a href="#惯性参考系" class="headerlink" title="惯性参考系"></a>惯性参考系</h4><p>惯性参考系是牛顿定律适用的参考系</p>
-<h4 id="牛顿运动定律"><a href="#牛顿运动定律" class="headerlink" title="牛顿运动定律"></a>牛顿运动定律</h4><p>第一定律：如果没有外力作用在一个物体上，则物体的速度就不能改变。即物体不会加速。<br>第二定律：作用于物体上的合力等于物体的质量与它的加速度的乘积。<br>第三定律：两物体相互作用时，两物体对各自对方的相互作用力总是大小相等而方向相反的。</p>
-<h4 id="牛顿引力定律"><a href="#牛顿引力定律" class="headerlink" title="牛顿引力定律"></a>牛顿引力定律</h4><p>$$ F = G\frac{m_1m_2}{r^2} $$<br>引力常量 $G=6.67*10^{-11} N\cdot m^2/kg^2$</p>
-<h4 id="开普勒三大定律"><a href="#开普勒三大定律" class="headerlink" title="开普勒三大定律"></a>开普勒三大定律</h4><p>1.轨道定律：所有的行星都沿椭圆轨道运动，太阳位于椭圆的一个焦点上。<br>2.面积定律：行星到太阳的连线在相等的时间内扫过行星轨道平面的面积相等，即扫过面积A的速率$dA/dt$是常量。<br>3.周期定律：任何行星的运动周期的平方与它的轨道半长轴的立方成正比。<br>$$ T^2 = \left (\frac{4\pi^2}{GM}\right )r^3 $$</p>
-<h4 id="伯努利方程"><a href="#伯努利方程" class="headerlink" title="伯努利方程"></a>伯努利方程</h4><p>令从左端流入的流体的高度、流速及压强分别为$y_1$、$v_1$和$p_1$，而从右端流出的流体的相应的量为$y_2$、$v_2$及$p_2$。对该流体应用能量守恒原理，可以证明<br>$$ p_1 + \frac{1}{2}\rho v_1^2 + \rho gy_1 = p_2 + \frac{1}{2}\rho v_2^2 + \rho gy_2 $$<br>也可以写成<br>$$ p + \frac{1}{2}\rho v^2 + \rho gy = 常量 $$</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/14/Physics/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/13/Calculus-Sequence/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/13/Calculus-Sequence/" itemprop="url">数列和级数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-13T10:33:07+08:00">
-                2018-01-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  766
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="DEFINITIONS"><a href="#DEFINITIONS" class="headerlink" title="DEFINITIONS"></a>DEFINITIONS</h2><h4 id="Converges-Diverges-Limit"><a href="#Converges-Diverges-Limit" class="headerlink" title="Converges, Diverges, Limit"></a>Converges, Diverges, Limit</h4><p>The sequence ${a_n}$ converges to the number $L$ if to every positive number $\epsilon$ there corresponds an integer $N$ such that for all $n$,</p>
-<p>$$ n &gt; N \;\;\;\; \Rightarrow \;\;\;\; \left|a_n-L\right| &lt; \epsilon. $$</p>
-<p>L is limit of the sequence.</p>
-<p>If no such number $L$ exists, we say that ${a_n}$ diverges.</p>
-<h4 id="Deverges-to-Infinity"><a href="#Deverges-to-Infinity" class="headerlink" title="Deverges to Infinity"></a>Deverges to Infinity</h4><p>The sequence ${a_n}$ diverges to infinity if for every number $M$ there is an integer $N$ such that for all $n$ larger than $N$, $a_n &gt; M$. If this condition holds we write</p>
-<p>$$ \lim_{n\rightarrow ∞} a_n = ∞ \;\;\;\; or \;\;\;\; a_n\rightarrow ∞. $$</p>
-<h4 id="Nondecreasing-Sequence"><a href="#Nondecreasing-Sequence" class="headerlink" title="Nondecreasing Sequence"></a>Nondecreasing Sequence</h4><p>A sequence ${a_n}$ with the property that $a_n \leq a_{n+1}$ for all $n$ is called a nondecreasing sequence.</p>
-<h4 id="Power-Series"><a href="#Power-Series" class="headerlink" title="Power Series"></a>Power Series</h4><p>A power series about $x=0$ is a series of the form<br>$$ \sum_{n=0}^{∞}c_nx^n = c_0+c_1x+c_2x^2+\cdot \cdot \cdot +c_nx^n+\cdot \cdot \cdot $$<br>A power series about $x=a$ is a series of the form<br>$$ \sum_{n=0}^{∞}c_n(x-a)^n = c_0+c_1(x-a)+c_2(x-a)^2+\cdot \cdot \cdot +c_n(x-a)^n+\cdot \cdot \cdot $$</p>
-<h4 id="Tayloer-Series"><a href="#Tayloer-Series" class="headerlink" title="Tayloer Series"></a>Tayloer Series</h4><p>The Taylor series generated by $f$ at $x=a$ is<br>$$ \sum_{k=0}^{∞} \frac{f^{(k)(a)}}{k!}(x-a)^k $$</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/13/Calculus-Sequence/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/Octave/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/12/Octave/" itemprop="url">Octave常用命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T13:53:57+08:00">
-                2018-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  444
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="符号"><a href="#符号" class="headerlink" title="符号%"></a>符号%</h4><p>Octave和Matlab代码注释使用符号 <strong>%</strong></p>
-<p>数组索引从 <strong>1</strong> 开始</p>
-<h4 id="帮助"><a href="#帮助" class="headerlink" title="帮助"></a>帮助</h4><pre><code>help command // 可以查询command的详细用法
-</code></pre><h4 id="读写数据"><a href="#读写数据" class="headerlink" title="读写数据"></a>读写数据</h4><pre><code>pwd // 显示当前path
-cd NewPath // 更改路径
-
-load filename // load(&apos;filename&apos;)
-save filename v // 将变量v的数据写入文件
-who
-whos // 更多详细信息
-clear v // 删除变量
-</code></pre><h4 id="生成矩阵"><a href="#生成矩阵" class="headerlink" title="生成矩阵"></a>生成矩阵</h4><pre><code>A = [1,2;2,3;4,5]
-v = [1 2 3 4 5] // 行向量
-v = [1;2;3;4;5] // 列向量
-v = 1:0.5:5 // 按步长增加
-
-B = ones(3,3)
-B = zeros(3,3)
-B = rand(2,2) // 随机数
-B = randn(1,3) // 随机整数    
-I = eye(3) // 单位矩阵
-
-sz = size(A)
-len = length(v) // 最长的维度
-A(3,2) // 元素$A_{32}$
-A(3,:) // 第3行所有元素
-A([1 3],:) // 第1、3行的所有元素
-A(:) // 将所有元素变成一列
-A = (A, v) // 在A矩阵右侧增加一列
-v(1:10)
-</code></pre>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/12/Octave/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-NormalEquations/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/12/ML-NormalEquations/" itemprop="url">Normal Equations</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T10:56:55+08:00">
-                2018-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  462
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Normal Equations可以直接解出最小二乘法的参数估计值，不需要GDA的迭代过程。</p>
-<p>高斯曾经证明，在所有无偏的线性估计类中，最小二乘法是其中方差最小的。</p>
-<h4 id="推导"><a href="#推导" class="headerlink" title="推导"></a>推导</h4><p>线性回归模型 $X\theta=y$ 形如方程 $Ax=b$</p>
-<p>当矩阵A的 $m&gt;n$，即训练样本数m大于特征数n时，A的n个列向量无法充满整个m维空间，方程没有解。</p>
-<p>故使用最小二乘法(LSE)，使残差e最小，$Ax$尽可能逼近$b$:</p>
-<p>$$ min(H) = min(\left|\left|e\right|\right|^2) = min(\left|\left|b-Ax\right|\right|^2) $$</p>
-<p>从向量投影的角度来看，将向量b投影到A平面时，e与A平面垂直，距离最短，从而使误差最小。</p>
-<p><img src="/img/projection.png" alt="projection" width="300px"></p>
-<p>如图，$\vec{p}$ 是 $\vec{b}$ 在A平面内的投影，所以有</p>
-<p>$$ \vec{p} = x_1\vec{a_1} + x_2\vec{a_2} +…+ x_n\vec{a_n} = Ax $$</p>
-<p>$$ \vec{e} = \vec{b} - \vec{p} = b - Ax $$</p>
-<p>又因为 $\vec{e}$ 与A平面垂直，所以</p>
-<p>$$ A\times \vec{e} = 0 \;\;\;\; \Rightarrow \;\;\;\; A^T(b-Ax) = 0 $$</p>
-<p>将括号展开可以得到</p>
-<p>$$ x = (A^TA)^{-1}A^T\cdot b $$</p>
-<p>$$ p = Ax = A(A^TA)^{-1}A^T\cdot b $$</p>
-<p>其中，$P = A(A^TA)^{-1}A^T$称为投影矩阵，可以将 $\vec{b}$ 投影成 $\vec{p}$。</p>
-<p>投影矩阵P具有两个性质：</p>
-<ul>
-<li>$P^T = P$: P是对称矩阵</li>
-<li>$P^2 = P$: 二次投影仍是本身，即投影之后的投影不会改变</li>
-</ul>
-<p>另外，在线性回归模型中，$x$就是最小二乘法求出来的$\theta$，即</p>
-<p>$$ \theta = (X^TX)^{-1}X^Ty $$</p>
-<p><strong>特点</strong></p>
-<ul>
-<li>不需要选择步长$\alpha$</li>
-<li>不需要迭代</li>
-<li>需要计算矩阵$(X^TX)^{-1}$，复杂度$O(n^3)$，当n很大时计算速度慢</li>
-</ul>
-<p><strong>如果$(X^TX)$不可逆</strong>怎么办？</p>
-<ul>
-<li>可能存在冗余特征，使矩阵线性相关</li>
-<li>特征数太多，删除部分特征，或使用正则化(Regularization)</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-FeatureEngineering/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/12/ML-FeatureEngineering/" itemprop="url">特征工程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T09:39:47+08:00">
-                2018-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  540
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>对输入特征的处理可大致分为：</p>
+            <p>正例(y=1)不足，不能支持分类模型训练时，可以使用非监督学习的检测算法来识别异常点。</p>
+<p><strong>算法</strong><br>假设特征服从正态分布，并且相互独立；</p>
 <ol>
-<li>特征修补</li>
-<li>特征变换</li>
-<li>特征生成</li>
+<li>选择能有效识别异常点的特征</li>
+<li>对每个特征，求均值$\mu$和方差$\sigma^2$</li>
+<li>计算样本分布概率$p(x)$<br>$$ p(x)=\prod_{j=1}^np(x_j;\mu_j,\sigma_j^2)=\prod_{j=1}^n\frac{1}{\sqrt{2\pi}\sigma_j}exp(-\frac{(x_j-\mu_j)^2}{2\sigma^2}) $$<br>如果$p(x)&lt;\epsilon$则认为是异常点。</li>
 </ol>
-<h4 id="1-特征修补"><a href="#1-特征修补" class="headerlink" title="1.特征修补"></a>1.特征修补</h4><p>主要处理数据中的缺失和错误，包括</p>
-<ul>
-<li>重复(Duplicated)：删除重复记录</li>
-<li>异常(Outliers)：删除异常点</li>
-<li>缺失(Missing)：删除或修补缺失字段</li>
-</ul>
-<h4 id="2-特征变换"><a href="#2-特征变换" class="headerlink" title="2.特征变换"></a>2.特征变换</h4><p>处理连续数字、以数字或字符表示的类别字段等。</p>
-<h6 id="类别"><a href="#类别" class="headerlink" title="类别"></a>类别</h6><table>
-<thead>
-<tr>
-<th style="text-align:center">类别字段</th>
-<th style="text-align:center">有大小</th>
-<th style="text-align:center">无大小</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">数字类别</td>
-<td style="text-align:center">保持有序编码，LabelEncoder</td>
-<td style="text-align:center">转为字符类型，one-hot编码</td>
-</tr>
-<tr>
-<td style="text-align:center">字符类别</td>
-<td style="text-align:center">手动映射为有序数字，map</td>
-<td style="text-align:center">one-hot编码,get_dummies</td>
-</tr>
-</tbody>
-</table>
-<p>数字和字符的区别在于，数字可以比较大小，引入有序的信息，会被模型利用。<br>因而有序的字符类别(如L, XL, XXL)实际蕴含的信息是如(2,3,4)的数字;<br>无序的数字类别(如房型20,30,40)实际蕴含的信息是如(A,B,C)的字符。<br>二值(T/N)是一种特殊的类别，视为有序或无序皆可。</p>
-<p>One-hot编码对基于树的模型而言不是很好，可能会生成一棵很深的、不平衡的树才能达到较好的准确率。</p>
-<h6 id="连续数字"><a href="#连续数字" class="headerlink" title="连续数字"></a>连续数字</h6><p>检查偏度，不符合正态分布的，尽量转为正态分布(为了使残差满足正态分布?)<br>转换手段包括但不限于：</p>
-<ul>
-<li>取Log：适合正偏(右侧长尾)</li>
-<li>box-cox变换等: 要求输入为正数，不适用值较少的数字类别</li>
-</ul>
-<h3 id="3-特征生成"><a href="#3-特征生成" class="headerlink" title="3.特征生成"></a>3.特征生成</h3><p>通过特征之间的组合，得到新的特征：</p>
-<ul>
-<li>线性组合：$x_i + x_j + x_k$</li>
-<li>特征相乘：$x_i * x_j$</li>
-<li>特征乘方：$x_i^2$</li>
-</ul>
-<h4 id="Scaling-and-Normalization"><a href="#Scaling-and-Normalization" class="headerlink" title="Scaling and Normalization"></a>Scaling and Normalization</h4><p>Feature Scaling: Make sure features are on a similar scale.</p>
-<p>$$ x_i := \frac{x_i}{s_i} $$</p>
-<p>Mean Normalization: Replace $x_i$ with $x_i-\mu_i$ to make features have approximately zero means</p>
-<p>$$ x_i := \frac{x_i-\mu_i}{s_i} $$</p>
-<ul>
-<li>$\mu_i$ Average of all the values for feature(i)</li>
-<li>$s_i$ Range of values(max-min), or Standard Deviation</li>
-</ul>
-<p><strong>对结果的影响</strong></p>
-<ul>
-<li>Scaling是对X的列向量进行缩放，向量方向不变，X列向量张成的平面不变，y的投影不变，e不变，$\theta$改变</li>
-<li>Normalization改变了列向量方向，改变了平面、投影、误差？</li>
-</ul>
+<p><strong>问题</strong></p>
+<ol>
+<li>如果特征不服从正态分布怎么办？<br>对特征转化处理，例如乘方、开方、取log等，转为近似正态分布。</li>
+<li>如果特征不独立怎么办？<br>使用多元高斯分布计算$p(x)$。</li>
+<li>如果异常点的$p(x)$不显著，不能和正常点分开怎么办？<br>观察异常点，构造显著特征，例如$\frac{x_1}{x_2}$。</li>
+</ol>
 
           
         
@@ -1604,7 +1516,7 @@ v(1:10)
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/Calculus-Integration/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/24/LinearAlgebra-LinearEquations/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -1623,7 +1535,7 @@ v(1:10)
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/11/Calculus-Integration/" itemprop="url">积分</a></h1>
+                <a class="post-title-link" href="/2018/01/24/LinearAlgebra-LinearEquations/" itemprop="url">线性方程组和矩阵</a></h1>
         
 
         <div class="post-meta">
@@ -1635,8 +1547,8 @@ v(1:10)
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T12:31:44+08:00">
-                2018-01-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T13:45:51+08:00">
+                2018-01-24
               </time>
             
 
@@ -1667,7 +1579,7 @@ v(1:10)
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  489
+                  1,165
                 </span>
               
 
@@ -1693,33 +1605,31 @@ v(1:10)
 
       
         
-          
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="The-Definite-Integral-as-a-Limit-of-Riemann-Sums"><a href="#The-Definite-Integral-as-a-Limit-of-Riemann-Sums" class="headerlink" title="The Definite Integral as a Limit of Riemann Sums"></a>The Definite Integral as a Limit of Riemann Sums</h4><p>$$ \lim_{n\rightarrow ∞} \sum_{k=1}^{n}f(c_{k})\Delta x = I = \int_{a}^{b} f(x)dx $$</p>
-<h4 id="Area-Under-a-Curve-as-a-Definite-Integral"><a href="#Area-Under-a-Curve-as-a-Definite-Integral" class="headerlink" title="Area Under a Curve as a Definite Integral"></a>Area Under a Curve as a Definite Integral</h4><p>If $y=f(x)$ is nonnegative and integrable over a closed interval $[a,b]$, then the <strong>area under the curve $y = f(x)$ over $[a,b]$</strong> is the integral of $f$ from $a$ to $b$</p>
-<p>$$ A = \int_{a}^{b} f(x)dx $$</p>
-<p>if $f$ and $g$ are continuous with $f(x)\geq g(x)$ throughout $[a,b]$, then the area of the region between the curves $y=f(x)$ and $y=g(x)$ from a to b is the integral of (f-g) from $a$ to $b$:</p>
-<p>$$ A = \int_{a}^{b} [f(x) - g(x)]dx $$</p>
-<h4 id="The-Average-of-Mean-Value-of-a-Function"><a href="#The-Average-of-Mean-Value-of-a-Function" class="headerlink" title="The Average of Mean Value of a Function"></a>The Average of Mean Value of a Function</h4><p>If $f$ is integrable on $[a,b]$, the its average value on $[a,b]$, also called its mean value, is</p>
-<p>$$ av(f) = \frac{1}{b-a}\int_{a}^{b} f(x)dx $$</p>
-<h4 id="Little-oh-and-Big-oh"><a href="#Little-oh-and-Big-oh" class="headerlink" title="Little-oh and Big-oh"></a>Little-oh and Big-oh</h4><p>A function $f$ is of small order than $g$ as $x\rightarrow ∞$ if $\lim_{x\rightarrow ∞} \frac{f(x)}{g(x)} = 0$.</p>
-<p>We indicate this by writing $f=o(g)$ (“f is little-oh of g”)</p>
-<p>$f$ is of at most the order of $g$ as $x\rightarrow ∞$ if there is a positive integer $M$ for which</p>
-<p>$$ \frac{f(x)}{g(x)} \leq M $$</p>
-<p>for $x$ sufficiently large. We indicate this by writing $f=O(g)$ (“f is big-oh of g”)</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Existence-of-Definite-Integrals"><a href="#The-Existence-of-Definite-Integrals" class="headerlink" title="The Existence of Definite Integrals"></a>The Existence of Definite Integrals</h4><p>A continuous function is integrable. That is, if a function $f$ is continuous on an interval $[a,b]$, then its definite integral over $[a,b]$ exists.</p>
-<p>连续则可积，不要求可导。</p>
-<h4 id="The-Mean-Value-Theorem-for-Definite-Integrals"><a href="#The-Mean-Value-Theorem-for-Definite-Integrals" class="headerlink" title="The Mean Value Theorem for Definite Integrals"></a>The Mean Value Theorem for Definite Integrals</h4><p>If $f$ is continuous on $[a,b]$, then at some point $c$ in $[a,b]$,</p>
-<p>$$ f(c) = \frac{1}{b-a} \int_{a}^{b} f(x)dx $$</p>
-<h4 id="The-Fundamental-Theorem-of-Calculus"><a href="#The-Fundamental-Theorem-of-Calculus" class="headerlink" title="The Fundamental Theorem of Calculus"></a>The Fundamental Theorem of Calculus</h4><p>If $f$ is continuous on $[a,b]$ then $F(x) = \int_{a}^{x} f(t)dt$ is continuous on $[a,b]$ and differentiable on $(a,b)$ and its derivative is $f(x)$</p>
-<p>$$ F’(x) = \frac{d}{dx} \int_{a}^{x} f(t)dt = f(x) $$</p>
-<p>If $f$ is continuous at every point of $[a,b]$ and $F$ is any antiderivative of $f$ on [a,b], then</p>
-<p>$$ \int_{a}^{b} f(x)dx = F(b) - F(a) $$</p>
-<h4 id="The-Substitution-Rule"><a href="#The-Substitution-Rule" class="headerlink" title="The Substitution Rule"></a>The Substitution Rule</h4><p>If $u=g(x)$ is a differentiable function whose range is an interval $I$ and $f$ is continuous on $I$, then</p>
-<p>$$ \int f(g(x))g’(x)dx = \int f(u)du $$</p>
-<p>If $g’$ is continuous on the interval $[a,b]$ and $f$ is continuous on the range of $g$, then </p>
-<p>$$ \int_{a}^{b} f(g(x)) \cdot g’(x)dx = \int_{g(a)}^{g(b)} f(u)du $$</p>
-
-          
+          <h2 id="线性方程组"><a href="#线性方程组" class="headerlink" title="线性方程组"></a>线性方程组</h2><p>A <strong>linear system</strong> is a collection of one or more linear equations involving the same variables. A linear system has</p>
+<ul>
+<li>no solutions</li>
+<li>exactly one solution</li>
+<li>infinitely many solutions</li>
+</ul>
+<p>方程$Ax=b$有解当且仅当$b$是$A$的各列的线性组合。<br>每个线性方程代表高维空间的一个超平面，线性方程组的解是所有超平面的交点。<br>解方程组的基本思路是把方程组用一个更容易解的等价方程组代替。<br>若两个线性方程组的增广矩阵(augmented matrix)是行等价的，则它们具有相同的解集(solution set)。</p>
+<h4 id="阶梯形矩阵"><a href="#阶梯形矩阵" class="headerlink" title="阶梯形矩阵"></a>阶梯形矩阵</h4><p>一个矩阵称为阶梯形(echelon form)(或行阶梯形)，若它有以下三个性质：</p>
+<ul>
+<li>每一非零行在每一零行之上；</li>
+<li>某一行的先导元素(leading entry)所在的列位于前一行先导元素的右面；</li>
+<li>某一先导元素所在列下方元素都是零。<br>若一个阶梯形矩阵还满足以下性质，称为简化阶梯形(reduced echelon form)：</li>
+<li>每一非零行的先导元素是1；</li>
+<li>每一先导元素1是该元素所在列的唯一非零元素。</li>
+</ul>
+<p><strong>定理</strong><br>每个矩阵行等价于唯一的简化阶梯形矩阵。<br><strong>主元位置</strong><br>矩阵中的主元位置(pivot position)是A中对应于它的阶梯形中先导元素的位置。主元列是A的含有主元位置的列。</p>
+<h4 id="线性方程组的解"><a href="#线性方程组的解" class="headerlink" title="线性方程组的解"></a>线性方程组的解</h4><p>对应主元列的变量称为基本变量，其他变量称为自由变量。<br>齐次方程$Ax=0$有非平凡解(非零向量)，当且仅当方程至少有一个自由变量。</p>
+<h4 id="线性无关"><a href="#线性无关" class="headerlink" title="线性无关"></a>线性无关</h4><p>$\mathbb{R}^n$中一组向量{$\vec{v}_1,…\vec{v}_p$}称为线性无关的，若向量方程<br>$$ x_1\vec{v_1} + x_2\vec{v_2} +\cdot\cdot\cdot+ x_p\vec{v_p} = 0 $$<br>仅有平凡解。向量组称为线性相关的，若存在不全为零的权$c_1,…c_p$，使得<br>$$ c_1\vec{v_1} + c_2\vec{v_2} +\cdot\cdot\cdot+ c_p\vec{v_p} = 0 $$<br>矩阵A的各列线性无关，当且仅当$Ax=0$仅有平凡解。<br><strong>定理</strong><br>若一个向量组的向量个数超过每个向量元素个数，那么这个向量组线性相关。即$\mathbb{R}^n$中任意向量组{$\vec{v_1},…,\vec{v_p}$}，当$p&gt;n$时线性相关。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/24/LinearAlgebra-LinearEquations/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1766,7 +1676,7 @@ v(1:10)
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/ML-GDA/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/21/Calculus-MultipleIntegrals/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -1785,7 +1695,7 @@ v(1:10)
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/11/ML-GDA/" itemprop="url">梯度下降法</a></h1>
+                <a class="post-title-link" href="/2018/01/21/Calculus-MultipleIntegrals/" itemprop="url">多元积分</a></h1>
         
 
         <div class="post-meta">
@@ -1797,8 +1707,8 @@ v(1:10)
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T09:38:33+08:00">
-                2018-01-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-21T07:56:54+08:00">
+                2018-01-21
               </time>
             
 
@@ -1829,7 +1739,7 @@ v(1:10)
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  612
+                  215
                 </span>
               
 
@@ -1856,39 +1766,8 @@ v(1:10)
       
         
           
-            <h4 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h4><p>多元函数$f(x,y)$分别对$x,y$求偏导数，得到的向量$(\frac{\partial f}{\partial x},\frac{\partial f}{\partial y})^T$，称作梯度$grad f(x,y)$或者$\triangledown f(x,y)$。<br>梯度向量方向是函数增加最快的方向，更容易找到极大值；负梯度向量方向是函数减少最快的方向，更容易找到极小值。</p>
-<h4 id="梯度下降法-Gradient-Descent-Algorithm"><a href="#梯度下降法-Gradient-Descent-Algorithm" class="headerlink" title="梯度下降法(Gradient Descent Algorithm)"></a>梯度下降法(Gradient Descent Algorithm)</h4><p><img src="/img/GDA.png" alter="GDA"></p>
-<p>repeat until convergence {</p>
-<p>$$ \theta_{j} := \theta_{j} - \alpha \frac{\partial}{\partial\theta_{j}}J(\theta_{0}, \theta_{1}) $$</p>
-<p>(for j = 0 and j = 1)}(Batch Gradient Descent)</p>
-<p><strong>说明</strong></p>
-<ul>
-<li>$\alpha$ 学习速率(Leaning Rate)，迭代的步长，太小收敛慢，太大可能导致在最优解附近来回波动</li>
-<li>收敛到的局部最优解不一定是全局最优解，但对于最小二乘法的弓型损失函数来说唯一的局部最优解就是全局最优解</li>
-</ul>
-<h6 id="种类"><a href="#种类" class="headerlink" title="种类"></a>种类</h6><ul>
-<li>Batch Gradient Descent: 每次迭代使用全部m个样本，最优梯度方向，计算开销大，可以使用mapreduce</li>
-<li>Stochastic Gradient Descent: 每次迭代使用1个样本，随机梯度方向，适合大样本，需要将输入数据shuffle</li>
-<li>Mini-batch Gradient Descent: 每次迭代使用b个(2~100)样本</li>
-<li>Online Learning: 每次迭代使用1个样本，学习后丢弃样本，适合数据流，模型会跟随输入数据的趋势改变</li>
-</ul>
-<p><img src="/img/sgd.png"><br><img src="/img/minibatch.png"><br><strong>判断收敛</strong></p>
-<ul>
-<li>Batch: 观察$J_{train}(\theta)$, 每次跌代后是否变小</li>
-<li>Stochastic: 观察$Cost=\frac{1}{2}(h_{\theta}(x^{(i)})-y^{(i)})^2$均值，每k次迭代后是否变小</li>
-</ul>
-<h6 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h6><ol>
-<li><p>Batch Gradient Descent</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#(Batch) Gradient Descent:</span></span><br><span class="line">X = data_input</span><br><span class="line">Y = labels</span><br><span class="line">parameters = initialize_parameters(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="comment"># Forward propagation</span></span><br><span class="line">    a, caches = forward_propagation(X, parameters)</span><br><span class="line">    <span class="comment"># Compute cost.</span></span><br><span class="line">    cost = compute_cost(a, Y)</span><br><span class="line">    <span class="comment"># Backward propagation.</span></span><br><span class="line">    grads = backward_propagation(a, caches, parameters)</span><br><span class="line">    <span class="comment"># Update parameters.</span></span><br><span class="line">    parameters = update_parameters(parameters, grads)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Stochastic Gradient Descent</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Stochastic Gradient Descent:</span></span><br><span class="line">X = data_input</span><br><span class="line">Y = labels</span><br><span class="line">parameters = initialize_parameters(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, m):</span><br><span class="line">        <span class="comment"># Forward propagation</span></span><br><span class="line">        a, caches = forward_propagation(X[:,j], parameters)</span><br><span class="line">        <span class="comment"># Compute cost</span></span><br><span class="line">        cost = compute_cost(a, Y[:,j])</span><br><span class="line">        <span class="comment"># Backward propagation</span></span><br><span class="line">        grads = backward_propagation(a, caches, parameters)</span><br><span class="line">        <span class="comment"># Update parameters.</span></span><br><span class="line">        parameters = update_parameters(parameters, grads)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Mini-batch Gradient Descent<br><img src="/img/minibatch_shuffle.png"><br><img src="/img/minibatch_partition.png"></p>
-</li>
-</ol>
-<p>算法分为两步，首先Shuffle，然后Partition。<br>分块大小常采用2的幂指数，比如64，128，256，512</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Step 1: Shuffle (X, Y)</span></span><br><span class="line">permutation = list(np.random.permutation(m))</span><br><span class="line">shuffled_X = X[:, permutation]</span><br><span class="line">shuffled_Y = Y[:, permutation].reshape((<span class="number">1</span>,m))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 2: Partition (shuffled_X, shuffled_Y). Minus the end case.</span></span><br><span class="line">num_complete_minibatches = math.floor(m/mini_batch_size) <span class="comment"># number of mini batches </span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, num_complete_minibatches):</span><br><span class="line">    mini_batch_X = shuffled_X[:, k*mini_batch_size : (k+<span class="number">1</span>)*mini_batch_size]</span><br><span class="line">    mini_batch_Y = shuffled_Y[:, k*mini_batch_size : (k+<span class="number">1</span>)*mini_batch_size]</span><br><span class="line">    mini_batch = (mini_batch_X, mini_batch_Y)</span><br><span class="line">    mini_batches.append(mini_batch)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Handling the end case (last mini-batch &lt; mini_batch_size)</span></span><br><span class="line"><span class="keyword">if</span> m % mini_batch_size != <span class="number">0</span>:</span><br><span class="line">    mini_batch_X = shuffled_X[:, (mini_batch_size * num_complete_minibatches) : m]</span><br><span class="line">    mini_batch_Y = shuffled_Y[:, (mini_batch_size * num_complete_minibatches) : m]</span><br><span class="line">    mini_batch = (mini_batch_X, mini_batch_Y)</span><br><span class="line">    mini_batches.append(mini_batch)</span><br></pre></td></tr></table></figure>
+            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Jacobian"><a href="#Jacobian" class="headerlink" title="Jacobian"></a>Jacobian</h4><p>The Jacobian determinant or Jacobian of the corredinate transformation $x=g(u,v),\;y=h(u,v)$ is<br>$$J(u,v)=\begin{vmatrix}\frac{\partial x}{\partial u}&amp;\frac{\partial x}{\partial v} \\ \frac{\partial y}{\partial u} &amp;\frac{\partial y}{\partial v} \end{vmatrix} = \frac{\partial x}{\partial u}\frac{\partial y}{\partial v}-\frac{\partial x}{\partial v}\frac{\partial y}{\partial u}$$<br>It measures how much the transformation is expanding or contracting the area around a point G as G is transformed into R.<br>$$ \int\int_Rf(x,y)dxdy = \int\int_Gf(g(u,v),h(u,v))\left|J(u,v)\right|dudv $$<br>The Jacobian is also denoted by<br>$$ J(u,v) = \frac{\partial(x,y)}{\partial(u,v)} $$</p>
+<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="Fubini’s-Theorem"><a href="#Fubini’s-Theorem" class="headerlink" title="Fubini’s Theorem"></a>Fubini’s Theorem</h4><p>If $f(x,y)$ is continuous throughout the rectangular region $R:a\leq x\leq b,\; c\leq y\leq d$, then<br>$$ \int \int_R f(x,y)dA = \int_c^d \int_a^b f(x,y)dxdy = \int_a^b \int_c^d f(x,y)dydx $$<br>If $R$ is defined by $a\leq x\leq b,\;g_1(x)\leq y\leq g_2(x)$, with $g_1$ and $g_2$ continuous on $[a,b]$, then<br>$$ \int \int_R f(x,y)dA = \int_a^b \int_{g_1(x)}^{g_2(x)}f(x,y)dydx $$</p>
 
           
         
@@ -1928,7 +1807,7 @@ v(1:10)
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1978,7 +1857,7 @@ v(1:10)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">257</span>
+                  <span class="site-state-item-count">267</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2080,7 +1959,7 @@ v(1:10)
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">93.4k</span>
+    <span title="Site words total count">96.1k</span>
   
 </div>
 

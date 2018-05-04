@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/DL-LearningRateDecay/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/17/DL-CNNCases/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -281,7 +281,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/12/DL-LearningRateDecay/" itemprop="url">学习速率衰减(Learning Rate Decay)</a></h1>
+                <a class="post-title-link" href="/2018/04/17/DL-CNNCases/" itemprop="url">CNN实例</a></h1>
         
 
         <div class="post-meta">
@@ -293,8 +293,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T15:13:39+08:00">
-                2018-04-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-17T08:15:16+08:00">
+                2018-04-17
               </time>
             
 
@@ -325,7 +325,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  125
+                  1,013
                 </span>
               
 
@@ -352,7 +352,43 @@
       
         
           
-            <p>学习速率$\alpha$是所有超参数中最重要的一个。<br>随着GDA迭代的进行，参数逐渐逼近最优解的时候，有必要将$\alpha$逐渐缩小，使每次迭代的步长缩短，避免在最优解附近来回震荡。<br>逐渐减少学习速率的方法有很多种，比如<br>$$ \alpha = \frac{1}{1 + decay \cdot epoch} \alpha_0 $$<br>$$ \alpha = 0.95^{epoch} \alpha_0 $$<br>$$ \alpha = \frac{k}{\sqrt{epoch}} \alpha_0 $$<br>或者直接在迭代几十次后对$\alpha$赋值：<br>$$ \alpha = 0.5 \cdot \alpha_0 $$</p>
+            <p>CNN有多种经典实现：</p>
+<ul>
+<li>LeNet-5：1998</li>
+<li>AlexNet：2012</li>
+<li>VGG：2014</li>
+<li>Inception(GoogleLeNet)：2014</li>
+<li>ResNet：2015</li>
+</ul>
+<h4 id="1-LeNet-5"><a href="#1-LeNet-5" class="headerlink" title="1. LeNet-5"></a>1. LeNet-5</h4><p>LeNet-5是用于手写字体识别的一个经典CNN，论文发表于1998年。<br><img src="/img/LeNet-5.png"><br>LeNet处理32×32像素的灰度图片，即输入尺寸为(32×32×1)。<br>LeNet网络共有7层：</p>
+<ul>
+<li>卷积层C1：过滤器尺寸(5×5×1×6)，输出(28×28×6)</li>
+<li>池化层S1：MaxPooling，尺寸(2×2)，步长2，输出(14×14×6)</li>
+<li>卷积层C2：过滤器尺寸(5×5×6×16)，输出(10×10×16)</li>
+<li>池化层S2：MaxPooling，尺寸(2×2)，步长2，输出(5×5×16)</li>
+<li>全连接层FC1/卷积层C3：使用(5×5×16×120)的过滤器，和输入尺寸相同，相当于全连接。输出节点120个。</li>
+<li>全连接层FC2：输出节点84个，共有参数120×84+84=10164个</li>
+<li>全连接层FC3：输出节点10个，共有参数84×10+10=850个，对应数字分类0~9</li>
+</ul>
+<h4 id="2-AlexNet"><a href="#2-AlexNet" class="headerlink" title="2. AlexNet"></a>2. AlexNet</h4><p>由Alex提出的CNN网络结构获得了imagenet图像分类大赛2012届的冠军，AlexNet由此得名。<br><img src="/img/AlexNet.png"><br>AlexNet可以处理RGB图片，输入尺寸(224×224×3)，预处理后变为(227×227×3)<br>AlexNet由两台GPU服务器完成，共有2个流程，每层数据分为2组。<br>每个流程有8层，5个卷积层和3个全连接层。</p>
+<ul>
+<li>卷积层Conv1：过滤器尺寸(11×11×3×96)，步长4，输出(55×55×96);<br>  使用激励函数ReLU;<br>  MaxPooling尺寸(3×3)，步长2，输出(27×27×96);<br>  归一化处理，尺度(5×5)</li>
+<li>卷积层Conv2：过滤器尺寸(5×5×96×256)，padding=2(SAME)，输出(27×27×256);<br>  使用激励函数ReLU;<br>  MaxPooling尺寸(3×3)，步长2，输出(13×13×256);<br>  归一化处理，尺度(5×5)</li>
+<li>卷积层Conv3：过滤器尺寸(3×3×256×384)，padding=1(SAME)，输出(13×13×384);<br>  使用激励函数ReLU</li>
+<li>卷积层Conv4：过滤器尺寸(3×3×384×384)，padding=1(SAME)，输出(13×13×384);<br>  使用激励函数ReLU</li>
+<li>卷积层Conv5：过滤器尺寸(3×3×384×256)，padding=1(SAME)，输出(13×13×256);<br>  使用激励函数ReLU;<br>  MaxPooling尺寸(3×3)，步长2，输出(6×6×256)</li>
+<li>全连接层FC1：使用4096个(6×6×256)过滤器，每个过滤器输出到一个节点，共4096个节点；<br>  使用激励函数ReLU；<br>  使用DropOut正则化，dropout_ratio=0.5</li>
+<li>全连接层FC2：与FC1类似</li>
+<li>全连接层FC3：1000个节点与4096个输入节点全连接，得到最终输出</li>
+</ul>
+<h4 id="3-VGG"><a href="#3-VGG" class="headerlink" title="3. VGG"></a>3. VGG</h4><p>VGG是由AlexNet发展而来的，有更多的参数，更深的层次。<br><img src="/img/VGG1.png"><br>VGG有多种配置，根据层数的多少有VGG-11，VGG-13，VGG-16，VGG-19等。<br>最常见的是VGG-16，有13个卷积层，3个全连接层。<br><img src="/img/VGG2.png"><br>VGG使用的卷积核都比较小(3×3)，即表中的conv3；还有比较特殊的1×1的卷积核conv1(用于缩减channel)。<br>使用多个较小的卷积层，一方面可以减少参数，另一方面作者认为相当于进行了更多的非线性映射，可以增加网络的拟合能力。<br>所有隐层的激活单元都是ReLu，只有一种使用了局部响应归一化层(Local Response Normalization)，最终输出层是softmax。</p>
+<h4 id="4-Inception"><a href="#4-Inception" class="headerlink" title="4. Inception"></a>4. Inception</h4><p>又称GoogleLeNet，在2014年ImageNet比赛中力压VGG获得冠军。<br>该网络中含有Incpetion结构，将不同尺寸filter的卷积结果堆叠在一起，放在输出的不同chanel里。<br><img src="/img/Inception1.png"><br>GoogleLeNet的成功证明了用更多的卷积、更深的层次能够得到更好的效果(并没有证明用浅层网络不能得到同样的效果)。<br>参数总量虽然不大，计算量非常大。<br><img src="/img/Inception2.png"></p>
+<h4 id="5-ResNet"><a href="#5-ResNet" class="headerlink" title="5. ResNet"></a>5. ResNet</h4><p>梯度消失问题使深层神经网络的训练相当困难。随着网络深度的不断增加，性能会趋于饱和，甚至开始下降。<br>ResNet的基本思想是引入能够跳过一层或多层的”ShortCut Connection”，如下图所示：<br><img src="/img/ResNet1.png"><br>输出有两部分组成：</p>
+<ul>
+<li>Identity Mapping：曲线部分，X</li>
+<li>Residual Mapping：直线部分，F(x)</li>
+</ul>
+<p>ResNet也有多种不同的实现结构，其中ResNet50和ResNet101比较常见。<br><img src="/img/ResNet2.png"></p>
 
           
         
@@ -401,7 +437,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/Python-NumPy-ShufflePermutation/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/16/Keras/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -420,7 +456,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/12/Python-NumPy-ShufflePermutation/" itemprop="url">Shuffle和Permutation</a></h1>
+                <a class="post-title-link" href="/2018/04/16/Keras/" itemprop="url">Keras</a></h1>
         
 
         <div class="post-meta">
@@ -432,8 +468,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T14:52:35+08:00">
-                2018-04-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-16T14:42:20+08:00">
+                2018-04-16
               </time>
             
 
@@ -464,7 +500,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  205
+                  435
                 </span>
               
 
@@ -491,28 +527,706 @@
       
         
           
-            <p>NumPy中随机打乱数组可以使用shuffle()或者permutation()来完成。两者区别是：</p>
+            <p>Keras是由Python编写的高层神经网络API，后端可选TensorFlow、Theano或者CNTK。</p>
+<p><strong>数据格式</strong><br>由于后端框架对数据格式的定义不同，Keras要面对两种不同格式的数据。<br>Keras默认的数据组织形式在~/.keras/keras.json中规定，可查看该文件的image_data_format一项，也可在代码中通过K.image_data_format()函数返回。<br>以m张32*32像素的RGB图片为例：</p>
 <ul>
-<li>shuffle的参数只能是array_like，而permutation还可以是int，返回numpy.arange(int)</li>
-<li>shuffle返回None，就地生效，而permutation返回打乱后的数组拷贝</li>
+<li>channels_first: (m, 3, 32, 32)将通道维度放在像素维度之前，Theano、Caffe采用</li>
+<li>channels_last: (m, 32, 32, 3)将通道维度放在最后，TensorFlow采用</li>
 </ul>
-<h4 id="1-shuffle"><a href="#1-shuffle" class="headerlink" title="1.shuffle"></a>1.shuffle</h4><p>numpy.random.shuffle(x)<br>就地生效，in-place；<br>对多维数组，只重排第一轴(axis=0)</p>
+<p><strong>模型种类</strong></p>
+<ul>
+<li>序贯模型(Sequential)：单输入单输出，没有跨层连接</li>
+<li>函数式模型(Functional)：支持多输入多输出和任意连接，将Sequential视为一个特例</li>
+</ul>
+<p><strong>典型流程</strong></p>
+<ol>
+<li><p>创建模型<br>和TensorFlow一样，需要先定义计算图。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Activation</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一次性定义</span></span><br><span class="line">model = Sequential([Dense(<span class="number">32</span>, units=<span class="number">7840</span>),</span><br><span class="line">		Activation(<span class="string">'relu'</span>),</span><br><span class="line">		Dense(<span class="number">10</span>),</span><br><span class="line">		Activation(<span class="string">'softmax'</span>)])</span><br><span class="line"><span class="comment"># 逐个加入</span></span><br><span class="line">model.add(Dense(<span class="number">32</span>, input_shape=(<span class="number">784</span>,)))</span><br><span class="line">model.add(Activation(<span class="string">'relu'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译模型<br>训练模型之前，需要通过compile来配置学习过程。compile接收三个参数：</p>
+<ul>
+<li>优化器optimizer: 如rmsprop、adagrad，或一个Optimizer类的对象</li>
+<li>损失函数Loss: 如rucategorical_crossentropy、mse</li>
+<li>指标列表metrics: 分类问题一般设置为metrics=[‘accuracy’]<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 多分类问题</span></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'categorical_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"><span class="comment"># 二分类问题</span></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'binary_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"><span class="comment"># 回归问题</span></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'mse'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义Metrics</span></span><br><span class="line"><span class="keyword">import</span> keras.backend <span class="keyword">as</span> K</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mean_pred</span><span class="params">(y_true, y_pred)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> K.mean(y_pred)</span><br><span class="line">model. model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'binary_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>, mean_pred])</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>训练模型<br>Keras使用Numpy数组作为输入数据类型。<br>训练模型一般使用fit函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.fit(data, labels, epochs=<span class="number">10</span>, batch_size=<span class="number">32</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>评估/测试</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.evaluate(x=X_test, y=Y_test)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/DL-CNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/14/DL-CNN/" itemprop="url">卷积神经网络</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T14:57:49+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  479
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>卷积神经网络(Convolutional Neural Networks, CNN)多用于图像处理，因为卷积特别适合图像特征提取，降低计算复杂度。</p>
+<h4 id="卷积-Convolution"><a href="#卷积-Convolution" class="headerlink" title="卷积(Convolution)"></a>卷积(Convolution)</h4><p>深度学习里俗称的”卷积“同数学上的”卷积“定义不同。<br>这里的”卷积“运算实际上是互相关(Cross-Correlation)，没有对核进行翻转。而数学定义上的”卷积“要对核翻转。因为大部分图像处理的核都是对称的，没有翻转并不影响最终结果。<br>使用卷积可以对图像进行边缘检测。<br><img src="/img/convolution.gif"></p>
+<ul>
+<li>输入：一张RGB图片对应一个(n, n, 3)矩阵</li>
+<li>核：(f,f,3)矩阵用于卷积</li>
+<li>Padding: 为原始图片添加边缘，防止处理后图片缩小<ul>
+<li>Valid: p = 0，不加边缘</li>
+<li>Same: p = (f-1)/2，使处理前后尺寸相同</li>
+</ul>
+</li>
+<li>Strided: 步长，每次卷积后跨越多少个单位</li>
+</ul>
+<p>卷积后的输出尺寸为 $n_{out} = \left \lfloor \frac{n+2p-f}{s}+1 \right \rfloor$</p>
+<h4 id="池化-Pooling"><a href="#池化-Pooling" class="headerlink" title="池化(Pooling)"></a>池化(Pooling)</h4><p>对不同位置的特征进行聚合统计，获得更低维度的特征。<br><img src="/img/pooling.gif"><br>聚合方式有两种：</p>
+<ul>
+<li>Max Pooling: 取切片区域内最大的元素</li>
+<li>Average Pooling: 取切片区域内的平均值</li>
+</ul>
+<p>输出尺寸 $n_{out} = \left \lfloor \frac{n_{prev} - f}{s} + 1 \right \rfloor $</p>
+<h4 id="卷积神经网络"><a href="#卷积神经网络" class="headerlink" title="卷积神经网络"></a>卷积神经网络</h4><p>将卷积层和池化层放入神经网络中，可以有许多不同的网络结构。<br><img src="/img/cnn.png"></p>
+<p>卷积层前向传播：</p>
+<ul>
+<li>A_prev: (m, $n_{H_{prev}}$, $n_{W_{prev}}$, $n_{C_{prev}}$)</li>
+<li>W: (f, f, $n_{C_{prev}}$, $n_C$) 每层有$n_C$个核</li>
+<li>b: (1, 1, 1, $n_C$)</li>
+<li>Z: (m, $n_H$, $n_W$, $n_C$) </li>
+</ul>
+<p>其中<br>$$ n_H = \lfloor \frac{n_{H_{prev}} - f + 2 \times pad}{stride} \rfloor +1 $$<br>$$ n_W = \lfloor \frac{n_{W_{prev}} - f + 2 \times pad}{stride} \rfloor +1 $$<br>$$ n_C = \text{number of filters used in the convolution}$$</p>
+<p>池化层没有参数：</p>
+<ul>
+<li>A_prev: (m, $n_{H_{prev}}$, $n_{W_{prev}}$, $n_{C_{prev}}$)</li>
+<li>A: (m, $n_H$, $n_W$, $n_C$) </li>
+</ul>
+<p>其中<br>$$ n_H = \lfloor \frac{n_{H_{prev}} - f}{stride} \rfloor +1 $$<br>$$ n_W = \lfloor \frac{n_{W_{prev}} - f}{stride} \rfloor +1 $$<br>$$ n_C = n_{C_{prev}}$$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/TF-Functions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/14/TF-Functions/" itemprop="url">TensorFlow常用函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T14:33:49+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  227
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="数学运算"><a href="#数学运算" class="headerlink" title="数学运算"></a>数学运算</h4><p><strong>标量</strong></p>
+<ul>
+<li>tf.add(a,b): 加法</li>
+<li>tf.multiply(a,b): 乘法</li>
+<li>tf.pow(a,b): 乘方</li>
+<li>tf.maximum(a,b): 返回较大的那个</li>
+</ul>
+<p><strong>矩阵</strong></p>
+<ul>
+<li>tf.ones(shape)</li>
+<li>tf.reduce_mean(): 取平均</li>
+<li>tf.reduce_max(input, axis=None): 返回最大值，缩减一个维度</li>
+<li>tf.argmax(input, axis=None): 最大值的索引</li>
+<li>tf.matmul(W,X): 矩阵乘法</li>
+<li>tf.transpose(X): 矩阵转置</li>
+</ul>
+<p><strong>其他</strong></p>
+<ul>
+<li>tf.sigmoid(x)</li>
+<li>tf.one_hot(labels, depth, axis)</li>
+<li>tf.set_random_seed(1)</li>
+<li>tf.gather(params, indices): 选取指定索引的数据</li>
+<li>tf.boolean_mask(tensor, mask): 适用mask</li>
+</ul>
+<h4 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h4><p><strong>损失函数</strong></p>
+<ul>
+<li>tf.nn.sigmoid_cross_entropy_with_logits(logits=z, labels=y): 二分类Logistic Loss</li>
+<li>tf.nn.softmax_cross_entropy_with_logits(logits=z, lables=y): 多分类Softmax Loss</li>
+</ul>
+<p><strong>激活层</strong></p>
+<ul>
+<li>tf.nn.relu(Z): ReLU层</li>
+<li>tf.nn.conv2d(X,W1,strides=[1,s,s,1],padding=’SAME’]: 卷积层</li>
+<li>tf.nn.max_pool(A, ksize=[1,f,f,1], strides=[1,s,s,1], padding=’SAME’): Max_Pool层</li>
+</ul>
+<p><strong>Contrib</strong></p>
+<ul>
+<li>tf.contrib.layers.flatten(P): 展平P到一维</li>
+<li>tf.contrib.layers.fully_connect(F,num_outputs): 全连接层</li>
+</ul>
+<p><strong>Image</strong></p>
+<ul>
+<li>tf.image.non_max_suppression(boxes, scores, max_output_size, iou_threshold): Non-Max Suppression</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/TF-Optimizer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/14/TF-Optimizer/" itemprop="url">TensorFlow优化器Optimizer</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T10:06:10+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  169
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-tf-train-Optimizer"><a href="#1-tf-train-Optimizer" class="headerlink" title="1. tf.train.Optimizer"></a>1. tf.train.Optimizer</h4><p>优化器类(optimizers)的基类。<br>基本上不会直接使用这个类。</p>
+<h4 id="2-tf-train-GradientDescentOptimizer"><a href="#2-tf-train-GradientDescentOptimizer" class="headerlink" title="2. tf.train.GradientDescentOptimizer"></a>2. tf.train.GradientDescentOptimizer</h4><p>实现梯度下降算法的优化器。</p>
+<p>方法</p>
+<ul>
+<li><strong>init</strong>(learning_rate, use_locking=False, name=’GradientDescent’): 构造函数</li>
+<li>minimize(loss,global_step=None,var_list=None,gate_gradients=GATE_OP,aggregation_method=None,<br>colocate_gradients_with_ops=False,name=None,grad_loss=None): 迭代的一步，loss是目标函数</li>
+<li>compute_gradients(loss,var_list=None,gate_gradients=GATE_OP,aggregation_method=None,<br>colocate_gradients_with_ops=False,grad_loss=None): minimize的第一个步骤</li>
+<li>apply_gradients(grads_and_vars,global_step=None,name=None): minimize的第二个步骤</li>
+<li>get_name()</li>
+</ul>
+<h4 id="3-tf-train-MomentumOptimizer"><a href="#3-tf-train-MomentumOptimizer" class="headerlink" title="3. tf.train.MomentumOptimizer"></a>3. tf.train.MomentumOptimizer</h4><p>实现动量算法的优化器</p>
+<p>方法</p>
+<ul>
+<li><strong>init</strong>(learning_rate, momentum, use_locking=False, name=’Momentum’, use_nesterov=False)</li>
+</ul>
+<h4 id="4-tf-train-AdamOptimizer"><a href="#4-tf-train-AdamOptimizer" class="headerlink" title="4. tf.train.AdamOptimizer"></a>4. tf.train.AdamOptimizer</h4><p>实现Adam算法的优化器</p>
+<p>方法</p>
+<ul>
+<li><strong>init</strong>(learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-08, use_locking=False, name=’Adam’)</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/TF-ConstantVariable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/14/TF-ConstantVariable/" itemprop="url">Constant, Variable, Placeholder</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T08:56:40+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  316
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-Constant"><a href="#1-Constant" class="headerlink" title="1. Constant"></a>1. Constant</h4><p>cons = tf.constant(value, dtype=tf.float32, shape=None, name=None, verify_shape=False)</p>
 <p>参数</p>
 <ul>
-<li>x: array_like</li>
+<li>value: 初始值，必须是一个张量</li>
+<li>dtype: 默认为value的数据类型</li>
+<li>shape: 默认为value的shape</li>
+<li>name: 常量名</li>
+<li>verify_shape: 是否验证value的shape和指定shape是否相等，不相等时会抛出异常</li>
 </ul>
-<p>返回: None</p>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr = np.arange(<span class="number">5</span>)</span><br><span class="line">np.random.shuffle(arr) <span class="comment">#arr=[1 3 2 4 0]</span></span><br><span class="line"></span><br><span class="line">arr = np.arange(<span class="number">9</span>).reshape((<span class="number">3</span>,<span class="number">3</span>))</span><br><span class="line">np.random.shuffle(arr)</span><br></pre></td></tr></table></figure></p>
-<h4 id="2-permutation"><a href="#2-permutation" class="headerlink" title="2.permutation"></a>2.permutation</h4><p>numpy.random.permutation(x)<br>返回打乱顺序后的拷贝，内部也使用了shuffle；<br>多维数组，只针对第一轴(axis=0)打乱顺序</p>
-<p>参数</p>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = tf.constant(<span class="number">2</span>)</span><br><span class="line">b = tf.constant(<span class="number">13</span>)</span><br><span class="line">add = tf.add(a,b)</span><br><span class="line"></span><br><span class="line">W = tf.constant(np.random.randn(<span class="number">3</span>,<span class="number">4</span>), name=<span class="string">"W"</span>)</span><br><span class="line">b = tf.constant(np.random.randn(<span class="number">3</span>,<span class="number">1</span>), name=<span class="string">"b"</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-PlaceHolder"><a href="#2-PlaceHolder" class="headerlink" title="2. PlaceHolder"></a>2. PlaceHolder</h4><p>placeholder也是一种常量，不同的是在运行时注入数据。<br>pla = tf.placeholder(dtype=tf.float32, shape=(), name=””)</p>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.placeholder(tf.int64, name=<span class="string">"X"</span>)</span><br><span class="line">sess.run(<span class="number">2</span>*x, feed_dict=&#123;x:<span class="number">12</span>&#125;)</span><br><span class="line"></span><br><span class="line">X = tf.placeholder(tf.float32, shape=(n_h, n_w, <span class="keyword">None</span>), name=<span class="string">"X"</span>)</span><br><span class="line">Y = tf.placeholder(tf.float32, shape=(n_y, <span class="keyword">None</span>), name=<span class="string">"X"</span>)</span><br><span class="line">sess.run([optimizer, cost], feed_dict=&#123;X: batch_X, Y: batch_Y&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="3-Variable"><a href="#3-Variable" class="headerlink" title="3. Variable"></a>3. Variable</h4><p>变量Variable使用前需要初始化。<br>TensorFlow中有两个关于variable的构造函数：</p>
 <ul>
-<li>x：int或array_like</li>
+<li>tf.Variable(): 每次都创建新对象；创建时若命名冲突将覆盖原有对象</li>
+<li>tf.get_variable(): 若命名对象存在则返回，否则创建新对象；创建时若命名冲突则报错</li>
 </ul>
-<p>返回</p>
-<ul>
-<li>out: ndarray</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.permutation(<span class="number">5</span>) <span class="comment">#array[1,4,2,3,0]</span></span><br><span class="line">np.random.permutation([<span class="number">1</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">11</span>]) <span class="comment">#array[11,4,9,1]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于数据重排	</span></span><br><span class="line">sampler = np.random.permutation(<span class="number">5</span>)</span><br><span class="line">df.take(sampler)</span><br></pre></td></tr></table></figure></p>
+<p>W1 = tf.Variable(initial_value=None, …)<br>W2 = tf.get_variable(name, initializer=None, …)</p>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Variable</span></span><br><span class="line">w = tf.Variable(tf.zeros([<span class="number">3</span>,<span class="number">4</span>]), dtype=tf.float64, name=<span class="string">"W"</span>)</span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line">session.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment">## get_variable</span></span><br><span class="line">W1 = tf.get_variable(<span class="string">"W1"</span>, [<span class="number">12</span>,<span class="number">25</span>], initializer = tf.contrib.layers.xavier_initializer(seed=<span class="number">1</span>))</span><br><span class="line">b1 = tf.get_variable(<span class="string">"b1"</span>, [<span class="number">12</span>,<span class="number">1</span>], initializer = tf.zeros_initializer())</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -561,7 +1275,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/11/DL-Adam/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/13/ML-ErrorAnalysis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -580,7 +1294,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/11/DL-Adam/" itemprop="url">Adam梯度下降</a></h1>
+                <a class="post-title-link" href="/2018/04/13/ML-ErrorAnalysis/" itemprop="url">误差分析</a></h1>
         
 
         <div class="post-meta">
@@ -592,8 +1306,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T09:07:45+08:00">
-                2018-04-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T09:28:45+08:00">
+                2018-04-13
               </time>
             
 
@@ -624,7 +1338,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  741
+                  633
                 </span>
               
 
@@ -651,1005 +1365,76 @@
       
         
           
-            <p>Adam算法全称是Adaptive Moment Estimation(自适应矩估计)，是超越其他自适应技术的优化方法。<br>Adam结合了<strong>RMSProp</strong>和<strong>Momentum</strong></p>
-<h4 id="1-Momentum"><a href="#1-Momentum" class="headerlink" title="1. Momentum"></a>1. Momentum</h4><p><strong>指数平均</strong><br>指数平均(Exponentially Weight Average)是一种将输入平滑的趋向类指标。<br>$$ v_t = \beta v_{t-1} + (1-\beta)\theta_t $$<br>可以近似看做$\frac{1}{1-\beta}$天的平均，例如$\beta=0.9$，则$v_t$近似看做最近10天的平均值。<br>$\beta$越大，$v_t$曲线越光滑；通常取为0.9.</p>
-<p><strong>动量梯度下降(Momentum)</strong><br>将指数平均应用到梯度下降算法，每次迭代更新时使用近似均值，来降低波动。<br>$$ \begin{cases}<br>v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\<br>W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}<br>\end{cases}$$</p>
-<p>$$\begin{cases}<br>v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\<br>b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}}<br>\end{cases}$$</p>
-<p><strong>Bias Correction</strong><br>移动平均的起始点低，因为$v_{t-1}$数值较小。<br>可以通过$v_t = \frac{v_t}{1-\beta^t}$予以校正。</p>
-<h4 id="2-RMSProp"><a href="#2-RMSProp" class="headerlink" title="2. RMSProp"></a>2. RMSProp</h4><p>均方根(Root Mean Square prop)用参数除以近似标准差，降低更新方向上的波动。</p>
-<p>$$ \begin{cases}<br>S_{dW^{[l]}} = \beta S_{dW^{[l]}} + (1 - \beta) (dW^{[l]})^2 \\<br>W^{[l]} = W^{[l]} - \alpha \frac{dW^{[l]}}{\sqrt{S_{dW^{[l]}}}}<br>\end{cases}$$</p>
-<p>$$\begin{cases}<br>S_{db^{[l]}} = \beta S_{db^{[l]}} + (1 - \beta) (db^{[l]})^2 \\<br>b^{[l]} = b^{[l]} - \alpha \frac{db^{[l]}}{\sqrt{S_{db^{[l]}}}}<br>\end{cases}$$</p>
-<p>实际应用时会给分母加上$\epsilon = 10^{-8}$，保证分母不为0.</p>
-<h4 id="3-Adam"><a href="#3-Adam" class="headerlink" title="3. Adam"></a>3. Adam</h4><p>同时使用了近似均值和近似标准差：<br>$$\begin{cases}<br>v_{dW^{[l]}} = \beta_1 v_{dW^{[l]}} + (1 - \beta_1) \frac{\partial \mathcal{J} }{ \partial W^{[l]} } \\<br>v^{corrected}_{dW^{[l]}} = \frac{v_{dW^{[l]}}}{1 - (\beta_1)^t} \\<br>s_{dW^{[l]}} = \beta_2 s_{dW^{[l]}} + (1 - \beta_2) (\frac{\partial \mathcal{J} }{\partial W^{[l]} })^2 \\<br>s^{corrected}_{dW^{[l]}} = \frac{s_{dW^{[l]}}}{1 - (\beta_1)^t} \\<br>W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{dW^{[l]}}}{\sqrt{s^{corrected}_{dW^{[l]}}}\;\;+\;\;\varepsilon}<br>\end{cases}$$</p>
-<p><strong>算法</strong></p>
+            <h4 id="1-误差样本分析"><a href="#1-误差样本分析" class="headerlink" title="1.误差样本分析"></a>1.误差样本分析</h4><p><strong>误差来源</strong></p>
 <ol>
-<li>计算梯度的指数平均 $v$ 和 $v^{corrected}$ </li>
-<li>计算梯度平方的指数平均 $s$ 和 $s^{corrected}$ </li>
-<li>将1和2的信息结合，更新参数</li>
-<li>$\beta_1$通常取0.9，$\beta_2$通常取0.999，$\epsilon$通常取$10^{-8}$</li>
+<li>逐一检验被错误分类的样本，标识错误原因{大雾，下雨，变形，错误标签}</li>
+<li>按错误原因排序{变形，下雨，错误标签，大雾}</li>
+<li>优先解决占比高的错误原因{变形，下雨，错误标签，大雾}</li>
 </ol>
-<p><strong>实现</strong><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> l <span class="keyword">in</span> range(L):</span><br><span class="line">    <span class="comment"># Moving average of the gradients. Inputs: "v, grads, beta1". Output: "v".</span></span><br><span class="line">    v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = beta1 * v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta1) * grads[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)]</span><br><span class="line">    v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = beta1 * v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta1) * grads[<span class="string">"db"</span> + str(l+<span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Compute bias-corrected first moment estimate. Inputs: "v, beta1, t". Output: "v_corrected".</span></span><br><span class="line">    v_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line">    v_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Moving average of the squared gradients. Inputs: "s, grads, beta2". Output: "s".</span></span><br><span class="line">    s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = beta2 * s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta2) * (grads[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line">    s[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = beta2 * s[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta2) * (grads[<span class="string">"db"</span> + str(l+<span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Compute bias-corrected second raw moment estimate. Inputs: "s, beta2, t". Output: "s_corrected".</span></span><br><span class="line">    s_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line">    s_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Update parameters. Inputs: "parameters, learning_rate, v_corrected, s_corrected, epsilon". Output: "parameters".</span></span><br><span class="line">    parameters[<span class="string">"W"</span> + str(l+<span class="number">1</span>)] = parameters[<span class="string">"W"</span> + str(l+<span class="number">1</span>)] - learning_rate * v_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / np.sqrt(s_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + epsilon)</span><br><span class="line">    parameters[<span class="string">"b"</span> + str(l+<span class="number">1</span>)] = parameters[<span class="string">"b"</span> + str(l+<span class="number">1</span>)] - learning_rate * v_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] / np.sqrt(s_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + epsilon)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-Overfit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/10/DL-Overfit/" itemprop="url">神经网络过拟合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T09:33:41+08:00">
-                2018-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  338
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。</p>
-<p>过拟合的处理方法包括：</p>
+<p><strong>错误标签</strong></p>
 <ul>
-<li>增加训练样本：Data Augmentation数据扩增</li>
-<li>正则化<ul>
-<li>L2</li>
-<li>Drop Out</li>
+<li>训练集(train set)：robust to random erros<ul>
+<li>错误随机分布，比例不高：无需处理</li>
+<li>系统性错误(将某一类全部标错)：需要处理</li>
 </ul>
 </li>
-<li>Early Stopping：不符合‘一次解决一个问题’的原则</li>
+<li>验证集(dev set)：看错误标签在误差来源中的比例；若能显著提高预测精度，则纠正标签</li>
+<li>测试集(test set)：和验证集保持分布一致，若验证集纠正则测试集也同步纠正</li>
 </ul>
-<h4 id="1-L2正则化"><a href="#1-L2正则化" class="headerlink" title="1. L2正则化"></a>1. L2正则化</h4><p>在损失函数的末尾增加正则项：<br>$$ C = C_0 + \frac{\lambda}{2m} \sum_{\omega}\omega^2$$<br>原参数的导数变为：<br>$$ \frac{\partial C}{\partial \omega} = \frac{\partial C_0}{\partial \omega} + \frac{\lambda}{m}\omega $$<br>$$ \frac{\partial C}{\partial b} = \frac{\partial C_0}{\partial b} $$<br>每次迭代时，会使$\omega$变得更小，称作weight decay.</p>
-<h4 id="2-Drop-Out"><a href="#2-Drop-Out" class="headerlink" title="2. Drop Out"></a>2. Drop Out</h4><p>随机舍弃部分神经元，减少网络中的节点数。<br>算法流程：</p>
-<ol>
-<li>设定阈值prob_keep</li>
-<li>每轮迭代时，生成新的随机数矩阵D</li>
-<li>将D中大于阈值的数置0，小于阈值的置1：D = D &lt; prob_keep</li>
-<li>将D作为mask，作用到神经元输出：A = A * D</li>
-<li>缩放输出，保持总量不变：A = A / prob_keep(Inverted Dropout)</li>
-<li>后向传播的dA同样mask：dA = dA * D</li>
-<li>缩放dA：dA = dA / prob_keep</li>
-</ol>
-<p>说明：</p>
+<p>注意：纠正标签后，训练集和验证集/测试集的分布可能会变得不同</p>
+<h4 id="2-分布不一致的数据"><a href="#2-分布不一致的数据" class="headerlink" title="2.分布不一致的数据"></a>2.分布不一致的数据</h4><p><strong>数据划分</strong><br>有时数据会有不同的来源，比如实际采集的图片和网上下载的图片。<br>不同来源数据的分布是不同的，在拆分训练集\验证集\测试集时需遵循以下原则：</p>
 <ul>
-<li>drop out只在训练时使用，测试时不使用</li>
-<li>前向传播和后向传播都要drop out</li>
-<li>drop out打破了参数之间的共适应，近似理解为每次只调整部分参数</li>
+<li>测试集：和实际目标保持同分布</li>
+<li>验证集：和测试集保持同分布</li>
+<li>训练集：分布不一致的数据全部进入训练集，避免预测目标的偏差</li>
 </ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-Initializing/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/10/DL-Initializing/" itemprop="url">神经网络权重初始化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T08:20:04+08:00">
-                2018-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  400
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>深度学习中的权重初始化对模型收敛速度和模型质量有重要影响</strong>。</p>
+<p><strong>分布不一致带来的误差</strong><br>分布不一致的数据全部进入训练集，使得模型从训练集进入验证集后，某种程度上相当于切换了问题域。<br>验证集/测试集有不同的识别率上限，虽然差异不像迁移学习那么大，但也足以带来新的误差。<br>所以验证集的误差可能来自两方面：</p>
 <ul>
-<li>对tanh，W可初始化为$randn(n^{[l]}, n^{[l-1]}) \ast \sqrt{\frac{1}{n^{[l-1]}}}$ (Xavier Initialization)</li>
-<li>对ReLU，W可初始化为$randn(n^{[l]}, n^{[l-1]}) \ast \sqrt{\frac{2}{n^{[l-1]}}}$ (He Initialization)</li>
-<li>也可以初始化为$randn(n^{[l]}, n^{[l-1]}) + \sqrt{\frac{1}{n^{[l-1]}\,+\,n^{[l]}}}$ </li>
-</ul>
-<h4 id="简化模型"><a href="#简化模型" class="headerlink" title="简化模型"></a>简化模型</h4><p>每层只有一个神经元的神经网络：<br><img src="/img/singleNN.png"><br>损失函数为$C$，各层输出分别是$a_1, a_2, a_3, a_4$<br>根据求导的链式法则有：<br>$$ \frac{\partial C}{\partial \omega_1}=a_0\sigma’(z_1)\omega_2\sigma’(z_2)\omega_3\sigma’(z_3)\omega_4\sigma’(z_4)\frac{\partial C}{\partial a_4} $$<br>$$ \frac{\partial C}{\partial b_1}=\sigma’(z_1)\omega_2\sigma’(z_2)\omega_3\sigma’(z_3)\omega_4\sigma’(z_4)\frac{\partial C}{\partial a_4} $$</p>
-<h4 id="0-全部为0"><a href="#0-全部为0" class="headerlink" title="0. 全部为0"></a>0. 全部为0</h4><p>全部初始化为0是不可接受的，这会导致所有节点的行为相同，网络失效。<br>后向传播时，梯度也全为0，参数无法更新。</p>
-<h4 id="1-随机初始化"><a href="#1-随机初始化" class="headerlink" title="1. 随机初始化"></a>1. 随机初始化</h4><p>随机初始化的分布选择不当，也会导致网络优化陷入困境。</p>
-<ul>
-<li>参数过大，会带来梯度爆炸</li>
-<li>参数过小，会带来梯度消失</li>
-</ul>
-<h4 id="2-Xavier初始化"><a href="#2-Xavier初始化" class="headerlink" title="2. Xavier初始化"></a>2. Xavier初始化</h4><p>主要思想：保持输入和输出的方差一致，这就避免了所有输出值都趋向于0</p>
-<ul>
-<li>配合tanh等函数能获得比较好的结果</li>
-<li>ReLU和PReLU效果不好</li>
-</ul>
-<h4 id="3-He初始化"><a href="#3-He初始化" class="headerlink" title="3. He初始化"></a>3. He初始化</h4><p>主要思想：假定ReLU网络中每一层只有一半的神经元被激活，所以要保持方差不变，只需要在Xavier的基础上除以2</p>
-<ul>
-<li>配合ReLU效果较好</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-ActivationFunction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/10/DL-ActivationFunction/" itemprop="url">激活函数(Activation Function)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T07:27:43+08:00">
-                2018-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  444
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>激活函数用于在学习器中引入非线性因素。<br>$$ Y = Activation(\Sigma(weight \ast input) + bias) $$<br>不引入非线性因素的神经网络，本质上仍是一个线性回归模型。</p>
-<p>激活函数主要有以下几种：</p>
-<ul>
-<li>sigmoid: 适合分类器</li>
-<li>tanh: sigmoid改进版</li>
-<li>ReLU: 大多数情况下适用，只能在隐藏层中使用</li>
-<li>Leaky ReLU: 避免死神经元</li>
-</ul>
-<p><strong>选择经验</strong><br>选择激活函数时，可以先从<strong>ReLU</strong>开始。<br>如果ReLU没有提供最优结果，再尝试其他激活函数。</p>
-<h4 id="1-sigmoid"><a href="#1-sigmoid" class="headerlink" title="1. sigmoid"></a>1. sigmoid</h4><p>曾将广泛使用的激活函数，由于自身缺陷，目前已很少使用。</p>
-<ul>
-<li>当输入远离原点时，梯度太小；多层神经网络中，太小的各层梯度叠加后会消失，使学习速度缓慢</li>
-<li>输出不以0为中心</li>
-<li>要进行指数运算</li>
-</ul>
-<p><img src="/img/sigmoid.png"><br>$$ sigmoid(x) = \frac{1}{1+e^{-x}} $$<br>目前仅在将值分类到特定类别时使用，比如最终输出$y\in(0,1)$的网络中的最后一层。</p>
-<h4 id="2-tanh"><a href="#2-tanh" class="headerlink" title="2. tanh"></a>2. tanh</h4><p>tanh是sigmoid的一个放大版本，梯度比sigmoid更陡。<br>tanh解决了所有值符号相同的问题，输出区间(-1,1)，为0为中心。<br><img src="/img/tanh.png"></p>
-<p>$$ tanh(x) = 2\ast sigmoid(2x) - 1 $$<br>$$ tanh(x) = \frac{2}{1+e^{-2x}} - 1 $$</p>
-<h4 id="3-ReLU"><a href="#3-ReLU" class="headerlink" title="3. ReLU"></a>3. ReLU</h4><p>ReLU是使用最广泛的激活函数。<br>最大的优点在于不会同时激活所有的神经元，这种稀疏性使其变得高效且易于计算。<br><img src="/img/relu.png"></p>
-<p>$$ ReLU(x) = max(0, x) $$</p>
-<h4 id="4-Leaky-ReLU-PReLU"><a href="#4-Leaky-ReLU-PReLU" class="headerlink" title="4. Leaky ReLU / PReLU"></a>4. Leaky ReLU / PReLU</h4><p>在ReLU中，当x小于0时梯度为0，使得该区域的神经元死亡。<br>为了解决这个问题，用斜线代替水平线，去除零梯度。<br><img src="/img/prelu.png"></p>
-<p>$$ PReLU(x) = ax\; for \; x &lt; 0 $$<br>$$ PReLU(x) = x\; for \; x \geq 0 $$</p>
-<p>这里a是一个很小的值，比如0.01.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-GradientChecking/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/10/DL-GradientChecking/" itemprop="url">梯度检验(GradientChecking)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T06:52:46+08:00">
-                2018-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  419
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>反向传播算法中，梯度的推导公式容易产生错误。此时需要从定义出发，检验梯度的计算式是否正确。</p>
-<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>根据导数的数学定义：<br>$$ \frac{dJ}{d\theta} = \lim_{\epsilon\rightarrow 0}\frac{J(\theta+\epsilon)-J(\theta-\epsilon)}{2\epsilon} $$<br>可以推导出梯度检验的公式：<br>$$ g(\theta) \approx \frac{}{}\frac{J(\theta+\epsilon)-J(\theta-\epsilon)}{2\epsilon} $$</p>
-<p>在实际应用中，通常将$\epsilon$设为一个很小的常量，比如在$10^{-4}$；<br>通过将后向传播算出的梯度值与梯度检验算出的梯度值比较，可以验证后向传播中的计算式是否有误。<br>$$ difference = \frac {\mid\mid grad - gradapprox \mid\mid_2}{\mid\mid grad \mid\mid_2 + \mid\mid gradapprox \mid\mid_2} $$</p>
-<h4 id="神经网络的梯度检验"><a href="#神经网络的梯度检验" class="headerlink" title="神经网络的梯度检验"></a>神经网络的梯度检验</h4><p>在神经网络中，需要验证梯度的参数W、b是矩阵而非标量，此时可将矩阵映射为一维向量，然后对向量中的每个元素循环计算。<br><img src="/img/dlGradientCheck.png"><br><img src="/img/dlModel.png"></p>
-<h6 id="计算过程"><a href="#计算过程" class="headerlink" title="计算过程"></a>计算过程</h6><ul>
-<li><code>J_plus[i]</code>:<ol>
-<li>Set $\theta^{+}$ to <code>np.copy(parameters_values)</code></li>
-<li>Set $\theta^{+}_i$ to $\theta^{+}_i + \varepsilon$</li>
-<li>Calculate $J^{+}_i$ using to <code>forward_propagation_n(x, y, vector_to_dictionary(</code>$\theta^{+}$ <code>))</code>.     </li>
-</ol>
-</li>
-<li><code>J_minus[i]</code>: do the same thing with $\theta^{-}$</li>
-<li>$gradapprox[i] = \frac{J^{+}_i - J^{-}_i}{2 \varepsilon}$</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_parameters):</span><br><span class="line">    <span class="comment"># Compute J_plus[i]. Inputs: "parameters_values, epsilon". Output = "J_plus[i]".</span></span><br><span class="line">    thetaplus = np.copy(parameters_values)                                      </span><br><span class="line">    thetaplus[i][<span class="number">0</span>] = parameters_values[i][<span class="number">0</span>] + epsilon                                </span><br><span class="line">    J_plus[i], _ = forward_propagation_n(X, Y, vector_to_dictionary(thetaplus))                               </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute J_minus[i]. Inputs: "parameters_values, epsilon". Output = "J_minus[i]".</span></span><br><span class="line">    thetaminus = np.copy(parameters_values)                                 </span><br><span class="line">    thetaminus[i][<span class="number">0</span>] = parameters_values[i][<span class="number">0</span>] - epsilon                           </span><br><span class="line">    J_minus[i], _ = forward_propagation_n(X, Y, vector_to_dictionary(thetaminus))                                </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute gradapprox[i]</span></span><br><span class="line">    gradapprox[i] = (J_plus[i] - J_minus[i]) / (<span class="number">2</span> * epsilon)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Compare gradapprox to backward propagation gradients by computing difference.</span></span><br><span class="line">numerator = np.linalg.norm(grad - gradapprox)                                           </span><br><span class="line">denominator = np.linalg.norm(grad) + np.linalg.norm(gradapprox)                                         </span><br><span class="line">difference = numerator / denominator</span><br></pre></td></tr></table></figure>
-<h6 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h6><p>Gradient Checking计算过程较慢，当验证公式无误后应关闭，不参加常规的训练过程。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/08/DL-Model/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/08/DL-Model/" itemprop="url">深度学习算法流程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T15:19:41+08:00">
-                2018-04-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  275
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>狭义的深度学习是指有很多隐藏层，每层有很多节点的神经网络。</p>
-<h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h4><p><img src="/img/deepLearning.png"></p>
-<ol>
-<li>初始化参数$W,b$<ul>
-<li>$W^{[l]}.shape = (n^{[l]}, n^{[l-1]})$</li>
-<li>$b^{[l]}.shape = (n^{[1]}, 1))$</li>
-</ul>
-</li>
-<li>前向传播：从前向后逐层计算$A^{[l]}$，缓存各层中间结果$W^{[l]},b^{[l]},Z^{[l]}$<ul>
-<li>$Z^{[l]} = W^{[l]}A^{[l-1]} + b^{[l]}$</li>
-<li>$A^{[l]} = g(Z^{[l]})$</li>
-</ul>
-</li>
-<li>计算损失函数：<br>$$cost(A^{[L]}, Y) = -\frac{1}{m}\sum_{i=1}^{m}(y^{(i)}log(a^{[L]i}) + (1-y^{i})log(1-a^{[L]i}))$$</li>
-<li>后向传播：从后向前逐层计算偏导数$dA^{[l]}, dZ^{[l]}, dW^{[l]}, db^{[l]}$<ul>
-<li>$dZ^{[l]} = dA^{[l]}\ast g’(Z^{[l]})$</li>
-<li>$dW^{[l]} = \frac{1}{m}dZ^{[l]}A^{[l-1]T}$</li>
-<li>$db^{[l]} = \frac{1}{m}\sigma_{i=1}^{m}dZ^{[l]i}$</li>
-<li>$dA^{[l-1]} = W^{[l]T}dZ^{[l]}$</li>
-</ul>
-</li>
-<li><p>更新参数：</p>
-<ul>
-<li>$W^{[l]}=W^{[l]}-\alpha\,dW^{[l]}$</li>
-<li>$b^{[l]}=b^{[l]}-\alpha\,db^{[l]}$</li>
-</ul>
-</li>
-<li><p>重复2-5，直到$cost(A^{[L]}, Y)$不再减少或满足要求</p>
-</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 主循环</span></span><br><span class="line">parameters = initialize_parameters_deep(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="comment"># Forward propagation: [LINEAR -&gt; RELU]*(L-1) -&gt; LINEAR -&gt; SIGMOID.</span></span><br><span class="line">    AL, caches = L_model_forward(X, parameters)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute cost.</span></span><br><span class="line">    cost = compute_cost(AL, Y)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Backward propagation.</span></span><br><span class="line">    grads = L_model_backward(AL, Y, caches)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># Update parameters.</span></span><br><span class="line">    parameters = update_parameters(parameters, grads, learning_rate)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/07/Python-NumPy-Multiply/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/07/Python-NumPy-Multiply/" itemprop="url">NumPy中的乘法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-07T17:31:16+08:00">
-                2018-04-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  146
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>NumPy中的乘法有三种：</p>
-<ul>
-<li>乘号*: 元素积</li>
-<li>multiply: 元素积</li>
-<li>dot: 内积</li>
+<li>Overfit：传统的high variance </li>
+<li>Data Mismatch：验证集的问题可能更难(误差上升)，或者更简单(误差下降)</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>乘数</th>
-<th>乘号*</th>
-<th>multiply</th>
-<th>dot</th>
+<th style="text-align:left">Error</th>
+<th style="text-align:left">Source</th>
+<th style="text-align:left">Comment</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>array</td>
-<td>元素乘积</td>
-<td>元素乘积</td>
-<td>矩阵乘积</td>
+<td style="text-align:left">human error</td>
+<td style="text-align:left">1%</td>
+<td style="text-align:left">接近训练集的上限Bayes</td>
 </tr>
 <tr>
-<td>matrix</td>
-<td>元素乘积</td>
-<td>元素乘积</td>
-<td>矩阵乘积</td>
+<td style="text-align:left">Training error</td>
+<td style="text-align:left">3%</td>
+<td style="text-align:left">误差来自avoidable bias</td>
+</tr>
+<tr>
+<td style="text-align:left">Train-Dev error</td>
+<td style="text-align:left">6.5%</td>
+<td style="text-align:left">和训练集分布相同，误差来自variance(overfit train)</td>
+</tr>
+<tr>
+<td style="text-align:left">Dev error</td>
+<td style="text-align:left">9%</td>
+<td style="text-align:left">误差来自data mismatch</td>
+</tr>
+<tr>
+<td style="text-align:left">Test error</td>
+<td style="text-align:left">11.5%</td>
+<td style="text-align:left">和验证集分布相同，误差来自variance(overfit dev)</td>
 </tr>
 </tbody>
 </table>
-<h5 id="1-乘号"><a href="#1-乘号" class="headerlink" title="1. 乘号*"></a>1. 乘号*</h5><p>返回元素乘积，和multiply结果相同；</p>
-<h5 id="2-multiply"><a href="#2-multiply" class="headerlink" title="2. multiply"></a>2. multiply</h5><p>np.multiply(x1, x2)返回的是对应元素乘积(element-wise)<br>相当于有broadcast的$x_1 \multiply x_2$<br>例如np.multiply([1,2], [5,10]) = [5, 20]</p>
-<h5 id="3-dot"><a href="#3-dot" class="headerlink" title="3. dot"></a>3. dot</h5><p>np.dot()返回的是两个数组的点积/内积(dot product)<br>对array，内积是一个数；例如np.dot([1,2], [5,10]) = 25<br>对matrix，内积就是矩阵乘积。</p>
+<p><strong>误差处理</strong></p>
+<ul>
+<li>理解数据分布哪里不一致：是否有噪音、遮挡、滤镜等</li>
+<li>在训练集中引入类似验证集/测试集的数据：采集、人工合成等</li>
+</ul>
+<p>注意：人工合成中，将少量特征F组合进巨量样本中后，可能会使模型对这些特征F过拟合，失去泛化能力</p>
 
           
         
@@ -1698,7 +1483,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/07/Python-NumPy-Broadcasting/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/13/ML-TransferLearning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -1717,7 +1502,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/07/Python-NumPy-Broadcasting/" itemprop="url">NumPy中的Broadcasting机制</a></h1>
+                <a class="post-title-link" href="/2018/04/13/ML-TransferLearning/" itemprop="url">迁移学习</a></h1>
         
 
         <div class="post-meta">
@@ -1729,8 +1514,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-07T16:53:20+08:00">
-                2018-04-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T07:58:34+08:00">
+                2018-04-13
               </time>
             
 
@@ -1761,7 +1546,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  158
+                  319
                 </span>
               
 
@@ -1788,83 +1573,303 @@
       
         
           
-            <p>Broadcasting是指对两个形状不同的矩阵进行数学计算的处理机制。<br>对两个阵列操作时，NumPy会逐元素地<strong>从后向前</strong>比较他们的形状。当以下情形出现时，两个维度是兼容的：</p>
+            <h4 id="迁移学习"><a href="#迁移学习" class="headerlink" title="迁移学习"></a>迁移学习</h4><p>迁移学习(Transfer Learning)是把已经训练好的模型参数迁移到新的模型。<br>考虑到学习任务的相关性，通过迁移我们期望已有模型的参数可以加快新模型的训练速度。</p>
+<p>符合以下条件的模型A可以迁移到模型B</p>
 <ul>
-<li>两个维度相等</li>
-<li>其中一个是1</li>
+<li>A和B有相同的输入</li>
+<li>A的训练数据远大于B</li>
+<li>A的低阶特征有助于学习B</li>
 </ul>
-<p>如果这些条件没有达到，那么将会报错。</p>
-<h6 id="正例"><a href="#正例" class="headerlink" title="正例"></a>正例</h6><table>
-<thead>
-<tr>
-<th style="text-align:left">阵列</th>
-<th style="text-align:right">尺寸</th>
-<th style="text-align:right">尺寸</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">A</td>
-<td style="text-align:right">255 × 255 × 3</td>
-<td style="text-align:right">15 × 1 × 3</td>
-</tr>
-<tr>
-<td style="text-align:left">B</td>
-<td style="text-align:right">3</td>
-<td style="text-align:right">15 × 5 × 3</td>
-</tr>
-<tr>
-<td style="text-align:left">Result</td>
-<td style="text-align:right">255 × 255 × 3</td>
-<td style="text-align:right">15 × 5 × 3</td>
-</tr>
-<tr>
-<td style="text-align:left"></td>
-<td style="text-align:right"></td>
-</tr>
-<tr>
-<td style="text-align:left">A</td>
-<td style="text-align:right">5 × 4</td>
-<td style="text-align:right">8 × 1 × 3 × 1</td>
-</tr>
-<tr>
-<td style="text-align:left">B</td>
-<td style="text-align:right">4</td>
-<td style="text-align:right">7 × 1 × 5</td>
-</tr>
-<tr>
-<td style="text-align:left">Result</td>
-<td style="text-align:right">5 × 4</td>
-<td style="text-align:right">8 × 7 × 3 × 5</td>
-</tr>
-</tbody>
-</table>
-<h6 id="负例"><a href="#负例" class="headerlink" title="负例"></a>负例</h6><table>
-<thead>
-<tr>
-<th style="text-align:left">阵列</th>
-<th style="text-align:right">尺寸</th>
-<th style="text-align:right">尺寸</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">A</td>
-<td style="text-align:right">8 × 3 × 4</td>
-<td style="text-align:right">15 × 1 × 3 × 5</td>
-</tr>
-<tr>
-<td style="text-align:left">B</td>
-<td style="text-align:right">3 × 2</td>
-<td style="text-align:right">7 × 6 × 1</td>
-</tr>
-<tr>
-<td style="text-align:left">Result</td>
-<td style="text-align:right">最后一个维度不兼容</td>
-<td style="text-align:right">倒数第二个维度不兼容</td>
-</tr>
-</tbody>
-</table>
+<h4 id="多任务学习"><a href="#多任务学习" class="headerlink" title="多任务学习"></a>多任务学习</h4><p>多任务学习(Multi-Task Learning)是在一个网络中，将多个目标同时学好。<br>输出层有多个神经元，可以同时为1，不需要像softmax那样归一化处理。<br>多任务学习要求不同的学习目标之间有相关性，和迁移学习有相似之处。<br>实际应用中，多任务学习的适用场景较少，多用于计算机视觉图像领域。</p>
+<h4 id="End-to-End-Deep-Learning"><a href="#End-to-End-Deep-Learning" class="headerlink" title="End-to-End Deep Learning"></a>End-to-End Deep Learning</h4><p>将传统机器学习中的各个环节(如特征抽取、转换、预测)省略，直接使用神经网络完成从输入端到输出端(end-to-end)的所有步骤。<br>需要足够大的网络和足够多的训练样本。<br>优点是原理简单。<br>缺点是训练困难，黑盒不易理解。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/ML-Softmax/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/12/ML-Softmax/" itemprop="url">SoftMax激活函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T16:19:25+08:00">
+                2018-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  128
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>SoftMax用于在多分类问题中，将多个神经元的输出映射到(0,1)中，得到形如[0.5, 0.25, 0.25]的预测结果。<br>与之对应的是”Hard Max”，输出的是[1,0,0]。<br>将神经网络最后一层的sigmoid(二分类)激活函数换成softmax(多分类)，概率值最大的那一类即为预测类别。</p>
+<p><strong>算法</strong><br>$$\begin{cases}<br>t = e^{z^{[l]}} \\<br>a^{[l]} = \frac{e^{z^{[l]}}}{\sum t}<br>\end{cases}$$</p>
+<p><img src="/img/softmax.png"></p>
+<p><strong>代价函数</strong><br>$$ L(\hat{y}, y) = - \sum_{j=1}^{k} y_j log\hat{y_j} $$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/DL-BatchNormalization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/12/DL-BatchNormalization/" itemprop="url">Batch Normalization</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T15:22:58+08:00">
+                2018-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  151
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>批规范化(Batch Normalization)是将神经网络每层的输入信号规范化，得到特定均值和方差强度的输入。<br>批规范化应作用于非线性环节之前，即缩放$z^{[l]}$.</p>
+<p><strong>算法</strong><br>$$ \begin{cases}<br>\mu = \frac{1}{m} \sum_{i=1}^m z^{(i)} \\<br>\sigma = \frac{1}{m} \sum_{i=1}^m(z^{(i)} - \mu)^2 \\<br>z^{norm} = \frac{z^{(i)} - \mu}{\sqrt{\sigma^2+\epsilon}} \\<br>\hat{z} = \gamma z^{norm} + \beta<br>\end{cases} $$</p>
+<p>其中$\gamma$和$\beta$是需要训练的超参数</p>
+<p><strong>优势</strong></p>
+<ul>
+<li>解决梯度消失和爆炸，使每层的信号强度受控</li>
+<li>有助于解决covariate shift(?)，即分布不一致的数据</li>
+</ul>
 
           
         
@@ -1904,7 +1909,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1954,7 +1959,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">257</span>
+                  <span class="site-state-item-count">267</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2056,7 +2061,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">93.4k</span>
+    <span title="Site words total count">96.1k</span>
   
 </div>
 
