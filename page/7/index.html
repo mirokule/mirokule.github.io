@@ -262,6 +262,1033 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/02/Python-sklearn-Scale/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/02/Python-sklearn-Scale/" itemprop="url">数据缩放Scale</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T09:48:45+08:00">
+                2018-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  769
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>数据集的标准化(Standardization)对sklearn的大部分机器学习算法来说都是一种常规要求(common requirement)。<br>如果单个特征没有或多或少地接近于标准正态分布N(0,1)的高斯分布，那么它可能并不会在项目中表现出很好的性能。<br>例如，许多学习算法中目标函数的基础都是假设所有特征都是零均值，并且具有同一阶数的方差。<br>如果某个特征的方差比其他特征大几个数量级，那么它就会在算法中占据主导位置，导致学习器不能从其他特征学习。</p>
+<h4 id="0-经验"><a href="#0-经验" class="headerlink" title="0.经验"></a>0.经验</h4><ul>
+<li><p>均值为0的输入/输出数据通常对算法友好；<br>将特征缩放到[0,1]通常是一个槽糕的决定；<br>强迫算法输出为[0,1]也是一个槽糕的决定；</p>
+</li>
+<li><p>如果模型中使用了<strong>距离</strong>，则必须将特征缩放到同样尺度(如RBF)；<br>如果特征是线性组合的，则缩放不是必需的(如MLP)，因为通过改变w和b可以得到同样的输出；<br>但合适的缩放确实可以带来一系列好处：使训练更快、避免saturation等</p>
+</li>
+<li><p>两种最有效的缩放：</p>
+<ul>
+<li>均值0，标准差1: StandardScaler</li>
+<li>[-1, 1]: MaxAbsScaler</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-标准化"><a href="#1-标准化" class="headerlink" title="1. 标准化"></a>1. 标准化</h4><p>目标：缩放到均值0，标准差1<br>实际应用中，我们通常忽略特征分布的形状，直接通过减去均值来使特征去中心化，再通过除以标准差来使特征缩放。</p>
+<ul>
+<li>函数scale(X, axis=0, with_mean=True, with_std=True, copy=True): 快捷缩放</li>
+<li>类StandardScaler(copy=True, with_mean=True, with_std=True): 实现Transformer API，可复用，可集成进Pipeline</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line"></span><br><span class="line"><span class="comment"># Scale</span></span><br><span class="line">X_scaled = preprocessing.scale(X)</span><br><span class="line"><span class="comment"># (1, 2, 0) -&gt; (0, 1.22, -1.22)</span></span><br><span class="line"><span class="comment"># (-1,0, 1) -&gt; (-1.22, 0, 1.22)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># StandardScaler</span></span><br><span class="line">scaler = preprocessing.StandardScaler().fit(X)</span><br><span class="line">scaler.transform(X)</span><br></pre></td></tr></table></figure>
+<h4 id="2-缩放至特定范围"><a href="#2-缩放至特定范围" class="headerlink" title="2. 缩放至特定范围"></a>2. 缩放至特定范围</h4><p>目标：缩放到指定的范围(minmax)，通常是[0,1]；或者将绝对值缩放到指定范围(maxabs)，通常是[-1,1]</p>
+<ul>
+<li>函数minmax_scale(X, feature_range=(0,1), axis=0, copy=Ture)</li>
+<li>函数maxabs_scale(X, axis=0, copy=True)</li>
+<li>类MinMaxScaler(feature_range(0,1), copy=True)</li>
+<li>类MaxAbsScaler(copy=True)：没有破坏稀疏性，0依旧是0</li>
+</ul>
+<p>MinMax缩放公式<br>$$ X_{std} = \frac{X - X_{min}(axis=0)}{X_{max}(axis=0) - X_{min}(axis=0)} $$<br>$$ X_{scaled} = X_{std} * (max - min) + min $$</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># MinMax</span></span><br><span class="line">min_max_scaler = preprocessing.MinMaxScaler()</span><br><span class="line">X_train_minmax = min_max_scaler.fit_transform(X_train)</span><br><span class="line"><span class="comment"># (1, 2, 0) -&gt; (0.5, 1, 0)</span></span><br><span class="line"><span class="comment"># (-1,0, 1) -&gt; (0, 0.5, 1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># MaxAbs</span></span><br><span class="line">max_abs_scaler = preprocessing.MaxAbsScaler()</span><br><span class="line">X_train_maxabs = max_abs_scaler.fit_transform(X_train)</span><br><span class="line"><span class="comment"># (1, 2, 0) -&gt; (0.5, 1, 0)</span></span><br><span class="line"><span class="comment"># (-1,0, 1) -&gt; (-1, 0, 1)</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-稀疏数据缩放"><a href="#3-稀疏数据缩放" class="headerlink" title="3. 稀疏数据缩放"></a>3. 稀疏数据缩放</h4><p>去中心化将使数据平移，破坏稀疏数据的稀疏结构。<br>推荐的处理方式：</p>
+<ul>
+<li>maxabs_scale, MaxAbsScaler()</li>
+<li>scale, StandardScaler()：将with_centerring设置为False</li>
+</ul>
+<h4 id="4-含异常值的数据缩放"><a href="#4-含异常值的数据缩放" class="headerlink" title="4. 含异常值的数据缩放"></a>4. 含异常值的数据缩放</h4><p>当数据中含有较多异常值时，使用整体的均值和标准差缩放并不是一个好的选择。<br>Robust Scale只使用中间部分数据的均值和方差，可以剔除异常值的影响。</p>
+<ul>
+<li>函数robust_scale(X, axis=0, with_centering=True, with_scaling=True, quantile_range=(25.0, 75.0), copy=True)</li>
+<li>类RobustScaler(with_centering=True, with_scaling=True, quantile_range=(25.0,75.0), copy=True)</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/31/Python-sklearn-GridSearchCV/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/31/Python-sklearn-GridSearchCV/" itemprop="url">GridSearchCV</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-31T11:31:17+08:00">
+                2018-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  195
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>class sklearn.model_selection.GridSearchCV(estimator, param_grid, scoring=None, fit_params=None, n_jobs=1, iid=True, refit=True, cv=None, verbose=0, pre_dispatch=’2*n_jobs’, error_score=’raise’, return_train_score=’warn’)<br>对指定参数的穷举搜索。</p>
+<p>参数</p>
+<ul>
+<li>estimator: 需要实现sklearn estimator interface</li>
+<li>param_grid: 要调校的参数名称及可选值</li>
+<li>scoring: 评分策略</li>
+<li>fit_params: 废弃</li>
+<li>n_jobs: 并行任务数</li>
+<li>pre_dispatch: 并行过程中分发的任务数？</li>
+<li>iid: identically distributed</li>
+<li>cv: int, cross-validation generator</li>
+<li>refit: 使用得到的最优参数，重新训练模型</li>
+<li>verbose: 输出信息冗余度</li>
+<li>error_score: 错误处理</li>
+<li>return_train_score: 是否返回训练集得分</li>
+</ul>
+<p>属性</p>
+<ul>
+<li>cv_results_</li>
+<li>best_estimator_</li>
+<li>best_score_</li>
+<li>best_params_</li>
+<li>best_index_</li>
+<li>scoree_</li>
+<li>n_splits_</li>
+</ul>
+<p>方法</p>
+<ul>
+<li>decision_function(X)</li>
+<li>fit(X[,y,groups])</li>
+<li>transform(X)</li>
+<li>inverse_transform(Xt)</li>
+<li>predict(X)</li>
+<li>predict_proba(X)</li>
+<li>predict_log_proba(X)</li>
+<li>score(X[,y])</li>
+<li>get_params([deep])</li>
+<li>set_params(**params)</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line">parameters = &#123;<span class="string">'kernel'</span>:(<span class="string">'linear'</span>,<span class="string">'rbf'</span>), <span class="string">'C'</span>:[<span class="number">1</span>,<span class="number">10</span>]&#125;</span><br><span class="line">clf = GridSearchCV(svc, parameters)</span><br><span class="line">clf.fit(iris.data, iris.target)</span><br><span class="line">sorted(clf.cv_results_.keys())</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/31/ML-XGBoost-Parameters/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/31/ML-XGBoost-Parameters/" itemprop="url">XGBoost参数说明及调试</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-31T10:24:17+08:00">
+                2018-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  791
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><h5 id="General-Parameters-常规参数"><a href="#General-Parameters-常规参数" class="headerlink" title="General Parameters(常规参数)"></a>General Parameters(常规参数)</h5><ul>
+<li>booster[default=gbtree]: 基分类器, {gbtree, gblinear}, tree通常好于linear</li>
+<li>silent[default=0]: 为1则没有运行信息输出</li>
+<li>nthread[default to maximum number of threads available if not set]: 线程数</li>
+</ul>
+<h5 id="Booster-Parameters-模型参数"><a href="#Booster-Parameters-模型参数" class="headerlink" title="Booster Parameters(模型参数)"></a>Booster Parameters(模型参数)</h5><ul>
+<li>eta[default=0.3]: skrinkage，学习速率；越大越不容易收敛，越小越慢，通常0.01-0.2</li>
+<li>min_child_weight[default=1]: 叶节点中所有样本权重的和，参数值越小越容易过拟合</li>
+<li>max_depth[default=6]: 树的最大深度，越深越容易过拟合，通常3-10</li>
+<li>max_leaf_nodes: 最大叶节点数，设置该参数将覆盖max_depth</li>
+<li>gamma[default=0]: 指定节点分裂时所需要的loss function reduction，只有reductiion大于该值时才会继续分裂</li>
+<li>max_delta_step[default=0]: 更新步长，0表示没有约束，正值使更新步骤更加平缓，通常用不到</li>
+<li>subsample[default=1]: 给每棵树的样本采样比例，较低的值防止过拟合，但是太低也会欠拟合，通常0.5-1</li>
+<li>colsample_bytree[default=1]: 列采样比例，一般为0.5~1</li>
+<li>lambda[default=1]: L2正则化参数，越大越不容易过拟合</li>
+<li>alpha[default=0]: L1正则化参数，越大越不容易过拟合</li>
+<li>scale_pos_weight[default-1]: 取值大于0时，在类别样本不平衡的情况下有助于快速收敛</li>
+</ul>
+<h5 id="Learning-Task-Parameters-学习任务参数"><a href="#Learning-Task-Parameters-学习任务参数" class="headerlink" title="Learning Task Parameters(学习任务参数)"></a>Learning Task Parameters(学习任务参数)</h5><ul>
+<li>objectivep[default=reg:linear]: 最小化损失函数类型</li>
+<li>eval_metric: 评价函数，{rmse, mae, logloss, error, auc,…}</li>
+<li>seed: 随机种子</li>
+</ul>
+<h3 id="参数调试"><a href="#参数调试" class="headerlink" title="参数调试"></a>参数调试</h3><h4 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h4><ol>
+<li>调节参数会使预测效果变好，但并不能带来质的飞跃；</li>
+<li>XGBoost和GBDT的预测效果差别不大；</li>
+<li>能极大提升预测结果的手段包括：<ul>
+<li>feature engineering</li>
+<li>ensemble of models</li>
+</ul>
+</li>
+</ol>
+<h5 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h5><ol>
+<li>调高Learning rate，使训练时间缩短</li>
+<li>决定树的最优数量n_estimators</li>
+<li>Tree-specific parameters: max_depth, min_child_weight, gamma, subsample, colsample_bytree</li>
+<li>Regularization parameters: lambda, alpha</li>
+<li>调整其他可选参数</li>
+<li>调低Learning rate，重新运行得到最终结果</li>
+</ol>
+<h5 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"><span class="keyword">from</span> sgboost.sklearn <span class="keyword">import</span> XGBClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.grid_search <span class="keyword">import</span> GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> cross_validation, metrics</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调高Learing Rate</span></span><br><span class="line">predictors = [x <span class="keyword">for</span> x <span class="keyword">in</span> train.columns <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> [target, IDcol]]</span><br><span class="line">xgb1 = XGBClassifier(learing_rate=<span class="number">0.1</span>, ...)</span><br><span class="line">modelfit(xgb1, train, predictors)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 先用大粒度</span></span><br><span class="line">param_test1 = &#123; <span class="string">'max_depth'</span>: range(<span class="number">3</span>,<span class="number">10</span>,<span class="number">2</span>),</span><br><span class="line">		<span class="string">'min_child_weight'</span>: range(<span class="number">1</span>,<span class="number">6</span>,<span class="number">2</span>) &#125;</span><br><span class="line">gsearch1 = GridSearchCV(estimator = XGBClassifier( learning_rate =<span class="number">0.1</span>, n_estimators=<span class="number">140</span>, max_depth=<span class="number">5</span>,</span><br><span class="line">		min_child_weight=<span class="number">1</span>, gamma=<span class="number">0</span>, subsample=<span class="number">0.8</span>, colsample_bytree=<span class="number">0.8</span>,</span><br><span class="line">		objective= <span class="string">'binary:logistic'</span>, nthread=<span class="number">4</span>, scale_pos_weight=<span class="number">1</span>, seed=<span class="number">27</span>), </span><br><span class="line">		param_grid = param_test1, scoring=<span class="string">'roc_auc'</span>,n_jobs=<span class="number">4</span>,iid=<span class="keyword">False</span>, cv=<span class="number">5</span>)</span><br><span class="line">gsearch1.fit(train[predictors],train[target])</span><br><span class="line">gsearch1.grid_scores_, gsearch1.best_params_, gsearch1.best_score_</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再用小粒度</span></span><br><span class="line">param_test2 = &#123; <span class="string">'max_depth'</span>: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],</span><br><span class="line">		<span class="string">'min_child_weight'</span>: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>] &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># gamma</span></span><br><span class="line">param_test3 = &#123; <span class="string">'gamma'</span>: [i/<span class="number">10.0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">5</span>)] &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># subsample, colsample_bytree</span></span><br><span class="line">param_test4 = &#123; <span class="string">'subsample'</span>: [i/<span class="number">10.0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>,<span class="number">10</span>)],</span><br><span class="line">		<span class="string">'colsample_bytree'</span>: [i/<span class="number">10.0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>,<span class="number">10</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># regularization</span></span><br><span class="line">param_test5 = &#123; <span class="string">'alpha'</span>: [<span class="number">0</span>, <span class="number">0.01</span>, <span class="number">0.1</span>, <span class="number">1</span>, <span class="number">10</span>] &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 降低Learning Rate</span></span><br><span class="line">xgb4 = XGBClassifier(learning_rate=<span class="number">0.01</span>, ...)</span><br></pre></td></tr></table></figure>
+<p>modelfit<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">modelfit</span><span class="params">(alg, dtrain, predictors,useTrainCV=True, cv_folds=<span class="number">5</span>, early_stopping_rounds=<span class="number">50</span>)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> useTrainCV:</span><br><span class="line">    xgb_param = alg.get_xgb_params()</span><br><span class="line">    xgtrain = xgb.DMatrix(dtrain[predictors].values, label=dtrain[target].values)</span><br><span class="line">    cvresult = xgb.cv(xgb_param, xgtrain, num_boost_round=alg.get_params()[<span class="string">'n_estimators'</span>], nfold=cv_folds,</span><br><span class="line">        metrics=<span class="string">'auc'</span>, early_stopping_rounds=early_stopping_rounds, show_progress=<span class="keyword">False</span>)</span><br><span class="line">    alg.set_params(n_estimators=cvresult.shape[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the algorithm on the data</span></span><br><span class="line">alg.fit(dtrain[predictors], dtrain[<span class="string">'Disbursed'</span>],eval_metric=<span class="string">'auc'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># Predict training set:</span></span><br><span class="line">dtrain_predictions = alg.predict(dtrain[predictors])</span><br><span class="line">dtrain_predprob = alg.predict_proba(dtrain[predictors])[:,<span class="number">1</span>]</span><br><span class="line">    </span><br><span class="line"><span class="comment"># Print model report:</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"\nModel Report"</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"Accuracy : %.4g"</span> % metrics.accuracy_score(dtrain[<span class="string">'Disbursed'</span>].values, dtrain_predictions)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"AUC Score (Train): %f"</span> % metrics.roc_auc_score(dtrain[<span class="string">'Disbursed'</span>], dtrain_predprob)</span><br><span class="line">                </span><br><span class="line">feat_imp = pd.Series(alg.booster().get_fscore()).sort_values(ascending=<span class="keyword">False</span>)</span><br><span class="line">feat_imp.plot(kind=<span class="string">'bar'</span>, title=<span class="string">'Feature Importances'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Feature Importance Score'</span>)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/30/ML-GBDT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/30/ML-GBDT/" itemprop="url">梯度提升树(GBDT)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T08:53:06+08:00">
+                2018-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  152
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>GBDT(Gradient Boosting Decision Tree)是集成学习Boosting的一种。<br>但是和AdaBoost更改样本权重的算法不同，GBDT每次迭代的输入是上一轮的误差<br>模型共训练m轮，每轮产生一个弱分类器；弱分类器一般选择CART树。<br>模型可以描述为<br>$$ F_m(x) = \sum_{m=1}^{M}T(x;\theta_m) $$<br>损失函数<br>$$ \hat{\theta} = \underset{\theta_m}{arg\,min}\sum_{i=1}^{N}L(y_i,F_{m-1}(x_i)+T(x_i;\theta_m)) $$<br>每轮迭代时，都去拟合损失函数在当前模型下的负梯度，<strong>让损失函数沿着梯度方向下降</strong>是算法的关键。</p>
+<p><img src="/img/GBDT.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/29/ML-EnsembleLearning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/29/ML-EnsembleLearning/" itemprop="url">集成学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T10:05:12+08:00">
+                2018-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  652
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>集成学习(Ensemble Learing)将多个简单的弱机器学习模型集合起来，提高学习效果。<br>一般分为三种架构：</p>
+<ul>
+<li>Bagging: 并行独立，最终投票或取平均</li>
+<li>Boosting: 串行相关，每次迭代都要改进</li>
+<li>Stacking: 分两层，第一层并行独立，第二层对预测结果训练高阶模型</li>
+</ul>
+<h4 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h4><p>基于数据随机重抽样的分类器构建方法，又称作Bootstrap Aggregation.<br>基模型之间并列无关，对所有基模型预测的结果进行综合产生最终的预测结果。<br><img src="/img/bagging.jpg"></p>
+<p>常用的bagging集成算法如随机森林。<br>集成稳定学习器不利于提高预测效果，因为集成方法不能有助于提高泛化性能。<br>稳定学习器：对训练样本的扰动较不敏感，比如kNN</p>
+<h4 id="Boosting"><a href="#Boosting" class="headerlink" title="Boosting"></a>Boosting</h4><p>基模型按次序一一训练，每次训练集按某种策略转化(比如提高前一次分错的数据集的权重)，最后对所有基模型预测的结果进行线性组合产生最终的预测结果。<br><img src="/img/boosting.jpg"></p>
+<h6 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h6><table>
+<thead>
+<tr>
+<th style="text-align:center">项目</th>
+<th style="text-align:center">Bagging</th>
+<th style="text-align:center">Boosting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">结构</td>
+<td style="text-align:center">并行</td>
+<td style="text-align:center">串行</td>
+</tr>
+<tr>
+<td style="text-align:center">训练集</td>
+<td style="text-align:center">独立</td>
+<td style="text-align:center">依赖</td>
+</tr>
+<tr>
+<td style="text-align:center">测试</td>
+<td style="text-align:center">可并行</td>
+<td style="text-align:center">需串行</td>
+</tr>
+<tr>
+<td style="text-align:center">作用</td>
+<td style="text-align:center">减少variance</td>
+<td style="text-align:center">减少bias</td>
+</tr>
+</tbody>
+</table>
+<h6 id="AdaBoost"><a href="#AdaBoost" class="headerlink" title="AdaBoost"></a>AdaBoost</h6><p>AdaBoost是Boosting中最具代表性的算法。<br>AdaBoost中每次迭代时，会根据当前错误率改变样本的权重。通过不断重复训练和调整权重，知道训练错误率满足用户要求。</p>
+<h6 id="Gradient-Boosted"><a href="#Gradient-Boosted" class="headerlink" title="Gradient Boosted"></a>Gradient Boosted</h6><p>GBRT/GBDT 也是一种Boosting方法，每个子模型是根据已训练出的学习器的残差训练出来的，没有AdaBoost中的样本权重的概念。<br>GBRT结合了梯度迭代和回归树，准确率较高，但也有过拟合的风险。</p>
+<h4 id="Stacking"><a href="#Stacking" class="headerlink" title="Stacking"></a>Stacking</h4><p>用训练好的基模型对训练集预测，第j个基模型对第i个训练样本的预测值将作为新的训练集中第i个样本的第j个特征值，最后基于新的训练集训练。<br>算法分成了2层：</p>
+<ul>
+<li>第一层是传统的训练，训练出许多小分类器；</li>
+<li>第二层把小分类器的输出组合成一个新的训练集，训练出一个更高层次的分类器，目的是寻找相应的权重或组合方式<br><img src="/img/stacking.jpg"></li>
+</ul>
+<h6 id="比较-1"><a href="#比较-1" class="headerlink" title="比较"></a>比较</h6><p>Stacking就像是Bagging的升级版，Bagging中的结果整合方式是相同权重，而Stacking中则要寻找不同的权重</p>
+<h4 id="结果整合"><a href="#结果整合" class="headerlink" title="结果整合"></a>结果整合</h4><h6 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h6><ul>
+<li>简单平均(Simple Average)</li>
+<li>加权平均(Weighted Average)</li>
+</ul>
+<h6 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h6><ul>
+<li>简单投票(Majority Voting)</li>
+<li>加权投票(Weighted Majority Voting)</li>
+<li>概率投票(Soft Voting)</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/29/ML-RandomForest/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/29/ML-RandomForest/" itemprop="url">随机森林</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T09:48:00+08:00">
+                2018-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  281
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>随机森林是一种Bagging算法。<br>随机森林由许多的决策树组成，这些决策树的形成采用了随机的方法，因此也叫随机决策树。<br>随机森林中的树之间是没有关联的，测试数据由每一棵树单独分类，然后取分类结果最多的那类作为最终结果。</p>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
+<li>从原始训练集中随机有放回采样m个样本，共进行n次，得到n个容量为m的子训练集</li>
+<li>对每个子训练集，分别训练决策树，得到n棵决策树</li>
+<li>将n棵树的结果整合，得到最终预测结果</li>
+</ol>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 分类</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"></span><br><span class="line">clf = RandomForestClassifier(max_depth=<span class="number">2</span>, random_state=<span class="number">0</span>)</span><br><span class="line">clf.fit(X,y)</span><br><span class="line">clf.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 回归</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor</span><br><span class="line"></span><br><span class="line">regr = RandomForestRegressor(max_depth=<span class="number">2</span>, random_state=<span class="number">0</span>)</span><br><span class="line">regr.fit(X,y)</span><br><span class="line">regr.predict(X_test)</span><br></pre></td></tr></table></figure>
+<h4 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h4><h6 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h6><ul>
+<li>准确率较高</li>
+<li>不容易过拟合</li>
+<li>抗噪声能力强</li>
+<li>能处理高维数据</li>
+<li>数据集无需标准化</li>
+<li>训练速度快</li>
+<li>容易并行化</li>
+</ul>
+<h6 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h6><ul>
+<li>决策树个数多时，占用空间大</li>
+<li>结果不容易解释</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/29/ML-Information/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -909,1016 +1936,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/27/Python-pandas-Sort/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/27/Python-pandas-Sort/" itemprop="url">pandas排序相关函数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T13:52:51+08:00">
-                2018-03-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  257
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-sort-values"><a href="#1-sort-values" class="headerlink" title="1.sort_values"></a>1.sort_values</h4><p>DataFrame.sort_values(by, axis=0, ascending=True, inplace=False, kind=’quicksort’, na_position=’last’)<br>对某列或某几列values排序，返回排序后的DataFrame.</p>
-<p>参数</p>
-<ul>
-<li>by: str, list, 排序依据的列名</li>
-<li>axis: 默认0对行排序，1对列</li>
-<li>ascending: 默认True升序</li>
-<li>inplace: 默认False返回拷贝</li>
-<li>kind: {‘quicksort’,’mergesort’,’heapsort’}排序算法</li>
-<li>na_position: {‘first’, ‘last’}，把NaN放在开头还是末尾</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>sorted_obj: DataFrame</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.sort_values(by=[<span class="string">'col1'</span>,<span class="string">'col2'</span>])</span><br><span class="line">df.sort_values(by=[<span class="string">'col1'</span>], ascending=<span class="keyword">False</span>)</span><br><span class="line">df.sort_values(by=[<span class="string">'col1'</span>], na_position=<span class="string">'first'</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="2-sort-index"><a href="#2-sort-index" class="headerlink" title="2.sort_index"></a>2.sort_index</h4><p>DataFrame.sort_values(axis=0, level=None, ascending=True, inplace=False, kind=’quicksort’, na_position=’last’, sort_remaining=True, by=None)</p>
-<p>参数</p>
-<ul>
-<li>axis, ascending, inplace, kind, na_position: 同上</li>
-<li>level: 多层索引中指定index level</li>
-<li>sort_remaining: 多层索引中，对指定level排序后，继续对剩余的index排序</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>sorted_obj: DataFrame</li>
-</ul>
-<h4 id="3-nlargest"><a href="#3-nlargest" class="headerlink" title="3.nlargest"></a>3.nlargest</h4><p>DataFrame.nlargest(n, columns, keep=’first’)<br>返回排序后最大的N个样本(整行)。</p>
-<p>参数</p>
-<ul>
-<li>n: 返回值的个数</li>
-<li>columns: str, list，排序依据的列名</li>
-<li>keep: {‘first’,’last’}若有重复值，取开头的还是末尾的</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>return: DataFrame</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.nlargest(<span class="number">3</span>,<span class="string">'col1'</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="4-nsmallest"><a href="#4-nsmallest" class="headerlink" title="4.nsmallest"></a>4.nsmallest</h4><p>DataFrame.nsmallest(n, columns, keep=’first’)<br>参考nlargest.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/26/Python-sklearn-Split/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/26/Python-sklearn-Split/" itemprop="url">交叉验证Split划分</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-26T11:26:06+08:00">
-                2018-03-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  446
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-KFold"><a href="#1-KFold" class="headerlink" title="1.KFold"></a>1.KFold</h4><p>class sklearn.model_selection.KFold(n_splits=3, shuffle=False, random_state=None)<br>将所有数据划成k份，使用k-1份训练，保留1份用于验证。<br>通常建议使用5份或10份；当k=n时，等同于Leave One Out。</p>
-<p>参数</p>
-<ul>
-<li>n_splits: number of folds，最小2</li>
-<li>shuffle: 划分前是否Shuffle</li>
-<li>random_state: 当shuffle==True时使用的种子</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>get_n_splits(X=None, y=None, groups=None): number of splits</li>
-<li>split(X, y=None, groups=None): generate indices to split data into training and test set</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> KFold</span><br><span class="line"></span><br><span class="line">kf = KFold(n_splits=<span class="number">2</span>)</span><br><span class="line">kf.split(data)</span><br><span class="line">kf.get_n_splits(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环</span></span><br><span class="line"><span class="keyword">for</span> train_index, test_index <span class="keyword">in</span> kf.split(X):</span><br><span class="line">	print(<span class="string">"Train:"</span>, train_index, <span class="string">"Test:"</span>, test_index)</span><br><span class="line"><span class="comment"># TRAIN:[2 3], TEST:[0,1]</span></span><br><span class="line"><span class="comment"># TRAIN:[0 1], TEST:[2,3]</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="2-Repeated-KFold"><a href="#2-Repeated-KFold" class="headerlink" title="2.Repeated KFold"></a>2.Repeated KFold</h4><p>class sklearn.model_selection.RepeatedKFold(n_splits=5, n_repeats=10, random_state=None)<br>将KFold重复n次，每次可以生成不同的划分。</p>
-<p>参数</p>
-<ul>
-<li>n_splits: number of folds</li>
-<li>n_repeats: number of times repeated</li>
-<li>random_state</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>get_n_splits(X=None, y=None, groups=None)</li>
-<li>split(X, y=None, groups=None)</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> RepeatedKFold</span><br><span class="line">rkf = RepeatedKFold(n_splits=<span class="number">2</span>, n_repeats=<span class="number">2</span>, random_state=<span class="number">12313</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="3-ShuffleSplit"><a href="#3-ShuffleSplit" class="headerlink" title="3.ShuffleSplit"></a>3.ShuffleSplit</h4><p>class sklearn.model_selection.ShuffleSplit(n_splits=10, test_size=’default’, train_size=None, random_state=None)<br>可以分别指定splits和test_size，样本shuffle后再划分。<br>和KFold相比，重复次数和划分方式实现了解耦。</p>
-<p>参数</p>
-<ul>
-<li>n_splits: number of re-shuffling &amp; splitting </li>
-<li>test_size: 如果train_size没有指定，则默认0.1</li>
-<li>train_size: (0.0~1.0)，或者用整数表示的样本数</li>
-<li>random_state:</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>get_n_splits(X=None, y=None, groups=None)</li>
-<li>split(X, y=None, groups=None)</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> ShuffleSplit</span><br><span class="line">ss = ShuffleSplit(n_splits=<span class="number">3</span>, test_size=<span class="number">0.25</span>, random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="4-Leave-One-Out-LOO"><a href="#4-Leave-One-Out-LOO" class="headerlink" title="4.Leave One Out(LOO)"></a>4.Leave One Out(LOO)</h4><p>每次使用n-1个样本训练模型，用剩余的1个样本验证。<br>每次训练出的模型差别不大，测试结果的波动较大。<br>通常不如划分为5份或10份。</p>
-<h4 id="5-Leave-P-Out-LPO"><a href="#5-Leave-P-Out-LPO" class="headerlink" title="5.Leave P Out(LPO)"></a>5.Leave P Out(LPO)</h4><p>每次保留p个样本用于验证，使用n-p个样本训练。<br>与LOO和KFold的区别在于，p&gt;1时测试集可能是<strong>重复</strong>的。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/25/Python-NumPy-Random/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/25/Python-NumPy-Random/" itemprop="url">Numpy.random.rand</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T11:24:54+08:00">
-                2018-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  265
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="numpy-random-rand"><a href="#numpy-random-rand" class="headerlink" title="numpy.random.rand()"></a>numpy.random.rand()</h4><p>生成<strong>[0,1)</strong>之间的随机浮点数或N维浮点数组<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.rand() <span class="comment">#float, 1个[0,1)之间的浮点数</span></span><br><span class="line">np.random.rand(<span class="number">4</span>) <span class="comment">#ndarray, 长度为4的一维数组</span></span><br><span class="line">np.random.rand(<span class="number">2</span>,<span class="number">3</span>) <span class="comment">#ndarray, 2*3的二维数组</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="numpy-random-randn"><a href="#numpy-random-randn" class="headerlink" title="numpy.random.randn()"></a>numpy.random.randn()</h4><p>生成<strong>正态分布</strong>的随机浮点数或N维浮点数组<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.randn() <span class="comment">#1个随机数</span></span><br><span class="line">np.random.randn(<span class="number">5</span>) <span class="comment">#长度为5的一维数组</span></span><br><span class="line">np.random.randn(<span class="number">2</span>,<span class="number">3</span>) <span class="comment">#2*3的二维数组</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="numpy-random-standard-normal-size-None"><a href="#numpy-random-standard-normal-size-None" class="headerlink" title="numpy.random.standard_normal(size=None)"></a>numpy.random.standard_normal(size=None)</h4><p>生成<strong>标准正态分布</strong>的随机浮点数或N维浮点数组<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.standard_normal(<span class="number">2</span>)</span><br><span class="line">np.random.standard_normal((<span class="number">2</span>,<span class="number">3</span>))</span><br><span class="line">np.random.standard_normal([<span class="number">2</span>,<span class="number">3</span>])</span><br></pre></td></tr></table></figure></p>
-<h4 id="numpy-random-randint-low-high-None-size-None-dtype-’l’"><a href="#numpy-random-randint-low-high-None-size-None-dtype-’l’" class="headerlink" title="numpy.random.randint(low, high=None, size=None, dtype=’l’)"></a>numpy.random.randint(low, high=None, size=None, dtype=’l’)</h4><p>若high不为None，取[low, high)之间随机整数；<br>若high为None，取[0,low)之间随机整数。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.randint(<span class="number">2</span>) <span class="comment">#1个[0,2)之间的随机整数</span></span><br><span class="line">np.random.randint(<span class="number">2</span>, size=<span class="number">5</span>) <span class="comment">#长度为5的随机数组，取值范围[0,2)</span></span><br><span class="line">np.random.randint(<span class="number">2</span>,<span class="number">6</span>) <span class="comment">#1个[2,6)之间的随机整数</span></span><br><span class="line">np.random.randint(<span class="number">2</span>,<span class="number">6</span>,(<span class="number">2</span>,<span class="number">3</span>)) <span class="comment">#2*3的二维数组，取值范围[2,6)</span></span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/25/Python-pandas-Type/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/25/Python-pandas-Type/" itemprop="url">pandas类型转换</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T11:01:42+08:00">
-                2018-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  97
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="dtypes"><a href="#dtypes" class="headerlink" title="dtypes"></a>dtypes</h4><p>pandas主要使用的数据类型包括：</p>
-<ul>
-<li>float</li>
-<li>int</li>
-<li>bool</li>
-<li>datetime</li>
-<li>timedelta</li>
-<li>category</li>
-<li>object</li>
-</ul>
-<h4 id="AsType"><a href="#AsType" class="headerlink" title="AsType"></a>AsType</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">DataFrame.astype(dtype, copy=<span class="keyword">True</span>, errors=<span class="string">'raise'</span>, **kwargs)</span><br><span class="line">Series.astype(dtype, copy=<span class="keyword">True</span>, errors=<span class="string">'raise'</span>, **kwargs)</span><br></pre></td></tr></table></figure>
-<p>参数</p>
-<ul>
-<li>dtype: 单个类型(numpy.dtype, Python type)或以字典表示的多个类型</li>
-<li>copy: 默认True，返回拷贝</li>
-<li>errors: {‘raise’, ‘ignore’}</li>
-<li>raise_on_error: 废弃</li>
-<li>kwargs: keyword参数</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>casted:</li>
-</ul>
-<h4 id="其他转换方法"><a href="#其他转换方法" class="headerlink" title="其他转换方法"></a>其他转换方法</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pandas.to_numeric(arg, error=<span class="string">'raise'</span>, downcast=<span class="keyword">None</span>)</span><br><span class="line">pandas.to_datetime()</span><br><span class="line">pandas.to_timedelta()</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/25/Python-Scipy-BoxCox/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/25/Python-Scipy-BoxCox/" itemprop="url">scipy-BoxCox</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T09:33:40+08:00">
-                2018-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  305
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Box-Cox变换"><a href="#Box-Cox变换" class="headerlink" title="Box-Cox变换"></a>Box-Cox变换</h4><p>使用Box-Cox变换一般都可以成功地数据正态变换，但在<strong>二分变量或较少水平的等级变量</strong>的情况下，变换不能成功。<br>变换后，残差可以更好地满足正态性、独立性等假设前提，降低伪回归的概率。</p>
-<p>$$ y = \frac{x^\lambda - 1}{\lambda}\;\;for\;\;\lambda &gt; 0$$<br>$$ y = Log(x) \;\; for \;\; \lambda = 0 $$</p>
-<h3 id="相关函数"><a href="#相关函数" class="headerlink" title="相关函数"></a>相关函数</h3><h5 id="1-scipy-stats-boxcox-x-lmbda-None-alpha-None"><a href="#1-scipy-stats-boxcox-x-lmbda-None-alpha-None" class="headerlink" title="1.scipy.stats.boxcox(x, lmbda=None, alpha=None)"></a>1.scipy.stats.boxcox(x, lmbda=None, alpha=None)</h5><p>参数</p>
-<ul>
-<li>x: 输入序列，要求一维、正数</li>
-<li>lmbda: 若为None，则自动寻找maximizes the log-likelihood function的参数$\lambda$</li>
-<li>alpha: 若不为None，则计算100*(1-alpha)%置信区间</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>boxcox: 转换后的ndarray</li>
-<li>maxlog: 输入lmbda为None时的自适应参数</li>
-<li>(min_ci, max_ci): 给定alpha的置信区间</li>
-</ul>
-<h5 id="2-scipy-special-boxcox-x-lmbda"><a href="#2-scipy-special-boxcox-x-lmbda" class="headerlink" title="2.scipy.special.boxcox(x, lmbda)"></a>2.scipy.special.boxcox(x, lmbda)</h5><ul>
-<li>若$x&lt;0$则返回<strong>nan</strong>.</li>
-<li>若$x==0,\lambda&lt;0$返回<strong>-inf</strong></li>
-</ul>
-<p>$$ y = \frac{x^\lambda - 1}{\lambda}\;\;for\;\;\lambda != 0$$<br>$$ y = Log(x) \;\; for \;\; \lambda = 0 $$</p>
-<p>参数</p>
-<ul>
-<li>x: array_like</li>
-<li>lmbda: 参数</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>y: array</li>
-</ul>
-<h5 id="3-scipy-special-boxcox1p-x-lambda"><a href="#3-scipy-special-boxcox1p-x-lambda" class="headerlink" title="3.scipy.special.boxcox1p(x, lambda)"></a>3.scipy.special.boxcox1p(x, lambda)</h5><p>返回(1+x)的box-cox变换，通过平移解决$x=0$的边界情况</p>
-<ul>
-<li>若$x&lt;-1$则返回<strong>nan</strong></li>
-<li>若$x==-1, \lambda&lt;0$则返回<strong>-inf</strong></li>
-</ul>
-<p>$$ y = \frac{(1+x)^\lambda - 1}{\lambda}\;\; for \;\; \lambda != 0 $$<br>$$ y = Log(1+x)\;\; for \;\; \lambda = 0 $$</p>
-<p>参数</p>
-<ul>
-<li>x: array-like</li>
-<li>lmbda: 参数</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>y: array</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/21/Python-sklearn-OneHotEncoder/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/21/Python-sklearn-OneHotEncoder/" itemprop="url">sklearn.OneHotEncoder</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T12:03:06+08:00">
-                2018-03-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  238
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>LabelEncoder将不同类别转换为数字，比如[‘paris’,’tokyo’]转为[2,3]，引入了类别大小属性。<br>OneHotEncoder将类别编码成m个二值类别，只标示类别，没有引入大小。<br>比get_dummies的优势在于可以处理数字类别。</p>
-<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><pre><code>class sklearn.preprocessing.OneHotEncoder(n_values=&apos;auto&apos;,categorical_features=&apos;all&apos;,dtype=&lt;class&apos;numpy.float64&apos;&gt;,sparse=True,handle_unknown=&apos;error&apos;)
-</code></pre><p>参数</p>
-<ul>
-<li>n_values: 特征的类别数量，’auto’由训练数据计算，也可以指定int</li>
-<li>categorical_features: 指定要转换的字段</li>
-<li>dtype: 输出的类型</li>
-<li>sparse: 默认True返回系数矩阵，若为False返回Array</li>
-<li>handle_unknown: 是否raise error</li>
-</ul>
-<p>属性</p>
-<ul>
-<li>active_features_: 训练集中的被转换的values</li>
-<li>feature_indices_: indices to feature ranges</li>
-<li>n_values_: 每个特征的number of values</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>fit(X, y=None)</li>
-<li>fit_transform(X, y=None)</li>
-<li>transform(X)</li>
-<li>get_params([deep])</li>
-<li>set_params(**params)</li>
-</ul>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessign <span class="keyword">import</span> OneHotEncoder</span><br><span class="line">enc = OneHotEncoder()</span><br><span class="line">enc.fit([[<span class="number">0</span>,<span class="number">0</span>,<span class="number">3</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">2</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>]])</span><br><span class="line">enc.n_values_ <span class="comment">#array([2,3,4])</span></span><br><span class="line">enc.feature_indices_ <span class="comment">#array([0,2,5,9])</span></span><br><span class="line">enc.transform([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>]]).toarray() <span class="comment">#array([1.,0.,0.,1.,0.,0.,1.,0.,0.])</span></span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1968,7 +1990,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">267</span>
+                  <span class="site-state-item-count">273</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2070,7 +2092,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">96.1k</span>
+    <span title="Site words total count">98.9k</span>
   
 </div>
 

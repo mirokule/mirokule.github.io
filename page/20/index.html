@@ -262,6 +262,940 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/08/Unity-Distance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/08/Unity-Distance/" itemprop="url">Unity-Distance</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-08T15:53:16+08:00">
+                2016-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  123
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><p>目标正前方，10米<br> transform.position = target.transform.position + Vector3.forward * 10.0f;</p>
+</li>
+<li><p>目标斜前方45°，10米<br> Quaternion q = Quaternion.Euler(0, 45, 0);<br> transform.position = target.transform.position + q <em> Vector3.forward </em> 10.0f;</p>
+</li>
+<li><p>目标斜前方指定方向，10米<br> Vector3 direction = (B.transform.position - A.transform.position).normalized;<br> Quaternion q = Quaternion.LookRotation(direction);<br> transform.position = target.transform.position + q <em> Vector3.forward </em> 10.0f;</p>
+</li>
+<li><p>目标斜前方指定方向偏移45°，10米</p>
+<pre><code>Vector3 direction = (B.transform.position - A.transform.position).normalized;
+Quaternion q = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 45, 0);
+transform.position = target.transform.position + q * Vector3.forward * 10.0f;
+</code></pre></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/08/Unity-GI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/08/Unity-GI/" itemprop="url">Unity-GI</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-08T15:31:12+08:00">
+                2016-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  462
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Unity中，实时照明(Realtime Lighting)的光线不会反射，只有投射光锥体范围内的对象表面才有光源影响，阴影是全黑的。<br>因此，引入Global Illumination全局照明，在直接光照的基础上，考虑了间接光照。</p>
+<h4 id="只烘焙Precomputed-Realtime-GI"><a href="#只烘焙Precomputed-Realtime-GI" class="headerlink" title="只烘焙Precomputed Realtime GI"></a>只烘焙Precomputed Realtime GI</h4><p>烘焙时只存储场景内静态物体间的关系(?)，烘焙完成后可以自由调整光源或材质，并实时看到结果。<br>能有效降低实时光照计算的复杂度。<br>没有任何静态颜色被烘焙出来。<br>光源应选择Realtime类型。<br>Realtime Resolution值越高，间接光的效果越明显。</p>
+<h4 id="只烘焙Baked-GI"><a href="#只烘焙Baked-GI" class="headerlink" title="只烘焙Baked GI"></a>只烘焙Baked GI</h4><p>传统的纯静态光照图烘焙，生成LightMaps；包含直接光源和反射的间接光源。<br>烘焙出的贴图在运行时无法改变，虽然可以叠加新贴图，但两者无法交互。<br>常用于低阶的手机开发。</p>
+<ul>
+<li>Realtime灯光：不参与烘焙，同时作用于动态和静态物体</li>
+<li>Baked灯光：仅作用于烘焙，不参与实时光照计算</li>
+<li>Mixed灯光：参与烘焙，实时运行时仅作用于非静态物体</li>
+</ul>
+<h4 id="同时烘焙Static-Lightmap与Realtime-GI"><a href="#同时烘焙Static-Lightmap与Realtime-GI" class="headerlink" title="同时烘焙Static Lightmap与Realtime GI"></a>同时烘焙Static Lightmap与Realtime GI</h4><p>光源的光照、物体间的二次反射都会直接烘焙在静态光照贴图上。<br>自发光及天空盒的辐射光线仍然可以实时变化并叠加作用于已烘焙的颜色上。<br>不建议使用这种方式渲染，同时消耗内存和计算资源，建议同时只使用一种。</p>
+<h4 id="一种做法"><a href="#一种做法" class="headerlink" title="一种做法"></a>一种做法</h4><p>1.首先关闭Baked GI仅烘焙一些Precomputed Realtime GI<br>2.然后可以随意调整光源、材质、天空盒等并实时观察到场景的最终效果<br>3.最后关闭Realtime GI使用Baked GI进行光照贴图的烘焙</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/08/Unity-CharacterController/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/08/Unity-CharacterController/" itemprop="url">Unity-CharacterController</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-08T10:26:00+08:00">
+                2016-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  409
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Unity中模拟物理碰撞效果有两套方法：<br>1.刚体和碰撞体(Rigidbody和Collider)<br>2.角色控制器(Character Controller)</p>
+<p>在FPS类游戏中，角色在高速运动时可以立刻停下转身，并不符合物理规律，不适用Rigidbody，应使用Character Controller。<br>Character Controller允许在仅受制于碰撞影响的情况下控制物体的运动，不需要再添加collider和rigidbody.</p>
+<p>Character Controller有以下特点：</p>
+<ul>
+<li>可以碰撞</li>
+<li>不受力，不能通过物理效果被其他对象影响</li>
+<li>不会对碰撞的物体施加力，通过OnControllerColliderHit() 自行编写其他物体的碰撞行为</li>
+</ul>
+<h4 id="SimpleMove"><a href="#SimpleMove" class="headerlink" title="SimpleMove"></a>SimpleMove</h4><pre><code>public bool SimpleMove(Vector3 speed);
+//以一定的速度移动角色控制器
+//重力自动运用
+//返回值表示是否着地
+
+cc = GetComponet&lt;CharacterController&gt;();
+cc.SimpleMove(speed * direction)
+</code></pre><h4 id="Move"><a href="#Move" class="headerlink" title="Move"></a>Move</h4><pre><code>public CollisionFlags Move(Vector3 motion);
+//不考虑重力，需要手动添加
+</code></pre><h4 id="OnControllerColliderHit"><a href="#OnControllerColliderHit" class="headerlink" title="OnControllerColliderHit"></a>OnControllerColliderHit</h4><pre><code>void OnControllerColliderHit(ControllerColliderHit hit)
+</code></pre><p>返回类型ControllerColliderHit，包含信息：</p>
+<ul>
+<li>collider    The collider that was hit by the controller.</li>
+<li>controller    The controller that hit the collider.</li>
+<li>gameObject    The game object that was hit by the controller.</li>
+<li>moveDirection    The direction the CharacterController was moving in when the collision occured.</li>
+<li>moveLength    How far the character has travelled until it hit the collider.</li>
+<li>normal    The normal of the surface we collided with in world space.</li>
+<li>point    The impact point in world space.</li>
+<li>rigidbody    The rigidbody that was hit by the controller.</li>
+<li>transform    The transform that was hit by the controller.</li>
+</ul>
+<h4 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h4><ul>
+<li>collider  The collider that was hit by the controller.</li>
+<li>controller   The controller that hit the collider.</li>
+<li>gameObject The game object that was hit by the controller.</li>
+<li>moveDirection Approximately the direction from the center of the capsule to the point we touch.</li>
+<li>moveLength How far the character has travelled until it hit the collider.</li>
+<li>normal The normal of the surface we collided with in world space.</li>
+<li>point  The impact point in world space.</li>
+<li>rigidbody The rigidbody that was hit by the controller.</li>
+<li>transform The transform that was hit by the controller.</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/08/Unity-CameraFollow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/08/Unity-CameraFollow/" itemprop="url">Unity-CameraFollow</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-08T09:43:01+08:00">
+                2016-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  250
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="案例1"><a href="#案例1" class="headerlink" title="案例1"></a>案例1</h4><p>第三人称游戏中，镜头始终跟随主角，如球、飞机、人物等。<br>本例将缓动摄像机，至角色身后的固定位置。</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> Transform target;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> distance = <span class="number">10.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> height = <span class="number">5.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> heightDamping = <span class="number">2.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> rotationDamping = <span class="number">3.0</span>f;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LateUpdate</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (target) &#123;</span><br><span class="line">		<span class="comment">// compute rotation </span></span><br><span class="line">		<span class="keyword">float</span> wantedRotationAngle = target.eulerAngles.y;</span><br><span class="line">		<span class="keyword">float</span> currentRotationAngle = transform.eulerAngles.y;</span><br><span class="line">		currentRotationAngle = Mathf.LerpAngle (currentRotationAngle, wantedRotationAngle, rotationDamping * Time.deltaTime);</span><br><span class="line">		Quaternion currentRotation = Quaternion.Euler (<span class="number">0</span>, currentRotationAngle, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// compute height</span></span><br><span class="line">		<span class="keyword">float</span> wantedHeight = target.position.y + height;</span><br><span class="line">		<span class="keyword">float</span> currentHeight = transform.position.y;</span><br><span class="line">		currentHeight = Mathf.Lerp (currentHeight, wantedHeight, heightDamping * Time.deltaTime);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// set position by vector minus</span></span><br><span class="line">		transform.position = target.position - currentRotation * Vector3.forward * distance; <span class="comment">// xz plane</span></span><br><span class="line">		transform.position = <span class="keyword">new</span> Vector3 (transform.position.x, currentHeight, transform.position.z);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// set rotation</span></span><br><span class="line">		transform.LookAt (target);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="案例2"><a href="#案例2" class="headerlink" title="案例2"></a>案例2</h4><p>本例将旋转摄像机，360度绕角色移动观察。</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">OrbitCamera</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">[<span class="meta">SerializeField</span>] <span class="keyword">private</span> Transform target;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> rotSpeed = <span class="number">1.5</span>f;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">float</span> _rotationY;</span><br><span class="line"><span class="keyword">private</span> Vector3 _offset;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	_rotationY = transform.eulerAngles.y;</span><br><span class="line">	_offset = target.position - transform.position;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LateUpdate</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">float</span> horInput = Input.GetAxis (<span class="string">"Horizontal"</span>);</span><br><span class="line">	<span class="keyword">if</span> (horInput != <span class="number">0</span>) &#123;</span><br><span class="line">		_rotationY += horInput * rotSpeed; <span class="comment">// use keyboard to rotate</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		_rotationY += Input.GetAxis (<span class="string">"Mouse X"</span>) * rotSpeed * <span class="number">3</span>;  <span class="comment">// use mouse to rotate</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	Quaternion rotation = Quaternion.Euler (<span class="number">0</span>, _rotationY, <span class="number">0</span>);</span><br><span class="line">	transform.position = target.position - (rotation * _offset); <span class="comment">// set new position</span></span><br><span class="line">	transform.LookAt (target); <span class="comment">// set new rotation</span></span><br><span class="line">&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/08/Unity-ControllerPlane/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/08/Unity-ControllerPlane/" itemprop="url">Unity-ControllerPlane</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-08T08:42:46+08:00">
+                2016-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  131
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="2D-Plane"><a href="#2D-Plane" class="headerlink" title="2D Plane"></a>2D Plane</h4><p>Move horizontal and vertical</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">float</span> moveHorizontal = Input.GetAxis (<span class="string">"Horizontal"</span>);</span><br><span class="line"><span class="keyword">float</span> moveVertical = Input.GetAxis (<span class="string">"Vertical"</span>);</span><br><span class="line">Vector3 movement = <span class="keyword">new</span> Vector3 (moveHorizontal, <span class="number">0.0</span>f, moveVertical);</span><br><span class="line">Rigidbody rb = GetComponent&lt;Rigidbody&gt; ();</span><br><span class="line"><span class="keyword">if</span> (rb != <span class="literal">null</span>) &#123;</span><br><span class="line">	rb.velocity = movement * speed;</span><br><span class="line">	rb.position = <span class="keyword">new</span> Vector3 (Mathf.Clamp (rb.position.x, boundary.xMin, boundary.xMax), <span class="number">0.0</span>f, Mathf.Clamp (rb.position.z, boundary.zMin, boundary.zMax));</span><br><span class="line">	rb.rotation = Quaternion.Euler (<span class="number">0.0</span>f, <span class="number">0.0</span>f, rb.velocity.x * -tilt);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3D-Plane"><a href="#3D-Plane" class="headerlink" title="3D Plane"></a>3D Plane</h4><p>Turn and tilt</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> accelerator : Vector3 = Input.acceleration;</span><br><span class="line"></span><br><span class="line">euler.y += accelerator.x * turnSpeed; <span class="comment">// turn</span></span><br><span class="line">euler.z = Mathf.Lerp(euler.z, -accelerator.x * maxTurnLean, <span class="number">0.2</span>); <span class="comment">// lean left or right</span></span><br><span class="line">euler.x = Mathf.Lerp(euler.x, accelerator.y * maxTilt, <span class="number">0.2</span>); <span class="comment">// tilt forward or backward</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> rot : Quaternion = Quaternion.Euler(euler);</span><br><span class="line">transform.rotation = Quaternion.Lerp (transform.rotation, rot, sensitivity);</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/07/Unity-Basic2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/07/Unity-Basic2/" itemprop="url">Unity-Basic2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-07T10:02:09+08:00">
+                2016-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,178
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Game Narrative 故事叙述<br>Casual game 休闲游戏<br>Arcade game 街机游戏</p>
+<h4 id="Texture："><a href="#Texture：" class="headerlink" title="Texture："></a>Texture：</h4><p>TextureType：贴图类型<br>AlphafromGrayscal: 使用灰度创建Alpha，当需要unity为贴图创建一条alpha通道，使用它转换得到的灰度值来渲染透明度<br>WrapMode：包裹模式，决定贴图会无限次平铺还是只会一次。Repeat就是重复平铺。Clamp会让贴图的边缘拉升并在改变大小时候填满任何缝隙<br>FilterMode：图像过滤模式，在拉伸时候对贴图过滤，比如[Point]点过滤，在很近看贴图时候，可能感觉不均。Bilinear它会时近看贴图显得模糊。Trilinear它会在不同mipmap层次之间模糊。<br>AnisoLevel：设置各项异性过滤器的级别，同属的可以理解为当你从一个比较陡的角度来看，贴图现实的可以有多细腻，渲染的等级越高，越占内存</p>
+<p>Cast Shadows： Two Sided 两侧(如plane正反面)都能阻挡光照，产生阴影</p>
+<p>ScaleFactor：缩放系数，使用这个属性在导入资源后设置其大小。<br>MeshCompression：网格压缩的比例[Off，Low，Medium，High]不可否认，压缩时可以节约内存的。<br>OptimizeMesh：为提高GPU性能记录网格顶点和索引。<br>GenerateColliders：是否在场景中让网格对象具有碰状体表现，通俗的说就是实心的，不可以穿体而过。<br>SwapUVs：交换UV，当你导入一个网格对象时候，着色器可能会使用错误的UV通道，若果发现资源异常[比如带光照图时候]，选中这个复选框。<br>Generate Lightmap UVs：为UV2生成光照贴图。</p>
+<p>Normals&amp;Tangents：该项设置计算法线切线<br>Normals：计算法线，import表示使用导入的网格法线，Calculate表示重新计算网格法线。<br>Tangents：计算切线，import表示使用导入的网格切线，Calulate表示重新计算切线。<br>Smoothing angle：法线平滑角度，告诉引擎在角度值为多少时候吧一个边缘视为硬边缘。<br>Split Tangents：是否分离切线,如果模型在场景渲染后现实UV缝隙，要开启它。</p>
+<h4 id="Materials"><a href="#Materials" class="headerlink" title="Materials:"></a>Materials:</h4><p>Standard以及Standard(Specular setup)两者的区别是, Standard使用了金属模拟的外观, 而Standard(Specular Setup)使用了镜面模拟的外观。<br>使用中, 对于任何不是金属的材质, 都应该选择Standard(Specular Setup).</p>
+<p>RenderingMode 渲染模式：<br>Opaque 不透明，例如石头，适用于所有的不透明的物体<br>Cutout 镂空，例如破布，透明度不是0%就是100%，不存在半透明的区域。<br>Fade 完全隐去，用于非现实的透明物体，与Transparent的区别为高光反射会随着透明度而消失。<br>Transparent 透明，例如玻璃，适用于像彩色玻璃一样的半透明物体，高光反射不会随透明而消失。</p>
+<p>Albedo 就是Diffuse漫射的意思, 但是这里的Alpha通道还会控制透明程度，在无光照时显现的颜色<br>Normal 增强效果，使低精度贴图看起来像高精度<br>Occlution 在非直接光照如周围物体漫反射光照下的效果<br>Smoothness 物体表面光滑程度，控制光照在微观表面的反射效果<br>Specular 镜面反射，控制反射强度<br>Metallic 像金属一样的效果<br>Emission 发光度<br>Ambient Occlusion 环境光遮蔽，描绘物体和物体相交或靠近的时候遮挡周围漫反射光线的效果，可以解决或改善漏光、飘和阴影不实等问题</p>
+<p>Tiling 表示UV坐标的缩放倍数<br>Offset 表示UV坐标的起始位置</p>
+<h4 id="RigidBody"><a href="#RigidBody" class="headerlink" title="RigidBody"></a>RigidBody</h4><p>Is Kinematic：是否开启动力学，开启后不在受物理引擎的影响，只能通过Transform属性来操作。此属性一般用来模拟平台的移动，或带有铰链关节链接刚体的动画。</p>
+<p>Interpolate：插值，用于控制刚体运动抖动的情况，有以下三种值可选。<br>-None：没有插值<br>-Interpolate：内插值，基于前一帧的Transform来平滑此次的Transform。<br>-Extrapolate：外插值，基于下一帧的Transform来平滑此次的Transform。</p>
+<p>Collsion Detection：碰撞检测，用于控制避免高速运动的对象穿过其他对象而未发生碰撞。<br>-Discrete：离散碰撞检测（默认值），与场景中其他多有碰撞体进行碰撞检测。<br>-Continuous：连续碰撞检测，此模式对物理性能会有很大影响，如果不需要对快速运动的对象进行碰撞检测，就是用离散模式。<br>-Continuous Dynamic：连续动态碰撞检测模式。</p>
+<p>Physics.Raycast 光线投射,在场景中投下可与所有碰撞器碰撞的一条光线</p>
+<h4 id="Light："><a href="#Light：" class="headerlink" title="Light："></a>Light：</h4><p>Illumination 照明<br>Halo 光环<br>Flare 闪光，耀斑</p>
+<p>Area Light,俗称面灯。没有任何实时光照的效果，仅用于Light baking即烘焙<br>Bounce Intensity:间接光照的效果强度<br>Culling mask 剔除遮罩，只照亮某些层<br>Cookie 投影遮罩。使用灰度纹理图准确的控制游戏灯光，做出格子光特效等<br>Soft Shadow: 相比Hard Shadow具有更加柔和的边缘</p>
+<p>LightMap烘焙：<br>1.所要烘焙物体的mesh 必须要有合适的lightmapping uv。如果不确定的话，就在导入模型设置中勾选 Generate Lightmap UVs<br>2.任何Mesh Renderer, Skinned Mesh Renderer 或者 Terrain都要标注为static(lightmap static)</p>
+<p>Light Probe Group：<br>LightProbe，可以让动态物体在烘焙好的场景里面受到光的照射效果，（墙烘焙，probe烘焙，球动态；灯光关闭后，墙不会反光照亮球，probe会照亮球）</p>
+<p>Baking 灯光烘焙类型:<br>Baking 仅在烘焙时使用，运行时不可见；影响Baked LightMap，不会照亮Dynamic物体<br>RealTime 运行时使用；影响Realtime LightMap，照亮所有物体<br>Mixed 在运行和烘焙时都使用。<br>LightMap Bake + Light Probe 提供直接照射和间接照射的模拟方案，等同于RealTime的效果。运行时关闭RealTime，降低计算量</p>
+<h4 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h4><p>Miscellaneous 混杂的，多种多样的;Animation和Animator在Component中的上级菜单…</p>
+<p>Animation Clip 动画片段<br>Animator 控制多个Animation之间的跳转<br>Avatar 骨骼</p>
+<p>Dope Sheet 摄影表，水平方向上列出关键帧</p>
+<p>Animator Transitions<br>Mute 该转移被禁用，用于状态机的调试<br>Solo 优先于一般转移使用，用于状态机的调试</p>
+<h4 id="Script"><a href="#Script" class="headerlink" title="Script"></a>Script</h4><p>[Header(“xxxx”)] 在Inspector面板中的标题<br>[HideInInspector] 在Inspector面板中不显示的public变量<br>[SerializeField] 将Private变量输出到Inspector面板<br>[System.Serializable] 为类添加可序列化的属性(Attribut,not Property)</p>
+<p>Invoke(methodName, 5) 5秒之后调用 SendMsg() 方法；是一种委托<br>InvokeRepeating (methodName : string, time : float, repeatRate : float)<br>在time秒调用methodName方法,每隔repeatRate时间调用一次</p>
+<p>yield return 10 等待10帧？</p>
+<h4 id="Navigation"><a href="#Navigation" class="headerlink" title="Navigation"></a>Navigation</h4><p>Nav Mesh 根据Navigation Static的物体烘焙生成可导航的区域<br>Nav Mesh Obstacle 动态的导航区域内的障碍，选中Carve(雕刻，切开)则从Nave Mesh中切除本身所占区域，用于移动后静止的物体<br>Nav Mesh Agent 游戏对象的寻路Agent，agent.SetDestination(position)设定目标</p>
+<p>Off-mesh link 手动添加的Nav Mesh各离散区域之间的连接</p>
+<h4 id="Audio："><a href="#Audio：" class="headerlink" title="Audio："></a>Audio：</h4><p>Audio Clip : audio data，导入到unity中的音频文件都是audio clip<br>Audio Sources : 挂载这audio clip的Object，相当于是一个音频控制器，可以用它来控制音频的播放、停止、以及设置一些播放参数等<br>Audio Listener : 音效的监听者，注意一个scene同时只能有一个listener，一般挂载到main camera上或者主角身上</p>
+<p>Output：输出到Audio Mixer<br>Reverb 反响，混响；获取音频剪辑（Audio Clip）并且根据音频侦听器所在的混响区进行失真处理<br>Pitch 音调<br>Stereo Pan 左右声道偏好</p>
+<p>Audio Format:<br>Native: 效果好，适合较短音效<br>Compressed:有压缩，适合较长的音效</p>
+<p>Load Type:<br>Decompress on load: 解压缩后进入内存，可以避免运行时计算开销，但内存消耗很大，适用于较小的压缩声音<br>Compressed in memory: 压缩后进入内存，在播放时解压缩，有轻微的性能开销，适用于较大文件<br>Gapless looping : 无缝循环，对于loop音频，有可能由于压缩导致破坏循环，这种情况下可以通过设置这个变量来解决</p>
+<p>Audio Mixers<br>Mixers：工程里所有的Mixer列表<br>Snapshot：指定参数的快照<br>Groups：Audio Source的分组<br>Views：指定某些Group可见的视图<br>Attenuation 衰减<br>Duck Volume：接收其他Group发送的信号，改变自己的一些属性，比如音量大小。 </p>
+<h4 id="UI"><a href="#UI" class="headerlink" title="UI"></a>UI</h4><p>Raycast Target: 是否可点击<br>Preserve Aspect: 保持横纵比</p>
+<p>Anchors： UI元素的顶点到Anchors的距离固定，长宽等会随之变化<br>Pivot：旋转、缩放的轴心</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/06/Unity-Mecanim/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -894,912 +1828,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/08/23/Unity-Basic1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/23/Unity-Basic1/" itemprop="url">Unity-Basic1</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-23T14:23:48+08:00">
-                2016-08-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1,415
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Cube     立方体<br>Sphere     球体<br>HemiSphere 半球体<br>Capsule 胶囊体<br>Cone     圆锥体<br>Quard 两个三角形组成的平面，开销少<br>Plane 多个三角形组成的平面，开销大，可调制？</p>
-<p>Mesh 网格<br>Mesh Filter 网格过滤器，用于获取网格并传递给对象<br>Mesh Render 网格渲染器，从网格过滤器获得网格，在scene视图中渲染，添加Material<br>Skinned Mesh Render 蒙皮渲染器，用于呈现骨骼动画</p>
-<p>Prefab 预设体，游戏对象及组件的组合，目的是使对象可重复利用<br>Shuiken 粒子系统<br>Mecanim 人形动画系统</p>
-<p>Camera<br>Perspective 透视镜头，锥体镜头范围，远小近大<br>Orthographic 正交镜头，长方体镜头范围，远近大小相同</p>
-<p>Physics<br>1.Rigidbody 刚体，用于接受外力<br>    Drag：阻力<br>    Damper：阻尼，数值越大物体运动越慢<br>    Torque：转矩</p>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnCollisionEnter</span>(<span class="params">Collision col</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (col.gameObject.tag.Equals(<span class="string">"Player"</span>)) &#123;</span><br><span class="line">		Debug.Log (<span class="string">"OnCollisionEnter"</span>);</span><br><span class="line">		Instantiate (wall, col.transform.position, Quaternion.identity);</span><br><span class="line">		Destroy (col.gameObject);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnCollisionStay</span>(<span class="params">Collision col</span>) </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnCollisionExit</span>(<span class="params">Collision col</span>) </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>Collider 碰撞体，用于碰撞检测<br> Is Trigger：触发器，选中该项则可用于触发事件，忽略物理碰撞</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnTriggerEnter</span>(<span class="params">Collider col</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (col.gameObject.tag.Equals(<span class="string">"Player"</span>)) &#123;</span><br><span class="line">		Debug.Log (<span class="string">"..OnTriggerEnter"</span>);</span><br><span class="line">		Instantiate (wall, col.transform.position, Quaternion.identity);</span><br><span class="line">		Destroy (col.gameObject);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnTriggerStay</span>(<span class="params">Collider col</span>) </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnTriggerExit</span>(<span class="params">Collider col</span>) </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
-<p>3.Hinge Joint：铰链关节，由两个刚体组成，适用于模拟链和钟摆等<br>Character Joint：角色关节，扩展的球关节，限制关节在不同旋转轴下的旋转角度</p>
-<p>Audio Listener 音频检测器，接收输入和场景中的任何声音<br>Audio Source 音频源，随距离衰减<br>    Audio Clip 音频剪辑<br>    Output 输出，混音器<br>    Bypass Effect 直通？简单的打开/关闭所有音效<br>    Bypass Listener Effect 忽略Listener上应用的效果<br>    Bypass Reverb Zone 忽略混响区域<br>    Pitch 音调<br>    Stereo Pan 立体效果<br>    Spatial Blend 空间混合<br>    Reverb Zone Mix 对混响区域的混合系数<br>    Doppler level 多普勒级别<br>    Volume Rolloff 衰减模式<br>Audio Reverb Zone 音频混响</p>
-<p>Light Probes 光照探头，对某个位置的光照信息采样<br>NavMesh 导航网格，生成可自动导航的路径<br>Occlusion Culling 遮挡剔除，当一个物体被其他物体遮挡住时不进行渲染<br>Frustum Culling 视锥体剔除，不渲染摄像机视锥范围之外的物体</p>
-<p>Flare 炫光<br>Bloom 泛光，多物体眩光<br>Tonemapping 色调映射，模拟人眼适应环境明暗变化的效果<br>Antialiasing 抗锯齿，平滑图像<br>Screen Space Ambient Occlusion 屏幕空间环境遮挡，实时模拟真实的全局光漫反射效果<br>Twirl 扭曲特效<br>Vortex 漩涡特效</p>
-<p>Develop<br>Cross 叉乘，外积，左手定则，得到向量，新向量垂直于原来的两个向量，长度等于原向量长度相乘后再乘夹角的正弦<br>Dot 点乘，内积，数量积，得到标量，数值等于两个向量长度相乘后再乘以二者夹角的余弦<br>Certain Events 必然事件，Unity中一定条件下自动调用的函数，包括Awake, Start, Update, FixedUpdate, LateUpdate<br>C#只有内建数组，没有Array数组，但可以使用List容器来达到同样的目的。List不支持下标[i]，只能add(), sort(), foreach()<br>MonoBehaviour 所有Unity脚本的父类，定义了基本事件<br>GameObject.Find(“ObjectName”) 返回指定名称的游戏对象的引用<br>object.GetComponent<componentname>() 返回游戏对象的组件，如Transform, Rigidbody, Renderer, Light, Camera, Collider, Animation, Audio<br>由于耗时，避免在Update中使用Find，在Start中Find并保存，或者声明变量后在Inspector中指定<br>常用API：Transform, Time, Random, Mathf, Coroutine(协同程序)<br>C#中，协同函数的返回类型必须为IEnumerator，yield要用yield return替代，启动协同程序要使用StartCoroutine函数</componentname></p>
-<p>Input<br>Unity中所有输入信息的更新都在Update方法中完成<br>Input.GetMouseButtonDown(1)   Input.GetKeyDown(KeyCode.Space)<br>Touch 触摸操作返回的结构体</p>
-<p>Canvas 画布，每个GUI控件都是画布的子对象<br>Canvas Group 对UI元素分组<br>Rect Transform 矩形变换，表示一个可容纳UI元素的矩形，调整时不影响字体大小，不同于Transform的缩放<br>Anchor Presets 锚点预置按钮<br>Pivot 轴心点，旋转和缩放都围绕轴心点发生变化<br>Transition Options 过渡选项，不同状态时的不同颜色、图像或者动画<br>Toggle 开关勾选<br>Layout Element 布局元素</p>
-<p>Shader 着色器<br>ShaderLab Unity提供的用来编写Shader的语言<br>Surface Shaders 表面着色器<br>Vertex and Fragment Shaders 顶点和片段着色器<br>Fixed Function Shaders 固定功能管线着色器，一般用于不支持高级着色器特性的旧硬件上<br>Self-Illuminated Shader Family 用于有自发光效果的对象<br>Reflective Shader Family 用于能反射环境立方体贴图的不透明对象<br>Unlit 仅使用纹理颜色，不受光照影响<br>VertextLit 顶点光照<br>Diffuse 漫反射<br>Specular 在漫反射的基础上增加高光计算<br>Normal Mapped 法线贴图<br>Normal Mapped Specular 带高光法线贴图<br>Parallax Normal Mapped 视差法线贴图<br>Parallax Normal Mapped Specular 带高光视差法线贴图</p>
-<p>StandardShader 标准着色器，5.0新引入，推荐使用<br>Albedo 反射率<br>Occlusion 散射<br>Emission 自发光<br>Tiling 平铺<br>Smoothness 光滑度，不能和 Metallic 同时使用<br>Conservation of Energy 能量守恒原理</p>
-<p>Reflection Probe 反射探头，用于捕获周围环境的光反射信息，将捕获的图像存储为Cubemap和能在游戏对象上使用的反射材质。非常消耗资源</p>
-<p>AssetBundle 在游戏运行时对资源进行动态的下载和加载<br>HLAPI - High Level API - Network Manager 简单易上手<br>LLAPI - Low Level API - Network Transport API 强大而灵活<br>Remote Procedure Calls 远程过程调用, RPC<br>Profiler 性能分析</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/08/18/Unity-Corotine/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/18/Unity-Corotine/" itemprop="url">Unity-Corotine</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-18T17:26:21+08:00">
-                2016-08-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  26
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>Return type of function should be “IEnumerator”</li>
-<li>Using “yield return”</li>
-<li><p>Using “StartCoroutine(function())”</p>
-<p> IEnumerator function() {</p>
-<pre><code>...
-yield return new WaitForSeconds(3.0f);
-...
-</code></pre><p> }</p>
-<p> StartCoroutine(function());</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/08/18/Unity-Quaternion/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/18/Unity-Quaternion/" itemprop="url">Unity-Quaternion</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-18T15:58:07+08:00">
-                2016-08-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  271
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Rotation"><a href="#Rotation" class="headerlink" title="Rotation"></a>Rotation</h2><p>旋转本质上需要知道 1个向量 + 1个角度，共4个值。有3种表示方法：</p>
-<ul>
-<li><p><strong>Matrix(矩阵)</strong>: 使用 4*4 矩阵，共16个值，计算时有额外的时间和空间消耗；</p>
-</li>
-<li><p><strong>Euler(欧拉)</strong>: 使用3个值(xRotation, yRotation, zRotation)，是一系列坐标轴旋转的组合，按顺序沿各个轴旋转；会带来万向节锁问题。<br>Gimbal Lock(万向节锁)：当欧拉旋转的第二次旋转角度为90°时，第三个轴就被转到了第一个轴相同的方向，因此丢失了一个自由度。</p>
-</li>
-<li><p><strong>Quaternion(四元数)</strong>: 本质上是一个高阶复数，即 x = a + bi + cj + dk，效率更高</p>
-<p>  rigidBody.rotation = Quaternion.Euler(0.0f, 0.0f, rigidBody.velocity.x * -1);</p>
-</li>
-</ul>
-<h1 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h1><ol>
-<li>quaternion <em> quaternio，例如q = q1 </em> q2，表示将一个点先q1旋转，再q2旋转</li>
-<li>quaternion <em> Vector3，例如p = q </em> v，表示将向量v进行q旋转，得到旋转后的向量p.<br>Quaternion必须位于乘号的左边。</li>
-</ol>
-<pre><code class="cs"><span class="comment">//镜头到物体的距离</span>
-distance = Vector3.forward * <span class="number">10.0</span>f;
-transform.position = target.position - distance
-<span class="comment">//有旋转</span>
-transform.position = target.position - rotation * distance
-</code></pre>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/08/08/GKRandom/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/08/GKRandom/" itemprop="url">GKRandom</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-08T11:39:19+08:00">
-                2016-08-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  50
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Randomization-Distributions"><a href="#Randomization-Distributions" class="headerlink" title="Randomization Distributions"></a>Randomization Distributions</h4><ul>
-<li><strong>Random</strong>: GKRandomDistribution(:)</li>
-<li><strong>Gaussian</strong>: GKGausianDistribution(:), good for making corridors</li>
-<li><strong>Shuffled</strong>: GKShuffledDistribution(:), does not repeat a number until all the numbers have been returned, good for making rooms</li>
-</ul>
-<h4 id="Randomization-Sources"><a href="#Randomization-Sources" class="headerlink" title="Randomization Sources"></a>Randomization Sources</h4><ul>
-<li><strong>Linear Congruential</strong>: GKLinearCongruentialRandomSource(), least computation and randomness</li>
-<li><strong>ARC4 random</strong>: GKARC4RandomSource(), the default source</li>
-<li><strong>Mersenne Twister</strong>: GKMersenneTwisterRandomSource(), most computation and randomness</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/07/27/Swift-FlatMap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/07/27/Swift-FlatMap/" itemprop="url">Map and FlatMap</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-27T15:31:06+08:00">
-                2016-07-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  52
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>FlatMap returns an Array containing the <strong>non-nil</strong> results of mapping transform over self.</p>
-<p>s.flatMap(transform) is equivalent to Array(s.map(transform).flatten()).</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// find specified nodes</span></span><br><span class="line"><span class="keyword">let</span> touchedNodes: [<span class="type">SKNode</span>] = <span class="keyword">self</span>.nodesAtPoint(touch.locationInNode(<span class="keyword">self</span>)).flatMap &#123; node <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> nodeName = node.name <span class="keyword">where</span> nodeName.hasPrefix(<span class="string">"Prefix_"</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> node</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/07/23/GKGraph/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/07/23/GKGraph/" itemprop="url">GKGraph</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-23T17:15:22+08:00">
-                2016-07-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  60
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>GKGraph is a collection of locations in game scene, which are used in path finding. Subclass of GKGraph includes:</p>
-<ul>
-<li><p><strong>GKGridGraph</strong>: A list of <strong>valid</strong> locations on a two-dimensional grid. Entities are only allowed to travel between these grid locations. Example as Pac-Man.</p>
-</li>
-<li><p><strong>GKObstacleGraph</strong>: A collection of <strong>invalid</strong> polygons that specify the shapes of the obstacles in the scene.</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1849,7 +1882,7 @@ transform.position = target.position - rotation * distance
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">267</span>
+                  <span class="site-state-item-count">273</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1951,7 +1984,7 @@ transform.position = target.position - rotation * distance
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">96.1k</span>
+    <span title="Site words total count">98.9k</span>
   
 </div>
 
