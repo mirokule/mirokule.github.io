@@ -262,6 +262,619 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/Unity-EditorMenu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/13/Unity-EditorMenu/" itemprop="url">Unity-EditorMenu</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T16:40:16+08:00">
+                2016-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  309
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Add a top level menu item to toggle VR supported on and off.<br>This is an editor script which modifies how the Unity editor actually works.</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;		<span class="comment">//Enables the use of editor modifying code</span></span><br><span class="line"><span class="keyword">using</span> UnityEngine.VR;	<span class="comment">//Enables us to check VR settings</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VREditorToggle</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">string</span> ONNAME = <span class="string">"VR/Enable VR"</span>;		<span class="comment">//The name of our Enable menu item</span></span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">string</span> OFFNAME = <span class="string">"VR/Disable VR"</span>;		<span class="comment">//The name of our Disable menu item</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//This method creates the Enable menu item. When the menu item is clicked, the code</span></span><br><span class="line">	<span class="comment">//inside this method executes</span></span><br><span class="line">	[<span class="meta">MenuItem(ONNAME)</span>]</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">EnableVR</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//Turn VR Supported on</span></span><br><span class="line">		PlayerSettings.virtualRealitySupported = <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//This method "validates" the Enable menu item. It is used by the editor to format</span></span><br><span class="line">	<span class="comment">//the menu item for us</span></span><br><span class="line">	[<span class="meta">MenuItem(ONNAME, true)</span>]</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">EnableValidate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//If VR Supported is enabled, add a checkmark next to this menu item</span></span><br><span class="line">		Menu.SetChecked (ONNAME, PlayerSettings.virtualRealitySupported);</span><br><span class="line">		<span class="comment">//Return the opposite of whether or not VR is supported. Thus, if VR Supported is enabled,</span></span><br><span class="line">		<span class="comment">//this returns "false". The result is that if VR Support is enabled, this menu item is grayed-out</span></span><br><span class="line">		<span class="comment">//and cannot be selected again</span></span><br><span class="line">		<span class="keyword">return</span> !PlayerSettings.virtualRealitySupported;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//This method creates the Disable menu item. When the menu item is clicked, the code</span></span><br><span class="line">	<span class="comment">//inside this method executes</span></span><br><span class="line">	[<span class="meta">MenuItem(OFFNAME)</span>]</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DisableVR</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//Turn VR Supported off</span></span><br><span class="line">		PlayerSettings.virtualRealitySupported = <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//This method "validates" the Disable menu item. It is used by the editor to format</span></span><br><span class="line">	<span class="comment">//the menu item for us</span></span><br><span class="line">	[<span class="meta">MenuItem(OFFNAME, true)</span>]</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">DisableValidate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//If VR Supported is disabled, add a checkmark next to this menu item</span></span><br><span class="line">		Menu.SetChecked (OFFNAME, !PlayerSettings.virtualRealitySupported);</span><br><span class="line">		<span class="comment">//Return the opposite of whether or not VR is supported. Thus, if VR Supported is disabled,</span></span><br><span class="line">		<span class="comment">//this returns "true". The result is that if VR Support is disabled, this menu item is grayed-out</span></span><br><span class="line">		<span class="comment">//and cannot be selected again</span></span><br><span class="line">		<span class="keyword">return</span> PlayerSettings.virtualRealitySupported;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-DoubleBuffer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/13/DP-DoubleBuffer/" itemprop="url">DesignPattern-DoubleBufferPattern</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T13:24:31+08:00">
+                2016-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  619
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>双缓冲模式解决的核心问题是状态同时进行修改和访问的冲突。<br>通过设置2片缓冲区，将缓冲内容的读和写分离。<br>常见于图形显示，其中渲染代码写入缓存，显卡读取缓存。</p>
+<p><strong>演员的例子</strong><br>加入双缓冲后，无论演员的顺序如何变，同一帧里的状态不会发生改变；每一帧只有1次巴掌传递。<br>单缓冲时，在缓冲区首位写入的状态，会随着读取不断向后传递，每帧有多个巴掌；在缓冲区末位写入的状态，每帧只有1个巴掌。<br>目的是将读写分离，本帧内写的新状态不会在本帧内读取，使每帧读取的状态稳定可控。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/12/13/DP-DoubleBuffer/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-Observer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/13/DP-Observer/" itemprop="url">DesignPattern-ObserverPattern</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T13:20:53+08:00">
+                2016-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  651
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在对象间定义一种一对多的依赖关系，以便当某对象的状态改变时，与它存在依赖关系的所有对象都能收到通知并自动进行更新。<br>C#将观察者模式集成在了语言层面(event关键字)。</p>
+<p>例如实现成就系统，如果在碰撞处理的代码中加入解锁成就的判断会带来耦合。<br>可以只发送相应的通知，而不关心谁会收到通知的消息以及如何解锁成就。<br>观察者模式非常适合于一些不相关的模块之间的通信，不适合于单个紧凑的模块内部的通信。</p>
+<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
+<li><p><strong>主要解决</strong>：一个对象状态改变给其他对象通知的问题，而且要考虑到易用和低耦合，保证高度的协作。</p>
+</li>
+<li><p><strong>何时使用</strong>：一个对象（目标对象）的状态发生改变，所有的依赖对象（观察者对象）都将得到通知，进行广播通知。</p>
+</li>
+<li><p><strong>关键代码</strong>：在抽象类里有一个 ArrayList 存放观察者们。</p>
+</li>
+<li><p><strong>应用实例</strong>：<br>1、拍卖的时候，拍卖师观察最高标价，然后通知给其他竞价者竞价。 </p>
+</li>
+<li><p><strong>优点</strong>：<br>1、观察者和被观察者是抽象耦合的。<br>2、建立一套触发机制。 </p>
+</li>
+<li><p><strong>缺点</strong>：<br>1、如果一个被观察者对象有很多的直接和间接的观察者的话，将所有的观察者都通知到会花费很多时间。<br>2、如果在观察者和观察目标之间有循环依赖的话，观察目标会触发它们之间进行循环调用，可能导致系统崩溃。<br>3、观察者模式没有相应的机制让观察者知道所观察的目标对象是怎么发生变化的，而仅仅只是知道观察目标发生了变化。 </p>
+</li>
+<li><p><strong>使用场景</strong>：<br>1、有多个子类共有的方法，且逻辑相同。<br>2、重要的、复杂的方法，可以考虑作为模板方法。</p>
+</li>
+<li><p><strong>注意事项</strong>：<br>1、J避免循环引用。<br>2、如果顺序执行，某一观察者错误会导致系统卡壳，一般采用异步方式。<br>3、如果一个观察者没有及时注销自己，被观察对象的观察者列表会越来越长，带来失效观察者问题。</p>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/12/13/DP-Observer/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-Flyweight/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/13/DP-Flyweight/" itemprop="url">DesignPattern-FlyweightPattern</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T13:18:18+08:00">
+                2016-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  631
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>享元模式：使用共享以高效地支持大量的细粒度对象。<br>FlyWeight，顾名思义，使对象轻量化。<br>享元模式的特点是，复用内存中已存在的对象，降低系统创建对象实例的性能消耗。</p>
+<p>享元模式将对象数据分为两种类型。</p>
+<ul>
+<li>the intrinsic state: 不属于单一实例对象并且能够被所有对象共享的数据</li>
+<li>the extrinsic state: 对每个实例都唯一的外部状态</li>
+</ul>
+<p>例如场景中有许多树，为了减少发送给GPU的数据量，我们希望只发送一次tree model，再将每棵树实例的特有数据——位置、颜色、缩放比例等推送到GPU。</p>
+<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
+<li><p><strong>意图</strong>：运用共享技术有效地支持大量细粒度的对象。</p>
+</li>
+<li><p><strong>主要解决</strong>：在有大量对象时，有可能会造成内存溢出，我们把其中共同的部分抽象出来，如果有相同的业务请求，直接返回在内存中已有的对象，避免重新创建。</p>
+</li>
+<li><p><strong>何时使用</strong>：<br>1、系统中有大量对象。<br>2、这些对象消耗大量内存。<br>3、这些对象的状态大部分可以外部化。<br>4、这些对象可以按照内蕴状态分为很多组，当把外蕴对象从对象中剔除出来时，每一组对象都可以用一个对象来代替。<br>5、系统不依赖于这些对象身份，这些对象是不可分辨的。 </p>
+</li>
+<li><p><strong>如何解决</strong>：用唯一标识码判断，如果在内存中有，则返回这个唯一标识码所标识的对象。</p>
+</li>
+<li><p><strong>关键代码</strong>：用 HashMap 存储这些对象。</p>
+</li>
+<li><p><strong>应用实例</strong>：<br>1、JAVA 中的 String，如果有则返回，如果没有则创建一个字符串保存在字符串缓存池里面。<br>2、数据库的数据池。 </p>
+</li>
+<li><p><strong>优点</strong>：大大减少对象的创建，降低系统的内存，使效率提高。</p>
+</li>
+<li><p><strong>缺点</strong>：提高了系统的负责度，需要分离出外部状态和内部状态，而且外部状态具有固有化的性质，不应该随着内部状态的变化而变化，否则会造成系统的混乱。</p>
+</li>
+<li><p><strong>使用场景</strong>：<br>1、系统有大量相似对象。<br>2、需要缓冲池的场景。 </p>
+</li>
+<li><p><strong>注意事项</strong>：<br>1、注意划分外部状态和内部状态，否则可能会引起线程安全问题。<br>2、这些类必须有一个工厂对象加以控制。 </p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-Order/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1210,623 +1823,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/07/Algorithm-DataStructure/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/07/Algorithm-DataStructure/" itemprop="url">Algorithm-DataStructure</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-07T11:17:23+08:00">
-                2016-12-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1,170
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="数据的逻辑结构"><a href="#数据的逻辑结构" class="headerlink" title="数据的逻辑结构"></a>数据的逻辑结构</h4><p>指反映数据元素之间的逻辑关系的数据结构，其中的逻辑关系是指数据元素之间的前后件关系，而与他们在计算机中的存储位置无关。<br>逻辑结构包括：</p>
-<ul>
-<li><strong>集合</strong><br>数据结构中的元素之间除了“同属一个集合” 的相互关系外，别无其他关系；</li>
-<li><strong>线性结构</strong><br>数据结构中的元素存在一对一的相互关系；</li>
-<li><strong>树形结构</strong><br>数据结构中的元素存在一对多的相互关系；</li>
-<li><strong>图形结构</strong><br>数据结构中的元素存在多对多的相互关系。</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/07/Algorithm-DataStructure/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/04/DP-Basic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/04/DP-Basic/" itemprop="url">Design Patterns</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-04T11:28:59+08:00">
-                2016-12-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  317
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>设计模式是经过长时间的试验和错误总结出来的，软件开发过程中面临的一般问题的解决方案。<br>可以分为几个大类。</p>
-<h4 id="创建型模式-Creational-Patterns"><a href="#创建型模式-Creational-Patterns" class="headerlink" title="创建型模式 Creational Patterns"></a>创建型模式 Creational Patterns</h4><ul>
-<li>工厂模式 Factory Pattern</li>
-<li>抽象工厂模式 Abstract Factory Pattern</li>
-<li>单例模式 Singleton Pattern</li>
-<li>建造者模式 Builder Pattern</li>
-<li>原型模式 Prototype Pattern</li>
-</ul>
-<h4 id="结构型模式-Structural-Patterns"><a href="#结构型模式-Structural-Patterns" class="headerlink" title="结构型模式 Structural Patterns"></a>结构型模式 Structural Patterns</h4><ul>
-<li>适配器模式 Adapter Pattern</li>
-<li>桥接模式 Bridge Pattern</li>
-<li>过滤器\准则模式 Fliter\Criteria Pattern</li>
-<li>组合模式 Composite Pattern</li>
-<li>装饰器模式 Decorator Pattern</li>
-<li>外观模式 Facade Pattern</li>
-<li>享元模式 Flyweight Pattern</li>
-<li>代理模式 Proxy Pattern </li>
-</ul>
-<h4 id="行为型模式-Behavioral-Patterns"><a href="#行为型模式-Behavioral-Patterns" class="headerlink" title="行为型模式 Behavioral Patterns"></a>行为型模式 Behavioral Patterns</h4><ul>
-<li>责任链模式 Chain of Responsibility Pattern</li>
-<li>命令模式 Command Pattern</li>
-<li>解释器模式 Interpreter Pattern</li>
-<li>迭代器模式 Iterator Pattern</li>
-<li>中介者模式 Mediator Pattern</li>
-<li>备忘录模式 Memento Pattern</li>
-<li>观察者模式 Observer Pattern</li>
-<li>状态模式 State Pattern</li>
-<li>空对象模式 Null Object Pattern</li>
-<li>策略模式 Strategy Pattern</li>
-<li>模板模式 Template Pattern</li>
-<li>访问者模式 Visitor Pattern</li>
-</ul>
-<h4 id="J2EE设计模式"><a href="#J2EE设计模式" class="headerlink" title="J2EE设计模式"></a>J2EE设计模式</h4><ul>
-<li>MVC模式 MVC Pattern</li>
-<li>业务代表模式 Business Delegate Pattern</li>
-<li>组合实体模式 Composite Entity Pattern</li>
-<li>数据访问对象模式 Data Access Object Pattern</li>
-<li>前端控制器模式 Front Controller Pattern</li>
-<li>拦截过滤模式 Intercepting Filter Pattern</li>
-<li>服务定位模式 Service Locator Pattern</li>
-<li>传输对象模式 Transfer Object Pattern</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/02/Unity-Audio/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/02/Unity-Audio/" itemprop="url">Unity-Audio</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-02T11:10:50+08:00">
-                2016-12-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  185
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="导入设置"><a href="#导入设置" class="headerlink" title="导入设置"></a>导入设置</h4><ul>
-<li>Force to Mono:强制变为单声道</li>
-<li>Load in Background:加载时在后台处理，不会造成卡顿等，用于大文件。</li>
-<li><p>Preload Audio Data:预加载会消耗内存，但可以避免播放时等待。</p>
-</li>
-<li><p>Load Type:运行时加载音频的方法。<strong>Decompress on load</strong>加载后就解压缩，避免运行时的性能开销，将使用更多内存，用于小文件;<strong>Compressed in memory</strong>加载后仍然保持压缩，仅在播放时解压缩，用于大文件。<strong>Streaming</strong>从磁盘流式加载，而不是完全加载到内存，用于大型背景音乐等。</p>
-</li>
-<li>Compression Format: 音频存储的数据格式。<strong>Vorbits</strong>压缩格式，用于大文件；<strong>PCM</strong>原始格式，用于小文件。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/30/Unity-Lambda/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/30/Unity-Lambda/" itemprop="url">Unity-Lambda</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T16:11:59+08:00">
-                2016-11-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  156
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Lambda是没有函数名的函数，又称匿名函数；通常临时创建在其他函数中。<br>和closure闭包很像。<br>格式为 () =&gt; {}</p>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetWebImage</span>(<span class="params">Action&lt;Texture2D&gt; callbackFunc</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (_webImage == <span class="literal">null</span>) &#123;</span><br><span class="line">		StartCoroutine(_network.DownloadImage( </span><br><span class="line">			(Texture2d image) =&gt; &#123;</span><br><span class="line">				_webImage = image;</span><br><span class="line">				callbackFunc(_webImage);</span><br><span class="line">			&#125;</span><br><span class="line">		));</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		callbackFunc(_webImage);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>本段代码的目的是缓存图片。在前端显示和底层网络数据获取的回调之间，将图片保存下来。<br>network.DownloadImage(Action<texture2d> func)需要传入回调函数，在这里创建了Lambda函数作为参数传入。<br>Lambda函数接受图片作为输入参数，在本地保存后，再调用前端的回调函数显示图片。</texture2d></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1881,7 +1877,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">273</span>
+                  <span class="site-state-item-count">277</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1983,7 +1979,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">98.9k</span>
+    <span title="Site words total count">100.2k</span>
   
 </div>
 

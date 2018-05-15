@@ -262,6 +262,627 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/DL-LearningRateDecay/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/12/DL-LearningRateDecay/" itemprop="url">学习速率衰减(Learning Rate Decay)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T15:13:39+08:00">
+                2018-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  125
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>学习速率$\alpha$是所有超参数中最重要的一个。<br>随着GDA迭代的进行，参数逐渐逼近最优解的时候，有必要将$\alpha$逐渐缩小，使每次迭代的步长缩短，避免在最优解附近来回震荡。<br>逐渐减少学习速率的方法有很多种，比如<br>$$ \alpha = \frac{1}{1 + decay \cdot epoch} \alpha_0 $$<br>$$ \alpha = 0.95^{epoch} \alpha_0 $$<br>$$ \alpha = \frac{k}{\sqrt{epoch}} \alpha_0 $$<br>或者直接在迭代几十次后对$\alpha$赋值：<br>$$ \alpha = 0.5 \cdot \alpha_0 $$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/Python-NumPy-ShufflePermutation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/12/Python-NumPy-ShufflePermutation/" itemprop="url">Shuffle和Permutation</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T14:52:35+08:00">
+                2018-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  205
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>NumPy中随机打乱数组可以使用shuffle()或者permutation()来完成。两者区别是：</p>
+<ul>
+<li>shuffle的参数只能是array_like，而permutation还可以是int，返回numpy.arange(int)</li>
+<li>shuffle返回None，就地生效，而permutation返回打乱后的数组拷贝</li>
+</ul>
+<h4 id="1-shuffle"><a href="#1-shuffle" class="headerlink" title="1.shuffle"></a>1.shuffle</h4><p>numpy.random.shuffle(x)<br>就地生效，in-place；<br>对多维数组，只重排第一轴(axis=0)</p>
+<p>参数</p>
+<ul>
+<li>x: array_like</li>
+</ul>
+<p>返回: None</p>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr = np.arange(<span class="number">5</span>)</span><br><span class="line">np.random.shuffle(arr) <span class="comment">#arr=[1 3 2 4 0]</span></span><br><span class="line"></span><br><span class="line">arr = np.arange(<span class="number">9</span>).reshape((<span class="number">3</span>,<span class="number">3</span>))</span><br><span class="line">np.random.shuffle(arr)</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-permutation"><a href="#2-permutation" class="headerlink" title="2.permutation"></a>2.permutation</h4><p>numpy.random.permutation(x)<br>返回打乱顺序后的拷贝，内部也使用了shuffle；<br>多维数组，只针对第一轴(axis=0)打乱顺序</p>
+<p>参数</p>
+<ul>
+<li>x：int或array_like</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>out: ndarray</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.permutation(<span class="number">5</span>) <span class="comment">#array[1,4,2,3,0]</span></span><br><span class="line">np.random.permutation([<span class="number">1</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">11</span>]) <span class="comment">#array[11,4,9,1]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于数据重排	</span></span><br><span class="line">sampler = np.random.permutation(<span class="number">5</span>)</span><br><span class="line">df.take(sampler)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/11/DL-Adam/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/11/DL-Adam/" itemprop="url">Adam梯度下降</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T09:07:45+08:00">
+                2018-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  741
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Adam算法全称是Adaptive Moment Estimation(自适应矩估计)，是超越其他自适应技术的优化方法。<br>Adam结合了<strong>RMSProp</strong>和<strong>Momentum</strong></p>
+<h4 id="1-Momentum"><a href="#1-Momentum" class="headerlink" title="1. Momentum"></a>1. Momentum</h4><p><strong>指数平均</strong><br>指数平均(Exponentially Weight Average)是一种将输入平滑的趋向类指标。<br>$$ v_t = \beta v_{t-1} + (1-\beta)\theta_t $$<br>可以近似看做$\frac{1}{1-\beta}$天的平均，例如$\beta=0.9$，则$v_t$近似看做最近10天的平均值。<br>$\beta$越大，$v_t$曲线越光滑；通常取为0.9.</p>
+<p><strong>动量梯度下降(Momentum)</strong><br>将指数平均应用到梯度下降算法，每次迭代更新时使用近似均值，来降低波动。<br>$$ \begin{cases}<br>v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\<br>W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}<br>\end{cases}$$</p>
+<p>$$\begin{cases}<br>v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\<br>b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}}<br>\end{cases}$$</p>
+<p><strong>Bias Correction</strong><br>移动平均的起始点低，因为$v_{t-1}$数值较小。<br>可以通过$v_t = \frac{v_t}{1-\beta^t}$予以校正。</p>
+<h4 id="2-RMSProp"><a href="#2-RMSProp" class="headerlink" title="2. RMSProp"></a>2. RMSProp</h4><p>均方根(Root Mean Square prop)用参数除以近似标准差，降低更新方向上的波动。</p>
+<p>$$ \begin{cases}<br>S_{dW^{[l]}} = \beta S_{dW^{[l]}} + (1 - \beta) (dW^{[l]})^2 \\<br>W^{[l]} = W^{[l]} - \alpha \frac{dW^{[l]}}{\sqrt{S_{dW^{[l]}}}}<br>\end{cases}$$</p>
+<p>$$\begin{cases}<br>S_{db^{[l]}} = \beta S_{db^{[l]}} + (1 - \beta) (db^{[l]})^2 \\<br>b^{[l]} = b^{[l]} - \alpha \frac{db^{[l]}}{\sqrt{S_{db^{[l]}}}}<br>\end{cases}$$</p>
+<p>实际应用时会给分母加上$\epsilon = 10^{-8}$，保证分母不为0.</p>
+<h4 id="3-Adam"><a href="#3-Adam" class="headerlink" title="3. Adam"></a>3. Adam</h4><p>同时使用了近似均值和近似标准差：<br>$$\begin{cases}<br>v_{dW^{[l]}} = \beta_1 v_{dW^{[l]}} + (1 - \beta_1) \frac{\partial \mathcal{J} }{ \partial W^{[l]} } \\<br>v^{corrected}_{dW^{[l]}} = \frac{v_{dW^{[l]}}}{1 - (\beta_1)^t} \\<br>s_{dW^{[l]}} = \beta_2 s_{dW^{[l]}} + (1 - \beta_2) (\frac{\partial \mathcal{J} }{\partial W^{[l]} })^2 \\<br>s^{corrected}_{dW^{[l]}} = \frac{s_{dW^{[l]}}}{1 - (\beta_1)^t} \\<br>W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{dW^{[l]}}}{\sqrt{s^{corrected}_{dW^{[l]}}}\;\;+\;\;\varepsilon}<br>\end{cases}$$</p>
+<p><strong>算法</strong></p>
+<ol>
+<li>计算梯度的指数平均 $v$ 和 $v^{corrected}$ </li>
+<li>计算梯度平方的指数平均 $s$ 和 $s^{corrected}$ </li>
+<li>将1和2的信息结合，更新参数</li>
+<li>$\beta_1$通常取0.9，$\beta_2$通常取0.999，$\epsilon$通常取$10^{-8}$</li>
+</ol>
+<p><strong>实现</strong><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> l <span class="keyword">in</span> range(L):</span><br><span class="line">    <span class="comment"># Moving average of the gradients. Inputs: "v, grads, beta1". Output: "v".</span></span><br><span class="line">    v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = beta1 * v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta1) * grads[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)]</span><br><span class="line">    v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = beta1 * v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta1) * grads[<span class="string">"db"</span> + str(l+<span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Compute bias-corrected first moment estimate. Inputs: "v, beta1, t". Output: "v_corrected".</span></span><br><span class="line">    v_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line">    v_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Moving average of the squared gradients. Inputs: "s, grads, beta2". Output: "s".</span></span><br><span class="line">    s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = beta2 * s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta2) * (grads[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line">    s[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = beta2 * s[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta2) * (grads[<span class="string">"db"</span> + str(l+<span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Compute bias-corrected second raw moment estimate. Inputs: "s, beta2, t". Output: "s_corrected".</span></span><br><span class="line">    s_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line">    s_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Update parameters. Inputs: "parameters, learning_rate, v_corrected, s_corrected, epsilon". Output: "parameters".</span></span><br><span class="line">    parameters[<span class="string">"W"</span> + str(l+<span class="number">1</span>)] = parameters[<span class="string">"W"</span> + str(l+<span class="number">1</span>)] - learning_rate * v_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / np.sqrt(s_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + epsilon)</span><br><span class="line">    parameters[<span class="string">"b"</span> + str(l+<span class="number">1</span>)] = parameters[<span class="string">"b"</span> + str(l+<span class="number">1</span>)] - learning_rate * v_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] / np.sqrt(s_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + epsilon)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-Overfit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/10/DL-Overfit/" itemprop="url">神经网络过拟合</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T09:33:41+08:00">
+                2018-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  338
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。</p>
+<p>过拟合的处理方法包括：</p>
+<ul>
+<li>增加训练样本：Data Augmentation数据扩增</li>
+<li>正则化<ul>
+<li>L2</li>
+<li>Drop Out</li>
+</ul>
+</li>
+<li>Early Stopping：不符合‘一次解决一个问题’的原则</li>
+</ul>
+<h4 id="1-L2正则化"><a href="#1-L2正则化" class="headerlink" title="1. L2正则化"></a>1. L2正则化</h4><p>在损失函数的末尾增加正则项：<br>$$ C = C_0 + \frac{\lambda}{2m} \sum_{\omega}\omega^2$$<br>原参数的导数变为：<br>$$ \frac{\partial C}{\partial \omega} = \frac{\partial C_0}{\partial \omega} + \frac{\lambda}{m}\omega $$<br>$$ \frac{\partial C}{\partial b} = \frac{\partial C_0}{\partial b} $$<br>每次迭代时，会使$\omega$变得更小，称作weight decay.</p>
+<h4 id="2-Drop-Out"><a href="#2-Drop-Out" class="headerlink" title="2. Drop Out"></a>2. Drop Out</h4><p>随机舍弃部分神经元，减少网络中的节点数。<br>算法流程：</p>
+<ol>
+<li>设定阈值prob_keep</li>
+<li>每轮迭代时，生成新的随机数矩阵D</li>
+<li>将D中大于阈值的数置0，小于阈值的置1：D = D &lt; prob_keep</li>
+<li>将D作为mask，作用到神经元输出：A = A * D</li>
+<li>缩放输出，保持总量不变：A = A / prob_keep(Inverted Dropout)</li>
+<li>后向传播的dA同样mask：dA = dA * D</li>
+<li>缩放dA：dA = dA / prob_keep</li>
+</ol>
+<p>说明：</p>
+<ul>
+<li>drop out只在训练时使用，测试时不使用</li>
+<li>前向传播和后向传播都要drop out</li>
+<li>drop out打破了参数之间的共适应，近似理解为每次只调整部分参数</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-Initializing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1279,710 +1900,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/06/Python-skimage/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/06/Python-skimage/" itemprop="url">Scikit-Image</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-06T10:02:01+08:00">
-                2018-04-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  219
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Scikit-Image是基于Scipy的图像处理包，将图片作为numpy数组处理。</p>
-<h6 id="子模块"><a href="#子模块" class="headerlink" title="子模块"></a>子模块</h6><table>
-<thead>
-<tr>
-<th style="text-align:center">子模块</th>
-<th style="text-align:center">功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">io</td>
-<td style="text-align:center">读写、显示图片</td>
-</tr>
-<tr>
-<td style="text-align:center">data</td>
-<td style="text-align:center">内置样本图片</td>
-</tr>
-<tr>
-<td style="text-align:center">color</td>
-<td style="text-align:center">颜色空间变换</td>
-</tr>
-<tr>
-<td style="text-align:center">filters</td>
-<td style="text-align:center">滤镜如图像增强、边缘检测</td>
-</tr>
-<tr>
-<td style="text-align:center">draw</td>
-<td style="text-align:center">图形绘制如线条、矩形</td>
-</tr>
-<tr>
-<td style="text-align:center">transform</td>
-<td style="text-align:center">几何变换如旋转、拉伸</td>
-</tr>
-<tr>
-<td style="text-align:center">morphology</td>
-<td style="text-align:center">形态学操作如骨架提取</td>
-</tr>
-<tr>
-<td style="text-align:center">exposure</td>
-<td style="text-align:center">强度调整如亮度、直方图均衡</td>
-</tr>
-<tr>
-<td style="text-align:center">feature</td>
-<td style="text-align:center">特征检测与提取</td>
-</tr>
-<tr>
-<td style="text-align:center">measure</td>
-<td style="text-align:center">图像属性测量如相似性、等高线</td>
-</tr>
-<tr>
-<td style="text-align:center">segmentation</td>
-<td style="text-align:center">图像分割</td>
-</tr>
-<tr>
-<td style="text-align:center">restoration</td>
-<td style="text-align:center">图像恢复</td>
-</tr>
-<tr>
-<td style="text-align:center">util</td>
-<td style="text-align:center">通用函数</td>
-</tr>
-</tbody>
-</table>
-<h6 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io, data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取图片</span></span><br><span class="line">img_file1 = io.imread(<span class="string">'./input/111111.png'</span>)</span><br><span class="line">img_file2 = data.chelsea()</span><br><span class="line">io.imshow(img_file2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看图片信息</span></span><br><span class="line">type(img)</span><br><span class="line">img.shape</span><br><span class="line">img.size</span><br><span class="line">img[<span class="number">0</span>][<span class="number">0</span>] <span class="comment">#图像的像素值</span></span><br><span class="line">width = img.size[<span class="number">0</span>]</span><br><span class="line">height = img.size[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 颜色转换</span></span><br><span class="line">img_file3 = skimage.color.rgb2gray(img_file2_ <span class="comment">#彩色转灰度</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 缩放</span></span><br><span class="line">skimage.transform.resize(image, output_shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直方图</span></span><br><span class="line">skimage.exposure.histogram(image, nbins=<span class="number">256</span>)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/05/ML-ROC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/05/ML-ROC/" itemprop="url">ROC曲线</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-05T17:26:20+08:00">
-                2018-04-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  253
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h4><p>ROC全称是“受试者工作特征”(Receiver Operating Characteristic).<br>ROC曲线下方的面积称为AUC(Area Under the Curve)。AUC可用于衡量二分类问题的算法性能。<br>ROC通常位于直线$y=x$上方，故AUC取值介于0.5~1之间，越大说明算法效果越好。<br><img src="/img/roc1.png"><br>绘制ROC曲线需要三个变量：</p>
-<ul>
-<li>TPR</li>
-<li>FPR</li>
-<li>Threashold：改变分类结果的阈值<br><img src="/img/roc2.png"></li>
-</ul>
-<h4 id="2-ROC的优势"><a href="#2-ROC的优势" class="headerlink" title="2. ROC的优势"></a>2. ROC的优势</h4><p>ROC曲线比较稳定。<br>当测试集中的正负样本分布变化时，ROC曲线能够保持不变。<br><img src="/img/roc3.png"></p>
-<h4 id="3-roc-curve"><a href="#3-roc-curve" class="headerlink" title="3. roc_curve"></a>3. roc_curve</h4><p>sklearn.metrics.roc_curve(y_true, y_score, pos_label=None, sample_weight=None, drop_intermediate=True)</p>
-<p>参数</p>
-<ul>
-<li>y_true: 样本真实分类的二值数组</li>
-<li>y_score: 样本的预测得分</li>
-<li>pos_label: 正例标签</li>
-<li>sample_weight: 权重</li>
-<li>drop_intermediate: 是否忽略某些无影响的阈值</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>fpr</li>
-<li>tpr</li>
-<li>thresholds</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y = np.array([<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>])</span><br><span class="line">scores = np.array([<span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.35</span>, <span class="number">0.89</span>])</span><br><span class="line">fpr, tpr, thresholds = metrics.roc_curve(y, scores, pos_label=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">fpr <span class="comment">#array([0, 0.5, 0.5, 1])</span></span><br><span class="line">tpr <span class="comment">#array([0.5, 0.5, 1, 1])</span></span><br><span class="line">thresholds <span class="comment">#array([0.89, 0.4, 0.35, 0.1])</span></span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/05/Python-NumPy-RavelFlatten/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/05/Python-NumPy-RavelFlatten/" itemprop="url">NumPy数组降维</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-05T15:05:08+08:00">
-                2018-04-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  327
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>NumPy中可以用于维度缩减的函数有：</p>
-<ul>
-<li>ravel: 1-D,就地生效</li>
-<li>flatten: 1-D,返回副本</li>
-<li>squeeze: 移除shape为1的维度</li>
-<li>reshape: 指定维度</li>
-</ul>
-<h4 id="1-ravel"><a href="#1-ravel" class="headerlink" title="1. ravel()"></a>1. ravel()</h4><p>numpy.ravel(a, order=’C’)<br>将数组降维，返回一维数组；如果没有必要，不会产生原数据的副本，而是<strong>就地生效</strong><br>相当于rashape(-1, order=order)</p>
-<p>参数</p>
-<ul>
-<li>a：输入array</li>
-<li>order: {‘C’, ‘F’, ‘A’, ‘K’}，默认’C’<ul>
-<li>‘C’: C-style，先处理行</li>
-<li>‘F’: Fortran-style，先处理列</li>
-<li>‘A’: Auto，如果a在内存中是Fortran contiguous则’F’，否则’C’</li>
-<li>‘K’: 按内存顺序</li>
-</ul>
-</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>y：1-D ndarray</li>
-</ul>
-<h4 id="2-flatten"><a href="#2-flatten" class="headerlink" title="2. flatten()"></a>2. flatten()</h4><p>numpy.ndarray.flatten(order=’C’)<br>返回数组降维后的<strong>副本</strong></p>
-<p>参数</p>
-<ul>
-<li>order: {‘C’,’F’,’A’,’K’}</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>y: ndarray</li>
-</ul>
-<h4 id="3-squeeze"><a href="#3-squeeze" class="headerlink" title="3. squeeze()"></a>3. squeeze()</h4><p>numpy.squeeze(a, axis=None)<br>移除 single-dimensional entries，即shape中为1的维度。</p>
-<p>参数</p>
-<ul>
-<li>a: 输入array</li>
-<li>axis: 指定要缩减的轴，若该轴的shape大于1，则报错</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>squeezed: ndarray</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = np.array([[[<span class="number">0</span>],[<span class="number">1</span>],[<span class="number">2</span>]]])</span><br><span class="line">x.shape <span class="comment">#(1,3,1)</span></span><br><span class="line">np.squeeze(x).shape <span class="comment">#(3,)</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">0</span>).shape <span class="comment">#(3,1)</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">1</span>).shape <span class="comment">#报错</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">2</span>).shape <span class="comment">#(1,3)</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="4-reshape"><a href="#4-reshape" class="headerlink" title="4. reshape()"></a>4. reshape()</h4><p>numpy.reshape(a, newshape, order=’C’)<br>为数组指定新的shape</p>
-<p>参数</p>
-<ul>
-<li>a: 输入array</li>
-<li>newshape: int表示该维度长度，-1表示自动推断</li>
-<li>order: {‘C’, ‘F’, ‘A’}</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>reshaped_array: ndarray</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = np.arange(<span class="number">6</span>).reshape(<span class="number">3</span>,<span class="number">2</span>)</span><br><span class="line">np.reshape(a, <span class="number">6</span>)</span><br><span class="line">np.reshape(a, (<span class="number">2</span>,<span class="number">3</span>), order=<span class="string">'F'</span>)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/02/ML-Stacking/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/02/ML-Stacking/" itemprop="url">Stacking实现</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T12:40:37+08:00">
-                2018-04-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  473
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Bagging的基模型结果取简单平均，而Stacking使用了另一个学习器，训练得到基模型预测结果的权重。</p>
-<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
-<li>将训练集分为两份：X_train和X_validation</li>
-<li>使用X_train训练若干基模型</li>
-<li>使用训练好的模型预测X_validation</li>
-<li>将基模型预测结果作为高阶模型的输入特征</li>
-</ol>
-<p>前三步是循环迭代的。如果使用KFolds将数据分为5份，每次使用4份作为X_train，使用1份作为X_validation，那么共需要循环5次。<br>假设每次要训练4种不同的模型，那么循环之后共得到5*4=20个训练好的基模型；<br>同一基模型的预测结果作为高阶模型的一个特征，高阶模型共有4个输入特征。<br><img src="/img/stacking1.jpg"></p>
-<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StackingAveragedModels</span><span class="params">(BaseEstimator, RegressorMixin, TransformerMixin)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, base_models, meta_model, n_folds=<span class="number">5</span>)</span>:</span></span><br><span class="line">        self.base_models = base_models</span><br><span class="line">        self.meta_model = meta_model</span><br><span class="line">        self.n_folds = n_folds</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X, y)</span>:</span></span><br><span class="line">	<span class="comment"># n个模型n个列表，列表长度=n_folds</span></span><br><span class="line">        self.base_models_ = [list() <span class="keyword">for</span> x <span class="keyword">in</span> self.base_models]</span><br><span class="line">        self.meta_model_ = clone(self.meta_model)</span><br><span class="line">        kfold = KFold(n_splits=self.n_folds, shuffle=<span class="keyword">True</span>, random_state=<span class="number">156</span>)</span><br><span class="line">       </span><br><span class="line">	<span class="comment"># 训练基模型，共n_models * n_folds个 </span></span><br><span class="line">	<span class="comment"># 基模型预测结果=(m_sample, n_models)</span></span><br><span class="line">        out_of_fold_predictions = np.zeros((X.shape[<span class="number">0</span>], len(self.base_models)))</span><br><span class="line">        <span class="keyword">for</span> i, model <span class="keyword">in</span> enumerate(self.base_models):</span><br><span class="line">            <span class="keyword">for</span> train_index, holdout_index <span class="keyword">in</span> kfold.split(X, y):</span><br><span class="line">                instance = clone(model)</span><br><span class="line">                self.base_models_[i].append(instance)</span><br><span class="line">                instance.fit(X.iloc[train_index], y.iloc[train_index])</span><br><span class="line">                y_pred = instance.predict(X.iloc[holdout_index])</span><br><span class="line">                out_of_fold_predictions[holdout_index, i] = y_pred.ravel()</span><br><span class="line">        </span><br><span class="line">	<span class="comment"># 将基模型预测结果作为高阶学习器的输入特征        </span></span><br><span class="line">        self.meta_model_.fit(out_of_fold_predictions, y)</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line">  </span><br><span class="line">	 </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        <span class="comment"># 首先将n_folds个基模型i的预测结果取平均，作为基模型i的预测结果，即高阶模型的输入特征i</span></span><br><span class="line">	<span class="comment"># 再用训练好的高阶模型将基模型按权重组合，得到最终结果</span></span><br><span class="line">	meta_features = np.column_stack([</span><br><span class="line">            np.column_stack([model.predict(X) <span class="keyword">for</span> model <span class="keyword">in</span> base_models]).mean(axis=<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">for</span> base_models <span class="keyword">in</span> self.base_models_ ])</span><br><span class="line">        <span class="keyword">return</span> self.meta_model_.predict(meta_features)</span><br></pre></td></tr></table></figure>
-<h6 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">stacked_models = StackingAverageModels(base_models = (ENet, Gboost, KRR),</span><br><span class="line">					meta_models = lasso)</span><br><span class="line">stacked_models.fit(train.values, y_train)</span><br><span class="line">stacked_pred = stacked_models.predict(test.values)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2037,7 +1954,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">273</span>
+                  <span class="site-state-item-count">277</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2139,7 +2056,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">98.9k</span>
+    <span title="Site words total count">100.2k</span>
   
 </div>
 

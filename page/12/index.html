@@ -262,6 +262,653 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/20/ML-NeuralNetworks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/20/ML-NeuralNetworks/" itemprop="url">神经网络</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-20T11:39:00+08:00">
+                2018-01-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  611
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/img/nn.png" width="400px"></p>
+<p>$a_i^{(j)}$ = “activation” of unit $i$ in layer $j$<br>$\Theta^{(j)}$ = matrix of weights controlling function mapping from layer $j$ to layer $j+1$</p>
+<h4 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h4><p>$$ a_1^{(2)}=g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3) $$<br>$$ a_2^{(2)}=g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3) $$<br>$$ a_3^{(2)}=g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3) $$<br>如果$j$层有$s_j$个单元，$j+1$层有$s_{j+1}$个单元，那么$\Theta^{(j)}$是一个$s_{j+1}*(s_j+1)$的矩阵，“+1”是因为要引入$j$层的隐藏单元，偏差项$x_0$。定义<br>$$z_k^{(i)} = \Theta_{k,0}^{(i-1)}x_0 + \Theta_{k,1}^{(i-1)}x_1+\cdot \cdot \cdot + \Theta_{k,n}^{(1)}x_n$$<br>则算法可以简写成<br>$$ z^{(j)} = \Theta^{(j-1)}a^{(j-1)} $$<br>$$ a^{(j)} = g(z^{(j)}) $$</p>
+<p><strong>随机初始值</strong><br>开始训练前，若设定$\Theta$初始值全为0，则所有层各节点的学习结果完全相同。<br>为避免这一结果，需要将$\omega$初始化为不同的较小的值，$\b$可初始化为0.<br>若$\omega$初始值较大，则sigmoid的输入值较大，梯度较小，收敛速度慢。</p>
+<p><strong>多分类</strong><br>One-vs-all，对于K个类别，$y=[0,1,…0]^T$是$k$维向量，对应输出层$k$个单元。</p>
+<p><strong>代价函数$J(\Theta)$</strong><br>$$ J(\Theta) = -\frac{1}{m}\sum_{i=1}^m\sum_{k=1}^K\left[y_k^{(i)}log((h_{\Theta}(x^{(i)}))_k) + (1-y_k^{(i)})log(1-(h_{\Theta}(x^{(i)}))_k) \right]+\frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_l+1}(\Theta_{j,i}^{(l)})^2  $$<br>其中<br>$$ cost(t) = y_k^{(t)}log(h_{\Theta}(x^{(t)})) + (1-y^{(t)})log(1-h_{\Theta}(x^{(t)})) $$<br>$\delta_j^{(l)}$是$a_j^{(l)}$的“误差”，是$cost(t)$的偏导数：<br>$$ \delta_j^{(l)} = \frac{\partial}{\partial z_j^{(l)}}cost(t) $$</p>
+<h4 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h4><p>反向传播是为了计算偏导数$\frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta)$，从而得到$min_{\Theta}J(\Theta)$</p>
+<ol>
+<li>给定训练集${(x^{(1),y^{(1)}})\cdot \cdot \cdot(x^{(m)},y^{(m)})}$</li>
+<li>设定初始值$\Delta_{i,j}^{(l)}:=0$ </li>
+<li>For $i=1$ to $m$<ol>
+<li>$a^{(1)} := x^{(i)}$</li>
+<li>用前向传播算法计算$a^{(l)},\;\; l=2,3…L$</li>
+<li>$\delta^{(L)} = a^{(L)} - y^(i)$</li>
+<li>计算$\delta ^{(L-1)}, \delta ^{(L-2)}…\delta ^{(2)}$<br>$$\delta ^{(l)}=((\Theta^{(l)})^T \delta ^{(l+1)}) .\ast a^{(l)} .\ast (1-a^{(l)}) = ((\Theta^{(l)})^T \delta ^{(l+1)}) .\ast g’(z^{(l)})$$</li>
+<li>更新$\Delta_{i,j}^{(l)} := \Delta_{i,j}^{(l)}+a_j^{(l)}\delta_i^{(l+1)}$</li>
+</ol>
+</li>
+<li>循环结束得到$D_{i,j}^{(l)}=\frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta)$<ol>
+<li>$D_{i,j}^{(l)} := \frac{1}{m}\Delta_{(i,j)}^{(l)}\;\;if\;\; j=0$</li>
+<li>$D_{i,j}^{(l)} := \frac{1}{m}\left(\Delta_{(i,j)}^{(l)}+\lambda\Theta_{i,j}^{(l)}\right)\;\;if\;\; j\neq0$</li>
+</ol>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/20/Calculus-PartialDerivatives/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/20/Calculus-PartialDerivatives/" itemprop="url">多元微分</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-20T08:07:28+08:00">
+                2018-01-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  547
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Partial-Derivative-with-Respect-to-x"><a href="#Partial-Derivative-with-Respect-to-x" class="headerlink" title="Partial Derivative with Respect to x"></a>Partial Derivative with Respect to x</h4><p>The partial derivative of $f(x,y)$ with respect to x at the point $(x_0,y_0)$ is<br>$$ \frac{\partial f}{\partial x}|_{x_0,y_0} = \lim_{h\rightarrow 0}\frac{f(x_0+h,y_0)-f(x_0,y_0)}{h} $$<br>provided the limit exists.</p>
+<h4 id="Differentiable-Function"><a href="#Differentiable-Function" class="headerlink" title="Differentiable Function"></a>Differentiable Function</h4><p>A function $z=f(x,y)$ is differentiable at $(x_0,y_0)$ if $f_x(x_0,y_0)$ and $f_y(x_0,y_0)$ exist and $\Delta z$ satisfies an equation of the form<br>$$ \Delta z = f_x(x_0,y_0)\Delta x + f_y(x_0,y_0)\Delta y + \epsilon_1\Delta x + \epsilon_2\Delta y $$<br>in which each of $\epsilon_1,\epsilon_2\rightarrow 0$ as both $\Delta x,\Delta y\rightarrow 0$. We call $f$ differentiable if it is differentiable at every point in its domain.<br>如果每个变量的偏导数存在且连续，则多元函数可微。</p>
+<h4 id="Directional-Derivative"><a href="#Directional-Derivative" class="headerlink" title="Directional Derivative"></a>Directional Derivative</h4><p>The derivative of $f$ at $P_0(x_0,y_0)$ in the direction of the unit vector $u=u_1i+u_2j$ is the number<br>$$ \left(\frac{df}{ds}\right)_{u,P_0} = \lim_{s\rightarrow 0}\frac{f(x_0+su_1,y_0+su_2)-f(x_0,y_0)}{s}$$<br>provided the limit exists.<br>$$ \left(\frac{df}{ds}\right)_{u,P_0} = (\triangledown f)_{P_0}\cdot u $$<br>方向导数等于梯度和方向的内积。</p>
+<h4 id="Gradient-Vector"><a href="#Gradient-Vector" class="headerlink" title="Gradient Vector"></a>Gradient Vector</h4><p>The gradient vector of $f(x,y)$ at a point $P_0(x_0,y_0)$ is the vector<br>$$ \triangledown f = \frac{\partial f}{\partial x}i + \frac{\partial f}{\partial y}j $$<br>obtained by evaluating the partial derivatives of $f$ at $P_0$.</p>
+<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Mixed-Derivative-Theorem"><a href="#The-Mixed-Derivative-Theorem" class="headerlink" title="The Mixed Derivative Theorem"></a>The Mixed Derivative Theorem</h4><p>If $f(x,y)$ and its partial derivatives $f_x,f_y,f_{xy},f_{yx}$ are defined throughout an open region containing a point $(a,b)$ and are all continuous at $(a,b)$, then<br>$$ f_{xy}(a,b) = f_{yx}(a,b) $$</p>
+<h4 id="Chain-Rule-for-Functions-of-Two-Independent-Variables"><a href="#Chain-Rule-for-Functions-of-Two-Independent-Variables" class="headerlink" title="Chain Rule for Functions of Two Independent Variables"></a>Chain Rule for Functions of Two Independent Variables</h4><p>If $w=f(x,y)$ has continuous partial derivatives $f_x$ and $f_y$ and if $x=x(t), y=y(t)$ are differentiable functions of $t$, then the composite $w=f(x(t),y(t))$ is a differentiable function of $t$ and<br>$$ \frac{dw}{dt} = \frac{\partial f}{\partial x}\frac{dx}{dt} + \frac{\partial f}{\partial y}\frac{dy}{dt} $$</p>
+<h4 id="First-Derivative-Test-for-Local-Extreme-Values"><a href="#First-Derivative-Test-for-Local-Extreme-Values" class="headerlink" title="First Derivative Test for Local Extreme Values"></a>First Derivative Test for Local Extreme Values</h4><p>If $f(x,y)$ has a local maximum or minimum value at an interior point $(a,b)$ of its domain and if the first partial derivatives exist there, then $f_x(a,b)=0$ and $f_y(a,b)=0$.</p>
+<h4 id="Seconde-Derivative-Test-for-Local-Extreme-Values"><a href="#Seconde-Derivative-Test-for-Local-Extreme-Values" class="headerlink" title="Seconde Derivative Test for Local Extreme Values"></a>Seconde Derivative Test for Local Extreme Values</h4><p>Suppose that $f(x,y)$ and its first and second partial derivatives are continuous throughout a disk centered at $(a,b)$ and that $f_x(a,b)=f_y(a,b)=0$. Then<br>i. $f$ has a local maximum at $(a,b)$ if $f_{xx}<0,\;f_{xx}f_{yy}-f_{xy}^2>0$ at $(a,b)$.<br>ii. $f$ has a local minimum at $(a,b)$ if $f_{xx}&gt;0,\;f_{xx}f_{yy}-f_{xy}^2&gt;0$ at $(a,b)$.<br>iii. $f$ has a saddle point at $(a,b)$ if $f_{xx}f_{yy}-f_{xy}^2&lt;0$ at $(a,b)$.<br>iv. The test is inconclusive at $(a,b)$ if $f_{xx}f_{yy}-f_{xy}^2=0$ at $(a,b)$.</0,\;f_{xx}f_{yy}-f_{xy}^2></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/18/ML-Overfitting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/18/ML-Overfitting/" itemprop="url">过拟合与欠拟合</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T07:47:02+08:00">
+                2018-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  761
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>当模型过度追求对训练数据的拟合时，会失去对新数据的预测精度，称为过拟合(Overfitting)。<br>当模型对训练数据的拟合不足，在训练集上的误差较大时，称为欠拟合(Underfitting)。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">测试误差小</th>
+<th style="text-align:center">测试误差大</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">训练误差小</td>
+<td style="text-align:center">完美</td>
+<td style="text-align:center">过拟合：模型学习能力过度</td>
+</tr>
+<tr>
+<td style="text-align:center">训练误差大</td>
+<td style="text-align:center">不可能</td>
+<td style="text-align:center">欠拟合：模型学习能力不足</td>
+</tr>
+</tbody>
+</table>
+<h4 id="识别"><a href="#识别" class="headerlink" title="识别"></a>识别</h4><p><img src="\img\DiagnosingJ.png"></p>
+<p>欠拟合(Underfitting): High bias(偏差), $J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等<br>过拟合(Overfitting): High variance(方差), $J_{train}(\Theta)$较小，$J_{CV}(\Theta)$很大，两者有明显差距</p>
+<p><strong>学习曲线</strong>：不同样本数量下的误差值，可以观察样本量是否足够，进而分辨Bias/Variance<br><img src="\img\highBias.png"><br>High Bias<br>低样本量时，$J_{train}(\Theta)$很小，$J_{CV}(\Theta)$很大<br>高样本量时，$J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等</p>
+<p><img src="\img\highVariance.png"><br>High Variance<br>低样本量时，$J_{train}(\Theta)$很小，$J_{CV}(\Theta)$很大<br>高样本量时，$J_{train}(\Theta)$持续增加，$J_{CV}(\Theta)$持续减少，两者仍有明显差距</p>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><ul>
+<li>改变特征数<ul>
+<li>过拟合：减少特征数，手动或者通过算法选择(PCA)</li>
+<li>欠拟合：增加特征数，比如$x_i^n$</li>
+</ul>
+</li>
+<li>增加样本量<ul>
+<li>过拟合：增加样本量m可以降低$J_{CV}(\Theta)$</li>
+<li>欠拟合：无效</li>
+</ul>
+</li>
+<li>正则化(Regularization)<br>$$ J(\theta) = \frac{1}{2m} \left[\sum_{i=1}^{m}(h_\theta(x^{(i)})-y^{(i)})^2 + \lambda\sum_{j=1}^{n}\theta_j^2\right] $$<ul>
+<li>过拟合：$\lambda$过小，应增加$\lambda$</li>
+<li>欠拟合：$\lambda$过大，应减少$\lambda$</li>
+</ul>
+</li>
+</ul>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
+<li>创建一系列备选的$\lambda \in \left {0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24 \right }$(k个)</li>
+<li>创建不同维度的模型(d个)</li>
+<li>对每个$\lambda$，训练每个模型的参数$\Theta$(k*d个)</li>
+<li>用每套参数$\Theta$计算误差$J_{CV}(\Theta)$(模拟$J_{test}(\Theta)$，故计算时不使用$\lambda$)(k*d个)</li>
+<li>选择$J_{CV}(\Theta)$最小的模型(1个)</li>
+<li>应用到测试集，得到$J_{test}(\Theta)$</li>
+</ol>
+<h4 id="线性回归正则化"><a href="#线性回归正则化" class="headerlink" title="线性回归正则化"></a>线性回归正则化</h4><p><strong>1.Gradient Descent</strong><br>Repeat {<br>$$ \theta_0 := \theta_0 - \alpha\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}))x_0^{(i)} $$<br>$$ \theta_j := \theta_j - \alpha\left[\left(\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}))x_j^{(i)} \right)+\frac{\lambda}{m}\theta_j \right] $$<br>}<br>其中$\theta_j$的迭代式可以写成：<br>$$ \theta_j := \theta_j(1-\alpha\frac{\lambda}{m}) -\alpha\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}))x_j^{(i)} $$<br>第一项中的 $1-\alpha\frac{\lambda}{m}$ 永远小于1，每次迭代都会减小$\theta$；<br>第二项和原来一样。</p>
+<p><strong>2.Normal Equation</strong><br>$$ \theta = (X^TX+\lambda\cdot L)^{-1}X^Ty $$<br>其中L是$a_{11}=0$的(n+1)阶单位矩阵。<br>当$m&lt;n$时，矩阵$X^TX$不可逆；但是加上$\lambda\cdot L$后，矩阵$X^TX+\lambda\cdot L$可逆。</p>
+<h4 id="Logistic回归正则化"><a href="#Logistic回归正则化" class="headerlink" title="Logistic回归正则化"></a>Logistic回归正则化</h4><p>新的代价函数<br>$$ J(\theta) = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)}log(h_{\theta}(x^{(i)}))+(1-y^{(i)})log(1-h_{\theta}(x^{(i)})) \right] +\frac{\lambda}{2m}\sum_{j=1}^{n}\theta_j^2 $$<br>注意$\sum_{j=1}^{n}\theta_j^2$从$n=1$开始，不包括$\theta_0$<br>$\theta$的迭代式和线性回归一样。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/14/Physics/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/14/Physics/" itemprop="url">基础物理学</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-14T14:34:27+08:00">
+                2018-01-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  924
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="力学"><a href="#力学" class="headerlink" title="力学"></a>力学</h2><h4 id="惯性参考系"><a href="#惯性参考系" class="headerlink" title="惯性参考系"></a>惯性参考系</h4><p>惯性参考系是牛顿定律适用的参考系</p>
+<h4 id="牛顿运动定律"><a href="#牛顿运动定律" class="headerlink" title="牛顿运动定律"></a>牛顿运动定律</h4><p>第一定律：如果没有外力作用在一个物体上，则物体的速度就不能改变。即物体不会加速。<br>第二定律：作用于物体上的合力等于物体的质量与它的加速度的乘积。<br>第三定律：两物体相互作用时，两物体对各自对方的相互作用力总是大小相等而方向相反的。</p>
+<h4 id="牛顿引力定律"><a href="#牛顿引力定律" class="headerlink" title="牛顿引力定律"></a>牛顿引力定律</h4><p>$$ F = G\frac{m_1m_2}{r^2} $$<br>引力常量 $G=6.67*10^{-11} N\cdot m^2/kg^2$</p>
+<h4 id="开普勒三大定律"><a href="#开普勒三大定律" class="headerlink" title="开普勒三大定律"></a>开普勒三大定律</h4><p>1.轨道定律：所有的行星都沿椭圆轨道运动，太阳位于椭圆的一个焦点上。<br>2.面积定律：行星到太阳的连线在相等的时间内扫过行星轨道平面的面积相等，即扫过面积A的速率$dA/dt$是常量。<br>3.周期定律：任何行星的运动周期的平方与它的轨道半长轴的立方成正比。<br>$$ T^2 = \left (\frac{4\pi^2}{GM}\right )r^3 $$</p>
+<h4 id="伯努利方程"><a href="#伯努利方程" class="headerlink" title="伯努利方程"></a>伯努利方程</h4><p>令从左端流入的流体的高度、流速及压强分别为$y_1$、$v_1$和$p_1$，而从右端流出的流体的相应的量为$y_2$、$v_2$及$p_2$。对该流体应用能量守恒原理，可以证明<br>$$ p_1 + \frac{1}{2}\rho v_1^2 + \rho gy_1 = p_2 + \frac{1}{2}\rho v_2^2 + \rho gy_2 $$<br>也可以写成<br>$$ p + \frac{1}{2}\rho v^2 + \rho gy = 常量 $$</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/14/Physics/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/13/Calculus-Sequence/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1277,611 +1924,6 @@ v(1:10)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/06/Calculus-NewtonMethod/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/06/Calculus-NewtonMethod/" itemprop="url">牛顿法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T11:25:22+08:00">
-                2018-01-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  83
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Procedure-for-Newton’s-Method"><a href="#Procedure-for-Newton’s-Method" class="headerlink" title="Procedure for Newton’s Method"></a>Procedure for Newton’s Method</h4><ol>
-<li><p>Guess a first approximation to a solution of the equation $f(x)=0$.</p>
-</li>
-<li><p>Use the first approximation to get a second, the second to get a third, and so on, using the formula</p>
-</li>
-</ol>
-<p>$$ x_{n+1} = x_{n} - \frac{f(x_{n})}{f’{x_{n}}} $$</p>
-<p>if $f’(x_{n}) \neq 0$</p>
-<p><img src="/img/newton.png" alt="Newton"></p>
-<ul>
-<li>Newton’s method does not always converge</li>
-<li>When Newton’s method converges to a root, it may not be the root you have in mind</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/06/ML-Tensorflow/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/06/ML-Tensorflow/" itemprop="url">Tensorflow</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T09:58:28+08:00">
-                2018-01-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  284
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.使用Tensorflow输出一句话：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化常亮字符串</span></span><br><span class="line">greeting = tf.constant(<span class="string">'Hello!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动会话并执行</span></span><br><span class="line">session = tf.Session()</span><br><span class="line">result = sess.run(greeting)</span><br><span class="line"><span class="keyword">print</span> result</span><br><span class="line">sess.close()</span><br></pre></td></tr></table></figure>
-<p>2.线性函数计算：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">matrix1 = tf.constant([[<span class="number">3.</span>, <span class="number">3.</span>]])</span><br><span class="line">matrix2 = tf.constant([[<span class="number">2.</span>],[<span class="number">2.</span>]])</span><br><span class="line"></span><br><span class="line">product = tf.matmul(maxtrx1, matrix2)</span><br><span class="line">linear = tf.add(product, tf.constant(<span class="number">2.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">	result = sess.run(linear)</span><br><span class="line">	<span class="keyword">print</span> result</span><br></pre></td></tr></table></figure>
-<p>3.自定义线性分类器</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义变量并设定初始值</span></span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">1</span>]))</span><br><span class="line">W = tf.Variable(tf.random_uniform([<span class="number">1</span>,<span class="number">2</span>],<span class="number">-1.0</span>,<span class="number">1.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义目标函数、损失函数</span></span><br><span class="line">y = tf.matmul(W, X_train) + b</span><br><span class="line">loss = tf.reduce_mean(tf.square(y - y_train))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用梯度下降法估计参数，设定步长为0.01</span></span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(<span class="number">0.01</span>)</span><br><span class="line">train = optimizer.minimize(loss)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化所有变量</span></span><br><span class="line">init = tf.initialize_all_variables()</span><br><span class="line">sess = tf.Session()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 迭代训练参数</span></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> srange(<span class="number">0</span>,<span class="number">1000</span>):</span><br><span class="line">	sess.run(train)</span><br><span class="line">	<span class="keyword">if</span> step %<span class="number">200</span> == <span class="number">0</span>:</span><br><span class="line">		<span class="keyword">print</span> step, sess.run(W), sess.run(b)</span><br></pre></td></tr></table></figure>
-<p>4.skflow工具包是对Tensorflow进一步的封装，以求与Scikit-learn使用类似的接口。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> skflow</span><br><span class="line"></span><br><span class="line">tf_lr = skflow.TensorFlowLinearRegressor(steps=<span class="number">10000</span>, learning_rate=<span class="number">0.01</span>, batch_size=<span class="number">50</span>)</span><br><span class="line">tf_lr.fit(X_train, y_train)</span><br><span class="line">tf_lr_y_predict = tf_lr.predict(X_test)</span><br><span class="line"></span><br><span class="line">tf_dnn_regressor - skflow.TensorFlowDNNRegressor(hidden_units=[<span class="number">100</span>,<span class="number">40</span>], steps=<span class="number">10000</span>, learning_rate=<span class="number">0.01</span>, batch_size=<span class="number">50</span>)</span><br><span class="line">tf_dnn_regressor.fit(X_train, y_train)</span><br><span class="line">tf_dnn_regressor_y_predict = tf_dnn_regressor.predict(X_test)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/03/ML-XGBoost/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/03/ML-XGBoost/" itemprop="url">XGBoost</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-03T10:27:59+08:00">
-                2018-01-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  373
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>XGBoost的全称是 eXtreme Gradient Boosting.<br>XGBoost也是集成学习Boost的一种，经常和GDBT对比。</p>
-<p>决策树的学习过程是为了找出最优的决策树，然而从函数空间里所有的决策树中找出最优的决策树是NP-C问题，所以常采用启发式(Heuristic)的方法，如CART里面的优化GINI指数、剪枝、控制树的深度。这些启发式方法的背后往往隐含了一个目标函数。</p>
-<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
-<li>支持线性分类器：GBDT使用CART</li>
-<li>用到二阶导数：GBDT只用到一阶</li>
-<li>引入正则项：降低了variance</li>
-<li>Shrinkage(缩减)：迭代后将叶节点的权重乘上该系数，相当于学习速率</li>
-<li>列抽样</li>
-<li>自动处理缺失值</li>
-<li>支持并行</li>
-</ul>
-<h4 id="使用经验"><a href="#使用经验" class="headerlink" title="使用经验"></a>使用经验</h4><ul>
-<li>多类别分类时，类别要从0开始编码</li>
-<li>Watchlist不会影响模型训练</li>
-<li>类别特征必须编码，默认特征都是数值型</li>
-<li>设置随机数种子，使结果可以复现</li>
-<li>特征的重要性(feature score)等于它被选为树节点分裂特征的次数的和</li>
-</ul>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 划分数据集</span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">0.01</span>, random_state=<span class="number">1729</span>)</span><br><span class="line">print(X_train.shape, X_test.shape)</span><br><span class="line"></span><br><span class="line"><span class="comment">#模型参数设置</span></span><br><span class="line">xlf = xgb.XGBRegressor(max_depth=<span class="number">10</span>, </span><br><span class="line">                        learning_rate=<span class="number">0.1</span>, </span><br><span class="line">                        n_estimators=<span class="number">10</span>, </span><br><span class="line">                        silent=<span class="keyword">True</span>, </span><br><span class="line">                        objective=<span class="string">'reg:linear'</span>, </span><br><span class="line">                        nthread=<span class="number">-1</span>, </span><br><span class="line">                        gamma=<span class="number">0</span>,</span><br><span class="line">                        min_child_weight=<span class="number">1</span>, </span><br><span class="line">                        max_delta_step=<span class="number">0</span>, </span><br><span class="line">                        subsample=<span class="number">0.85</span>, </span><br><span class="line">                        colsample_bytree=<span class="number">0.7</span>, </span><br><span class="line">                        colsample_bylevel=<span class="number">1</span>, </span><br><span class="line">                        reg_alpha=<span class="number">0</span>, </span><br><span class="line">                        reg_lambda=<span class="number">1</span>, </span><br><span class="line">                        scale_pos_weight=<span class="number">1</span>, </span><br><span class="line">                        seed=<span class="number">1440</span>, </span><br><span class="line">                        missing=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">xlf.fit(X_train, y_train, eval_metric=<span class="string">'rmse'</span>, verbose = <span class="keyword">True</span>, eval_set = [(X_test, y_test)],early_stopping_rounds=<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算 auc 分数、预测</span></span><br><span class="line">preds = xlf.predict(X_test)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/02/ML-PCA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/02/ML-PCA/" itemprop="url">主成分分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T09:56:13+08:00">
-                2018-01-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  255
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>主成分分析(Principal Component Analysis)是经典的特征降维技术。<br>寻找k个向量张成的超平面，使原始数据投影到超平面的误差最小。<br>PCA可以用于</p>
-<ul>
-<li>减少存储数据的内存消耗</li>
-<li>加快模型训练速度</li>
-<li>高维数据可视化(k=2，3)</li>
-</ul>
-<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
-<li>数据标准化</li>
-<li>计算covariance matrix<br>$$ \sigma = \frac{1}{m}\sum_{i=1}^{n}(x^{(i)})(x^{(i)})^T $$</li>
-<li>计算 $[U,S,V] = svd(Sigma)$<br>其中前k个向量$U(:,1:K)=U_{reduce}$是映射矩阵，$z=U_{reduce}\ast x$;<br>若要还原x，$x_{approx}=U_{reduce}\ast z$；</li>
-</ol>
-<p><strong>选择k</strong><br>一般要求映射过程保留99%的方差<br>$$ \frac{\frac{1}{m}\sum_{i=1}^m\left|\left|x^{(i)}-x_{approx}^{(i)}\right|\right|^2}{\frac{1}{m}\sum_{i=1}^m\left|left|x^{(i)}\right|\right|^2} \leq 0.01(1%)<br>S是一个n*n矩阵，主元位置$S_{ii}$即代表数据方差，选择$k$使得<br>$$ \frac{\sum_{i=1}^kS_{ii}}{\sum_{i=1}^nS_{ii}} \geq 0.99$$</p>
-<p>使用sklearn:<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line"></span><br><span class="line">estimater = PCA(n_components = <span class="number">2</span>)</span><br><span class="line">X_pca = estimator.fit_transform(X_digits)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1936,7 +1978,7 @@ v(1:10)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">273</span>
+                  <span class="site-state-item-count">277</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2038,7 +2080,7 @@ v(1:10)
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">98.9k</span>
+    <span title="Site words total count">100.2k</span>
   
 </div>
 
