@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="非著名失业家">
+<meta name="description" content="万人迷">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Gate of Babylon">
 <meta property="og:url" content="http://mirokule.github.io/page/12/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="非著名失业家">
+<meta property="og:description" content="万人迷">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gate of Babylon">
-<meta name="twitter:description" content="非著名失业家">
+<meta name="twitter:description" content="万人迷">
 
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/20/ML-NeuralNetworks/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/06/23/Swift-PlayableRect/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -281,7 +281,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/20/ML-NeuralNetworks/" itemprop="url">神经网络</a></h1>
+                <a class="post-title-link" href="/2016/06/23/Swift-PlayableRect/" itemprop="url">PlayableRect</a></h1>
         
 
         <div class="post-meta">
@@ -293,8 +293,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-20T11:39:00+08:00">
-                2018-01-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-23T15:31:35+08:00">
+                2016-06-23
               </time>
             
 
@@ -325,7 +325,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  611
+                  62
                 </span>
               
 
@@ -352,837 +352,742 @@
       
         
           
-            <p><img src="/img/nn.png" width="400px"></p>
-<p>$a_i^{(j)}$ = “activation” of unit $i$ in layer $j$<br>$\Theta^{(j)}$ = matrix of weights controlling function mapping from layer $j$ to layer $j+1$</p>
-<h4 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h4><p>$$ a_1^{(2)}=g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3) $$<br>$$ a_2^{(2)}=g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3) $$<br>$$ a_3^{(2)}=g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3) $$<br>如果$j$层有$s_j$个单元，$j+1$层有$s_{j+1}$个单元，那么$\Theta^{(j)}$是一个$s_{j+1}*(s_j+1)$的矩阵，“+1”是因为要引入$j$层的隐藏单元，偏差项$x_0$。定义<br>$$z_k^{(i)} = \Theta_{k,0}^{(i-1)}x_0 + \Theta_{k,1}^{(i-1)}x_1+\cdot \cdot \cdot + \Theta_{k,n}^{(1)}x_n$$<br>则算法可以简写成<br>$$ z^{(j)} = \Theta^{(j-1)}a^{(j-1)} $$<br>$$ a^{(j)} = g(z^{(j)}) $$</p>
-<p><strong>随机初始值</strong><br>开始训练前，若设定$\Theta$初始值全为0，则所有层各节点的学习结果完全相同。<br>为避免这一结果，需要将$\omega$初始化为不同的较小的值，$\b$可初始化为0.<br>若$\omega$初始值较大，则sigmoid的输入值较大，梯度较小，收敛速度慢。</p>
-<p><strong>多分类</strong><br>One-vs-all，对于K个类别，$y=[0,1,…0]^T$是$k$维向量，对应输出层$k$个单元。</p>
-<p><strong>代价函数$J(\Theta)$</strong><br>$$ J(\Theta) = -\frac{1}{m}\sum_{i=1}^m\sum_{k=1}^K\left[y_k^{(i)}log((h_{\Theta}(x^{(i)}))_k) + (1-y_k^{(i)})log(1-(h_{\Theta}(x^{(i)}))_k) \right]+\frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_l+1}(\Theta_{j,i}^{(l)})^2  $$<br>其中<br>$$ cost(t) = y_k^{(t)}log(h_{\Theta}(x^{(t)})) + (1-y^{(t)})log(1-h_{\Theta}(x^{(t)})) $$<br>$\delta_j^{(l)}$是$a_j^{(l)}$的“误差”，是$cost(t)$的偏导数：<br>$$ \delta_j^{(l)} = \frac{\partial}{\partial z_j^{(l)}}cost(t) $$</p>
-<h4 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h4><p>反向传播是为了计算偏导数$\frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta)$，从而得到$min_{\Theta}J(\Theta)$</p>
+            <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">init</span>(size: <span class="type">CGSize</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> screenSize = <span class="type">UIScreen</span>.mainScreen().bounds</span><br><span class="line">    <span class="keyword">let</span> maxAspectRatio: <span class="type">CGFloat</span> = screenSize.height / screenSize.width</span><br><span class="line">    <span class="keyword">let</span> maxAspectRatioWidth = size.height / maxAspectRatio</span><br><span class="line">    <span class="keyword">let</span> playableMargin = (size.width - maxAspectRatioWidth) / <span class="number">2.0</span></span><br><span class="line">    playableRect = <span class="type">CGRect</span>(x: playableMargin, y: <span class="number">0</span>, width: size.width - playableMargin * <span class="number">2</span>, height: size.height)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"playableRect size: \(playableRect)"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">super</span>.<span class="keyword">init</span>(size: size)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">required</span> <span class="keyword">init</span>(coder aDecoder: <span class="type">NSCoder</span>) &#123;</span><br><span class="line">    <span class="built_in">fatalError</span>(<span class="string">"init(coder:) has not been implemented."</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/06/10/SKAudioNode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/10/SKAudioNode/" itemprop="url">SKAudioNode</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-10T15:22:05+08:00">
+                2016-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  33
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>A SKAudioNode object is used to add an audio to a scene.</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> backgroundMusic: <span class="type">SKAudioNode</span>!</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">playBackgroundMusic</span><span class="params">(name: String)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> backgroundMusic != <span class="literal">nil</span> &#123;</span><br><span class="line">        backgroundMusic.removeFromParent()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    backgroundMusic = <span class="type">SKAudioNode</span>(fileNamed: name)</span><br><span class="line">    backgroundMusic.autoplayLooped = <span class="literal">true</span></span><br><span class="line">    addChild(backgroundMusic)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/06/08/Swift-Types/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/08/Swift-Types/" itemprop="url">Types</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-08T22:30:55+08:00">
+                2016-06-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  227
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Type"><a href="#Type" class="headerlink" title="Type"></a>Type</h2><p>There are two kinds of types in swift: named types and compound types.</p>
+<h3 id="Named-Type"><a href="#Named-Type" class="headerlink" title="#Named Type"></a>#Named Type</h3><p>A named type is a type that can be given a particular name when it is defined.<br>Named types include classes, structures, enumerations, protocols and arrays, dictionaries, optional values.</p>
+<h4 id="Compound-Type"><a href="#Compound-Type" class="headerlink" title="Compound Type"></a>Compound Type</h4><p>A compound type is a type without a name: function types and tuple types.</p>
+<h2 id="Type-Casting"><a href="#Type-Casting" class="headerlink" title="Type Casting"></a>Type Casting</h2><p>Type casting is a way to check the type of an instance, or to treat that instance as a different superclass or subclass.<br>Type casting is implemented with the <strong>is</strong> and <strong>as</strong> operators.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for item in library &#123;</span><br><span class="line">	if item is Movie &#123;</span><br><span class="line">		print(&quot;It is a movie!&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/06/08/Swift-Types/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/26/Python-sklearn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/26/Python-sklearn/" itemprop="url">sklearn</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-26T16:07:42+08:00">
+                2016-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  162
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>包含六个模块：</p>
+<ul>
+<li>Classification: 分类</li>
+<li>Regression: 回归</li>
+<li>Clustering: 聚类</li>
+<li>Dimensionality Reduction: 降维</li>
+<li>Model Selection: 模型选择</li>
+<li>Preprocessing: 数据预处理</li>
+</ul>
+<h4 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h4><p>There are 3 kinds of dataset interfaces for different types of datasets.</p>
 <ol>
-<li>给定训练集${(x^{(1),y^{(1)}})\cdot \cdot \cdot(x^{(m)},y^{(m)})}$</li>
-<li>设定初始值$\Delta_{i,j}^{(l)}:=0$ </li>
-<li>For $i=1$ to $m$<ol>
-<li>$a^{(1)} := x^{(i)}$</li>
-<li>用前向传播算法计算$a^{(l)},\;\; l=2,3…L$</li>
-<li>$\delta^{(L)} = a^{(L)} - y^(i)$</li>
-<li>计算$\delta ^{(L-1)}, \delta ^{(L-2)}…\delta ^{(2)}$<br>$$\delta ^{(l)}=((\Theta^{(l)})^T \delta ^{(l+1)}) .\ast a^{(l)} .\ast (1-a^{(l)}) = ((\Theta^{(l)})^T \delta ^{(l+1)}) .\ast g’(z^{(l)})$$</li>
-<li>更新$\Delta_{i,j}^{(l)} := \Delta_{i,j}^{(l)}+a_j^{(l)}\delta_i^{(l+1)}$</li>
+<li>images</li>
+<li>(x, y): n_samples * n_features numpy array x and n_samples length array y</li>
+<li>{data: n_samples * n_features, target: n_samples length}</li>
 </ol>
-</li>
-<li>循环结束得到$D_{i,j}^{(l)}=\frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta)$<ol>
-<li>$D_{i,j}^{(l)} := \frac{1}{m}\Delta_{(i,j)}^{(l)}\;\;if\;\; j=0$</li>
-<li>$D_{i,j}^{(l)} := \frac{1}{m}\left(\Delta_{(i,j)}^{(l)}+\lambda\Theta_{i,j}^{(l)}\right)\;\;if\;\; j\neq0$</li>
-</ol>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/20/Calculus-PartialDerivatives/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/20/Calculus-PartialDerivatives/" itemprop="url">多元微分</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-20T08:07:28+08:00">
-                2018-01-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  547
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Partial-Derivative-with-Respect-to-x"><a href="#Partial-Derivative-with-Respect-to-x" class="headerlink" title="Partial Derivative with Respect to x"></a>Partial Derivative with Respect to x</h4><p>The partial derivative of $f(x,y)$ with respect to x at the point $(x_0,y_0)$ is<br>$$ \frac{\partial f}{\partial x}|_{x_0,y_0} = \lim_{h\rightarrow 0}\frac{f(x_0+h,y_0)-f(x_0,y_0)}{h} $$<br>provided the limit exists.</p>
-<h4 id="Differentiable-Function"><a href="#Differentiable-Function" class="headerlink" title="Differentiable Function"></a>Differentiable Function</h4><p>A function $z=f(x,y)$ is differentiable at $(x_0,y_0)$ if $f_x(x_0,y_0)$ and $f_y(x_0,y_0)$ exist and $\Delta z$ satisfies an equation of the form<br>$$ \Delta z = f_x(x_0,y_0)\Delta x + f_y(x_0,y_0)\Delta y + \epsilon_1\Delta x + \epsilon_2\Delta y $$<br>in which each of $\epsilon_1,\epsilon_2\rightarrow 0$ as both $\Delta x,\Delta y\rightarrow 0$. We call $f$ differentiable if it is differentiable at every point in its domain.<br>如果每个变量的偏导数存在且连续，则多元函数可微。</p>
-<h4 id="Directional-Derivative"><a href="#Directional-Derivative" class="headerlink" title="Directional Derivative"></a>Directional Derivative</h4><p>The derivative of $f$ at $P_0(x_0,y_0)$ in the direction of the unit vector $u=u_1i+u_2j$ is the number<br>$$ \left(\frac{df}{ds}\right)_{u,P_0} = \lim_{s\rightarrow 0}\frac{f(x_0+su_1,y_0+su_2)-f(x_0,y_0)}{s}$$<br>provided the limit exists.<br>$$ \left(\frac{df}{ds}\right)_{u,P_0} = (\triangledown f)_{P_0}\cdot u $$<br>方向导数等于梯度和方向的内积。</p>
-<h4 id="Gradient-Vector"><a href="#Gradient-Vector" class="headerlink" title="Gradient Vector"></a>Gradient Vector</h4><p>The gradient vector of $f(x,y)$ at a point $P_0(x_0,y_0)$ is the vector<br>$$ \triangledown f = \frac{\partial f}{\partial x}i + \frac{\partial f}{\partial y}j $$<br>obtained by evaluating the partial derivatives of $f$ at $P_0$.</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Mixed-Derivative-Theorem"><a href="#The-Mixed-Derivative-Theorem" class="headerlink" title="The Mixed Derivative Theorem"></a>The Mixed Derivative Theorem</h4><p>If $f(x,y)$ and its partial derivatives $f_x,f_y,f_{xy},f_{yx}$ are defined throughout an open region containing a point $(a,b)$ and are all continuous at $(a,b)$, then<br>$$ f_{xy}(a,b) = f_{yx}(a,b) $$</p>
-<h4 id="Chain-Rule-for-Functions-of-Two-Independent-Variables"><a href="#Chain-Rule-for-Functions-of-Two-Independent-Variables" class="headerlink" title="Chain Rule for Functions of Two Independent Variables"></a>Chain Rule for Functions of Two Independent Variables</h4><p>If $w=f(x,y)$ has continuous partial derivatives $f_x$ and $f_y$ and if $x=x(t), y=y(t)$ are differentiable functions of $t$, then the composite $w=f(x(t),y(t))$ is a differentiable function of $t$ and<br>$$ \frac{dw}{dt} = \frac{\partial f}{\partial x}\frac{dx}{dt} + \frac{\partial f}{\partial y}\frac{dy}{dt} $$</p>
-<h4 id="First-Derivative-Test-for-Local-Extreme-Values"><a href="#First-Derivative-Test-for-Local-Extreme-Values" class="headerlink" title="First Derivative Test for Local Extreme Values"></a>First Derivative Test for Local Extreme Values</h4><p>If $f(x,y)$ has a local maximum or minimum value at an interior point $(a,b)$ of its domain and if the first partial derivatives exist there, then $f_x(a,b)=0$ and $f_y(a,b)=0$.</p>
-<h4 id="Seconde-Derivative-Test-for-Local-Extreme-Values"><a href="#Seconde-Derivative-Test-for-Local-Extreme-Values" class="headerlink" title="Seconde Derivative Test for Local Extreme Values"></a>Seconde Derivative Test for Local Extreme Values</h4><p>Suppose that $f(x,y)$ and its first and second partial derivatives are continuous throughout a disk centered at $(a,b)$ and that $f_x(a,b)=f_y(a,b)=0$. Then<br>i. $f$ has a local maximum at $(a,b)$ if $f_{xx}<0,\;f_{xx}f_{yy}-f_{xy}^2>0$ at $(a,b)$.<br>ii. $f$ has a local minimum at $(a,b)$ if $f_{xx}&gt;0,\;f_{xx}f_{yy}-f_{xy}^2&gt;0$ at $(a,b)$.<br>iii. $f$ has a saddle point at $(a,b)$ if $f_{xx}f_{yy}-f_{xy}^2&lt;0$ at $(a,b)$.<br>iv. The test is inconclusive at $(a,b)$ if $f_{xx}f_{yy}-f_{xy}^2=0$ at $(a,b)$.</0,\;f_{xx}f_{yy}-f_{xy}^2></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/18/ML-Overfitting/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/18/ML-Overfitting/" itemprop="url">过拟合与欠拟合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T07:47:02+08:00">
-                2018-01-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  761
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>当模型过度追求对训练数据的拟合时，会失去对新数据的预测精度，称为过拟合(Overfitting)。<br>当模型对训练数据的拟合不足，在训练集上的误差较大时，称为欠拟合(Underfitting)。</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center"></th>
-<th style="text-align:center">测试误差小</th>
-<th style="text-align:center">测试误差大</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">训练误差小</td>
-<td style="text-align:center">完美</td>
-<td style="text-align:center">过拟合：模型学习能力过度</td>
-</tr>
-<tr>
-<td style="text-align:center">训练误差大</td>
-<td style="text-align:center">不可能</td>
-<td style="text-align:center">欠拟合：模型学习能力不足</td>
-</tr>
-</tbody>
-</table>
-<h4 id="识别"><a href="#识别" class="headerlink" title="识别"></a>识别</h4><p><img src="\img\DiagnosingJ.png"></p>
-<p>欠拟合(Underfitting): High bias(偏差), $J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等<br>过拟合(Overfitting): High variance(方差), $J_{train}(\Theta)$较小，$J_{CV}(\Theta)$很大，两者有明显差距</p>
-<p><strong>学习曲线</strong>：不同样本数量下的误差值，可以观察样本量是否足够，进而分辨Bias/Variance<br><img src="\img\highBias.png"><br>High Bias<br>低样本量时，$J_{train}(\Theta)$很小，$J_{CV}(\Theta)$很大<br>高样本量时，$J_{train}(\Theta)$和$J_{CV}(\Theta)$都很大，且几乎相等</p>
-<p><img src="\img\highVariance.png"><br>High Variance<br>低样本量时，$J_{train}(\Theta)$很小，$J_{CV}(\Theta)$很大<br>高样本量时，$J_{train}(\Theta)$持续增加，$J_{CV}(\Theta)$持续减少，两者仍有明显差距</p>
-<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><ul>
-<li>改变特征数<ul>
-<li>过拟合：减少特征数，手动或者通过算法选择(PCA)</li>
-<li>欠拟合：增加特征数，比如$x_i^n$</li>
-</ul>
-</li>
-<li>增加样本量<ul>
-<li>过拟合：增加样本量m可以降低$J_{CV}(\Theta)$</li>
-<li>欠拟合：无效</li>
-</ul>
-</li>
-<li>正则化(Regularization)<br>$$ J(\theta) = \frac{1}{2m} \left[\sum_{i=1}^{m}(h_\theta(x^{(i)})-y^{(i)})^2 + \lambda\sum_{j=1}^{n}\theta_j^2\right] $$<ul>
-<li>过拟合：$\lambda$过小，应增加$\lambda$</li>
-<li>欠拟合：$\lambda$过大，应减少$\lambda$</li>
-</ul>
-</li>
-</ul>
-<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
-<li>创建一系列备选的$\lambda \in \left {0,0.01,0.02,0.04,0.08,0.16,0.32,0.64,1.28,2.56,5.12,10.24 \right }$(k个)</li>
-<li>创建不同维度的模型(d个)</li>
-<li>对每个$\lambda$，训练每个模型的参数$\Theta$(k*d个)</li>
-<li>用每套参数$\Theta$计算误差$J_{CV}(\Theta)$(模拟$J_{test}(\Theta)$，故计算时不使用$\lambda$)(k*d个)</li>
-<li>选择$J_{CV}(\Theta)$最小的模型(1个)</li>
-<li>应用到测试集，得到$J_{test}(\Theta)$</li>
-</ol>
-<h4 id="线性回归正则化"><a href="#线性回归正则化" class="headerlink" title="线性回归正则化"></a>线性回归正则化</h4><p><strong>1.Gradient Descent</strong><br>Repeat {<br>$$ \theta_0 := \theta_0 - \alpha\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}))x_0^{(i)} $$<br>$$ \theta_j := \theta_j - \alpha\left[\left(\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}))x_j^{(i)} \right)+\frac{\lambda}{m}\theta_j \right] $$<br>}<br>其中$\theta_j$的迭代式可以写成：<br>$$ \theta_j := \theta_j(1-\alpha\frac{\lambda}{m}) -\alpha\frac{1}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)}))x_j^{(i)} $$<br>第一项中的 $1-\alpha\frac{\lambda}{m}$ 永远小于1，每次迭代都会减小$\theta$；<br>第二项和原来一样。</p>
-<p><strong>2.Normal Equation</strong><br>$$ \theta = (X^TX+\lambda\cdot L)^{-1}X^Ty $$<br>其中L是$a_{11}=0$的(n+1)阶单位矩阵。<br>当$m&lt;n$时，矩阵$X^TX$不可逆；但是加上$\lambda\cdot L$后，矩阵$X^TX+\lambda\cdot L$可逆。</p>
-<h4 id="Logistic回归正则化"><a href="#Logistic回归正则化" class="headerlink" title="Logistic回归正则化"></a>Logistic回归正则化</h4><p>新的代价函数<br>$$ J(\theta) = -\frac{1}{m}\sum_{i=1}^{m}\left[y^{(i)}log(h_{\theta}(x^{(i)}))+(1-y^{(i)})log(1-h_{\theta}(x^{(i)})) \right] +\frac{\lambda}{2m}\sum_{j=1}^{n}\theta_j^2 $$<br>注意$\sum_{j=1}^{n}\theta_j^2$从$n=1$开始，不包括$\theta_0$<br>$\theta$的迭代式和线性回归一样。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/14/Physics/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/14/Physics/" itemprop="url">基础物理学</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-14T14:34:27+08:00">
-                2018-01-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  924
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="力学"><a href="#力学" class="headerlink" title="力学"></a>力学</h2><h4 id="惯性参考系"><a href="#惯性参考系" class="headerlink" title="惯性参考系"></a>惯性参考系</h4><p>惯性参考系是牛顿定律适用的参考系</p>
-<h4 id="牛顿运动定律"><a href="#牛顿运动定律" class="headerlink" title="牛顿运动定律"></a>牛顿运动定律</h4><p>第一定律：如果没有外力作用在一个物体上，则物体的速度就不能改变。即物体不会加速。<br>第二定律：作用于物体上的合力等于物体的质量与它的加速度的乘积。<br>第三定律：两物体相互作用时，两物体对各自对方的相互作用力总是大小相等而方向相反的。</p>
-<h4 id="牛顿引力定律"><a href="#牛顿引力定律" class="headerlink" title="牛顿引力定律"></a>牛顿引力定律</h4><p>$$ F = G\frac{m_1m_2}{r^2} $$<br>引力常量 $G=6.67*10^{-11} N\cdot m^2/kg^2$</p>
-<h4 id="开普勒三大定律"><a href="#开普勒三大定律" class="headerlink" title="开普勒三大定律"></a>开普勒三大定律</h4><p>1.轨道定律：所有的行星都沿椭圆轨道运动，太阳位于椭圆的一个焦点上。<br>2.面积定律：行星到太阳的连线在相等的时间内扫过行星轨道平面的面积相等，即扫过面积A的速率$dA/dt$是常量。<br>3.周期定律：任何行星的运动周期的平方与它的轨道半长轴的立方成正比。<br>$$ T^2 = \left (\frac{4\pi^2}{GM}\right )r^3 $$</p>
-<h4 id="伯努利方程"><a href="#伯努利方程" class="headerlink" title="伯努利方程"></a>伯努利方程</h4><p>令从左端流入的流体的高度、流速及压强分别为$y_1$、$v_1$和$p_1$，而从右端流出的流体的相应的量为$y_2$、$v_2$及$p_2$。对该流体应用能量守恒原理，可以证明<br>$$ p_1 + \frac{1}{2}\rho v_1^2 + \rho gy_1 = p_2 + \frac{1}{2}\rho v_2^2 + \rho gy_2 $$<br>也可以写成<br>$$ p + \frac{1}{2}\rho v^2 + \rho gy = 常量 $$</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/14/Physics/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/13/Calculus-Sequence/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/13/Calculus-Sequence/" itemprop="url">数列和级数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-13T10:33:07+08:00">
-                2018-01-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  766
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="DEFINITIONS"><a href="#DEFINITIONS" class="headerlink" title="DEFINITIONS"></a>DEFINITIONS</h2><h4 id="Converges-Diverges-Limit"><a href="#Converges-Diverges-Limit" class="headerlink" title="Converges, Diverges, Limit"></a>Converges, Diverges, Limit</h4><p>The sequence ${a_n}$ converges to the number $L$ if to every positive number $\epsilon$ there corresponds an integer $N$ such that for all $n$,</p>
-<p>$$ n &gt; N \;\;\;\; \Rightarrow \;\;\;\; \left|a_n-L\right| &lt; \epsilon. $$</p>
-<p>L is limit of the sequence.</p>
-<p>If no such number $L$ exists, we say that ${a_n}$ diverges.</p>
-<h4 id="Deverges-to-Infinity"><a href="#Deverges-to-Infinity" class="headerlink" title="Deverges to Infinity"></a>Deverges to Infinity</h4><p>The sequence ${a_n}$ diverges to infinity if for every number $M$ there is an integer $N$ such that for all $n$ larger than $N$, $a_n &gt; M$. If this condition holds we write</p>
-<p>$$ \lim_{n\rightarrow ∞} a_n = ∞ \;\;\;\; or \;\;\;\; a_n\rightarrow ∞. $$</p>
-<h4 id="Nondecreasing-Sequence"><a href="#Nondecreasing-Sequence" class="headerlink" title="Nondecreasing Sequence"></a>Nondecreasing Sequence</h4><p>A sequence ${a_n}$ with the property that $a_n \leq a_{n+1}$ for all $n$ is called a nondecreasing sequence.</p>
-<h4 id="Power-Series"><a href="#Power-Series" class="headerlink" title="Power Series"></a>Power Series</h4><p>A power series about $x=0$ is a series of the form<br>$$ \sum_{n=0}^{∞}c_nx^n = c_0+c_1x+c_2x^2+\cdot \cdot \cdot +c_nx^n+\cdot \cdot \cdot $$<br>A power series about $x=a$ is a series of the form<br>$$ \sum_{n=0}^{∞}c_n(x-a)^n = c_0+c_1(x-a)+c_2(x-a)^2+\cdot \cdot \cdot +c_n(x-a)^n+\cdot \cdot \cdot $$</p>
-<h4 id="Tayloer-Series"><a href="#Tayloer-Series" class="headerlink" title="Tayloer Series"></a>Tayloer Series</h4><p>The Taylor series generated by $f$ at $x=a$ is<br>$$ \sum_{k=0}^{∞} \frac{f^{(k)(a)}}{k!}(x-a)^k $$</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/13/Calculus-Sequence/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/Octave/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/12/Octave/" itemprop="url">Octave常用命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T13:53:57+08:00">
-                2018-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  444
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="符号"><a href="#符号" class="headerlink" title="符号%"></a>符号%</h4><p>Octave和Matlab代码注释使用符号 <strong>%</strong></p>
-<p>数组索引从 <strong>1</strong> 开始</p>
-<h4 id="帮助"><a href="#帮助" class="headerlink" title="帮助"></a>帮助</h4><pre><code>help command // 可以查询command的详细用法
-</code></pre><h4 id="读写数据"><a href="#读写数据" class="headerlink" title="读写数据"></a>读写数据</h4><pre><code>pwd // 显示当前path
-cd NewPath // 更改路径
-
-load filename // load(&apos;filename&apos;)
-save filename v // 将变量v的数据写入文件
-who
-whos // 更多详细信息
-clear v // 删除变量
-</code></pre><h4 id="生成矩阵"><a href="#生成矩阵" class="headerlink" title="生成矩阵"></a>生成矩阵</h4><pre><code>A = [1,2;2,3;4,5]
-v = [1 2 3 4 5] // 行向量
-v = [1;2;3;4;5] // 列向量
-v = 1:0.5:5 // 按步长增加
-
-B = ones(3,3)
-B = zeros(3,3)
-B = rand(2,2) // 随机数
-B = randn(1,3) // 随机整数    
-I = eye(3) // 单位矩阵
-
-sz = size(A)
-len = length(v) // 最长的维度
-A(3,2) // 元素$A_{32}$
-A(3,:) // 第3行所有元素
-A([1 3],:) // 第1、3行的所有元素
-A(:) // 将所有元素变成一列
-A = (A, v) // 在A矩阵右侧增加一列
-v(1:10)
+<h4 id="Cross-Validation"><a href="#Cross-Validation" class="headerlink" title="Cross Validation"></a>Cross Validation</h4><pre><code>#主函数
+clf = svm.SVC(kernel=&apos;linear&apos;, C=1) #分类器
+scores = cross_validation.cross_val_score(clf, raw data, raw target, cv=5, score_func = None)
+#有raw target,则StraitifiedKFold；没有则KFold
+
+# ShuffleSplit
+cv = cross_validation.ShuffleSplit(n_samples, n_iter=3, test_size=0.3, random_state=0)
+cross_validation.cross_val_score(clf, raw data, raw target, cv=cv)
+
+#随机按比例拆分
+x_train, x_text, y_train, y_test = cross_validation.train_test_split(train_data, train_target, test_size=0.4, random_state 0)
+#random_state是随机数的种子，相同的种子采样结果相同
 </code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/26/Python-Matplotlib/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/26/Python-Matplotlib/" itemprop="url">Python-Matplotlib</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-26T15:54:39+08:00">
+                2016-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  279
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Matplotlib.pyplot提供了一套和matlab类似的命令API，用于交互式制图。<br>matplotlib提供的是比较底层的命令，若要制作完整图表，需要依次添加各种元素。<br>故常用其他包封装的高级绘图命令来生成复杂的图表。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> randn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘图区与子区域</span></span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>,<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">fig = plt.figure()</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>) <span class="comment"># 2*2区域的第1个子图</span></span><br><span class="line"></span><br><span class="line">fig, axes = plt.subplots(<span class="number">2</span>,<span class="number">3</span>) <span class="comment"># 创建2*3个子区域并返回数组</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调整子区域边框宽度</span></span><br><span class="line">subplots_adjust(left=<span class="keyword">None</span>, bottom=<span class="keyword">None</span>, right=<span class="keyword">None</span>, top=<span class="keyword">None</span>, wspace=<span class="keyword">None</span>, hspace=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 图线类型</span></span><br><span class="line">plt.plot(x,y,label=<span class="string">"$sin(x)$"</span>,color=<span class="string">"red"</span>,linewidth=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">ax1.plot(x,z,<span class="string">"b--"</span>,label=<span class="string">"$cos(x^2)$"</span>)</span><br><span class="line">ax2.hist(randn(<span class="number">100</span>), bins=<span class="number">20</span>, color=<span class="string">'k'</span>, alpha=<span class="number">0.3</span>)</span><br><span class="line">ax3.scatter(np.arrange(<span class="number">30</span>), np.arrange(<span class="number">30</span>)+<span class="number">3</span>*randn(<span class="number">30</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 标签和图例</span></span><br><span class="line">plt.xlabel(<span class="string">"Time(s)"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Volt"</span>)</span><br><span class="line">plt.title(<span class="string">"PyPlot First Example"</span>)</span><br><span class="line"></span><br><span class="line">ax1.set_xticks([<span class="number">3</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">12</span>,<span class="number">15</span>]) <span class="comment"># 横轴刻度</span></span><br><span class="line"></span><br><span class="line">plt.ylim(<span class="number">-1.2</span>,<span class="number">1.2</span>) <span class="comment">#设置Y轴的范围</span></span><br><span class="line">plt.legend() <span class="comment">#显示图例</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 文字注解</span></span><br><span class="line">ax1.text(x,y,<span class="string">'text'</span>,family=<span class="string">'monospace'</span>,fontsize=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">plt.show() <span class="comment">#显示绘图</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存到文件</span></span><br><span class="line">plt.savefig(<span class="string">'figpath.png'</span>, dpi=<span class="number">400</span>, bbox_inches=<span class="string">'tight'</span>)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/25/Python-NumPy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/25/Python-NumPy/" itemprop="url">NumPy</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-25T15:19:25+08:00">
+                2016-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  992
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>NumPy(Numerical Python)是高性能科学计算和数据分析的基础包。它是高级工具的构建基础。<br>NumPy最重要的特点是它的N维数组对象ndarray.<br>NumPy的运算是基于数组的，不同于Math基于数字。<br>Numpy的设计目的是处理大数据，默认传递引用，而不是复制数据。</p>
+<h2 id="ndarray"><a href="#ndarray" class="headerlink" title="ndarray"></a>ndarray</h2><p>ndarray是<strong>同种元素</strong>的多维数组，快速而灵活的大数据集容器。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建</span></span><br><span class="line">A = np.array(mylist)</span><br><span class="line">A = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]], dtype = np.int32)</span><br><span class="line">A = np.asarray([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]) <span class="comment">#当数据源是ndarray时，array()仍会copy副本，而asarray()不会</span></span><br><span class="line">A = np.arange(<span class="number">15</span>).reshape(<span class="number">3</span>,<span class="number">5</span>) <span class="comment">#arrange()是Python内置range()函数的数组版本</span></span><br><span class="line">A = np.linspace(<span class="number">0</span>,<span class="number">4</span>,<span class="number">9</span>)</span><br><span class="line">A = np.zeros((<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">A = np.repeat([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],<span class="number">3</span>)</span><br><span class="line">B = A.astype(np.float64) <span class="comment">#转换数据类型，astype()总会创建一份新的拷贝</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 属性</span></span><br><span class="line">A.ndim <span class="comment">#秩, rank, number of axes(dimensions)</span></span><br><span class="line">A.size <span class="comment">#数组元素个数, product of the elements of shape</span></span><br><span class="line">A.shape <span class="comment">#维度(3,2), dimensions of the array</span></span><br><span class="line">A.dtype <span class="comment">#数据类型, type of the elements in the array</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 矩阵运算</span></span><br><span class="line">A+B <span class="comment">#元素相加</span></span><br><span class="line">A*B <span class="comment">#元素乘法，将对应位置的数字分别相乘</span></span><br><span class="line">A**<span class="number">2</span> <span class="comment">#元素平方	</span></span><br><span class="line">A.dot(B) <span class="comment">#矩阵乘法</span></span><br><span class="line">np.dot(A,B) <span class="comment">#矩阵乘法</span></span><br><span class="line">A.T <span class="comment">#转置矩阵</span></span><br><span class="line">inv(A), pinv(A) <span class="comment">#逆矩阵</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数学方法</span></span><br><span class="line">A.max()</span><br><span class="line">A.argmax() <span class="comment">#最大值的索引</span></span><br><span class="line">A.mean()</span><br><span class="line">A.std()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切片</span></span><br><span class="line">v[<span class="number">4</span>:] = <span class="number">12</span> <span class="comment">#将元素赋值给选区，称为broadcasting</span></span><br><span class="line">v[<span class="number">-5</span>::<span class="number">-2</span>]</span><br><span class="line">A[<span class="number">3</span>,<span class="number">3</span>:<span class="number">6</span>] = A[<span class="number">3</span>][<span class="number">3</span>:<span class="number">6</span>] <span class="comment">#两种写法等价</span></span><br><span class="line">A[:,:<span class="number">1</span>]</span><br><span class="line">A[[<span class="number">4</span>,<span class="number">3</span>,<span class="number">0</span>,<span class="number">6</span>]] <span class="comment">#花式索引(Fancy indexing)，返回指定行</span></span><br><span class="line">A[A&gt;<span class="number">30</span>] = <span class="number">30</span></span><br><span class="line">A[(names=<span class="string">'Bob'</span>)|(names=<span class="string">'Alice'</span>)] <span class="comment">#Python关键字and和or在布尔型数组中无效</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝</span></span><br><span class="line">A2 = A[:<span class="number">3</span>,:<span class="number">3</span>] <span class="comment">#传递引用，修改A2也会改变A</span></span><br><span class="line">A2 = A[<span class="number">1</span>:<span class="number">3</span>].copy() <span class="comment">#传递数据，修改A2不会改变A</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/12/Octave/#more" rel="contents">
+            <a class="btn" href="/2016/05/25/Python-NumPy/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1233,7 +1138,7 @@ v(1:10)
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-NormalEquations/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/25/Stat-Basic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -1252,7 +1157,7 @@ v(1:10)
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/12/ML-NormalEquations/" itemprop="url">Normal Equations</a></h1>
+                <a class="post-title-link" href="/2016/05/25/Stat-Basic/" itemprop="url">统计基础</a></h1>
         
 
         <div class="post-meta">
@@ -1264,8 +1169,8 @@ v(1:10)
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T10:56:55+08:00">
-                2018-01-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-25T10:59:20+08:00">
+                2016-05-25
               </time>
             
 
@@ -1296,7 +1201,7 @@ v(1:10)
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  462
+                  378
                 </span>
               
 
@@ -1323,40 +1228,31 @@ v(1:10)
       
         
           
-            <p>Normal Equations可以直接解出最小二乘法的参数估计值，不需要GDA的迭代过程。</p>
-<p>高斯曾经证明，在所有无偏的线性估计类中，最小二乘法是其中方差最小的。</p>
-<h4 id="推导"><a href="#推导" class="headerlink" title="推导"></a>推导</h4><p>线性回归模型 $X\theta=y$ 形如方程 $Ax=b$</p>
-<p>当矩阵A的 $m&gt;n$，即训练样本数m大于特征数n时，A的n个列向量无法充满整个m维空间，方程没有解。</p>
-<p>故使用最小二乘法(LSE)，使残差e最小，$Ax$尽可能逼近$b$:</p>
-<p>$$ min(H) = min(\left|\left|e\right|\right|^2) = min(\left|\left|b-Ax\right|\right|^2) $$</p>
-<p>从向量投影的角度来看，将向量b投影到A平面时，e与A平面垂直，距离最短，从而使误差最小。</p>
-<p><img src="/img/projection.png" alt="projection" width="300px"></p>
-<p>如图，$\vec{p}$ 是 $\vec{b}$ 在A平面内的投影，所以有</p>
-<p>$$ \vec{p} = x_1\vec{a_1} + x_2\vec{a_2} +…+ x_n\vec{a_n} = Ax $$</p>
-<p>$$ \vec{e} = \vec{b} - \vec{p} = b - Ax $$</p>
-<p>又因为 $\vec{e}$ 与A平面垂直，所以</p>
-<p>$$ A\times \vec{e} = 0 \;\;\;\; \Rightarrow \;\;\;\; A^T(b-Ax) = 0 $$</p>
-<p>将括号展开可以得到</p>
-<p>$$ x = (A^TA)^{-1}A^T\cdot b $$</p>
-<p>$$ p = Ax = A(A^TA)^{-1}A^T\cdot b $$</p>
-<p>其中，$P = A(A^TA)^{-1}A^T$称为投影矩阵，可以将 $\vec{b}$ 投影成 $\vec{p}$。</p>
-<p>投影矩阵P具有两个性质：</p>
-<ul>
-<li>$P^T = P$: P是对称矩阵</li>
-<li>$P^2 = P$: 二次投影仍是本身，即投影之后的投影不会改变</li>
+            <h4 id="Average"><a href="#Average" class="headerlink" title="Average"></a>Average</h4><ul>
+<li>Mode(众数): the most frequency</li>
+<li>Median(中位数): sort and the number in the median</li>
+<li>Mean(平均值): sum(numbers) / n</li>
 </ul>
-<p>另外，在线性回归模型中，$x$就是最小二乘法求出来的$\theta$，即</p>
-<p>$$ \theta = (X^TX)^{-1}X^Ty $$</p>
-<p><strong>特点</strong></p>
-<ul>
-<li>不需要选择步长$\alpha$</li>
-<li>不需要迭代</li>
-<li>需要计算矩阵$(X^TX)^{-1}$，复杂度$O(n^3)$，当n很大时计算速度慢</li>
+<h4 id="Variance"><a href="#Variance" class="headerlink" title="Variance"></a>Variance</h4><ul>
+<li>Absolute Deviation(绝对差): |xi - x`|</li>
+<li>Variance(方差): sum(|xi - x`|^2) / n</li>
+<li>Standard Deviation(标准差): root(var)</li>
+<li>样本的标准差: /n</li>
+<li>用样本估计总体的标准差: /(n-1)</li>
 </ul>
-<p><strong>如果$(X^TX)$不可逆</strong>怎么办？</p>
+<h4 id="协方差和相关系数"><a href="#协方差和相关系数" class="headerlink" title="协方差和相关系数"></a>协方差和相关系数</h4><p>协方差(Covariance)是变量与均值之差乘积的期望:<br>$$ Cov(X,Y)=E\left [ (X-\mu_x)(Y-\mu_y)\right ] $$<br>两个变量同向变化则协方差为正；反向变化则协方差为负。</p>
+<p>相关系数(Correlation Coefficient)是协方差除以变量各自的标准差:<br>$$ \rho = \frac{Cov(X,Y)}{\sigma_X\sigma_Y} $$<br>相关系数可以看做是剔除了变量量纲影响、标准化后的特殊协方差。<br>当相关系数为1时，说明两个变量变化的正向相似度最大，完全正相关；反之-1时为完全负相关。</p>
+<h4 id="正态分布"><a href="#正态分布" class="headerlink" title="正态分布"></a>正态分布</h4><p>偏度(Skewness)是描述变量取值分布对称性的统计量，是样本的三阶标准化矩。<br>$$ Skewness = E\left[(\frac{x-\mu}{\sigma})^3\right] = \frac{E\left[(X-\mu)^3 \right]}{\sigma^3} $$</p>
 <ul>
-<li>可能存在冗余特征，使矩阵线性相关</li>
-<li>特征数太多，删除部分特征，或使用正则化(Regularization)</li>
+<li>等于0：标准正态分布</li>
+<li>大于0：右侧长尾，正偏</li>
+<li>小于0：左侧长尾，负偏</li>
+</ul>
+<p>峰度(Kurtosis)是描述变量所有取值分布形态陡缓程度的统计量，是样本的四阶标准化矩。<br>$$ Kurtosis =  E\left[(\frac{x-\mu}{\sigma})^4\right] = \frac{E\left[(X-\mu)^4 \right]}{\sigma^4}$$</p>
+<ul>
+<li>等于3：标准正态分布</li>
+<li>大于3：更陡峭，尖顶峰</li>
+<li>小于3：更平缓，平顶峰</li>
 </ul>
 
           
@@ -1406,7 +1302,7 @@ v(1:10)
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-FeatureEngineering/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/24/Python-pandas/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -1425,7 +1321,7 @@ v(1:10)
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/12/ML-FeatureEngineering/" itemprop="url">特征工程</a></h1>
+                <a class="post-title-link" href="/2016/05/24/Python-pandas/" itemprop="url">Pandas</a></h1>
         
 
         <div class="post-meta">
@@ -1437,8 +1333,8 @@ v(1:10)
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T09:39:47+08:00">
-                2018-01-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-24T22:02:10+08:00">
+                2016-05-24
               </time>
             
 
@@ -1469,7 +1365,155 @@ v(1:10)
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  540
+                  1,003
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><strong>Pandas</strong> is a module for data analysis based on <strong>Numpy</strong>.<br>There are two data types in pandas: <strong>Series</strong> and <strong>DataFrame</strong>.<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">pd.Series?</span><br></pre></td></tr></table></figure></p>
+<h2 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h2><p>Series可以看做是定长的有序字典。<br>在数据运算时，Series可以自动对齐数据，即只对index相同的value运算，不重叠的索引处将引入NaN.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 生成	</span></span><br><span class="line">s = pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], index=[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>]) <span class="comment"># dtype: int64</span></span><br><span class="line">s = pd.Series([<span class="string">'Bear'</span>,<span class="string">'Tiger'</span>,<span class="keyword">None</span>]) <span class="comment"># dtype: object    </span></span><br><span class="line">s = pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="keyword">None</span>]) <span class="comment"># dtype: float64，None将记为NaN</span></span><br><span class="line">s = pd.Series(dictionary)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新索引，不存在的索引可引入缺失值</span></span><br><span class="line">s = s.reindex([<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>], fill_value=<span class="number">0</span>)</span><br><span class="line">s = s.reindex(range(<span class="number">6</span>), method = <span class="string">'ffill'</span>) <span class="comment">#ffill前向填充，bfill后向填充</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取，如果索引对应多个值，将返回Series；否则返回标量</span></span><br><span class="line">s.iloc[<span class="number">3</span>] = s[<span class="number">3</span>] <span class="comment"># 按位置选取, s[n]当index为数字时等同于按index选取</span></span><br><span class="line">s.loc[<span class="string">'id1'</span>] = s[<span class="string">'id1'</span>] <span class="comment"># 按index名称选取</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 向量化语句运行速度远远快于循环语句</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">summary = np.sum(s)</span><br><span class="line">s += <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 排序</span></span><br><span class="line">s.sort_index() <span class="comment">#对索引排序</span></span><br><span class="line">s.order() <span class="comment">#对值排序，缺失值NaN会被放到末尾</span></span><br></pre></td></tr></table></figure>
+<p>Series 的 index 和 values 实际仍为互相独立的 ndarray 数组。</p>
+<h2 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h2><p>DataFrame是一个表格型的数据结构。<br>它既有行索引也有列索引，values可以有多列，每列可以是不同的值类型，可以将各列看成是共享index的Series类型。<br>对齐操作将同时发生在行和列上。</p>
+<h4 id="生成数据"><a href="#生成数据" class="headerlink" title="生成数据"></a>生成数据</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">   data = &#123;<span class="string">'num'</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="string">'year'</span>: [<span class="number">2001</span>,<span class="number">2002</span>,<span class="number">2003</span>], <span class="string">'pop'</span>: [<span class="number">1.2</span>,<span class="number">1.5</span>,<span class="number">1.7</span>]&#125;</span><br><span class="line">   df = pd.DataFrame(data, index = [<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>], columns = [<span class="string">'c1'</span>,<span class="string">'c2'</span>,<span class="string">'c3'</span>]</span><br><span class="line">   ‘’‘</span><br><span class="line">	c1	c2	c3</span><br><span class="line">one	<span class="number">1</span>	<span class="number">2001</span>	<span class="number">1.2</span></span><br><span class="line">two	<span class="number">2</span>	<span class="number">2002</span>	<span class="number">1.5</span></span><br><span class="line">three	<span class="number">3</span>	<span class="number">2003</span>	<span class="number">1.7</span></span><br><span class="line">   ’‘’    </span><br><span class="line">   df.reindex(index=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], columns=[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>], method=<span class="string">'ffill'</span>)</span><br><span class="line">   <span class="keyword">for</span> index, passenger <span class="keyword">in</span> df.iterrows(): <span class="comment">#迭代器，遍历每行记录</span></span><br><span class="line">       <span class="keyword">print</span> passenger[<span class="string">'Age'</span>]</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/05/24/Python-pandas/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/21/ML-Methods/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/21/ML-Methods/" itemprop="url">机器学习方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-21T16:55:31+08:00">
+                2016-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  408
                 </span>
               
 
@@ -1496,399 +1540,1690 @@ v(1:10)
       
         
           
-            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>对输入特征的处理可大致分为：</p>
+            <h2 id="Supervised-Learning"><a href="#Supervised-Learning" class="headerlink" title="Supervised Learning"></a>Supervised Learning</h2><h4 id="Linear"><a href="#Linear" class="headerlink" title="Linear"></a>Linear</h4><ul>
+<li>Pros: Easy to interpret results, computationally inexpensive</li>
+<li>Cons: Poorly models nonlinear data</li>
+<li>Works with: Numeric values, Nominal values</li>
+</ul>
+<h4 id="k-Nearest-Neighbors"><a href="#k-Nearest-Neighbors" class="headerlink" title="k-Nearest Neighbors"></a>k-Nearest Neighbors</h4><ul>
+<li>Pros: High accuracy, insensitive to outliers, no assumptions about data(精度高，对异常值不敏感，无假设)</li>
+<li>Cons: Computationally expensive, requires a lot of memory(计算消耗大)</li>
+<li>Works with: Numeric values, nominal values</li>
+</ul>
+<h4 id="Decision-Trees"><a href="#Decision-Trees" class="headerlink" title="Decision Trees"></a>Decision Trees</h4><ul>
+<li>Pros: Computationally cheap to use, easy for humans to understand learned results, missing values OK, can deal with irrelevant features</li>
+<li>Cons: Prone to overfitting(容易过拟合)</li>
+<li>Works with: Numeric values, nominal values</li>
+</ul>
+<h4 id="Naive-Bayes"><a href="#Naive-Bayes" class="headerlink" title="Naive Bayes"></a>Naive Bayes</h4><ul>
+<li>Pros: Works with a small amount of data, handles multiple classes</li>
+<li>Cons: Sensitive to how the input data is prepared</li>
+<li>Works with: Nominal values</li>
+</ul>
+<h4 id="Logistic-Regression"><a href="#Logistic-Regression" class="headerlink" title="Logistic Regression"></a>Logistic Regression</h4><ul>
+<li>Pros: Computationally inexpensive, easy to implement, knowledge representation easy to interpret(计算代价不高，易于实现和解释)</li>
+<li>Cons: Prone to underfitting, may have low accuracy(容易欠拟合，不能保证精度)</li>
+<li>Works with: Numeric values, nomial values</li>
+</ul>
+<p>分类时，多重线性回归：z = w0x0 + w1x1 + w1x2 + … + wnxn，不能保证z ~ [0,1]。<br>故使用 f(z) = 1 / (1 + e^(-z)) ~ (0, 1) 映射至(0,1)<br>if f(z) &gt; 0.5, then -&gt; 1; else -&gt; 0<br>只能分为2类，描述事件发生或不发生。</p>
+<p>How to get w?<br>极大似然估计：选择w，使得L(w|x) = P(X=x)<br>求导数，解方程，使用<strong>Gradient Ascent</strong>(梯度上升)或者<strong>Gradient Descent</strong>(梯度下降)</p>
+<pre><code>Start with all weights set to 1
+Repeat R number of times:
+    Caculate the gradient of the entire dataset
+    Update the weights vector by alpha*gradient
+    Return the weights vector
+</code></pre><h4 id="Support-Vector-Machines"><a href="#Support-Vector-Machines" class="headerlink" title="Support Vector Machines"></a>Support Vector Machines</h4><ul>
+<li>Pros: Low generalization error, computationally inexpensive, easy to interpret results</li>
+<li>Cons: Sensitivie to tuning parameters and kernel choice, natively only handles binary classification</li>
+<li>Works with: Numeric values, nominal values</li>
+</ul>
+<p>The points closest to the separating hyperplane are known as <strong>support vectors</strong>.</p>
+<h4 id="AdaBoost"><a href="#AdaBoost" class="headerlink" title="AdaBoost"></a>AdaBoost</h4><ul>
+<li>Pros: Low generalization error, easy to code, works with most classifiers, no parameters to adjust</li>
+<li>Cons: Sensitive to outliers</li>
+<li>Works with: Numeric values, nominal values</li>
+</ul>
+<h2 id="Unsupervised-Learning"><a href="#Unsupervised-Learning" class="headerlink" title="Unsupervised Learning"></a>Unsupervised Learning</h2><h4 id="k-Means"><a href="#k-Means" class="headerlink" title="k-Means"></a>k-Means</h4><ul>
+<li>Pros: Easy to implement</li>
+<li>Cons: Can converge at local minima, slow on very large datasets</li>
+<li>Works with: Numeric values</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/21/ML-Basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/21/ML-Basic/" itemprop="url">机器学习概述</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-21T14:29:37+08:00">
+                2016-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  270
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="问题分类"><a href="#问题分类" class="headerlink" title="问题分类"></a>问题分类</h4><ul>
+<li>Supervised Learning: Approximation<ul>
+<li>Classification: y ~ {0,1}</li>
+<li>Regression: y ~ [0,1] ~ R</li>
+</ul>
+</li>
+<li>Unsupervised Learning: Description</li>
+<li>Reinforcement Learning</li>
+</ul>
+<h4 id="一般步骤"><a href="#一般步骤" class="headerlink" title="一般步骤"></a>一般步骤</h4><ol>
+<li>快速建模，容忍不精确</li>
+<li>画出学习曲线，判断是否需要更多的样本量/特征</li>
+<li>误差分析，从错误样本中找出改进方向</li>
+</ol>
+<h4 id="评估"><a href="#评估" class="headerlink" title="评估"></a>评估</h4><ul>
+<li>Precision(准确率，查准率) = $\frac{TP}{TP + FP} = \frac{TP}{预测真}$ 所有预测为真的结果里，有多少是正确的</li>
+<li>Recall(召回率，查全率) = $\frac{TP}{TP + FN} = \frac{TP}{实际真}$ 所有实际为真的样本里，有多少被预测了出来</li>
+<li>F1 Score = $\frac{2PR}{P+R}$ 权衡precision和recall</li>
+</ul>
+<h4 id="Induction-Deduction-Abduction"><a href="#Induction-Deduction-Abduction" class="headerlink" title="Induction, Deduction, Abduction"></a>Induction, Deduction, Abduction</h4><p><strong>Induction</strong> 归纳<br>    Cause -&gt; (Rule) -&gt; Effect, <strong>not</strong> always true</p>
+<p><strong>Deduction</strong>演绎<br>    Cause -&gt; Rule -&gt; (Effect), always true</p>
+<p><strong>Abduction</strong>溯因<br>    (Cause) -&gt; Rule -&gt; Effect, <strong>not</strong> always true</p>
+<p>With effect data, we use <strong>abduction</strong> to find its causes, then try to get a rule by <strong>induction</strong>, and finally deal with new data with <strong>deduction</strong>.</p>
+<h4 id="逻辑"><a href="#逻辑" class="headerlink" title="逻辑"></a>逻辑</h4><ul>
+<li>与(AND):$p\wedge q$，两个都为真{2}</li>
+<li>或(OR):$p\vee q$，至少一个为真{1,2}</li>
+<li>异或(XOR):$p\bigoplus q$，只有一个为真{1}</li>
+<li>或非(NOR = NOT + OR)，两个都为假{0}</li>
+<li>与非(NAND= NOT + AND)，至少一个假{0,1}</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/19/CMMotionManager/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/19/CMMotionManager/" itemprop="url">CMMotionManager</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-19T22:06:15+08:00">
+                2016-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  147
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>A CMMotionManager is the gateway to the motion services provided by iOS.</p>
+<p>An app should create <strong>only a single instance</strong> of the CMMotionManager class.</p>
+<h2 id="Data-Type"><a href="#Data-Type" class="headerlink" title="Data Type"></a>Data Type</h2><h4 id="Accelerometer"><a href="#Accelerometer" class="headerlink" title="Accelerometer"></a>Accelerometer</h4><p>accelerometerData.acceleration(x: Double, y: Double, z: Double)</p>
+<h4 id="Gyroscope"><a href="#Gyroscope" class="headerlink" title="Gyroscope"></a>Gyroscope</h4><p>rotationRate(x: Double, y: Double, z: Double): raw data</p>
+<h4 id="Magnetometer"><a href="#Magnetometer" class="headerlink" title="Magnetometer"></a>Magnetometer</h4><p>magnetometerData.magnetcField</p>
+<h4 id="DeviceMotion"><a href="#DeviceMotion" class="headerlink" title="DeviceMotion"></a>DeviceMotion</h4><ul>
+<li>attitude: CMAttitude, 朝向</li>
+<li>rotationRate: bias removed</li>
+<li>gravity</li>
+<li>userAcceleration</li>
+<li>mangeticField: device bias removed</li>
+</ul>
+<h2 id="Data-Fetch"><a href="#Data-Fetch" class="headerlink" title="Data Fetch"></a>Data Fetch</h2><h4 id="Pull-periodic-sampling"><a href="#Pull-periodic-sampling" class="headerlink" title="Pull: periodic sampling"></a>Pull: periodic sampling</h4><p>Takes no arguments.<br>Recommended for games, for most games are interested only the lastest motion data.</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">motionMangager.accelerometerUpdateInterval = <span class="number">0.2</span></span><br><span class="line">       <span class="keyword">let</span> queue = <span class="type">NSOperationQueue</span>()</span><br><span class="line">       motionMangager.startAccelerometerUpdatesToQueue(queue, withHandler:&#123;</span><br><span class="line">           accelerometerData, error <span class="keyword">in</span></span><br><span class="line">           <span class="keyword">guard</span> <span class="keyword">let</span> accelerometerData = accelerometerData <span class="keyword">else</span> &#123;</span><br><span class="line">               <span class="keyword">return</span></span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">let</span> acceleration = accelerometerData.acceleration</span><br><span class="line">           <span class="keyword">self</span>.xAcceleration = <span class="type">CGFloat</span>(acceleration.x) * <span class="number">0.75</span> + <span class="keyword">self</span>.xAcceleration * <span class="number">0.25</span></span><br><span class="line">       &#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="Push"><a href="#Push" class="headerlink" title="Push"></a>Push</h4><p>Takes an operation queue and a block handler for processing updates.</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">motionManager.startGyroUpdates()</span><br><span class="line">motionManager.stopGyroUpdates()</span><br></pre></td></tr></table></figure>
+<p>Must call stop when you no longer want your app to process updates.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/19/SKCameraNode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/19/SKCameraNode/" itemprop="url">SKCameraNode</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-19T21:35:42+08:00">
+                2016-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  98
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>An SKCameraNode is used to specify a position in the scene that the scene can be rendered from.<br>If a camera node is placed in the scene and the scene’s camera property is set to the camera node, then the scene is rendered using the camera node’s properties.</p>
+<p>The scene is rendered so that the camera node’s origin is placed <strong>in the middle of the scene</strong>.</p>
+<pre><code>let cameraNode = SKCameraNode()
+addChild(cameraNode)
+camera = cameraNode
+cameraNode.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+</code></pre><p>Use camera node instead of moving background node manually.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/06/SCN-Label/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/06/SCN-Label/" itemprop="url">SceneKit Label</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-06T11:33:07+08:00">
+                2016-05-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  91
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Adding a label node in SceneKit requires SpriteKit:</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">let</span> skScene = <span class="type">SKScene</span>(size: <span class="type">CGSize</span>(width: <span class="number">500</span>, height: <span class="number">100</span>))</span><br><span class="line">skScene.backgroundColor = <span class="type">UIColor</span>(white: <span class="number">0.0</span>, alpha: <span class="number">0.0</span>)</span><br><span class="line"></span><br><span class="line">labelNode = <span class="type">SKLabelNode</span>(fontNamed: <span class="string">"Menlo-Bold"</span>)</span><br><span class="line">labelNode.fontSize = <span class="number">48</span></span><br><span class="line">labelNode.position.y = <span class="number">50</span></span><br><span class="line">labelNode.position.x = <span class="number">250</span></span><br><span class="line"></span><br><span class="line">skScene.addChild(labelNode)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> plane = <span class="type">SCNPlane</span>(width: <span class="number">5</span>, height: <span class="number">1</span>)</span><br><span class="line"><span class="keyword">let</span> material = <span class="type">SCNMaterial</span>()</span><br><span class="line">material.lightingModelName = <span class="type">SCNLightingModelConstant</span></span><br><span class="line">material.doubleSided = <span class="literal">true</span></span><br><span class="line">material.diffuse.contents = skScene</span><br><span class="line">plane.materials = [material]</span><br><span class="line"></span><br><span class="line">hudNode = <span class="type">SCNNode</span>(geometry: plane)</span><br><span class="line">hudNode.name = <span class="string">"HUD"</span></span><br><span class="line">hudNode.rotation = <span class="type">SCNVector4</span>(x: <span class="number">1</span>, y: <span class="number">0</span>, z: <span class="number">0</span>, w: <span class="number">3.14159265</span>)</span><br><span class="line"></span><br><span class="line">scnScene.rootNode.addChildNode(hudNode)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/01/SCN-Force-Torque/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/01/SCN-Force-Torque/" itemprop="url">SceneKit Force and Torque</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T15:57:29+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  70
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Force"><a href="#Force" class="headerlink" title="Force"></a>Force</h4><p>Can affect linear and angular momentum.</p>
+<pre><code>    let force = SCNVector3(x: randomX, y: randomY, z: 0)
+    let position = SCNVector3(x: 0.05, y: 0.05, z: 0.05)
+geometryNode.physicsBody?.applyForce(force, atPosition: position, impulse: true)
+</code></pre><h4 id="Torque"><a href="#Torque" class="headerlink" title="Torque"></a>Torque</h4><p>Only affects angular momentum.</p>
+<pre><code>let torque = SCNVector4(x: 0.1, y: 0.1, z: 0.1, w: 1.0)
+</code></pre><p>The w-componet determines the rotation angle, that is, the magnitude of the torque.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/01/SCN-GeometryNode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/01/SCN-GeometryNode/" itemprop="url">SceneKit Geometry Node</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T15:35:35+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  51
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>3D primitives in SceneKit: cone, torus, capsule, tube, pyramid, box, sphere, cylinder.</p>
+<pre><code>var geometry: SCNGeometry = SCNSphere(radius: 1.0)
+
+let geometryNode = SCNNode(geometry: geometry)
+geometryNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: nil)
+
+scnScene.rootNode.addChildNode(geometryNode)
+</code></pre><p>If shape of physicsBody is nil, Scene Kit will generate shape according to boundings of geometry.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/01/SCNCamera/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/01/SCNCamera/" itemprop="url">SCNCamera</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T15:32:56+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  40
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Set up a camera with SCNCamera, attach it to a SCNNode, and then add to the rootNode of the scene.</p>
+<pre><code>func setupCamera() {
+    cameraNode = SCNNode()
+    cameraNode.camera = SCNCamera()
+    cameraNode.position = SCNVector3(x: 0, y: 2, z: 10)
+
+    scnScene.rootNode.addChildNode(cameraNode)
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/01/SCNView/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/01/SCNView/" itemprop="url">SCNView and SCNScene</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T15:27:39+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  59
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="SCNView"><a href="#SCNView" class="headerlink" title="SCNView"></a>SCNView</h4><p>Consider SCNView something like skView. SCNView contains SCNScene and can display various information.</p>
+<pre><code>scnView.showsStatistics = true
+scnView.allowsCameraControl = true
+scnView.autoenablesDefaultLighting = true
+
+scnView.scene = scnScene
+</code></pre><h4 id="SCNScene"><a href="#SCNScene" class="headerlink" title="SCNScene"></a>SCNScene</h4><p>SCNScene is something like skScene. SCNScene has a rootNode which should be parent node of other nodes in the scene.</p>
+<pre><code>scnScene.background.contents = &quot;GeometryFighter.scnassets/Textures/Background_Diffuse.png&quot;
+scnScene.rootNode.addChildNode(cameraNode)
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/01/22/CAEmitterLayer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/01/22/CAEmitterLayer/" itemprop="url">CAEmitterLayer</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-22T10:25:42+08:00">
+                2016-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  194
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>CAEmitterLayer is similar to SKEmitterNode, but lack of “NumOfParticles” property.</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> frameRect = <span class="type">CGRect</span>(x: <span class="number">0.0</span>, y: <span class="number">0.0</span>, width: view.bounds.width, height: view.bounds.height)</span><br><span class="line">    emitterLayer.frame = frameRect</span><br><span class="line">    emitterLayer.borderColor = <span class="type">UIColor</span>.redColor().<span class="type">CGColor</span></span><br><span class="line">    emitterLayer.borderWidth = <span class="number">3</span></span><br><span class="line">    </span><br><span class="line">    setupEmitter()</span><br><span class="line">    setupEmitterCell()</span><br><span class="line">    </span><br><span class="line">    view.layer.addSublayer(emitterLayer)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setupEmitter</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">//Shape: Point, Line, Rectangle, Cuboid, Circle, Sphere</span></span><br><span class="line">    emitterLayer.emitterShape = kCAEmitterLayerPoint</span><br><span class="line">    </span><br><span class="line">    emitterLayer.emitterPosition = containerView.center</span><br><span class="line">    emitterLayer.emitterZPosition = <span class="number">0.0</span></span><br><span class="line">    </span><br><span class="line">    emitterLayer.emitterSize = <span class="type">CGSize</span>(width: <span class="number">10</span>, height: <span class="number">10</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setupEmitterCell</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">let</span> emitterCell = <span class="type">CAEmitterCell</span>()</span><br><span class="line">    emitterCell.contents = <span class="type">UIImage</span>(named: <span class="string">"star"</span>)?.<span class="type">CGImage</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//birth</span></span><br><span class="line">    emitterCell.birthRate = <span class="number">200</span></span><br><span class="line">    emitterCell.lifetime = <span class="number">3.5</span></span><br><span class="line">    emitterCell.lifetimeRange = <span class="number">2.0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//scale</span></span><br><span class="line">    emitterCell.scale = <span class="number">0.2</span></span><br><span class="line">    emitterCell.scaleRange = <span class="number">0</span></span><br><span class="line">    emitterCell.scaleSpeed = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//color</span></span><br><span class="line">    emitterCell.color = <span class="type">UIColor</span>(red: <span class="number">0.9</span>, green: <span class="number">1.0</span>, blue: <span class="number">1.0</span>, alpha: <span class="number">1.0</span>).<span class="type">CGColor</span></span><br><span class="line">    emitterCell.redRange = <span class="number">0.3</span></span><br><span class="line">    emitterCell.blueRange = <span class="number">0.3</span></span><br><span class="line">    emitterCell.greenRange = <span class="number">0.3</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//transparent</span></span><br><span class="line">    emitterCell.alphaRange = <span class="number">0.75</span></span><br><span class="line">    emitterCell.alphaSpeed = <span class="number">0.3</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//angle</span></span><br><span class="line">    emitterCell.emissionLongitude = -<span class="number">3.14</span> / <span class="number">4</span></span><br><span class="line">    emitterCell.emissionLatitude = <span class="number">0</span></span><br><span class="line">    emitterCell.emissionRange = <span class="number">3.14</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//speed</span></span><br><span class="line">    emitterCell.velocity = <span class="number">20.0</span></span><br><span class="line">    emitterCell.velocityRange = <span class="number">200.0</span></span><br><span class="line">    emitterCell.spin = <span class="number">3.14</span> / <span class="number">4</span></span><br><span class="line">    emitterCell.spinRange = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//acceleration</span></span><br><span class="line">    emitterCell.yAcceleration = <span class="number">0.0</span></span><br><span class="line">    emitterCell.xAcceleration = <span class="number">0.0</span></span><br><span class="line">    emitterCell.zAcceleration = <span class="number">10.0</span></span><br><span class="line"></span><br><span class="line">    emitterLayer.emitterCells = [emitterCell]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/12/25/NSCalendar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/12/25/NSCalendar/" itemprop="url">NSCalendar</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-25T09:09:03+08:00">
+                2015-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  19
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Judging-Date"><a href="#Judging-Date" class="headerlink" title="Judging Date"></a>Judging Date</h2><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">let</span> calendar = <span class="type">NSCalendar</span>.currentCalendar()</span><br><span class="line"><span class="keyword">if</span> calendar.isDateInYesterday(<span class="type">Date1</span>) &#123;</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">"yesterday"</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> calendar.isDateInToday(<span class="type">Date1</span>) &#123;</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">"today"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/18/UI-Color/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/11/18/UI-Color/" itemprop="url">Color</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-18T11:16:59+08:00">
+                2015-11-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  137
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Elements-of-color"><a href="#Elements-of-color" class="headerlink" title="Elements of color"></a>Elements of color</h4><ol>
+<li>HSB，对应眼睛感知 </li>
+</ol>
+<ul>
+<li><strong>Hue</strong>: 色调、色相，光的波长</li>
+<li><strong>Saturation</strong>: 饱和度，鲜艳度</li>
+<li><strong>Brightness</strong>: 明度、亮度，明暗</li>
+</ul>
 <ol>
-<li>特征修补</li>
-<li>特征变换</li>
-<li>特征生成</li>
+<li>RGB，光的三原色，加色混合，叠加为白</li>
 </ol>
-<h4 id="1-特征修补"><a href="#1-特征修补" class="headerlink" title="1.特征修补"></a>1.特征修补</h4><p>主要处理数据中的缺失和错误，包括</p>
 <ul>
-<li>重复(Duplicated)：删除重复记录</li>
-<li>异常(Outliers)：删除异常点</li>
-<li>缺失(Missing)：删除或修补缺失字段</li>
+<li><strong>Red</strong>: 红</li>
+<li><strong>Green</strong>: 绿</li>
+<li><strong>Blue</strong>: 蓝</li>
 </ul>
-<h4 id="2-特征变换"><a href="#2-特征变换" class="headerlink" title="2.特征变换"></a>2.特征变换</h4><p>处理连续数字、以数字或字符表示的类别字段等。</p>
-<h6 id="类别"><a href="#类别" class="headerlink" title="类别"></a>类别</h6><table>
-<thead>
-<tr>
-<th style="text-align:center">类别字段</th>
-<th style="text-align:center">有大小</th>
-<th style="text-align:center">无大小</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">数字类别</td>
-<td style="text-align:center">保持有序编码，LabelEncoder</td>
-<td style="text-align:center">转为字符类型，one-hot编码</td>
-</tr>
-<tr>
-<td style="text-align:center">字符类别</td>
-<td style="text-align:center">手动映射为有序数字，map</td>
-<td style="text-align:center">one-hot编码,get_dummies</td>
-</tr>
-</tbody>
-</table>
-<p>数字和字符的区别在于，数字可以比较大小，引入有序的信息，会被模型利用。<br>因而有序的字符类别(如L, XL, XXL)实际蕴含的信息是如(2,3,4)的数字;<br>无序的数字类别(如房型20,30,40)实际蕴含的信息是如(A,B,C)的字符。<br>二值(T/N)是一种特殊的类别，视为有序或无序皆可。</p>
-<p>One-hot编码对基于树的模型而言不是很好，可能会生成一棵很深的、不平衡的树才能达到较好的准确率。</p>
-<h6 id="连续数字"><a href="#连续数字" class="headerlink" title="连续数字"></a>连续数字</h6><p>检查偏度，不符合正态分布的，尽量转为正态分布(为了使残差满足正态分布?)<br>转换手段包括但不限于：</p>
-<ul>
-<li>取Log：适合正偏(右侧长尾)</li>
-<li>box-cox变换等: 要求输入为正数，不适用值较少的数字类别</li>
-</ul>
-<h3 id="3-特征生成"><a href="#3-特征生成" class="headerlink" title="3.特征生成"></a>3.特征生成</h3><p>通过特征之间的组合，得到新的特征：</p>
-<ul>
-<li>线性组合：$x_i + x_j + x_k$</li>
-<li>特征相乘：$x_i * x_j$</li>
-<li>特征乘方：$x_i^2$</li>
-</ul>
-<h4 id="Scaling-and-Normalization"><a href="#Scaling-and-Normalization" class="headerlink" title="Scaling and Normalization"></a>Scaling and Normalization</h4><p>Feature Scaling: Make sure features are on a similar scale.</p>
-<p>$$ x_i := \frac{x_i}{s_i} $$</p>
-<p>Mean Normalization: Replace $x_i$ with $x_i-\mu_i$ to make features have approximately zero means</p>
-<p>$$ x_i := \frac{x_i-\mu_i}{s_i} $$</p>
-<ul>
-<li>$\mu_i$ Average of all the values for feature(i)</li>
-<li>$s_i$ Range of values(max-min), or Standard Deviation</li>
-</ul>
-<p><strong>对结果的影响</strong></p>
-<ul>
-<li>Scaling是对X的列向量进行缩放，向量方向不变，X列向量张成的平面不变，y的投影不变，e不变，$\theta$改变</li>
-<li>Normalization改变了列向量方向，改变了平面、投影、误差？</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/Calculus-Integration/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/11/Calculus-Integration/" itemprop="url">积分</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T12:31:44+08:00">
-                2018-01-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  489
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="The-Definite-Integral-as-a-Limit-of-Riemann-Sums"><a href="#The-Definite-Integral-as-a-Limit-of-Riemann-Sums" class="headerlink" title="The Definite Integral as a Limit of Riemann Sums"></a>The Definite Integral as a Limit of Riemann Sums</h4><p>$$ \lim_{n\rightarrow ∞} \sum_{k=1}^{n}f(c_{k})\Delta x = I = \int_{a}^{b} f(x)dx $$</p>
-<h4 id="Area-Under-a-Curve-as-a-Definite-Integral"><a href="#Area-Under-a-Curve-as-a-Definite-Integral" class="headerlink" title="Area Under a Curve as a Definite Integral"></a>Area Under a Curve as a Definite Integral</h4><p>If $y=f(x)$ is nonnegative and integrable over a closed interval $[a,b]$, then the <strong>area under the curve $y = f(x)$ over $[a,b]$</strong> is the integral of $f$ from $a$ to $b$</p>
-<p>$$ A = \int_{a}^{b} f(x)dx $$</p>
-<p>if $f$ and $g$ are continuous with $f(x)\geq g(x)$ throughout $[a,b]$, then the area of the region between the curves $y=f(x)$ and $y=g(x)$ from a to b is the integral of (f-g) from $a$ to $b$:</p>
-<p>$$ A = \int_{a}^{b} [f(x) - g(x)]dx $$</p>
-<h4 id="The-Average-of-Mean-Value-of-a-Function"><a href="#The-Average-of-Mean-Value-of-a-Function" class="headerlink" title="The Average of Mean Value of a Function"></a>The Average of Mean Value of a Function</h4><p>If $f$ is integrable on $[a,b]$, the its average value on $[a,b]$, also called its mean value, is</p>
-<p>$$ av(f) = \frac{1}{b-a}\int_{a}^{b} f(x)dx $$</p>
-<h4 id="Little-oh-and-Big-oh"><a href="#Little-oh-and-Big-oh" class="headerlink" title="Little-oh and Big-oh"></a>Little-oh and Big-oh</h4><p>A function $f$ is of small order than $g$ as $x\rightarrow ∞$ if $\lim_{x\rightarrow ∞} \frac{f(x)}{g(x)} = 0$.</p>
-<p>We indicate this by writing $f=o(g)$ (“f is little-oh of g”)</p>
-<p>$f$ is of at most the order of $g$ as $x\rightarrow ∞$ if there is a positive integer $M$ for which</p>
-<p>$$ \frac{f(x)}{g(x)} \leq M $$</p>
-<p>for $x$ sufficiently large. We indicate this by writing $f=O(g)$ (“f is big-oh of g”)</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Existence-of-Definite-Integrals"><a href="#The-Existence-of-Definite-Integrals" class="headerlink" title="The Existence of Definite Integrals"></a>The Existence of Definite Integrals</h4><p>A continuous function is integrable. That is, if a function $f$ is continuous on an interval $[a,b]$, then its definite integral over $[a,b]$ exists.</p>
-<p>连续则可积，不要求可导。</p>
-<h4 id="The-Mean-Value-Theorem-for-Definite-Integrals"><a href="#The-Mean-Value-Theorem-for-Definite-Integrals" class="headerlink" title="The Mean Value Theorem for Definite Integrals"></a>The Mean Value Theorem for Definite Integrals</h4><p>If $f$ is continuous on $[a,b]$, then at some point $c$ in $[a,b]$,</p>
-<p>$$ f(c) = \frac{1}{b-a} \int_{a}^{b} f(x)dx $$</p>
-<h4 id="The-Fundamental-Theorem-of-Calculus"><a href="#The-Fundamental-Theorem-of-Calculus" class="headerlink" title="The Fundamental Theorem of Calculus"></a>The Fundamental Theorem of Calculus</h4><p>If $f$ is continuous on $[a,b]$ then $F(x) = \int_{a}^{x} f(t)dt$ is continuous on $[a,b]$ and differentiable on $(a,b)$ and its derivative is $f(x)$</p>
-<p>$$ F’(x) = \frac{d}{dx} \int_{a}^{x} f(t)dt = f(x) $$</p>
-<p>If $f$ is continuous at every point of $[a,b]$ and $F$ is any antiderivative of $f$ on [a,b], then</p>
-<p>$$ \int_{a}^{b} f(x)dx = F(b) - F(a) $$</p>
-<h4 id="The-Substitution-Rule"><a href="#The-Substitution-Rule" class="headerlink" title="The Substitution Rule"></a>The Substitution Rule</h4><p>If $u=g(x)$ is a differentiable function whose range is an interval $I$ and $f$ is continuous on $I$, then</p>
-<p>$$ \int f(g(x))g’(x)dx = \int f(u)du $$</p>
-<p>If $g’$ is continuous on the interval $[a,b]$ and $f$ is continuous on the range of $g$, then </p>
-<p>$$ \int_{a}^{b} f(g(x)) \cdot g’(x)dx = \int_{g(a)}^{g(b)} f(u)du $$</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/ML-GDA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/11/ML-GDA/" itemprop="url">梯度下降法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T09:38:33+08:00">
-                2018-01-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  612
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h4><p>多元函数$f(x,y)$分别对$x,y$求偏导数，得到的向量$(\frac{\partial f}{\partial x},\frac{\partial f}{\partial y})^T$，称作梯度$grad f(x,y)$或者$\triangledown f(x,y)$。<br>梯度向量方向是函数增加最快的方向，更容易找到极大值；负梯度向量方向是函数减少最快的方向，更容易找到极小值。</p>
-<h4 id="梯度下降法-Gradient-Descent-Algorithm"><a href="#梯度下降法-Gradient-Descent-Algorithm" class="headerlink" title="梯度下降法(Gradient Descent Algorithm)"></a>梯度下降法(Gradient Descent Algorithm)</h4><p><img src="/img/GDA.png" alter="GDA"></p>
-<p>repeat until convergence {</p>
-<p>$$ \theta_{j} := \theta_{j} - \alpha \frac{\partial}{\partial\theta_{j}}J(\theta_{0}, \theta_{1}) $$</p>
-<p>(for j = 0 and j = 1)}(Batch Gradient Descent)</p>
-<p><strong>说明</strong></p>
-<ul>
-<li>$\alpha$ 学习速率(Leaning Rate)，迭代的步长，太小收敛慢，太大可能导致在最优解附近来回波动</li>
-<li>收敛到的局部最优解不一定是全局最优解，但对于最小二乘法的弓型损失函数来说唯一的局部最优解就是全局最优解</li>
-</ul>
-<h6 id="种类"><a href="#种类" class="headerlink" title="种类"></a>种类</h6><ul>
-<li>Batch Gradient Descent: 每次迭代使用全部m个样本，最优梯度方向，计算开销大，可以使用mapreduce</li>
-<li>Stochastic Gradient Descent: 每次迭代使用1个样本，随机梯度方向，适合大样本，需要将输入数据shuffle</li>
-<li>Mini-batch Gradient Descent: 每次迭代使用b个(2~100)样本</li>
-<li>Online Learning: 每次迭代使用1个样本，学习后丢弃样本，适合数据流，模型会跟随输入数据的趋势改变</li>
-</ul>
-<p><img src="/img/sgd.png"><br><img src="/img/minibatch.png"><br><strong>判断收敛</strong></p>
-<ul>
-<li>Batch: 观察$J_{train}(\theta)$, 每次跌代后是否变小</li>
-<li>Stochastic: 观察$Cost=\frac{1}{2}(h_{\theta}(x^{(i)})-y^{(i)})^2$均值，每k次迭代后是否变小</li>
-</ul>
-<h6 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h6><ol>
-<li><p>Batch Gradient Descent</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#(Batch) Gradient Descent:</span></span><br><span class="line">X = data_input</span><br><span class="line">Y = labels</span><br><span class="line">parameters = initialize_parameters(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="comment"># Forward propagation</span></span><br><span class="line">    a, caches = forward_propagation(X, parameters)</span><br><span class="line">    <span class="comment"># Compute cost.</span></span><br><span class="line">    cost = compute_cost(a, Y)</span><br><span class="line">    <span class="comment"># Backward propagation.</span></span><br><span class="line">    grads = backward_propagation(a, caches, parameters)</span><br><span class="line">    <span class="comment"># Update parameters.</span></span><br><span class="line">    parameters = update_parameters(parameters, grads)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Stochastic Gradient Descent</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Stochastic Gradient Descent:</span></span><br><span class="line">X = data_input</span><br><span class="line">Y = labels</span><br><span class="line">parameters = initialize_parameters(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, m):</span><br><span class="line">        <span class="comment"># Forward propagation</span></span><br><span class="line">        a, caches = forward_propagation(X[:,j], parameters)</span><br><span class="line">        <span class="comment"># Compute cost</span></span><br><span class="line">        cost = compute_cost(a, Y[:,j])</span><br><span class="line">        <span class="comment"># Backward propagation</span></span><br><span class="line">        grads = backward_propagation(a, caches, parameters)</span><br><span class="line">        <span class="comment"># Update parameters.</span></span><br><span class="line">        parameters = update_parameters(parameters, grads)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Mini-batch Gradient Descent<br><img src="/img/minibatch_shuffle.png"><br><img src="/img/minibatch_partition.png"></p>
-</li>
+<p>取值：0~255</p>
+<ol>
+<li>CMY，色(颜料)的三原色，减色混合，叠加为黑</li>
 </ol>
-<p>算法分为两步，首先Shuffle，然后Partition。<br>分块大小常采用2的幂指数，比如64，128，256，512</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Step 1: Shuffle (X, Y)</span></span><br><span class="line">permutation = list(np.random.permutation(m))</span><br><span class="line">shuffled_X = X[:, permutation]</span><br><span class="line">shuffled_Y = Y[:, permutation].reshape((<span class="number">1</span>,m))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 2: Partition (shuffled_X, shuffled_Y). Minus the end case.</span></span><br><span class="line">num_complete_minibatches = math.floor(m/mini_batch_size) <span class="comment"># number of mini batches </span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, num_complete_minibatches):</span><br><span class="line">    mini_batch_X = shuffled_X[:, k*mini_batch_size : (k+<span class="number">1</span>)*mini_batch_size]</span><br><span class="line">    mini_batch_Y = shuffled_Y[:, k*mini_batch_size : (k+<span class="number">1</span>)*mini_batch_size]</span><br><span class="line">    mini_batch = (mini_batch_X, mini_batch_Y)</span><br><span class="line">    mini_batches.append(mini_batch)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Handling the end case (last mini-batch &lt; mini_batch_size)</span></span><br><span class="line"><span class="keyword">if</span> m % mini_batch_size != <span class="number">0</span>:</span><br><span class="line">    mini_batch_X = shuffled_X[:, (mini_batch_size * num_complete_minibatches) : m]</span><br><span class="line">    mini_batch_Y = shuffled_Y[:, (mini_batch_size * num_complete_minibatches) : m]</span><br><span class="line">    mini_batch = (mini_batch_X, mini_batch_Y)</span><br><span class="line">    mini_batches.append(mini_batch)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Cyan</strong>: 青 = 蓝+绿</li>
+<li><strong>Magenta</strong>: 品红 = 蓝+红</li>
+<li><strong>Yellow</strong>: 黄 = 红+绿</li>
+</ul>
+<p>取值： 0~100%</p>
+<p>由于印刷工艺颜色不纯，引入黑色，代码K(与Blue区分)，组成CMYK<br>CMYK与RGB色域不完全相同，有些颜色可显示不可印刷</p>
 
           
         
@@ -1928,7 +3263,7 @@ v(1:10)
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1968,7 +3303,7 @@ v(1:10)
                 alt="Miles" />
             
               <p class="site-author-name" itemprop="name">Miles</p>
-              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+              <p class="site-description motion-element" itemprop="description">万人迷</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -1978,7 +3313,7 @@ v(1:10)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">277</span>
+                  <span class="site-state-item-count">285</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2080,7 +3415,7 @@ v(1:10)
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">100.2k</span>
+    <span title="Site words total count">103.6k</span>
   
 </div>
 

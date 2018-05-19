@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="非著名失业家">
+<meta name="description" content="万人迷">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Gate of Babylon">
 <meta property="og:url" content="http://mirokule.github.io/page/4/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="非著名失业家">
+<meta property="og:description" content="万人迷">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gate of Babylon">
-<meta name="twitter:description" content="非著名失业家">
+<meta name="twitter:description" content="万人迷">
 
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/27/TF-Graph/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/11/DL-Adam/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -281,7 +281,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/27/TF-Graph/" itemprop="url">TensorFlow计算图Graph</a></h1>
+                <a class="post-title-link" href="/2018/04/11/DL-Adam/" itemprop="url">Adam梯度下降</a></h1>
         
 
         <div class="post-meta">
@@ -293,8 +293,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-27T09:56:04+08:00">
-                2018-04-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T09:07:45+08:00">
+                2018-04-11
               </time>
             
 
@@ -325,7 +325,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  632
+                  741
                 </span>
               
 
@@ -352,35 +352,24 @@
       
         
           
-            <p>计算图是排列成一个图的一系列TensorFlow指令。由两种类型的对象组成：</p>
-<ul>
-<li>指令(op)：图的节点。说明消耗和生成张量的计算。</li>
-<li>张量：图的边，流经图的值。</li>
-</ul>
-<p><img src="/img/tensors_flowing.gif"><br>图中的每个指令都拥有唯一的名称。张量是根据生成它们的指令命名的，后面跟着输出索引，例如”add:0”</p>
-<h3 id="tf-Graph"><a href="#tf-Graph" class="headerlink" title="tf.Graph"></a>tf.Graph</h3><p>tf.Graph 包含两类相关信息：</p>
-<ul>
-<li>图结构：图的节点和边，指明了各个指令组合在一起的方式，但不规定它们的使用方式。</li>
-<li>图集合：TensorFlow提供了一种通用机制，将创建的对象加入特定的集合中，并与键关联。</li>
-</ul>
-<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>TensorFlow提供了一个默认图，此图是上下文中所有API函数的明确参数。<br>API函数可以构建新的 tf.Operation (节点)和 tf.Tensor (边) 对象并将它们添加到 tf.Graph 实例。例如：</p>
-<ul>
-<li>tf.constant(42): 创建单个 tf.Operation，生成值42，并返回一个表示常量值得 tf.Tensor</li>
-<li>tf.matmul(x,y): 创建单个 tf.Operation，将 tf.Tensor 对象x和y的值相乘，并返回表示结果的 tf.Tensor</li>
-<li>tf.train.Optimizer.minimize: 将指令和张量添加到计算梯度的默认图，返回一个 tf.Operation</li>
-</ul>
-<p><strong>多个图</strong><br>使用 tf.Graph.as_default 上下文管理器，安装另一个 tf.Graph 来作为默认图<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">g_1 = tf.Graph()</span><br><span class="line"><span class="keyword">with</span> g_1.as_default():</span><br><span class="line">	c = tf.constant(<span class="string">"node in g_1"</span>)</span><br><span class="line">	sess_1 = tf.Session()</span><br><span class="line"></span><br><span class="line">g_2 = tf.Graph()</span><br><span class="line"><span class="keyword">with</span> g_2.as_default():</span><br><span class="line">	d = tf.constant(<span class="string">"node in g_2"</span>)</span><br><span class="line">sess_2 = tf.Session(graph=g_2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查当前的默认图</span></span><br><span class="line">g = tf.get_deafult_graph()</span><br><span class="line">print(g.get_operations())</span><br></pre></td></tr></table></figure></p>
-<h3 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h3><p>tf.Graph 对象为其包含的 tf.Operation 对象定义一个命名空间。<br>TensorFlow会自动为图中的每个指令选择唯一名称，可以由用户指定。<br>tf.Tensor 对象以输出张量的 tf.Operation 命名，名称格式为”&lt;OP_NAME&gt;:&lt;i&gt;”，其中：</p>
-<ul>
-<li>OP_NAME 是生成该张量的指令的名称</li>
-<li>i 是一个整数，表示该张量在指令的输出中的索引</li>
-</ul>
-<p>改写指令名称的方法有二：</p>
-<ul>
-<li>name：每个创建operation或返回tensor的API函数都可以接受name参数</li>
-<li>tf.name_scope：向特定上下文中创建的所有指令添加名称范围前缀。名称范围前缀用”/“分隔，重复的将使用”_1”、”_2”区分</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c_0 = tf.constant(<span class="number">0</span>, name=<span class="string">"c"</span>) <span class="comment"># c</span></span><br><span class="line">c_1 = tf.constant(<span class="number">2</span>, name=<span class="string">"c"</span>) <span class="comment"># c_1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">"outer"</span>):</span><br><span class="line">	c_2 = tf.constant(<span class="number">2</span>, name=<span class="string">"c"</span>) <span class="comment"># outer/c</span></span><br><span class="line">	<span class="keyword">with</span> tf.name_scope(<span class="string">"inner"</span>):</span><br><span class="line">		c_3 = tf.constant(<span class="number">3</span>, name=<span class="string">"c"</span>) <span class="comment"># outer/inner/c</span></span><br><span class="line">	c_4 = tf.constant(<span class="number">4</span>, name=<span class="string">"c"</span>) <span class="comment"># out/c_1</span></span><br><span class="line">	<span class="keyword">with</span> tf.name_scope(<span class="string">"inner"</span>):</span><br><span class="line">		c_5 = tf.constant(<span class="number">5</span>, name=<span class="string">"c"</span>) <span class="comment"># outer/inner_1/c</span></span><br></pre></td></tr></table></figure>
+            <p>Adam算法全称是Adaptive Moment Estimation(自适应矩估计)，是超越其他自适应技术的优化方法。<br>Adam结合了<strong>RMSProp</strong>和<strong>Momentum</strong></p>
+<h4 id="1-Momentum"><a href="#1-Momentum" class="headerlink" title="1. Momentum"></a>1. Momentum</h4><p><strong>指数平均</strong><br>指数平均(Exponentially Weight Average)是一种将输入平滑的趋向类指标。<br>$$ v_t = \beta v_{t-1} + (1-\beta)\theta_t $$<br>可以近似看做$\frac{1}{1-\beta}$天的平均，例如$\beta=0.9$，则$v_t$近似看做最近10天的平均值。<br>$\beta$越大，$v_t$曲线越光滑；通常取为0.9.</p>
+<p><strong>动量梯度下降(Momentum)</strong><br>将指数平均应用到梯度下降算法，每次迭代更新时使用近似均值，来降低波动。<br>$$ \begin{cases}<br>v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\<br>W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}<br>\end{cases}$$</p>
+<p>$$\begin{cases}<br>v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\<br>b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}}<br>\end{cases}$$</p>
+<p><strong>Bias Correction</strong><br>移动平均的起始点低，因为$v_{t-1}$数值较小。<br>可以通过$v_t = \frac{v_t}{1-\beta^t}$予以校正。</p>
+<h4 id="2-RMSProp"><a href="#2-RMSProp" class="headerlink" title="2. RMSProp"></a>2. RMSProp</h4><p>均方根(Root Mean Square prop)用参数除以近似标准差，降低更新方向上的波动。</p>
+<p>$$ \begin{cases}<br>S_{dW^{[l]}} = \beta S_{dW^{[l]}} + (1 - \beta) (dW^{[l]})^2 \\<br>W^{[l]} = W^{[l]} - \alpha \frac{dW^{[l]}}{\sqrt{S_{dW^{[l]}}}}<br>\end{cases}$$</p>
+<p>$$\begin{cases}<br>S_{db^{[l]}} = \beta S_{db^{[l]}} + (1 - \beta) (db^{[l]})^2 \\<br>b^{[l]} = b^{[l]} - \alpha \frac{db^{[l]}}{\sqrt{S_{db^{[l]}}}}<br>\end{cases}$$</p>
+<p>实际应用时会给分母加上$\epsilon = 10^{-8}$，保证分母不为0.</p>
+<h4 id="3-Adam"><a href="#3-Adam" class="headerlink" title="3. Adam"></a>3. Adam</h4><p>同时使用了近似均值和近似标准差：<br>$$\begin{cases}<br>v_{dW^{[l]}} = \beta_1 v_{dW^{[l]}} + (1 - \beta_1) \frac{\partial \mathcal{J} }{ \partial W^{[l]} } \\<br>v^{corrected}_{dW^{[l]}} = \frac{v_{dW^{[l]}}}{1 - (\beta_1)^t} \\<br>s_{dW^{[l]}} = \beta_2 s_{dW^{[l]}} + (1 - \beta_2) (\frac{\partial \mathcal{J} }{\partial W^{[l]} })^2 \\<br>s^{corrected}_{dW^{[l]}} = \frac{s_{dW^{[l]}}}{1 - (\beta_1)^t} \\<br>W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{dW^{[l]}}}{\sqrt{s^{corrected}_{dW^{[l]}}}\;\;+\;\;\varepsilon}<br>\end{cases}$$</p>
+<p><strong>算法</strong></p>
+<ol>
+<li>计算梯度的指数平均 $v$ 和 $v^{corrected}$ </li>
+<li>计算梯度平方的指数平均 $s$ 和 $s^{corrected}$ </li>
+<li>将1和2的信息结合，更新参数</li>
+<li>$\beta_1$通常取0.9，$\beta_2$通常取0.999，$\epsilon$通常取$10^{-8}$</li>
+</ol>
+<p><strong>实现</strong><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> l <span class="keyword">in</span> range(L):</span><br><span class="line">    <span class="comment"># Moving average of the gradients. Inputs: "v, grads, beta1". Output: "v".</span></span><br><span class="line">    v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = beta1 * v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta1) * grads[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)]</span><br><span class="line">    v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = beta1 * v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta1) * grads[<span class="string">"db"</span> + str(l+<span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Compute bias-corrected first moment estimate. Inputs: "v, beta1, t". Output: "v_corrected".</span></span><br><span class="line">    v_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line">    v_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Moving average of the squared gradients. Inputs: "s, grads, beta2". Output: "s".</span></span><br><span class="line">    s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = beta2 * s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta2) * (grads[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line">    s[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = beta2 * s[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta2) * (grads[<span class="string">"db"</span> + str(l+<span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Compute bias-corrected second raw moment estimate. Inputs: "s, beta2, t". Output: "s_corrected".</span></span><br><span class="line">    s_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line">    s_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Update parameters. Inputs: "parameters, learning_rate, v_corrected, s_corrected, epsilon". Output: "parameters".</span></span><br><span class="line">    parameters[<span class="string">"W"</span> + str(l+<span class="number">1</span>)] = parameters[<span class="string">"W"</span> + str(l+<span class="number">1</span>)] - learning_rate * v_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / np.sqrt(s_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + epsilon)</span><br><span class="line">    parameters[<span class="string">"b"</span> + str(l+<span class="number">1</span>)] = parameters[<span class="string">"b"</span> + str(l+<span class="number">1</span>)] - learning_rate * v_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] / np.sqrt(s_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + epsilon)</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -429,7 +418,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/27/TF-Tensor/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-Overfit/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -448,7 +437,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/27/TF-Tensor/" itemprop="url">TensorFlow张量Tensor</a></h1>
+                <a class="post-title-link" href="/2018/04/10/DL-Overfit/" itemprop="url">神经网络过拟合</a></h1>
         
 
         <div class="post-meta">
@@ -460,8 +449,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-27T08:29:24+08:00">
-                2018-04-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T09:33:41+08:00">
+                2018-04-10
               </time>
             
 
@@ -492,7 +481,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  715
+                  338
                 </span>
               
 
@@ -519,42 +508,33 @@
       
         
           
-            <p>TensorFlow中的核心数据单位是张量，用Numpy阵列来表示。<br>TensorFlow程序首先建立 tf.Tensor 目标图，详细说明如何基于其他可用张量来计算每个张量，然后运行该图的部分内容以获得所期望的结果。<br>tf.Tensor 有以下属性：</p>
+            <p>过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。</p>
+<p>过拟合的处理方法包括：</p>
 <ul>
-<li>数据类型(int32, float32, string)</li>
-<li>形状(shape)</li>
+<li>增加训练样本：Data Augmentation数据扩增</li>
+<li>正则化<ul>
+<li>L2</li>
+<li>Drop Out</li>
 </ul>
-<p>主要的特殊张量包括：</p>
-<ul>
-<li>tf.Variable</li>
-<li>tf.constant</li>
-<li>tf.placeholder</li>
-<li>tf.SparseTensor</li>
+</li>
+<li>Early Stopping：不符合‘一次解决一个问题’的原则</li>
 </ul>
-<p>除 tf.Variable 之外，张量的值不可变。<br>然而，同一张量的两次评估可能会返回不同的值。</p>
-<h3 id="阶"><a href="#阶" class="headerlink" title="阶"></a>阶</h3><p>tf.Tensor 的阶就是它本身的维数，也就是秩(rank, degree)，与数学中的阶并不相同。</p>
+<h4 id="1-L2正则化"><a href="#1-L2正则化" class="headerlink" title="1. L2正则化"></a>1. L2正则化</h4><p>在损失函数的末尾增加正则项：<br>$$ C = C_0 + \frac{\lambda}{2m} \sum_{\omega}\omega^2$$<br>原参数的导数变为：<br>$$ \frac{\partial C}{\partial \omega} = \frac{\partial C_0}{\partial \omega} + \frac{\lambda}{m}\omega $$<br>$$ \frac{\partial C}{\partial b} = \frac{\partial C_0}{\partial b} $$<br>每次迭代时，会使$\omega$变得更小，称作weight decay.</p>
+<h4 id="2-Drop-Out"><a href="#2-Drop-Out" class="headerlink" title="2. Drop Out"></a>2. Drop Out</h4><p>随机舍弃部分神经元，减少网络中的节点数。<br>算法流程：</p>
+<ol>
+<li>设定阈值prob_keep</li>
+<li>每轮迭代时，生成新的随机数矩阵D</li>
+<li>将D中大于阈值的数置0，小于阈值的置1：D = D &lt; prob_keep</li>
+<li>将D作为mask，作用到神经元输出：A = A * D</li>
+<li>缩放输出，保持总量不变：A = A / prob_keep(Inverted Dropout)</li>
+<li>后向传播的dA同样mask：dA = dA * D</li>
+<li>缩放dA：dA = dA / prob_keep</li>
+</ol>
+<p>说明：</p>
 <ul>
-<li>0阶：标量</li>
-<li>1阶：矢量</li>
-<li>2阶：矩阵、数据表</li>
-<li>3阶：数据立体</li>
-<li>n阶：n阶张量</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 0阶</span></span><br><span class="line">str0 = tf.Variable(<span class="string">"Elephant"</span>, tf.string)</span><br><span class="line">int0 = tf.Variable(<span class="number">344</span>, tf.int32)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1阶</span></span><br><span class="line">str1 = tf.Variable([<span class="string">"hello"</span>], tf.string)</span><br><span class="line">float1 = tf.Variable([<span class="number">3.1</span>, <span class="number">2.7</span>], tf.float64)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2阶</span></span><br><span class="line">mat2 = tf.Variable([[<span class="number">7</span>],[<span class="number">11</span>]], tf.int16)</span><br><span class="line">xor2 = tf.Variable([[<span class="keyword">False</span>, <span class="keyword">True</span>], [<span class="keyword">True</span>, <span class="keyword">False</span>]], tf.bool)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4阶</span></span><br><span class="line">image4 = tf.zeros([<span class="number">10</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取阶</span></span><br><span class="line">r = tf.rank(image4)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取切片</span></span><br><span class="line">scalar = vector1[<span class="number">2</span>] <span class="comment">#1阶张量切片得到标量</span></span><br><span class="line">scalar = matrix2[<span class="number">2</span>,<span class="number">3</span>]	</span><br><span class="line">vector = matrix[<span class="number">2</span>]</span><br><span class="line">vector = matrix[:,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
-<h3 id="形状"><a href="#形状" class="headerlink" title="形状"></a>形状</h3><p><strong>获取形状</strong><br>获取 tf.Tensor 形状的方法有两种：</p>
-<ul>
-<li>tf.Tensor.shape: 返回一个 TensorShape 目标</li>
-<li>构建一个shape相同的张量：zeros = tf.zeros(matrix.shape[1])</li>
-</ul>
-<p><strong>改变形状</strong><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensor = tf.ones([<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])</span><br><span class="line">matrix = tf.reshape(tensor, [<span class="number">6</span>,<span class="number">10</span>]) <span class="comment">#维度乘积相等</span></span><br><span class="line">matrix = tf.reshape(tensor, [<span class="number">3</span>,<span class="number">-1</span>]) <span class="comment">#-1表示由tf自行计算维度</span></span><br><span class="line">matrix = tf.reshape(tensor, [<span class="number">4</span>,<span class="number">3</span>,<span class="number">-1</span>])</span><br></pre></td></tr></table></figure></p>
-<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p>一个 tf.Tensor 只能有一种数据类型。但是，可以将任意数据结构序列化为string，并存储在 tf.Tensor 中。<br>获取 tf.Tensor 的数据类型，可以使用 Tensor.dtype 属性。<br>转换数据类型，可以使用 tf.cast 方法。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">float_tensor = tf.cast(tf.constant([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]), dtype = tf.float32)</span><br></pre></td></tr></table></figure></p>
-<h3 id="评估张量"><a href="#评估张量" class="headerlink" title="评估张量"></a>评估张量</h3><p>评估张量最简单的方法是使用 Tensor.eval 方法：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">constant = tf.constant([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">tensor = constant * constant</span><br><span class="line"><span class="keyword">print</span> tensor.eval()</span><br><span class="line"></span><br><span class="line"><span class="comment">#placeholder评估前要先feed</span></span><br><span class="line">p = tf.placeholder(tf.float32)</span><br><span class="line">t = p + <span class="number">1.0</span></span><br><span class="line">t.eval(feed_dict = &#123;p: <span class="number">2.0</span>&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>eval 方法仅在默认 tf.Session 值处于活动状态时才起作用。<br>eval 方法返回一个与张量内容相同的Numpy数组。<br>注意：在没有提供placeholder值的情况下，无法评估依赖于placeholder的张量。</p>
-<h3 id="打印张量"><a href="#打印张量" class="headerlink" title="打印张量"></a>打印张量</h3><p>直接使用print tensor会输出tensor目标，而不是tensor的值。<br>使用 tf.Print 方法，传递并保持第一个参数不变，打印第二个参数。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tf.Print(input_, data, message=<span class="keyword">None</span>, first_n=<span class="keyword">None</span>, summarize=<span class="keyword">None</span>, name=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用</span></span><br><span class="line">t = &lt;&lt; some tensor operation &gt;&gt;</span><br><span class="line">t = tf.Print(t, [t])</span><br><span class="line">result = t + <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
-<p>在评估result时，会评估所有影响result的元素。评估t会导致打印其输入(t的旧值)。<br><strong>注意</strong>：该方法和jupyter notebook不兼容，只能输出到server’s output</p>
-<ul>
-<li>input_: A tensor passed through this op</li>
-<li>data: A list of tensors to print out when op is evaluated</li>
+<li>drop out只在训练时使用，测试时不使用</li>
+<li>前向传播和后向传播都要drop out</li>
+<li>drop out打破了参数之间的共适应，近似理解为每次只调整部分参数</li>
 </ul>
 
           
@@ -604,7 +584,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/25/DL-RNNSeq2Seq/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-Initializing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -623,7 +603,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/25/DL-RNNSeq2Seq/" itemprop="url">Sequence to Sequence</a></h1>
+                <a class="post-title-link" href="/2018/04/10/DL-Initializing/" itemprop="url">神经网络权重初始化</a></h1>
         
 
         <div class="post-meta">
@@ -635,8 +615,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-25T08:59:46+08:00">
-                2018-04-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T08:20:04+08:00">
+                2018-04-10
               </time>
             
 
@@ -667,7 +647,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  469
+                  400
                 </span>
               
 
@@ -694,13 +674,28 @@
       
         
           
-            <p>经典的N-to-N RNN要求序列等长，然而现实中的大部分问题序列都不是等长的，比如机器翻译.</p>
-<h3 id="Sequence-to-Sequence"><a href="#Sequence-to-Sequence" class="headerlink" title="Sequence-to-Sequence"></a>Sequence-to-Sequence</h3><p><img src="/img/ntom.jpeg"><br>如图，使用一个RNN网络将输入X转为编码c向量(可以是隐藏层参数、输出层变换等)，再用另一个RNN网络使用c向量作为输入，得到最终输出Y。<br>整个网络可以看做是求条件概率$ P(y^{&lt;i&gt;},…,y^{&lt; T_y &gt;}|x) $.</p>
-<p>问：可以使用贪心法吗？<br>答：在每个时刻t，用贪心法求出的局部最优条件概率，不一定是全局最优条件概率。<br>例如机器翻译中，前n个词的最优翻译，不一定是整句话的最优翻译。</p>
-<h6 id="Beam-Search"><a href="#Beam-Search" class="headerlink" title="Beam Search"></a>Beam Search</h6><p>在解码的每个时刻，保留Top k 个最优解。当k=1时，算法退化为贪心法。<br>代价是要同时持有网络的k份拷贝。k越大，结果越好，运行越慢。</p>
-<h6 id="Length-Normalization"><a href="#Length-Normalization" class="headerlink" title="Length Normalization"></a>Length Normalization</h6><p>目标函数中，小于1的概率p连续相乘会使得值过小：<br>$$ \prod_{t=1}^{T_y} P(y^{&lt;t&gt;}|x,y^{&lt;1&gt;},…,y^{&lt;t-1&gt;}) $$<br>所以取Log将乘法转为加法，目标函数变为<br>$$ Log\sum_{t=1}^{T_y} P(y^{&lt;t&gt;}|x,y^{&lt;1&gt;},…,y^{&lt;t-1&gt;}) $$<br>这两个目标函数都会倾向于选择较短的翻译，所以加入规范化项：<br>$$ \frac{1}{T_y^\alpha}Log\sum_{t=1}^{T_y} P(y^{&lt;t&gt;}|x,y^{&lt;1&gt;},…,y^{&lt;t-1&gt;}) $$</p>
-<h6 id="BLEU-Score"><a href="#BLEU-Score" class="headerlink" title="BLEU Score"></a>BLEU Score</h6><p>全称BiLingual Evaluation Understudy，用于评估机器翻译的质量。<br>主要思想：机器翻译结果与若干条人工翻译的结果对比，越接近则效果越好。</p>
-<h3 id="Attention-Model"><a href="#Attention-Model" class="headerlink" title="Attention Model"></a>Attention Model</h3><p>当输入序列较长时，固定长度的编码c向量中难以包含所有序列的信息，使性能变差。<br>Attention机制的实现是在解码的每一步时，只考虑编码的若干个中间结果。<br><img src="/img/attn_model.png"><br><img src="/img/attn_mechanism.png"></p>
+            <p><strong>深度学习中的权重初始化对模型收敛速度和模型质量有重要影响</strong>。</p>
+<ul>
+<li>对tanh，W可初始化为$randn(n^{[l]}, n^{[l-1]}) \ast \sqrt{\frac{1}{n^{[l-1]}}}$ (Xavier Initialization)</li>
+<li>对ReLU，W可初始化为$randn(n^{[l]}, n^{[l-1]}) \ast \sqrt{\frac{2}{n^{[l-1]}}}$ (He Initialization)</li>
+<li>也可以初始化为$randn(n^{[l]}, n^{[l-1]}) + \sqrt{\frac{1}{n^{[l-1]}\,+\,n^{[l]}}}$ </li>
+</ul>
+<h4 id="简化模型"><a href="#简化模型" class="headerlink" title="简化模型"></a>简化模型</h4><p>每层只有一个神经元的神经网络：<br><img src="/img/singleNN.png"><br>损失函数为$C$，各层输出分别是$a_1, a_2, a_3, a_4$<br>根据求导的链式法则有：<br>$$ \frac{\partial C}{\partial \omega_1}=a_0\sigma’(z_1)\omega_2\sigma’(z_2)\omega_3\sigma’(z_3)\omega_4\sigma’(z_4)\frac{\partial C}{\partial a_4} $$<br>$$ \frac{\partial C}{\partial b_1}=\sigma’(z_1)\omega_2\sigma’(z_2)\omega_3\sigma’(z_3)\omega_4\sigma’(z_4)\frac{\partial C}{\partial a_4} $$</p>
+<h4 id="0-全部为0"><a href="#0-全部为0" class="headerlink" title="0. 全部为0"></a>0. 全部为0</h4><p>全部初始化为0是不可接受的，这会导致所有节点的行为相同，网络失效。<br>后向传播时，梯度也全为0，参数无法更新。</p>
+<h4 id="1-随机初始化"><a href="#1-随机初始化" class="headerlink" title="1. 随机初始化"></a>1. 随机初始化</h4><p>随机初始化的分布选择不当，也会导致网络优化陷入困境。</p>
+<ul>
+<li>参数过大，会带来梯度爆炸</li>
+<li>参数过小，会带来梯度消失</li>
+</ul>
+<h4 id="2-Xavier初始化"><a href="#2-Xavier初始化" class="headerlink" title="2. Xavier初始化"></a>2. Xavier初始化</h4><p>主要思想：保持输入和输出的方差一致，这就避免了所有输出值都趋向于0</p>
+<ul>
+<li>配合tanh等函数能获得比较好的结果</li>
+<li>ReLU和PReLU效果不好</li>
+</ul>
+<h4 id="3-He初始化"><a href="#3-He初始化" class="headerlink" title="3. He初始化"></a>3. He初始化</h4><p>主要思想：假定ReLU网络中每一层只有一半的神经元被激活，所以要保持方差不变，只需要在Xavier的基础上除以2</p>
+<ul>
+<li>配合ReLU效果较好</li>
+</ul>
 
           
         
@@ -749,7 +744,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/22/Keras-Case-Emojifier/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-ActivationFunction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -768,7 +763,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/22/Keras-Case-Emojifier/" itemprop="url">Keras实例：构建情感判断器Emojifier</a></h1>
+                <a class="post-title-link" href="/2018/04/10/DL-ActivationFunction/" itemprop="url">激活函数(Activation Function)</a></h1>
         
 
         <div class="post-meta">
@@ -780,8 +775,2766 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-22T09:26:44+08:00">
-                2018-04-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T07:27:43+08:00">
+                2018-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  444
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>激活函数用于在学习器中引入非线性因素。<br>$$ Y = Activation(\Sigma(weight \ast input) + bias) $$<br>不引入非线性因素的神经网络，本质上仍是一个线性回归模型。</p>
+<p>激活函数主要有以下几种：</p>
+<ul>
+<li>sigmoid: 适合分类器</li>
+<li>tanh: sigmoid改进版</li>
+<li>ReLU: 大多数情况下适用，只能在隐藏层中使用</li>
+<li>Leaky ReLU: 避免死神经元</li>
+</ul>
+<p><strong>选择经验</strong><br>选择激活函数时，可以先从<strong>ReLU</strong>开始。<br>如果ReLU没有提供最优结果，再尝试其他激活函数。</p>
+<h4 id="1-sigmoid"><a href="#1-sigmoid" class="headerlink" title="1. sigmoid"></a>1. sigmoid</h4><p>曾将广泛使用的激活函数，由于自身缺陷，目前已很少使用。</p>
+<ul>
+<li>当输入远离原点时，梯度太小；多层神经网络中，太小的各层梯度叠加后会消失，使学习速度缓慢</li>
+<li>输出不以0为中心</li>
+<li>要进行指数运算</li>
+</ul>
+<p><img src="/img/sigmoid.png"><br>$$ sigmoid(x) = \frac{1}{1+e^{-x}} $$<br>目前仅在将值分类到特定类别时使用，比如最终输出$y\in(0,1)$的网络中的最后一层。</p>
+<h4 id="2-tanh"><a href="#2-tanh" class="headerlink" title="2. tanh"></a>2. tanh</h4><p>tanh是sigmoid的一个放大版本，梯度比sigmoid更陡。<br>tanh解决了所有值符号相同的问题，输出区间(-1,1)，为0为中心。<br><img src="/img/tanh.png"></p>
+<p>$$ tanh(x) = 2\ast sigmoid(2x) - 1 $$<br>$$ tanh(x) = \frac{2}{1+e^{-2x}} - 1 $$</p>
+<h4 id="3-ReLU"><a href="#3-ReLU" class="headerlink" title="3. ReLU"></a>3. ReLU</h4><p>ReLU是使用最广泛的激活函数。<br>最大的优点在于不会同时激活所有的神经元，这种稀疏性使其变得高效且易于计算。<br><img src="/img/relu.png"></p>
+<p>$$ ReLU(x) = max(0, x) $$</p>
+<h4 id="4-Leaky-ReLU-PReLU"><a href="#4-Leaky-ReLU-PReLU" class="headerlink" title="4. Leaky ReLU / PReLU"></a>4. Leaky ReLU / PReLU</h4><p>在ReLU中，当x小于0时梯度为0，使得该区域的神经元死亡。<br>为了解决这个问题，用斜线代替水平线，去除零梯度。<br><img src="/img/prelu.png"></p>
+<p>$$ PReLU(x) = ax\; for \; x &lt; 0 $$<br>$$ PReLU(x) = x\; for \; x \geq 0 $$</p>
+<p>这里a是一个很小的值，比如0.01.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-GradientChecking/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/10/DL-GradientChecking/" itemprop="url">梯度检验(GradientChecking)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T06:52:46+08:00">
+                2018-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  419
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>反向传播算法中，梯度的推导公式容易产生错误。此时需要从定义出发，检验梯度的计算式是否正确。</p>
+<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>根据导数的数学定义：<br>$$ \frac{dJ}{d\theta} = \lim_{\epsilon\rightarrow 0}\frac{J(\theta+\epsilon)-J(\theta-\epsilon)}{2\epsilon} $$<br>可以推导出梯度检验的公式：<br>$$ g(\theta) \approx \frac{}{}\frac{J(\theta+\epsilon)-J(\theta-\epsilon)}{2\epsilon} $$</p>
+<p>在实际应用中，通常将$\epsilon$设为一个很小的常量，比如在$10^{-4}$；<br>通过将后向传播算出的梯度值与梯度检验算出的梯度值比较，可以验证后向传播中的计算式是否有误。<br>$$ difference = \frac {\mid\mid grad - gradapprox \mid\mid_2}{\mid\mid grad \mid\mid_2 + \mid\mid gradapprox \mid\mid_2} $$</p>
+<h4 id="神经网络的梯度检验"><a href="#神经网络的梯度检验" class="headerlink" title="神经网络的梯度检验"></a>神经网络的梯度检验</h4><p>在神经网络中，需要验证梯度的参数W、b是矩阵而非标量，此时可将矩阵映射为一维向量，然后对向量中的每个元素循环计算。<br><img src="/img/dlGradientCheck.png"><br><img src="/img/dlModel.png"></p>
+<h6 id="计算过程"><a href="#计算过程" class="headerlink" title="计算过程"></a>计算过程</h6><ul>
+<li><code>J_plus[i]</code>:<ol>
+<li>Set $\theta^{+}$ to <code>np.copy(parameters_values)</code></li>
+<li>Set $\theta^{+}_i$ to $\theta^{+}_i + \varepsilon$</li>
+<li>Calculate $J^{+}_i$ using to <code>forward_propagation_n(x, y, vector_to_dictionary(</code>$\theta^{+}$ <code>))</code>.     </li>
+</ol>
+</li>
+<li><code>J_minus[i]</code>: do the same thing with $\theta^{-}$</li>
+<li>$gradapprox[i] = \frac{J^{+}_i - J^{-}_i}{2 \varepsilon}$</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_parameters):</span><br><span class="line">    <span class="comment"># Compute J_plus[i]. Inputs: "parameters_values, epsilon". Output = "J_plus[i]".</span></span><br><span class="line">    thetaplus = np.copy(parameters_values)                                      </span><br><span class="line">    thetaplus[i][<span class="number">0</span>] = parameters_values[i][<span class="number">0</span>] + epsilon                                </span><br><span class="line">    J_plus[i], _ = forward_propagation_n(X, Y, vector_to_dictionary(thetaplus))                               </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute J_minus[i]. Inputs: "parameters_values, epsilon". Output = "J_minus[i]".</span></span><br><span class="line">    thetaminus = np.copy(parameters_values)                                 </span><br><span class="line">    thetaminus[i][<span class="number">0</span>] = parameters_values[i][<span class="number">0</span>] - epsilon                           </span><br><span class="line">    J_minus[i], _ = forward_propagation_n(X, Y, vector_to_dictionary(thetaminus))                                </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute gradapprox[i]</span></span><br><span class="line">    gradapprox[i] = (J_plus[i] - J_minus[i]) / (<span class="number">2</span> * epsilon)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Compare gradapprox to backward propagation gradients by computing difference.</span></span><br><span class="line">numerator = np.linalg.norm(grad - gradapprox)                                           </span><br><span class="line">denominator = np.linalg.norm(grad) + np.linalg.norm(gradapprox)                                         </span><br><span class="line">difference = numerator / denominator</span><br></pre></td></tr></table></figure>
+<h6 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h6><p>Gradient Checking计算过程较慢，当验证公式无误后应关闭，不参加常规的训练过程。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/08/DL-Model/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/08/DL-Model/" itemprop="url">深度学习算法流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T15:19:41+08:00">
+                2018-04-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  275
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>狭义的深度学习是指有很多隐藏层，每层有很多节点的神经网络。</p>
+<h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h4><p><img src="/img/deepLearning.png"></p>
+<ol>
+<li>初始化参数$W,b$<ul>
+<li>$W^{[l]}.shape = (n^{[l]}, n^{[l-1]})$</li>
+<li>$b^{[l]}.shape = (n^{[1]}, 1))$</li>
+</ul>
+</li>
+<li>前向传播：从前向后逐层计算$A^{[l]}$，缓存各层中间结果$W^{[l]},b^{[l]},Z^{[l]}$<ul>
+<li>$Z^{[l]} = W^{[l]}A^{[l-1]} + b^{[l]}$</li>
+<li>$A^{[l]} = g(Z^{[l]})$</li>
+</ul>
+</li>
+<li>计算损失函数：<br>$$cost(A^{[L]}, Y) = -\frac{1}{m}\sum_{i=1}^{m}(y^{(i)}log(a^{[L]i}) + (1-y^{i})log(1-a^{[L]i}))$$</li>
+<li>后向传播：从后向前逐层计算偏导数$dA^{[l]}, dZ^{[l]}, dW^{[l]}, db^{[l]}$<ul>
+<li>$dZ^{[l]} = dA^{[l]}\ast g’(Z^{[l]})$</li>
+<li>$dW^{[l]} = \frac{1}{m}dZ^{[l]}A^{[l-1]T}$</li>
+<li>$db^{[l]} = \frac{1}{m}\sigma_{i=1}^{m}dZ^{[l]i}$</li>
+<li>$dA^{[l-1]} = W^{[l]T}dZ^{[l]}$</li>
+</ul>
+</li>
+<li><p>更新参数：</p>
+<ul>
+<li>$W^{[l]}=W^{[l]}-\alpha\,dW^{[l]}$</li>
+<li>$b^{[l]}=b^{[l]}-\alpha\,db^{[l]}$</li>
+</ul>
+</li>
+<li><p>重复2-5，直到$cost(A^{[L]}, Y)$不再减少或满足要求</p>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 主循环</span></span><br><span class="line">parameters = initialize_parameters_deep(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="comment"># Forward propagation: [LINEAR -&gt; RELU]*(L-1) -&gt; LINEAR -&gt; SIGMOID.</span></span><br><span class="line">    AL, caches = L_model_forward(X, parameters)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute cost.</span></span><br><span class="line">    cost = compute_cost(AL, Y)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Backward propagation.</span></span><br><span class="line">    grads = L_model_backward(AL, Y, caches)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># Update parameters.</span></span><br><span class="line">    parameters = update_parameters(parameters, grads, learning_rate)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/07/Python-NumPy-Multiply/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/07/Python-NumPy-Multiply/" itemprop="url">NumPy中的乘法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-07T17:31:16+08:00">
+                2018-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  146
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>NumPy中的乘法有三种：</p>
+<ul>
+<li>乘号*: 元素积</li>
+<li>multiply: 元素积</li>
+<li>dot: 内积</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>乘数</th>
+<th>乘号*</th>
+<th>multiply</th>
+<th>dot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>array</td>
+<td>元素乘积</td>
+<td>元素乘积</td>
+<td>矩阵乘积</td>
+</tr>
+<tr>
+<td>matrix</td>
+<td>元素乘积</td>
+<td>元素乘积</td>
+<td>矩阵乘积</td>
+</tr>
+</tbody>
+</table>
+<h5 id="1-乘号"><a href="#1-乘号" class="headerlink" title="1. 乘号*"></a>1. 乘号*</h5><p>返回元素乘积，和multiply结果相同；</p>
+<h5 id="2-multiply"><a href="#2-multiply" class="headerlink" title="2. multiply"></a>2. multiply</h5><p>np.multiply(x1, x2)返回的是对应元素乘积(element-wise)<br>相当于有broadcast的$x_1 \multiply x_2$<br>例如np.multiply([1,2], [5,10]) = [5, 20]</p>
+<h5 id="3-dot"><a href="#3-dot" class="headerlink" title="3. dot"></a>3. dot</h5><p>np.dot()返回的是两个数组的点积/内积(dot product)<br>对array，内积是一个数；例如np.dot([1,2], [5,10]) = 25<br>对matrix，内积就是矩阵乘积。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/07/Python-NumPy-Broadcasting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/07/Python-NumPy-Broadcasting/" itemprop="url">NumPy中的Broadcasting机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-07T16:53:20+08:00">
+                2018-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  158
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Broadcasting是指对两个形状不同的矩阵进行数学计算的处理机制。<br>对两个阵列操作时，NumPy会逐元素地<strong>从后向前</strong>比较他们的形状。当以下情形出现时，两个维度是兼容的：</p>
+<ul>
+<li>两个维度相等</li>
+<li>其中一个是1</li>
+</ul>
+<p>如果这些条件没有达到，那么将会报错。</p>
+<h6 id="正例"><a href="#正例" class="headerlink" title="正例"></a>正例</h6><table>
+<thead>
+<tr>
+<th style="text-align:left">阵列</th>
+<th style="text-align:right">尺寸</th>
+<th style="text-align:right">尺寸</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">A</td>
+<td style="text-align:right">255 × 255 × 3</td>
+<td style="text-align:right">15 × 1 × 3</td>
+</tr>
+<tr>
+<td style="text-align:left">B</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">15 × 5 × 3</td>
+</tr>
+<tr>
+<td style="text-align:left">Result</td>
+<td style="text-align:right">255 × 255 × 3</td>
+<td style="text-align:right">15 × 5 × 3</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td style="text-align:left">A</td>
+<td style="text-align:right">5 × 4</td>
+<td style="text-align:right">8 × 1 × 3 × 1</td>
+</tr>
+<tr>
+<td style="text-align:left">B</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">7 × 1 × 5</td>
+</tr>
+<tr>
+<td style="text-align:left">Result</td>
+<td style="text-align:right">5 × 4</td>
+<td style="text-align:right">8 × 7 × 3 × 5</td>
+</tr>
+</tbody>
+</table>
+<h6 id="负例"><a href="#负例" class="headerlink" title="负例"></a>负例</h6><table>
+<thead>
+<tr>
+<th style="text-align:left">阵列</th>
+<th style="text-align:right">尺寸</th>
+<th style="text-align:right">尺寸</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">A</td>
+<td style="text-align:right">8 × 3 × 4</td>
+<td style="text-align:right">15 × 1 × 3 × 5</td>
+</tr>
+<tr>
+<td style="text-align:left">B</td>
+<td style="text-align:right">3 × 2</td>
+<td style="text-align:right">7 × 6 × 1</td>
+</tr>
+<tr>
+<td style="text-align:left">Result</td>
+<td style="text-align:right">最后一个维度不兼容</td>
+<td style="text-align:right">倒数第二个维度不兼容</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/06/Python-skimage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/06/Python-skimage/" itemprop="url">Scikit-Image</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-06T10:02:01+08:00">
+                2018-04-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  219
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Scikit-Image是基于Scipy的图像处理包，将图片作为numpy数组处理。</p>
+<h6 id="子模块"><a href="#子模块" class="headerlink" title="子模块"></a>子模块</h6><table>
+<thead>
+<tr>
+<th style="text-align:center">子模块</th>
+<th style="text-align:center">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">io</td>
+<td style="text-align:center">读写、显示图片</td>
+</tr>
+<tr>
+<td style="text-align:center">data</td>
+<td style="text-align:center">内置样本图片</td>
+</tr>
+<tr>
+<td style="text-align:center">color</td>
+<td style="text-align:center">颜色空间变换</td>
+</tr>
+<tr>
+<td style="text-align:center">filters</td>
+<td style="text-align:center">滤镜如图像增强、边缘检测</td>
+</tr>
+<tr>
+<td style="text-align:center">draw</td>
+<td style="text-align:center">图形绘制如线条、矩形</td>
+</tr>
+<tr>
+<td style="text-align:center">transform</td>
+<td style="text-align:center">几何变换如旋转、拉伸</td>
+</tr>
+<tr>
+<td style="text-align:center">morphology</td>
+<td style="text-align:center">形态学操作如骨架提取</td>
+</tr>
+<tr>
+<td style="text-align:center">exposure</td>
+<td style="text-align:center">强度调整如亮度、直方图均衡</td>
+</tr>
+<tr>
+<td style="text-align:center">feature</td>
+<td style="text-align:center">特征检测与提取</td>
+</tr>
+<tr>
+<td style="text-align:center">measure</td>
+<td style="text-align:center">图像属性测量如相似性、等高线</td>
+</tr>
+<tr>
+<td style="text-align:center">segmentation</td>
+<td style="text-align:center">图像分割</td>
+</tr>
+<tr>
+<td style="text-align:center">restoration</td>
+<td style="text-align:center">图像恢复</td>
+</tr>
+<tr>
+<td style="text-align:center">util</td>
+<td style="text-align:center">通用函数</td>
+</tr>
+</tbody>
+</table>
+<h6 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io, data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取图片</span></span><br><span class="line">img_file1 = io.imread(<span class="string">'./input/111111.png'</span>)</span><br><span class="line">img_file2 = data.chelsea()</span><br><span class="line">io.imshow(img_file2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看图片信息</span></span><br><span class="line">type(img)</span><br><span class="line">img.shape</span><br><span class="line">img.size</span><br><span class="line">img[<span class="number">0</span>][<span class="number">0</span>] <span class="comment">#图像的像素值</span></span><br><span class="line">width = img.size[<span class="number">0</span>]</span><br><span class="line">height = img.size[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 颜色转换</span></span><br><span class="line">img_file3 = skimage.color.rgb2gray(img_file2_ <span class="comment">#彩色转灰度</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 缩放</span></span><br><span class="line">skimage.transform.resize(image, output_shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直方图</span></span><br><span class="line">skimage.exposure.histogram(image, nbins=<span class="number">256</span>)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/05/ML-ROC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/05/ML-ROC/" itemprop="url">ROC曲线</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-05T17:26:20+08:00">
+                2018-04-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  616
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h4><p>ROC全称是“受试者工作特征”(Receiver Operating Characteristic).<br>ROC曲线下方的面积称为AUC(Area Under the Curve)。AUC可用于衡量二分类问题的算法性能。<br>ROC通常位于直线$y=x$上方，故AUC取值介于0.5~1之间，越大说明算法效果越好。<br><img src="/img/roc1.png"><br>绘制ROC曲线需要三个变量：</p>
+<ul>
+<li>TPR = TP/(TP+FN)，所有正例中挑出来了多少，例如有病的诊断率</li>
+<li>FPR = FP/(FP+TN)，所有负例中挑错了多少，例如没病的误判率</li>
+<li>Threashold：改变分类结果的阈值<br><img src="/img/roc2.png"></li>
+</ul>
+<p>在极端情况下，将所有样本都判为正例，那么TPR=FPR=1；<br>将所有样本都判为负例，那么TPR=FPR=0；<br>以0.3的概率随机判为正例，那么TPR=FPR=0.3；<br>这就是图中y=x直线的由来，代表随机胡蒙的ROC曲线。</p>
+<p><strong>绘制</strong></p>
+<ol>
+<li>将样本的预测概率值从高到低排列；</li>
+<li>从图中(0,0)开始，取一个样本，代表此时阈值将该样本预测为正例；<br>若样本实际是正例，则TP+1，TPR增大，向上一步；<br>若样本实际是负例，则FP+1，FPR增大，向右一步。</li>
+<li>遍历所有样本，将得到的点(TPR, FPR)用折线连接即可</li>
+</ol>
+<p><strong>计算AUC</strong><br>$$AUC = \frac{\sum_{positive}rank_i -\frac{M(1+M)}{2}}{M\times N} $$</p>
+<p>正样本数量为M，负样本数量为N，那么正负两两组合的种类是M×N；<br>将样本的score从大到小排列，score最大的样本的rank记为n(n=M+N)，第二大的样本rank记为n-1，依次类推，score最小的样本rank记为1；<br>将所有正样本的rank相加，再减去正样本两两组合的种类M(1+M)/2，得到的就是所有样本中，有多少对正样本的score大于负样本的score</p>
+<h4 id="2-ROC的优势"><a href="#2-ROC的优势" class="headerlink" title="2. ROC的优势"></a>2. ROC的优势</h4><p>ROC曲线比较稳定。<br>当测试集中的正负样本分布变化时，ROC曲线能够保持不变。<br><img src="/img/roc3.png"></p>
+<h4 id="3-roc-curve"><a href="#3-roc-curve" class="headerlink" title="3. roc_curve"></a>3. roc_curve</h4><p>sklearn.metrics.roc_curve(y_true, y_score, pos_label=None, sample_weight=None, drop_intermediate=True)</p>
+<p>参数</p>
+<ul>
+<li>y_true: 样本真实分类的二值数组</li>
+<li>y_score: 样本的预测得分</li>
+<li>pos_label: 正例标签</li>
+<li>sample_weight: 权重</li>
+<li>drop_intermediate: 是否忽略某些无影响的阈值</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>fpr</li>
+<li>tpr</li>
+<li>thresholds</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y = np.array([<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>])</span><br><span class="line">scores = np.array([<span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.35</span>, <span class="number">0.89</span>])</span><br><span class="line">fpr, tpr, thresholds = metrics.roc_curve(y, scores, pos_label=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">fpr <span class="comment">#array([0, 0.5, 0.5, 1])</span></span><br><span class="line">tpr <span class="comment">#array([0.5, 0.5, 1, 1])</span></span><br><span class="line">thresholds <span class="comment">#array([0.89, 0.4, 0.35, 0.1])</span></span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/05/Python-NumPy-RavelFlatten/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/05/Python-NumPy-RavelFlatten/" itemprop="url">NumPy数组降维</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-05T15:05:08+08:00">
+                2018-04-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  327
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>NumPy中可以用于维度缩减的函数有：</p>
+<ul>
+<li>ravel: 1-D,就地生效</li>
+<li>flatten: 1-D,返回副本</li>
+<li>squeeze: 移除shape为1的维度</li>
+<li>reshape: 指定维度</li>
+</ul>
+<h4 id="1-ravel"><a href="#1-ravel" class="headerlink" title="1. ravel()"></a>1. ravel()</h4><p>numpy.ravel(a, order=’C’)<br>将数组降维，返回一维数组；如果没有必要，不会产生原数据的副本，而是<strong>就地生效</strong><br>相当于rashape(-1, order=order)</p>
+<p>参数</p>
+<ul>
+<li>a：输入array</li>
+<li>order: {‘C’, ‘F’, ‘A’, ‘K’}，默认’C’<ul>
+<li>‘C’: C-style，先处理行</li>
+<li>‘F’: Fortran-style，先处理列</li>
+<li>‘A’: Auto，如果a在内存中是Fortran contiguous则’F’，否则’C’</li>
+<li>‘K’: 按内存顺序</li>
+</ul>
+</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>y：1-D ndarray</li>
+</ul>
+<h4 id="2-flatten"><a href="#2-flatten" class="headerlink" title="2. flatten()"></a>2. flatten()</h4><p>numpy.ndarray.flatten(order=’C’)<br>返回数组降维后的<strong>副本</strong></p>
+<p>参数</p>
+<ul>
+<li>order: {‘C’,’F’,’A’,’K’}</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>y: ndarray</li>
+</ul>
+<h4 id="3-squeeze"><a href="#3-squeeze" class="headerlink" title="3. squeeze()"></a>3. squeeze()</h4><p>numpy.squeeze(a, axis=None)<br>移除 single-dimensional entries，即shape中为1的维度。</p>
+<p>参数</p>
+<ul>
+<li>a: 输入array</li>
+<li>axis: 指定要缩减的轴，若该轴的shape大于1，则报错</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>squeezed: ndarray</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = np.array([[[<span class="number">0</span>],[<span class="number">1</span>],[<span class="number">2</span>]]])</span><br><span class="line">x.shape <span class="comment">#(1,3,1)</span></span><br><span class="line">np.squeeze(x).shape <span class="comment">#(3,)</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">0</span>).shape <span class="comment">#(3,1)</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">1</span>).shape <span class="comment">#报错</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">2</span>).shape <span class="comment">#(1,3)</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="4-reshape"><a href="#4-reshape" class="headerlink" title="4. reshape()"></a>4. reshape()</h4><p>numpy.reshape(a, newshape, order=’C’)<br>为数组指定新的shape</p>
+<p>参数</p>
+<ul>
+<li>a: 输入array</li>
+<li>newshape: int表示该维度长度，-1表示自动推断</li>
+<li>order: {‘C’, ‘F’, ‘A’}</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>reshaped_array: ndarray</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = np.arange(<span class="number">6</span>).reshape(<span class="number">3</span>,<span class="number">2</span>)</span><br><span class="line">np.reshape(a, <span class="number">6</span>)</span><br><span class="line">np.reshape(a, (<span class="number">2</span>,<span class="number">3</span>), order=<span class="string">'F'</span>)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/02/ML-Stacking/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/02/ML-Stacking/" itemprop="url">Stacking实现</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T12:40:37+08:00">
+                2018-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  473
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Bagging的基模型结果取简单平均，而Stacking使用了另一个学习器，训练得到基模型预测结果的权重。</p>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
+<li>将训练集分为两份：X_train和X_validation</li>
+<li>使用X_train训练若干基模型</li>
+<li>使用训练好的模型预测X_validation</li>
+<li>将基模型预测结果作为高阶模型的输入特征</li>
+</ol>
+<p>前三步是循环迭代的。如果使用KFolds将数据分为5份，每次使用4份作为X_train，使用1份作为X_validation，那么共需要循环5次。<br>假设每次要训练4种不同的模型，那么循环之后共得到5*4=20个训练好的基模型；<br>同一基模型的预测结果作为高阶模型的一个特征，高阶模型共有4个输入特征。<br><img src="/img/stacking1.jpg"></p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StackingAveragedModels</span><span class="params">(BaseEstimator, RegressorMixin, TransformerMixin)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, base_models, meta_model, n_folds=<span class="number">5</span>)</span>:</span></span><br><span class="line">        self.base_models = base_models</span><br><span class="line">        self.meta_model = meta_model</span><br><span class="line">        self.n_folds = n_folds</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X, y)</span>:</span></span><br><span class="line">	<span class="comment"># n个模型n个列表，列表长度=n_folds</span></span><br><span class="line">        self.base_models_ = [list() <span class="keyword">for</span> x <span class="keyword">in</span> self.base_models]</span><br><span class="line">        self.meta_model_ = clone(self.meta_model)</span><br><span class="line">        kfold = KFold(n_splits=self.n_folds, shuffle=<span class="keyword">True</span>, random_state=<span class="number">156</span>)</span><br><span class="line">       </span><br><span class="line">	<span class="comment"># 训练基模型，共n_models * n_folds个 </span></span><br><span class="line">	<span class="comment"># 基模型预测结果=(m_sample, n_models)</span></span><br><span class="line">        out_of_fold_predictions = np.zeros((X.shape[<span class="number">0</span>], len(self.base_models)))</span><br><span class="line">        <span class="keyword">for</span> i, model <span class="keyword">in</span> enumerate(self.base_models):</span><br><span class="line">            <span class="keyword">for</span> train_index, holdout_index <span class="keyword">in</span> kfold.split(X, y):</span><br><span class="line">                instance = clone(model)</span><br><span class="line">                self.base_models_[i].append(instance)</span><br><span class="line">                instance.fit(X.iloc[train_index], y.iloc[train_index])</span><br><span class="line">                y_pred = instance.predict(X.iloc[holdout_index])</span><br><span class="line">                out_of_fold_predictions[holdout_index, i] = y_pred.ravel()</span><br><span class="line">        </span><br><span class="line">	<span class="comment"># 将基模型预测结果作为高阶学习器的输入特征        </span></span><br><span class="line">        self.meta_model_.fit(out_of_fold_predictions, y)</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line">  </span><br><span class="line">	 </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        <span class="comment"># 首先将n_folds个基模型i的预测结果取平均，作为基模型i的预测结果，即高阶模型的输入特征i</span></span><br><span class="line">	<span class="comment"># 再用训练好的高阶模型将基模型按权重组合，得到最终结果</span></span><br><span class="line">	meta_features = np.column_stack([</span><br><span class="line">            np.column_stack([model.predict(X) <span class="keyword">for</span> model <span class="keyword">in</span> base_models]).mean(axis=<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">for</span> base_models <span class="keyword">in</span> self.base_models_ ])</span><br><span class="line">        <span class="keyword">return</span> self.meta_model_.predict(meta_features)</span><br></pre></td></tr></table></figure>
+<h6 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">stacked_models = StackingAverageModels(base_models = (ENet, Gboost, KRR),</span><br><span class="line">					meta_models = lasso)</span><br><span class="line">stacked_models.fit(train.values, y_train)</span><br><span class="line">stacked_pred = stacked_models.predict(test.values)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/02/Python-sklearn-Scale/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/02/Python-sklearn-Scale/" itemprop="url">数据缩放Scale</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T09:48:45+08:00">
+                2018-04-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  769
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>数据集的标准化(Standardization)对sklearn的大部分机器学习算法来说都是一种常规要求(common requirement)。<br>如果单个特征没有或多或少地接近于标准正态分布N(0,1)的高斯分布，那么它可能并不会在项目中表现出很好的性能。<br>例如，许多学习算法中目标函数的基础都是假设所有特征都是零均值，并且具有同一阶数的方差。<br>如果某个特征的方差比其他特征大几个数量级，那么它就会在算法中占据主导位置，导致学习器不能从其他特征学习。</p>
+<h4 id="0-经验"><a href="#0-经验" class="headerlink" title="0.经验"></a>0.经验</h4><ul>
+<li><p>均值为0的输入/输出数据通常对算法友好；<br>将特征缩放到[0,1]通常是一个槽糕的决定；<br>强迫算法输出为[0,1]也是一个槽糕的决定；</p>
+</li>
+<li><p>如果模型中使用了<strong>距离</strong>，则必须将特征缩放到同样尺度(如RBF)；<br>如果特征是线性组合的，则缩放不是必需的(如MLP)，因为通过改变w和b可以得到同样的输出；<br>但合适的缩放确实可以带来一系列好处：使训练更快、避免saturation等</p>
+</li>
+<li><p>两种最有效的缩放：</p>
+<ul>
+<li>均值0，标准差1: StandardScaler</li>
+<li>[-1, 1]: MaxAbsScaler</li>
+</ul>
+</li>
+</ul>
+<h4 id="1-标准化"><a href="#1-标准化" class="headerlink" title="1. 标准化"></a>1. 标准化</h4><p>目标：缩放到均值0，标准差1<br>实际应用中，我们通常忽略特征分布的形状，直接通过减去均值来使特征去中心化，再通过除以标准差来使特征缩放。</p>
+<ul>
+<li>函数scale(X, axis=0, with_mean=True, with_std=True, copy=True): 快捷缩放</li>
+<li>类StandardScaler(copy=True, with_mean=True, with_std=True): 实现Transformer API，可复用，可集成进Pipeline</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line"></span><br><span class="line"><span class="comment"># Scale</span></span><br><span class="line">X_scaled = preprocessing.scale(X)</span><br><span class="line"><span class="comment"># (1, 2, 0) -&gt; (0, 1.22, -1.22)</span></span><br><span class="line"><span class="comment"># (-1,0, 1) -&gt; (-1.22, 0, 1.22)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># StandardScaler</span></span><br><span class="line">scaler = preprocessing.StandardScaler().fit(X)</span><br><span class="line">scaler.transform(X)</span><br></pre></td></tr></table></figure>
+<h4 id="2-缩放至特定范围"><a href="#2-缩放至特定范围" class="headerlink" title="2. 缩放至特定范围"></a>2. 缩放至特定范围</h4><p>目标：缩放到指定的范围(minmax)，通常是[0,1]；或者将绝对值缩放到指定范围(maxabs)，通常是[-1,1]</p>
+<ul>
+<li>函数minmax_scale(X, feature_range=(0,1), axis=0, copy=Ture)</li>
+<li>函数maxabs_scale(X, axis=0, copy=True)</li>
+<li>类MinMaxScaler(feature_range(0,1), copy=True)</li>
+<li>类MaxAbsScaler(copy=True)：没有破坏稀疏性，0依旧是0</li>
+</ul>
+<p>MinMax缩放公式<br>$$ X_{std} = \frac{X - X_{min}(axis=0)}{X_{max}(axis=0) - X_{min}(axis=0)} $$<br>$$ X_{scaled} = X_{std} * (max - min) + min $$</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># MinMax</span></span><br><span class="line">min_max_scaler = preprocessing.MinMaxScaler()</span><br><span class="line">X_train_minmax = min_max_scaler.fit_transform(X_train)</span><br><span class="line"><span class="comment"># (1, 2, 0) -&gt; (0.5, 1, 0)</span></span><br><span class="line"><span class="comment"># (-1,0, 1) -&gt; (0, 0.5, 1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># MaxAbs</span></span><br><span class="line">max_abs_scaler = preprocessing.MaxAbsScaler()</span><br><span class="line">X_train_maxabs = max_abs_scaler.fit_transform(X_train)</span><br><span class="line"><span class="comment"># (1, 2, 0) -&gt; (0.5, 1, 0)</span></span><br><span class="line"><span class="comment"># (-1,0, 1) -&gt; (-1, 0, 1)</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-稀疏数据缩放"><a href="#3-稀疏数据缩放" class="headerlink" title="3. 稀疏数据缩放"></a>3. 稀疏数据缩放</h4><p>去中心化将使数据平移，破坏稀疏数据的稀疏结构。<br>推荐的处理方式：</p>
+<ul>
+<li>maxabs_scale, MaxAbsScaler()</li>
+<li>scale, StandardScaler()：将with_centerring设置为False</li>
+</ul>
+<h4 id="4-含异常值的数据缩放"><a href="#4-含异常值的数据缩放" class="headerlink" title="4. 含异常值的数据缩放"></a>4. 含异常值的数据缩放</h4><p>当数据中含有较多异常值时，使用整体的均值和标准差缩放并不是一个好的选择。<br>Robust Scale只使用中间部分数据的均值和方差，可以剔除异常值的影响。</p>
+<ul>
+<li>函数robust_scale(X, axis=0, with_centering=True, with_scaling=True, quantile_range=(25.0, 75.0), copy=True)</li>
+<li>类RobustScaler(with_centering=True, with_scaling=True, quantile_range=(25.0,75.0), copy=True)</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/31/Python-sklearn-GridSearchCV/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/31/Python-sklearn-GridSearchCV/" itemprop="url">GridSearchCV</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-31T11:31:17+08:00">
+                2018-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  195
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>class sklearn.model_selection.GridSearchCV(estimator, param_grid, scoring=None, fit_params=None, n_jobs=1, iid=True, refit=True, cv=None, verbose=0, pre_dispatch=’2*n_jobs’, error_score=’raise’, return_train_score=’warn’)<br>对指定参数的穷举搜索。</p>
+<p>参数</p>
+<ul>
+<li>estimator: 需要实现sklearn estimator interface</li>
+<li>param_grid: 要调校的参数名称及可选值</li>
+<li>scoring: 评分策略</li>
+<li>fit_params: 废弃</li>
+<li>n_jobs: 并行任务数</li>
+<li>pre_dispatch: 并行过程中分发的任务数？</li>
+<li>iid: identically distributed</li>
+<li>cv: int, cross-validation generator</li>
+<li>refit: 使用得到的最优参数，重新训练模型</li>
+<li>verbose: 输出信息冗余度</li>
+<li>error_score: 错误处理</li>
+<li>return_train_score: 是否返回训练集得分</li>
+</ul>
+<p>属性</p>
+<ul>
+<li>cv_results_</li>
+<li>best_estimator_</li>
+<li>best_score_</li>
+<li>best_params_</li>
+<li>best_index_</li>
+<li>scoree_</li>
+<li>n_splits_</li>
+</ul>
+<p>方法</p>
+<ul>
+<li>decision_function(X)</li>
+<li>fit(X[,y,groups])</li>
+<li>transform(X)</li>
+<li>inverse_transform(Xt)</li>
+<li>predict(X)</li>
+<li>predict_proba(X)</li>
+<li>predict_log_proba(X)</li>
+<li>score(X[,y])</li>
+<li>get_params([deep])</li>
+<li>set_params(**params)</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line">parameters = &#123;<span class="string">'kernel'</span>:(<span class="string">'linear'</span>,<span class="string">'rbf'</span>), <span class="string">'C'</span>:[<span class="number">1</span>,<span class="number">10</span>]&#125;</span><br><span class="line">clf = GridSearchCV(svc, parameters)</span><br><span class="line">clf.fit(iris.data, iris.target)</span><br><span class="line">sorted(clf.cv_results_.keys())</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/31/ML-XGBoost-Parameters/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/31/ML-XGBoost-Parameters/" itemprop="url">XGBoost参数说明及调试</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-31T10:24:17+08:00">
+                2018-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  791
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><h5 id="General-Parameters-常规参数"><a href="#General-Parameters-常规参数" class="headerlink" title="General Parameters(常规参数)"></a>General Parameters(常规参数)</h5><ul>
+<li>booster[default=gbtree]: 基分类器, {gbtree, gblinear}, tree通常好于linear</li>
+<li>silent[default=0]: 为1则没有运行信息输出</li>
+<li>nthread[default to maximum number of threads available if not set]: 线程数</li>
+</ul>
+<h5 id="Booster-Parameters-模型参数"><a href="#Booster-Parameters-模型参数" class="headerlink" title="Booster Parameters(模型参数)"></a>Booster Parameters(模型参数)</h5><ul>
+<li>eta[default=0.3]: skrinkage，学习速率；越大越不容易收敛，越小越慢，通常0.01-0.2</li>
+<li>min_child_weight[default=1]: 叶节点中所有样本权重的和，参数值越小越容易过拟合</li>
+<li>max_depth[default=6]: 树的最大深度，越深越容易过拟合，通常3-10</li>
+<li>max_leaf_nodes: 最大叶节点数，设置该参数将覆盖max_depth</li>
+<li>gamma[default=0]: 指定节点分裂时所需要的loss function reduction，只有reductiion大于该值时才会继续分裂</li>
+<li>max_delta_step[default=0]: 更新步长，0表示没有约束，正值使更新步骤更加平缓，通常用不到</li>
+<li>subsample[default=1]: 给每棵树的样本采样比例，较低的值防止过拟合，但是太低也会欠拟合，通常0.5-1</li>
+<li>colsample_bytree[default=1]: 列采样比例，一般为0.5~1</li>
+<li>lambda[default=1]: L2正则化参数，越大越不容易过拟合</li>
+<li>alpha[default=0]: L1正则化参数，越大越不容易过拟合</li>
+<li>scale_pos_weight[default-1]: 取值大于0时，在类别样本不平衡的情况下有助于快速收敛</li>
+</ul>
+<h5 id="Learning-Task-Parameters-学习任务参数"><a href="#Learning-Task-Parameters-学习任务参数" class="headerlink" title="Learning Task Parameters(学习任务参数)"></a>Learning Task Parameters(学习任务参数)</h5><ul>
+<li>objectivep[default=reg:linear]: 最小化损失函数类型</li>
+<li>eval_metric: 评价函数，{rmse, mae, logloss, error, auc,…}</li>
+<li>seed: 随机种子</li>
+</ul>
+<h3 id="参数调试"><a href="#参数调试" class="headerlink" title="参数调试"></a>参数调试</h3><h4 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h4><ol>
+<li>调节参数会使预测效果变好，但并不能带来质的飞跃；</li>
+<li>XGBoost和GBDT的预测效果差别不大；</li>
+<li>能极大提升预测结果的手段包括：<ul>
+<li>feature engineering</li>
+<li>ensemble of models</li>
+</ul>
+</li>
+</ol>
+<h5 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h5><ol>
+<li>调高Learning rate，使训练时间缩短</li>
+<li>决定树的最优数量n_estimators</li>
+<li>Tree-specific parameters: max_depth, min_child_weight, gamma, subsample, colsample_bytree</li>
+<li>Regularization parameters: lambda, alpha</li>
+<li>调整其他可选参数</li>
+<li>调低Learning rate，重新运行得到最终结果</li>
+</ol>
+<h5 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"><span class="keyword">from</span> sgboost.sklearn <span class="keyword">import</span> XGBClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.grid_search <span class="keyword">import</span> GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> cross_validation, metrics</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调高Learing Rate</span></span><br><span class="line">predictors = [x <span class="keyword">for</span> x <span class="keyword">in</span> train.columns <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> [target, IDcol]]</span><br><span class="line">xgb1 = XGBClassifier(learing_rate=<span class="number">0.1</span>, ...)</span><br><span class="line">modelfit(xgb1, train, predictors)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 先用大粒度</span></span><br><span class="line">param_test1 = &#123; <span class="string">'max_depth'</span>: range(<span class="number">3</span>,<span class="number">10</span>,<span class="number">2</span>),</span><br><span class="line">		<span class="string">'min_child_weight'</span>: range(<span class="number">1</span>,<span class="number">6</span>,<span class="number">2</span>) &#125;</span><br><span class="line">gsearch1 = GridSearchCV(estimator = XGBClassifier( learning_rate =<span class="number">0.1</span>, n_estimators=<span class="number">140</span>, max_depth=<span class="number">5</span>,</span><br><span class="line">		min_child_weight=<span class="number">1</span>, gamma=<span class="number">0</span>, subsample=<span class="number">0.8</span>, colsample_bytree=<span class="number">0.8</span>,</span><br><span class="line">		objective= <span class="string">'binary:logistic'</span>, nthread=<span class="number">4</span>, scale_pos_weight=<span class="number">1</span>, seed=<span class="number">27</span>), </span><br><span class="line">		param_grid = param_test1, scoring=<span class="string">'roc_auc'</span>,n_jobs=<span class="number">4</span>,iid=<span class="keyword">False</span>, cv=<span class="number">5</span>)</span><br><span class="line">gsearch1.fit(train[predictors],train[target])</span><br><span class="line">gsearch1.grid_scores_, gsearch1.best_params_, gsearch1.best_score_</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再用小粒度</span></span><br><span class="line">param_test2 = &#123; <span class="string">'max_depth'</span>: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],</span><br><span class="line">		<span class="string">'min_child_weight'</span>: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>] &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># gamma</span></span><br><span class="line">param_test3 = &#123; <span class="string">'gamma'</span>: [i/<span class="number">10.0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">5</span>)] &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># subsample, colsample_bytree</span></span><br><span class="line">param_test4 = &#123; <span class="string">'subsample'</span>: [i/<span class="number">10.0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>,<span class="number">10</span>)],</span><br><span class="line">		<span class="string">'colsample_bytree'</span>: [i/<span class="number">10.0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>,<span class="number">10</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># regularization</span></span><br><span class="line">param_test5 = &#123; <span class="string">'alpha'</span>: [<span class="number">0</span>, <span class="number">0.01</span>, <span class="number">0.1</span>, <span class="number">1</span>, <span class="number">10</span>] &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 降低Learning Rate</span></span><br><span class="line">xgb4 = XGBClassifier(learning_rate=<span class="number">0.01</span>, ...)</span><br></pre></td></tr></table></figure>
+<p>modelfit<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">modelfit</span><span class="params">(alg, dtrain, predictors,useTrainCV=True, cv_folds=<span class="number">5</span>, early_stopping_rounds=<span class="number">50</span>)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> useTrainCV:</span><br><span class="line">    xgb_param = alg.get_xgb_params()</span><br><span class="line">    xgtrain = xgb.DMatrix(dtrain[predictors].values, label=dtrain[target].values)</span><br><span class="line">    cvresult = xgb.cv(xgb_param, xgtrain, num_boost_round=alg.get_params()[<span class="string">'n_estimators'</span>], nfold=cv_folds,</span><br><span class="line">        metrics=<span class="string">'auc'</span>, early_stopping_rounds=early_stopping_rounds, show_progress=<span class="keyword">False</span>)</span><br><span class="line">    alg.set_params(n_estimators=cvresult.shape[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the algorithm on the data</span></span><br><span class="line">alg.fit(dtrain[predictors], dtrain[<span class="string">'Disbursed'</span>],eval_metric=<span class="string">'auc'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># Predict training set:</span></span><br><span class="line">dtrain_predictions = alg.predict(dtrain[predictors])</span><br><span class="line">dtrain_predprob = alg.predict_proba(dtrain[predictors])[:,<span class="number">1</span>]</span><br><span class="line">    </span><br><span class="line"><span class="comment"># Print model report:</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"\nModel Report"</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"Accuracy : %.4g"</span> % metrics.accuracy_score(dtrain[<span class="string">'Disbursed'</span>].values, dtrain_predictions)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"AUC Score (Train): %f"</span> % metrics.roc_auc_score(dtrain[<span class="string">'Disbursed'</span>], dtrain_predprob)</span><br><span class="line">                </span><br><span class="line">feat_imp = pd.Series(alg.booster().get_fscore()).sort_values(ascending=<span class="keyword">False</span>)</span><br><span class="line">feat_imp.plot(kind=<span class="string">'bar'</span>, title=<span class="string">'Feature Importances'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Feature Importance Score'</span>)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/30/ML-GBDT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/30/ML-GBDT/" itemprop="url">梯度提升树(GBDT)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T08:53:06+08:00">
+                2018-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  152
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>GBDT(Gradient Boosting Decision Tree)是集成学习Boosting的一种。<br>但是和AdaBoost更改样本权重的算法不同，GBDT每次迭代的输入是上一轮的误差<br>模型共训练m轮，每轮产生一个弱分类器；弱分类器一般选择CART树。<br>模型可以描述为<br>$$ F_m(x) = \sum_{m=1}^{M}T(x;\theta_m) $$<br>损失函数<br>$$ \hat{\theta} = \underset{\theta_m}{arg\,min}\sum_{i=1}^{N}L(y_i,F_{m-1}(x_i)+T(x_i;\theta_m)) $$<br>每轮迭代时，都去拟合损失函数在当前模型下的负梯度，<strong>让损失函数沿着梯度方向下降</strong>是算法的关键。</p>
+<p><img src="/img/GBDT.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/29/ML-EnsembleLearning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/29/ML-EnsembleLearning/" itemprop="url">集成学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T10:05:12+08:00">
+                2018-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  652
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>集成学习(Ensemble Learing)将多个简单的弱机器学习模型集合起来，提高学习效果。<br>一般分为三种架构：</p>
+<ul>
+<li>Bagging: 并行独立，最终投票或取平均</li>
+<li>Boosting: 串行相关，每次迭代都要改进</li>
+<li>Stacking: 分两层，第一层并行独立，第二层对预测结果训练高阶模型</li>
+</ul>
+<h4 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h4><p>基于数据随机重抽样的分类器构建方法，又称作Bootstrap Aggregation.<br>基模型之间并列无关，对所有基模型预测的结果进行综合产生最终的预测结果。<br><img src="/img/bagging.jpg"></p>
+<p>常用的bagging集成算法如随机森林。<br>集成稳定学习器不利于提高预测效果，因为集成方法不能有助于提高泛化性能。<br>稳定学习器：对训练样本的扰动较不敏感，比如kNN</p>
+<h4 id="Boosting"><a href="#Boosting" class="headerlink" title="Boosting"></a>Boosting</h4><p>基模型按次序一一训练，每次训练集按某种策略转化(比如提高前一次分错的数据集的权重)，最后对所有基模型预测的结果进行线性组合产生最终的预测结果。<br><img src="/img/boosting.jpg"></p>
+<h6 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h6><table>
+<thead>
+<tr>
+<th style="text-align:center">项目</th>
+<th style="text-align:center">Bagging</th>
+<th style="text-align:center">Boosting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">结构</td>
+<td style="text-align:center">并行</td>
+<td style="text-align:center">串行</td>
+</tr>
+<tr>
+<td style="text-align:center">训练集</td>
+<td style="text-align:center">独立</td>
+<td style="text-align:center">依赖</td>
+</tr>
+<tr>
+<td style="text-align:center">测试</td>
+<td style="text-align:center">可并行</td>
+<td style="text-align:center">需串行</td>
+</tr>
+<tr>
+<td style="text-align:center">作用</td>
+<td style="text-align:center">减少variance</td>
+<td style="text-align:center">减少bias</td>
+</tr>
+</tbody>
+</table>
+<h6 id="AdaBoost"><a href="#AdaBoost" class="headerlink" title="AdaBoost"></a>AdaBoost</h6><p>AdaBoost是Boosting中最具代表性的算法。<br>AdaBoost中每次迭代时，会根据当前错误率改变样本的权重。通过不断重复训练和调整权重，知道训练错误率满足用户要求。</p>
+<h6 id="Gradient-Boosted"><a href="#Gradient-Boosted" class="headerlink" title="Gradient Boosted"></a>Gradient Boosted</h6><p>GBRT/GBDT 也是一种Boosting方法，每个子模型是根据已训练出的学习器的残差训练出来的，没有AdaBoost中的样本权重的概念。<br>GBRT结合了梯度迭代和回归树，准确率较高，但也有过拟合的风险。</p>
+<h4 id="Stacking"><a href="#Stacking" class="headerlink" title="Stacking"></a>Stacking</h4><p>用训练好的基模型对训练集预测，第j个基模型对第i个训练样本的预测值将作为新的训练集中第i个样本的第j个特征值，最后基于新的训练集训练。<br>算法分成了2层：</p>
+<ul>
+<li>第一层是传统的训练，训练出许多小分类器；</li>
+<li>第二层把小分类器的输出组合成一个新的训练集，训练出一个更高层次的分类器，目的是寻找相应的权重或组合方式<br><img src="/img/stacking.jpg"></li>
+</ul>
+<h6 id="比较-1"><a href="#比较-1" class="headerlink" title="比较"></a>比较</h6><p>Stacking就像是Bagging的升级版，Bagging中的结果整合方式是相同权重，而Stacking中则要寻找不同的权重</p>
+<h4 id="结果整合"><a href="#结果整合" class="headerlink" title="结果整合"></a>结果整合</h4><h6 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h6><ul>
+<li>简单平均(Simple Average)</li>
+<li>加权平均(Weighted Average)</li>
+</ul>
+<h6 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h6><ul>
+<li>简单投票(Majority Voting)</li>
+<li>加权投票(Weighted Majority Voting)</li>
+<li>概率投票(Soft Voting)</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/29/ML-RandomForest/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/29/ML-RandomForest/" itemprop="url">随机森林</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T09:48:00+08:00">
+                2018-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  281
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>随机森林是一种Bagging算法。<br>随机森林由许多的决策树组成，这些决策树的形成采用了随机的方法，因此也叫随机决策树。<br>随机森林中的树之间是没有关联的，测试数据由每一棵树单独分类，然后取分类结果最多的那类作为最终结果。</p>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
+<li>从原始训练集中随机有放回采样m个样本，共进行n次，得到n个容量为m的子训练集</li>
+<li>对每个子训练集，分别训练决策树，得到n棵决策树</li>
+<li>将n棵树的结果整合，得到最终预测结果</li>
+</ol>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 分类</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"></span><br><span class="line">clf = RandomForestClassifier(max_depth=<span class="number">2</span>, random_state=<span class="number">0</span>)</span><br><span class="line">clf.fit(X,y)</span><br><span class="line">clf.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 回归</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor</span><br><span class="line"></span><br><span class="line">regr = RandomForestRegressor(max_depth=<span class="number">2</span>, random_state=<span class="number">0</span>)</span><br><span class="line">regr.fit(X,y)</span><br><span class="line">regr.predict(X_test)</span><br></pre></td></tr></table></figure>
+<h4 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h4><h6 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h6><ul>
+<li>准确率较高</li>
+<li>不容易过拟合</li>
+<li>抗噪声能力强</li>
+<li>能处理高维数据</li>
+<li>数据集无需标准化</li>
+<li>训练速度快</li>
+<li>容易并行化</li>
+</ul>
+<h6 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h6><ul>
+<li>决策树个数多时，占用空间大</li>
+<li>结果不容易解释</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/29/ML-Information/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/29/ML-Information/" itemprop="url">熵和信息增益</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T08:19:38+08:00">
+                2018-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  621
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-熵"><a href="#1-熵" class="headerlink" title="1.熵"></a>1.熵</h4><p>熵(Entropy)用来表示不确定性的度量，熵越大，随机变量的不确定性越大。<br>如果一件事有k种可能的结果，每种结果的概率为$P_i, i=1,2,…,k$，那么我们对此事件的结果进行观察后得到的信息量为：<br>$$ I = -(P_1log_2P_1 + P_2log_2P_2 +…+ P_klog_2P_k) = -\sum_{i=1}^kP_ilog_2P_i $$<br>当概率P由数据估计得到时，对应的熵称为经验熵。</p>
+<h4 id="2-条件熵"><a href="#2-条件熵" class="headerlink" title="2.条件熵"></a>2.条件熵</h4><p>条件熵(Conditional Entropy)表示在已知随机变量X的条件下随机变量Y的不确定性。<br>$$ H(Y|X) = \sum_{i=1}^n P(X=x_i) H(Y|X=x_i) $$<br>当概率P由数据估计得到时，对应的条件熵称为经验条件熵。</p>
+<h4 id="3-信息增益"><a href="#3-信息增益" class="headerlink" title="3.信息增益"></a>3.信息增益</h4><p>信息增益(Information Gain)表示得知变量X的信息后，使得变量Y的信息不确定性减少的程度。<br>特征A对训练数据集D的信息增益定义为：<br>$$ g(D,A)= H(D) - H(D|A) $$<br>信息增益越大，不确定性就越少。<br>互信息(Mutual Information)是一种信息度量，表示一个随机变量中所包含的关于另一个随机变量的信息量，或者说一个随机变量由于已知另一个随机变量而减少的不确定性。<br>$$ H(X) - H(X|Y) = H(Y) - H(Y|X)$$</p>
+<h4 id="4-信息增益率"><a href="#4-信息增益率" class="headerlink" title="4.信息增益率"></a>4.信息增益率</h4><p>信息增益率(Information Gain Ratio)定义为惩罚参数*信息增益<br>$$ g_R(D,A) = \frac{g(D,A)}{H_A(D)} = \frac{H(D)-H(D|A)}{H_A(D)} $$<br>其中$H_A(D)$是训练数据D关于特征A的经验熵<br>$$ H_A(D) = -\sum_{i=1}^n \frac{D_i}{D} log_2 \frac{D_i}{D} $$</p>
+<h4 id="5-Gini指数"><a href="#5-Gini指数" class="headerlink" title="5.Gini指数"></a>5.Gini指数</h4><p>基尼指数(Gini)是一种不等性度量，通常用来度量收入不均衡，也可以用来度量任何不均匀分布。<br>基尼指数通常介于0~1之间，0表示完全相等，1表示完全不相等。<br>基尼指数又称基尼不纯度(Gini impurity)表示一个随机选中的样本在子集中被分错的可能性，用样本被选中的概率乘以被分错的概率。<br>$$ Gini(p) = \sum_{k=1}^K p_k(1-p_k) = 1-\sum_{k=1}^K p_k^2 $$<br>其中$p_k$表示选中的样本属于k类别的概率，$(1-p_k)$表示样本被分错的概率。<br>样本集合D的Gini指数：假设集合中有K个类别，则<br>$$ Gini(D) = 1 - \sum_{k=1}^K(\frac{C_k}{D})^2 $$</p>
+<h4 id="6-构建决策树："><a href="#6-构建决策树：" class="headerlink" title="6.构建决策树："></a>6.构建决策树：</h4><ul>
+<li>ID3: 信息增益</li>
+<li>C4.5: 信息增益比</li>
+<li>CART: Gini</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/28/ML-BoostTree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/28/ML-BoostTree/" itemprop="url">Boosted Tree</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-28T10:56:06+08:00">
+                2018-03-28
               </time>
             
 
@@ -839,1014 +3592,15 @@
       
         
           
-            <p>本文是用Keras实现的情感判断器Emojifier，使用了LSTM、Word Embedding等。<br>通过输入一段文字，判断文字情感，并用emoji符号表示。<br>使用已经训练好的embedding矩阵。</p>
-<h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><ol>
-<li>将多个输入句子X(m,1)转为index数字表示(使用字典，长度10k)</li>
-<li>将每个单词的index数字转为GloVe编码(word embedding，长度300)</li>
-<li>训练RNN网络，得到softmax输出</li>
-</ol>
-<h4 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h4><h6 id="1-sentence-gt-indices"><a href="#1-sentence-gt-indices" class="headerlink" title="1. sentence -&gt; indices"></a>1. sentence -&gt; indices</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sentences_to_indices</span><span class="params">(X, word_to_index, max_len)</span>:</span></span><br><span class="line">    m = X.shape[<span class="number">0</span>] <span class="comment"># X.shape = (m,1)                                   </span></span><br><span class="line">    X_indices = np.zeros((m, max_len)) <span class="comment"># padding每个句子长度都为max_len</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(m):                               </span><br><span class="line">        sentence_words = X[i].lower().split()</span><br><span class="line">       </span><br><span class="line">        j = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> sentence_words:</span><br><span class="line">            X_indices[i, j] = word_to_index[w]</span><br><span class="line">            j = j+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> X_indices</span><br></pre></td></tr></table></figure>
-<h6 id="2-indices-gt-vectors"><a href="#2-indices-gt-vectors" class="headerlink" title="2. indices -&gt; vectors"></a>2. indices -&gt; vectors</h6><p>定义了embedding层，在步骤3构建计算图时使用。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pretrained_embedding_layer</span><span class="params">(word_to_vec_map, word_to_index)</span>:</span></span><br><span class="line">    <span class="comment"># 获得输入输出维度</span></span><br><span class="line">    vocab_len = len(word_to_index) + <span class="number">1</span>      <span class="comment"># keras要求+1 </span></span><br><span class="line">    emb_dim = word_to_vec_map[<span class="string">"cucumber"</span>].shape[<span class="number">0</span>]     </span><br><span class="line">   </span><br><span class="line">    <span class="comment"># 初始化权重矩阵 </span></span><br><span class="line">    emb_matrix = np.zeros((vocab_len, emb_dim))</span><br><span class="line">    <span class="comment"># 权重矩阵赋值</span></span><br><span class="line">    <span class="keyword">for</span> word, index <span class="keyword">in</span> word_to_index.items():</span><br><span class="line">        emb_matrix[index, :] = word_to_vec_map[word]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义embedding层的输入输出</span></span><br><span class="line">    embedding_layer = Embedding(vocab_len, emb_dim, trainable=<span class="keyword">False</span>)</span><br><span class="line">    <span class="comment"># 编译并赋予权重</span></span><br><span class="line">    embedding_layer.build((<span class="keyword">None</span>,))</span><br><span class="line">    embedding_layer.set_weights([emb_matrix])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> embedding_layer</span><br></pre></td></tr></table></figure></p>
-<h6 id="3-构建计算图"><a href="#3-构建计算图" class="headerlink" title="3. 构建计算图"></a>3. 构建计算图</h6><p><img src="/img/emojifier-v2.png"><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Emojify</span><span class="params">(input_shape, word_to_vec_map, word_to_index)</span>:</span></span><br><span class="line">    <span class="comment"># 定义模型输入Input() </span></span><br><span class="line">    sentence_indices = Input(shape=input_shape, dtype=<span class="string">'int32'</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 通过Embedding layer将输入indices转为GloVe Vectors (word embedding)</span></span><br><span class="line">    embedding_layer = pretrained_embedding_layer(word_to_vec_map, word_to_index)</span><br><span class="line">    embeddings = embedding_layer(sentence_indices)  </span><br><span class="line">   </span><br><span class="line">    <span class="comment"># 由于有第2层，所以第1层的LSTM在每个时刻t都要输出 </span></span><br><span class="line">    X = LSTM(<span class="number">128</span>, return_sequences=<span class="keyword">True</span>)(embeddings)</span><br><span class="line">    X = Dropout(<span class="number">0.5</span>)(X)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 第2层LSTM只在最后一个时刻输出</span></span><br><span class="line">    X = LSTM(<span class="number">128</span>, return_sequences=<span class="keyword">False</span>)(X)</span><br><span class="line">    X = Dropout(<span class="number">0.5</span>)(X)</span><br><span class="line">    X = Dense(<span class="number">5</span>)(X)</span><br><span class="line">    X = Activation(<span class="string">'softmax'</span>)(X)</span><br><span class="line">   </span><br><span class="line">    <span class="comment"># 定义模型 </span></span><br><span class="line">    model = Model(inputs=sentence_indices, outputs=X)</span><br><span class="line">    <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure></p>
-<p>模型摘要<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model = Emojify_V2((maxLen,), word_to_vec_map, word_to_index)</span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure></p>
-<p><img src="/img/emojifier-output.png"></p>
-<h6 id="4-编译，训练，预测"><a href="#4-编译，训练，预测" class="headerlink" title="4. 编译，训练，预测"></a>4. 编译，训练，预测</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 模型编译</span></span><br><span class="line">model.compile(loss=<span class="string">'categorical_crossentropy'</span>, optimizer=<span class="string">'adam'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型训练</span></span><br><span class="line">model.fit(X_train_indices, Y_train_oh, epochs = <span class="number">50</span>, batch_size = <span class="number">32</span>, shuffle=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型验证</span></span><br><span class="line">loss, acc = model.evaluate(X_test_indices, Y_test_oh)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型预测</span></span><br><span class="line">pred = model.predict(X_test_indices)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/21/DL-WordEmbedding/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/21/DL-WordEmbedding/" itemprop="url">Word Embedding</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-21T15:13:44+08:00">
-                2018-04-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1,543
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Word Embedding是要从数据中自动学习到输入空间到Distributed Representation空间的映射f.</p>
-<h3 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h3><p>单词的One-hot编码失去了单词词意之间的联系。<br>例如man和woman的距离应该小于man和apple的距离，而在one-hot编码中，每个单词之间的距离都一样。<br>为了解决这个问题，引入Word Embedding编码，可以看做是一种类别编码。<br>例如embedding矩阵有300个维度，每个单词在这300个维度上都有一个分数，同类单词的分数应该相近。</p>
-<p>用E来表示embedding矩阵，那么有$E\cdot O_j = e_j$。<br>其中$O_j$是单词的one-hot编码，$e_j$是单词的embedding编码。<br>embedding编码不仅引入单词语意的相关性，还缩短了编码长度(onehot词汇表10k -&gt; embedding维度300).<br>可以通过t-SNE等非线性变换方式将每个单词的300维embedding编码投射到2-D平面上，观察不同单词之间的距离。</p>
-<p>如果要量化单词之间的相似性，方法有二：</p>
-<ul>
-<li>cosine相似性：计算向量夹角$ \frac{u^Tv}{\mid\mid u-v \mid\mid} $</li>
-<li>差值距离：$\mid\mid u-v \mid\mid^2$</li>
+            <h5 id="监督学习的逻辑组成"><a href="#监督学习的逻辑组成" class="headerlink" title="监督学习的逻辑组成"></a>监督学习的逻辑组成</h5><ul>
+<li>模型和参数：选择模型，引入参数</li>
+<li>目标函数：损失+正则，定义了参数的选择标准<br>  损失函数鼓励模型尽量去拟合数据，减少bias<br>  正则化则鼓励模型更加简单，降低拟合结果的随机性，减少variance</li>
+<li>优化算法：求解最优参数的算法</li>
 </ul>
-<h6 id="提升泛化能力"><a href="#提升泛化能力" class="headerlink" title="提升泛化能力"></a>提升泛化能力</h6><p>Word Embedding极大提升了<strong>训练数据较少</strong>时模型的泛化能力。<br>将模型的输入由单词的one-hot编码改为embedding编码后，即便模型遇到一个从未见过的新词，也可以通过embedding编码推断出新词的类别、近似语意。<br><strong>注意</strong>：对输入数据较多的模型，比如翻译等，word embedding并不适用。</p>
-<h3 id="如何得到embedding矩阵"><a href="#如何得到embedding矩阵" class="headerlink" title="如何得到embedding矩阵"></a>如何得到embedding矩阵</h3><p>学习任务的输入是10k one-hot编码(x)，输出是300类别编码(y)。<br>在训练开始时我们并不知道Y是什么，没有样本，所以这是一个无监督学习。无监督学习的常用方法有二：</p>
-<ol>
-<li>挖掘输入X之间的关系，比如聚类；</li>
-<li>以目标输出Y构建一个新的任务：$g: y \rightarrow z$，其中z值已知。这样用数据X可以训练得到$k: x \rightarrow z$，也就是$z = g(f(x))$，中间的表达式$y=f(x)$是我们真正想要的目标。</li>
-</ol>
-<p>Word Embedding的训练方法偏向2.</p>
-<h4 id="1-Word2Vec"><a href="#1-Word2Vec" class="headerlink" title="1. Word2Vec"></a>1. Word2Vec</h4><p>Word2Vec模型中，主要有Skip-Gram和CBOW两种模型。<br>从直观上看，Skip-Gram是给定input word来预测上下文，而CBOW是给定上下文来预测input word。<br>本文以Skip-Gram为例。</p>
-<p><strong>Fake Task</strong><br>如上节所述，对非监督学习，我们要训练一个目标是任务z的神经网络，而神经网络的隐藏层参数才是真正的目标y。<br>神经网络的设计要求(x,z)可知可训练，那么就取(输入单词，上下文单词)来作为训练数据。神经网络的Fake Task z是通过输入一个单词，预测哪些单词最可能在其上下文出现。输出是多个单词的出现概率，使用softmax。<br>直观理解：语意相近的单词，比如kitty和cat，在训练数据中和它们一起出现的上下文单词也相近，对应网络中softmax的输出相近，因而隐藏层参数也相近。</p>
-<p><strong>输入数据</strong><br><img src="/img/skipGram.jpeg"><br>以上图距离为例，依次选取每个单词作为input word。设定窗口宽带为2，则从上下文就能得到形如(input, output)的训练数据。<br>得到单词对后，将其one-hot编码。假设词汇表有10k单词，那么模型的输入、输出都是10k维向量。</p>
-<p><strong>隐藏层</strong><br><img src="/img/word2vec.jpeg"><br>假设要用300个特征来表示一个单词，那么隐藏层的参数维度是(10k × 300)，没有使用激活函数。<br>当神经网络训练完毕后，这个隐藏层的(10k × 300)参数矩阵就是我们的目标y——embedding矩阵。<br>在实际计算中，由于输入是10k维度的稀疏矩阵，且one-hot编码只有1维是数字1，因而并不会消耗资源计算矩阵乘法，而是直接选取参数矩阵的某行。</p>
-<p><strong>网络训练</strong><br>(10k × 300)网络共有300万个参数，使用梯度下降法训练是相当慢的。更糟糕的是需要大量的样本数据来避免过拟合。<br>可以采用一些优化手段：</p>
-<ul>
-<li>将单词组合作为一个单词：比如New York</li>
-<li>对高频次单词抽样来减少训练样本数：the、to这种单词无助于语义理解，应以一定概率(或者全部)删除</li>
-<li>Negative Sampling：对每个样本(input, output)，从不是output的9999个单词中选取k个作为负样本一起加入训练，这样每次更新只针对参数矩阵的k+1行。例如k=5，那么每次更新300×6=1800个参数。</li>
-</ul>
-<h4 id="2-GloVe"><a href="#2-GloVe" class="headerlink" title="2. GloVe"></a>2. GloVe</h4><p>没有使用神经网络，而是统计规律。</p>
-<p><strong>共现矩阵</strong><br>定义 $X_{i,k}$ 是单词i的上下文中出现单词k的次数；<br>$X_i = \sum_k X_{i,k}$ 是单词i的上下文中出现单词k的总次数；<br>$P_{i,k} = P(k|i) = \frac{X_{i,k}}{X_i}$ 是单词k出现在单词i上下文的条件概率；<br>$ratio_{i,j,k} = \frac{P_{i,k}}{P_{j,k}}$ 是单词k出现在单词i、单词j上下文的概率之比。</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">$ratio_{i,j,k}$</th>
-<th style="text-align:center">单词j,k相关</th>
-<th style="text-align:center">单词j,k不相关</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">单词i,k相关</td>
-<td style="text-align:center">趋近1</td>
-<td style="text-align:center">很大</td>
-</tr>
-<tr>
-<td style="text-align:center">单词i,k不相关</td>
-<td style="text-align:center">很小</td>
-<td style="text-align:center">趋近1</td>
-</tr>
-</tbody>
-</table>
-<p><strong>目标函数</strong><br>假设我们得到了词向量$v_i, v_j, v_k$，通过某种函数计算的$ratio_{i,j,k}$ 与上表统计规律相符的话，就意味着词向量中蕴含了共现矩阵的信息。<br>经过一系列推导，得到目标函数如下：<br>$$ J = \sum_{i,j}^Nf(X_{i,j})(v_j^Tv_j + b_i + b_j - log(X_{i,j}))^2 $$</p>
-<p>其中权重函数$f(x)$应满足如下条件：</p>
-<ol>
-<li>$f(0)=0$：避免log(0)运算</li>
-<li>$f(x)$是非减函数：出现次数越多，权重越大</li>
-<li>$f(x)$对较大的x不能取太大的值：the、to这类单词</li>
-</ol>
-<p>综合这3点将$f(x)$定义为：<br>$$ f(x)=<br>\begin{cases}<br>(\frac{x}{x_{max}})^\alpha , \;\;if \;x&lt; x_{max} \\<br>1, \;\;if \;x\geq x_{max}<br>\end{cases} $$</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/21/DL-RNN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/21/DL-RNN/" itemprop="url">RNN</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-21T08:41:49+08:00">
-                2018-04-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  511
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>循环神经网络(Recurrent Neural Networks, RNN)是一种通过隐藏层节点周期性的连接，来捕捉序列化数据中动态信息的神经网络。<br><img src="/img/RNNTime.jpg"><br>经典RNN在预测&lt;t&gt;时刻的信息时，使用了前面&lt;t-k&gt;时刻的信息，没有使用后面&lt;t+k&gt;时刻的信息。<br>与之对应的变种：</p>
-<ul>
-<li>Bidirectional RNN：数据双向流动，后面的信息也参与前面信息的预测</li>
-<li>Deep RNNS：在每个时刻t，引入更多的层级。由于输入维度很大，通常不超过3层。</li>
-</ul>
-<h4 id="基本算法"><a href="#基本算法" class="headerlink" title="基本算法"></a>基本算法</h4><h6 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h6><p><img src="/img/RNN.png"><br><img src="/img/rnn_step_forward.png"></p>
-<h6 id="后向传播"><a href="#后向传播" class="headerlink" title="后向传播"></a>后向传播</h6><p><img src="/img/rnn_step_backprop.png"></p>
-<h4 id="结构类型"><a href="#结构类型" class="headerlink" title="结构类型"></a>结构类型</h4><p><img src="/img/rnn_n2n.jpeg"></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">输入输出</th>
-<th style="text-align:center">输出单值</th>
-<th style="text-align:center">输出序列</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">输入单值</td>
-<td style="text-align:center">图片分类</td>
-<td style="text-align:center">生成诗歌/语音/音乐</td>
-</tr>
-<tr>
-<td style="text-align:center">输入序列</td>
-<td style="text-align:center">根据文章判断类型/情感</td>
-<td style="text-align:center">自然语言/语音处理</td>
-</tr>
-</tbody>
-</table>
-<h4 id="长期依赖问题-Long-Term-Dependency"><a href="#长期依赖问题-Long-Term-Dependency" class="headerlink" title="长期依赖问题(Long-Term Dependency)"></a>长期依赖问题(Long-Term Dependency)</h4><p>描述：&lt;t&gt;时刻的预测，需要前面&lt;t-N&gt;时刻的信息参照，其中N是很大的数。<br>比如语言模型中，主语后面接了一个很长的定语从句，然后出现了谓词，要根据主语判断谓词的单复数。<br>解决方法：网络中引入memory cell($c^{&lt;t&gt;}$)，将&lt;t&gt;时刻的特定信息保存下来。</p>
-<h6 id="1-LSTM"><a href="#1-LSTM" class="headerlink" title="1. LSTM"></a>1. LSTM</h6><p><img src="/img/LSTM.png"></p>
-<ul>
-<li>$c^{t}$: 当前时刻的记忆内容</li>
-<li>$\tilde{c}^{&lt;t&gt;}$: 当前时刻的备胎(由输入得到)，需进一步计算决定是否更新记忆</li>
-<li>$a^{t}$: 当前时刻的输出，进入下一时刻的Cell，或者变换后作为输出$y^{&lt;t&gt;}$</li>
-<li>$\Gamma_f^{&lt;t&gt;}$: Forget gate，为0时则忘记上一时刻的记忆内容$c^{&lt;t-1&gt;}$</li>
-<li>$\Gamma_u^{&lt;t&gt;}$: Update gate，为1时则使用当前时刻的候选$\tilde{c}^{&lt;t&gt;}$来更新记忆$c^{&lt;t&gt;}$</li>
-<li>$\Gamma_o^{&lt;t&gt;}$: Output gate，为1时则使用当前时刻的记忆$c^{&lt;t&gt;}$生成输出$a^{&lt;t&gt;}$</li>
-</ul>
-<h6 id="2-GRU"><a href="#2-GRU" class="headerlink" title="2. GRU"></a>2. GRU</h6><p><img src="/img/GRU.png"><br>GRU作为LSTM的一种变体，将Forget Gate和Update Gate合并到了一起。<br>有些结构还引入了Relative Gate等改动。<br>构造简单，效果出众，训练速度快，近年非常流行。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/19/DL-CNNNeuralStyle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/19/DL-CNNNeuralStyle/" itemprop="url">CNN图像风格迁移</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-19T07:38:29+08:00">
-                2018-04-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  302
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>算法</strong><br>输入两张图片，一张提供内容(C)，另一张提供风格(S)；<br>输出一张合成图片(G)，是内容C和风格S的叠加。<br>G初始为任意值，通过不断迭代G，使目标函数不断缩小。<br><img src="/img/styleTransfer.jpeg"></p>
-<p><strong>目标函数</strong><br>$$J(G) = \alpha J_{content}(C,G) + \beta J_{style}(S,G)$$</p>
-<p>$J_{content}(C,G)$：</p>
-<ol>
-<li>选择训练好的卷积网络</li>
-<li>选择网络中部的隐藏层l(太深或太浅都不行)</li>
-<li>对比两张图片的$a^{[l]}$<br>$$ J_{content}(C,G) = \frac{1}{2} \left| a^{[l]C} - a^{[l]G} \right|^2 $$</li>
-</ol>
-<p>$J_{style}(S,G)$：如何衡量”style”? </p>
-<ol>
-<li>定义style = 不同channel之间的相关性，例如{锐角，直线，圆点}经常同时出现，{钝角，波浪线}很少同时出现</li>
-<li>计算单张图片的相关性矩阵$G^{[l]}$，矩阵尺寸$n_c^{[l]} \ast n_c^{[l]}$<br>定义 $a_{i,j,k}^{[l]}$ = activation at (i,j,k);<br>那么 $G_{kk’}^{[l]} = \sum_{i=1}^{n_H^{[l]}} \sum_{j=1}^{n_w^{[l]}} a_{ijk}^{[l]} a_{ijk’}^{[l]}$</li>
-<li>损失函数定义为两张图片相关性矩阵G的差异：<br>$$ J_{style}^{[l]}(S,G) = \frac{1}{(2n_H^{[l]}n_W^{[l]}n_c^{[l]})^2}\left| G^{[l]S} - G^{[l]G} \right|^2$$<br>$$ J_{style}(S,G) = \sum_l \lambda^{[l]} J_{style}^{[l]}(S,G) $$</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/18/DL-CNNFaceRecognition/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/18/DL-CNNFaceRecognition/" itemprop="url">CNN人脸识别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-18T11:08:43+08:00">
-                2018-04-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  446
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>问题分类：</p>
-<ul>
-<li>Verification(验证)：1 to 1，给定一张人脸图片和一个身份，判断是否相符</li>
-<li>Recognition(识别)：1 to K，给定一张人脸图片，判断此人是否在数据库里；<br>由于要进行K次verification，对算法的准确性要求更高。</li>
-</ul>
-<h4 id="简单想法"><a href="#简单想法" class="headerlink" title="简单想法"></a>简单想法</h4><p>输出层采用softmax，有多少员工就对应多少分类。<br>通过训练好的网络，给定一张图片，通过输出的类别来判断是谁。<br><strong>问题</strong></p>
-<ol>
-<li>训练样本不足。不能获取员工的大量照片。</li>
-<li>输出分类固定。当员工人数变动时，需要重新训练网络。</li>
-</ol>
-<h4 id="Siamese-Network"><a href="#Siamese-Network" class="headerlink" title="Siamese Network"></a>Siamese Network</h4><p><strong>原理：相似性判别函数</strong><br>训练一个函数来判断两张图片的相似性：<br>d(img1, img2) = degree of difference between images<br>如果d(img1, img2)小于阈值，则认为两张图片是同一个人。</p>
-<p><strong>实现</strong><br>将深层网络的输出作为图片的编码，$f(x^{(i)})$<br>不同的图片需要经过同样的网络编码，使距离可比较。<br>训练网络参数，使得相同图片的编码相近，不同图片的编码相离。</p>
-<p><strong>目标函数1：Triplet Loss</strong><br>同时输入3张图片：Anchor、Positive、Negative<br>想要$d(A,P) + \alpha \leq d(A,N)$，其中$\alpha$是安全边界(margin)。<br>所以目标函数为<br>$$L(A,P,N) = max(d(A,P) - d(A,N) + \alpha, 0)$$</p>
-<p><strong>目标函数2：Logistic Loss</strong><br>输入2张图片，判断编码是否相等，相等为1，不相等为0.<br>$$\hat{y} = sigmoid(\sum_{k=1}^{128} \left | f(x^{(i)})_k - f(x^{(j)})_k \right | + b) $$</p>
-<p><strong>训练</strong><br>选择d(A,P)和d(A,N)相近的图片，加快模型学习效率。<br>即通过较难样本的学习，从而在较简单样本的测试中获得较好的性能。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/18/DL-CNNRecogonition/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/18/DL-CNNRecogonition/" itemprop="url">CNN目标检测</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-18T10:25:09+08:00">
-                2018-04-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  600
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>目标检测问题可以分为以下几种：</p>
-<ul>
-<li>单目标定位：输出$y = [P_c, b_x, b_y, b_h, b_w, c_1, c_2, c_3, … c_n]$</li>
-<li>Landmark检测：输出$(L_x, L_y)$</li>
-<li>多目标检测：识别并定位图中的多个目标物体<ul>
-<li>滑窗、卷积滑窗法</li>
-<li>YOLO</li>
-<li>R-CNN、Fast R-CNN、 Faster R-CNN</li>
-</ul>
-</li>
-</ul>
-<h4 id="1-滑窗法-Sliding-Windows-Dectection"><a href="#1-滑窗法-Sliding-Windows-Dectection" class="headerlink" title="1. 滑窗法(Sliding Windows Dectection)"></a>1. 滑窗法(Sliding Windows Dectection)</h4><ol>
-<li>训练模型。使用切好的车辆、行人图片作为训练数据。</li>
-<li>将测试图片切成$k_1\ast k_1$片，将每一片分别作为模型输入，得到输出;</li>
-<li>使用更大尺度将图片切成$k_2 \ast k_2$片，再次作为输入；</li>
-<li>反复运算之后取得分最高的作为最终输出。</li>
-</ol>
-<p><strong>缺点</strong>：计算开销太大，共需模型运算$k_1^2 + k_2^2 + … + k_n^2$次。</p>
-<h6 id="卷积实现"><a href="#卷积实现" class="headerlink" title="卷积实现"></a>卷积实现</h6><p><img src="/img/revolutionWindow.png"></p>
-<p>直接输入测试图片，共用中间计算部分，可以极大提高滑窗算法的效率。<br>最终输出的每一方格对应滑窗法中的每一块切片。<br><strong>缺点</strong>：对位置的判断不够精确</p>
-<h4 id="2-YOLO"><a href="#2-YOLO" class="headerlink" title="2. YOLO"></a>2. YOLO</h4><p>YOLO(You Only Look Once)<br>训练数据：认为物体在中心点所在的格子，中心点格子负责检测物体，其他格子假装没有。<br>每个格子对应的输出是$y = [P_c, b_x, b_y, b_h, b_w, c_1, c_2, c_3, … c_n]$</p>
-<p><strong>Anchor-Box</strong><br>解决一格内多目标的问题。<br>允许一格内出现多个识别框，将输出数据y拉长到n倍。<br>举例：<br>原输出长度为8，$y = [P_c, b_x, b_y, b_h, b_w, c_1, c_2, c_3]$<br>现允许一格内出现5个物体，则输出拉长到40，或者(5,8)，是原来5个输出的堆叠。</p>
-<p><strong>Non-Max Suppressioin</strong><br>解决同一物体被多个格子识别的问题。</p>
-<ol>
-<li>通过计算识别方框的IOU比例来判断重叠(常用0.5)</li>
-<li>在重叠的方框中取$P_c$最大的一个，忽视其余</li>
-</ol>
-<h4 id="3-R-CNN"><a href="#3-R-CNN" class="headerlink" title="3. R-CNN"></a>3. R-CNN</h4><ol>
-<li>R-CNN(Regions with CNN)的基本思想是将图片分区，按不同区域检索物体。类似不均匀划分的的滑窗法。主要缺点仍然是运算较慢。</li>
-<li>Fast R-CNN在识别中应用了卷积实现；</li>
-<li>Faster R-CNN进一步在分区(segmentation)中应用了卷积实现。</li>
-</ol>
-<p>R-CNN系列是一种两步(先分区再识别)的算法，和YOLO的一步算法有差异。<br>截止到本文写作时，R-CNN的计算速度仍然慢于YOLO。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/17/DL-CNNTips/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/17/DL-CNNTips/" itemprop="url">CNN使用经验</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-17T10:38:19+08:00">
-                2018-04-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  199
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>提升CNN网络表现除了更大更深的结构外，还有以下技巧：</p>
-<ul>
-<li>借助迁移学习：训练深层网络通常较慢，借助相关问题已经训练好的网络，修改最后几层来适应本问题。之前训练好的参数会加快本次训练收敛的速度</li>
-<li>Data Augmentation：通过图片处理，获得更多的训练数据<br>变形：镜像、切片、旋转、加噪声等<br>变色：颜色迁移, PCA颜色变换等</li>
-</ul>
-<p>另外有些方法会消耗更多算力，不一定在实际生产中采用，但可以提高Benchmark或用于竞赛：</p>
-<ul>
-<li>Ensembing: 训练多个神经网络然后集成</li>
-<li>Multi-Crop at test time: 将测试图片切片(例如10-crop)，对每个切片分别预测</li>
-</ul>
+<h3 id="Boosted-Tree"><a href="#Boosted-Tree" class="headerlink" title="Boosted Tree"></a>Boosted Tree</h3><h4 id="CART"><a href="#CART" class="headerlink" title="CART"></a>CART</h4><p>Boosted Tree最基本的组成部分是回归树(regression tree)，也称作CART。<br>CART会把输入根据输入的属性分配到各个叶子节点，每个叶子节点上会对应一个实数分数。<br><img src="/img/cart.png"></p>
+<h4 id="Tree-Ensemble"><a href="#Tree-Ensemble" class="headerlink" title="Tree Ensemble"></a>Tree Ensemble</h4><h6 id="1-模型和参数"><a href="#1-模型和参数" class="headerlink" title="1. 模型和参数"></a>1. 模型和参数</h6><p>一棵树往往过于简单，将多棵树的组合称作tree ensemble。<br>在这个模型中，参数是树的结构，以及每个叶子节点上的预测分数。<br>每个样本的最终预测结果是每棵树预测分数的和。<br><img src="/img/treeEnsemble.png"><br>模型可以写作：<br>$$ \hat{y_i} = \sum_{k=1}^Kf_k(x_i)\;\;\; f_k \in \boldsymbol{F} $$<br>其中每个$f$是一个在函数空间$\boldsymbol{F}$里面的函数，$\boldsymbol{F}$对应所有regression tree的集合。</p>
+<h6 id="2-目标函数"><a href="#2-目标函数" class="headerlink" title="2. 目标函数"></a>2. 目标函数</h6><p>$$ Obj(\Theta) = \sum_i^nl(y_i, \hat{y_i}) + \sum_{k=1}^K\Omega(f_k)$$<br>第一部分损失是训练误差，如MSE、logistic loss等；<br>第二部分正则是每棵树的复杂度的和，复杂度有多种定义方式，比如叶节点个数+叶节点分数平方和。</p>
+<h6 id="3-优化算法"><a href="#3-优化算法" class="headerlink" title="3. 优化算法"></a>3. 优化算法</h6><p>参数可以认为是在函数空间里面，不能采用传统的如SGD之类的算法，采用additive training的方式。<br>每次保留原来的模型不变，加入一个新的$f$，即一棵新树。<br>$$ \hat{y_i}^{(t)} = \sum_{k=1}^tf_k(x_i) = \hat{y_i}^{(t-1)} + f_t{x_i} $$<br>选取新树$f$的标准是，使目标函数$Obj(\Theta)$尽量最大地降低。</p>
 
           
         
@@ -1886,7 +3640,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1926,7 +3680,7 @@
                 alt="Miles" />
             
               <p class="site-author-name" itemprop="name">Miles</p>
-              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+              <p class="site-description motion-element" itemprop="description">万人迷</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -1936,7 +3690,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">277</span>
+                  <span class="site-state-item-count">285</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2038,7 +3792,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">100.2k</span>
+    <span title="Site words total count">103.6k</span>
   
 </div>
 
