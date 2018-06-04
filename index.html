@@ -262,6 +262,928 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/06/04/ML-AutoEncoder/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/04/ML-AutoEncoder/" itemprop="url">自编码器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-04T14:07:00+08:00">
+                2018-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  524
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="单个自编码器"><a href="#单个自编码器" class="headerlink" title="单个自编码器"></a>单个自编码器</h4><p>自编码器可以理解为一个试图去还原其原始输入的系统，如下图所示：<br><img src="./img/auto_encoder_1.jpg"></p>
+<p>自编码器的目的是，让输出$\tilde{x}$尽可能复现输入x。<br>对应神经网络中，输出层的节点数应该和输入层相同。<br><img src="./img/auto_encoder_2.jpg"></p>
+<p>损失函数可以是二次误差或者交叉熵。<br>从数据维度看，有以下两种情况：</p>
+<ul>
+<li>n &gt; p: 隐藏层维度小于输入维度。若损失为二次误差，且变换为线性时，该网络等价于PCA。</li>
+<li>n &lt; p: 隐藏层维度大于输入维，此时便是”稀疏自编码器“</li>
+</ul>
+<h4 id="堆叠自编码器"><a href="#堆叠自编码器" class="headerlink" title="堆叠自编码器"></a>堆叠自编码器</h4><p>单个自编码器的训练结束时，可以将输出层去掉，只保留有用的隐藏层。<br><img src="./img/auto_encoder_3.jpg"></p>
+<p>得到X的特征表达h后，可以将其当做新的输入，再训练一个新的编码器。<br>将多个自编码器串联之后，称为堆叠自编码器(Stacked Auto-Encoder,SAE):<br><img src="./img/auto_encoder_4.jpg"></p>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><ol>
+<li><p>简单自编码器</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Input, Dense</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Model</span><br><span class="line"></span><br><span class="line">encoding_dim = <span class="number">32</span></span><br><span class="line"></span><br><span class="line">input_img = Input(shape=(<span class="number">784</span>,))</span><br><span class="line">encoded = Dense(encoding_dim, activation=<span class="string">'relu'</span>)(input_img)</span><br><span class="line">decoded = Dense(<span class="number">784</span>, activation=<span class="string">'sigmoid'</span>)(encoded)</span><br><span class="line"></span><br><span class="line"><span class="comment"># models</span></span><br><span class="line">autoencoder = Model(input_img, decoded)</span><br><span class="line">encoder = Model(input_img, encoded)</span><br><span class="line"></span><br><span class="line"><span class="comment"># compile</span></span><br><span class="line">autoencoder.compile(optimizer=<span class="string">'adadelta'</span>, loss=<span class="string">'binary_crossentropy'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>深度自编码器</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">input_img = Input(shape=(<span class="number">784</span>,))</span><br><span class="line">encoded = Dense(<span class="number">128</span>, activation=<span class="string">'relu'</span>)(input_img)</span><br><span class="line">encoded = Dense(<span class="number">64</span>, activaiton=<span class="string">'relu'</span>)(encoded)</span><br><span class="line">encoded = Dense(<span class="number">32</span>, activation=<span class="string">'relu'</span>)(encoded)</span><br><span class="line"></span><br><span class="line">decoded = Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>)(encoded)</span><br><span class="line">decoded = Dense(<span class="number">128</span>, activation=<span class="string">'relu'</span>)(decoded)</span><br><span class="line">decoded = Dense(<span class="number">784</span>, activation=<span class="string">'sigmoid'</span>)(decoded)</span><br><span class="line"></span><br><span class="line">autoencoder = Model(input_img, decoded)</span><br><span class="line">autoencoder.compile(optimizer=<span class="string">'adadelta'</span>, loss=<span class="string">'binary_crossentropy'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>卷积自编码器</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">input_img = Input(shape=(<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">x = Conv2D(<span class="number">16</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>)(input_img)</span><br><span class="line">x = MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>), padding=<span class="string">'same'</span>)(x)</span><br><span class="line">x = Conv2D(<span class="number">8</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>)(x)</span><br><span class="line">x = MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>), padding=<span class="string">'same'</span>)(x)</span><br><span class="line">x = Conv2D(<span class="number">8</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>)(x)</span><br><span class="line">encoded = MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>), padding=<span class="string">'same'</span>)(x)</span><br><span class="line"></span><br><span class="line">x = Conv2D(<span class="number">8</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>)(encoded)</span><br><span class="line">x = UpSampling2D((<span class="number">2</span>,<span class="number">2</span>))(x)</span><br><span class="line">x = Conv2D(<span class="number">8</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>)(x)</span><br><span class="line">x = UpSamping2D((<span class="number">2</span>,<span class="number">2</span>))(x)</span><br><span class="line">x = Conv2D(<span class="number">16</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>)(x)</span><br><span class="line">x= UpSampling((<span class="number">2</span>,<span class="number">2</span>))(x)</span><br><span class="line">decoded = Conv2D(<span class="number">1</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'sigmoid'</span>, padding=<span class="string">'same'</span>)(x)</span><br><span class="line"></span><br><span class="line">autoencoder = Model(input_img, decoded)</span><br><span class="line">autoencoder.compile(optimizer=<span class="string">'adadelta'</span>, loss=<span class="string">'binary_crossentropy'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Sequence-to-sequence 自编码器</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">inputs = Input(shape=(timesteps, input_dim))</span><br><span class="line">encoded = LSTM(latent_dim)(inputs)</span><br><span class="line"></span><br><span class="line">decoded = RepeatVector(timesteps)(encoded)</span><br><span class="line">decoded = LSTM(input_dim, return_sequences=<span class="keyword">True</span>)(decoded)</span><br><span class="line"></span><br><span class="line">sequence_autoencoder = Model(inputs, decoded)</span><br><span class="line">encoder = Model(inputs, encoded)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/06/04/DL-DBN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/04/DL-DBN/" itemprop="url">深度信念网络</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-04T11:15:25+08:00">
+                2018-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  181
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>深度信念网络(Deep Belief Network)是一个概率生成模型，由多个限制玻尔兹曼机层组成。<br>生成模型建立了观察数据和标签之间的联合分布，对P(OBservation|Label)和P(Label|Observation)都做了评估，而判别模型只评估了后者。<br>一个典型的DBN网络结构如图所示：<br><img src="./img/DBN_1.png"></p>
+<h4 id="训练方法"><a href="#训练方法" class="headerlink" title="训练方法"></a>训练方法</h4><p><img src="./img/DBN_2.png"></p>
+<p>训练时采用逐层无监督学习来训练参数。<br>首先，将输入层和第一个隐藏层当做一个RBM，训练出这个RBM的参数；<br>然后，固定h1的参数，将第二个隐藏层当做RBM，继续训练参数；<br>以此类推，逐层训练参数并固定。<br>具体算法如下：<br><img src="./img/DBN_3.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/06/04/ML-RBM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/04/ML-RBM/" itemprop="url">受限玻尔兹曼机</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-04T10:57:21+08:00">
+                2018-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  258
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>受限玻尔兹曼机(Resticted Boltzmann Machine, RBM)由两层神经网络构成。<br>第一层是可见层/输入层，第二层是隐藏层。<br>两层之间可以通信，层内不可以通信。<br><img src="./img/RBM_1.jpeg"></p>
+<p>前向传播和神经网络是一样的，将输入乘以权重W，加上偏置项b1，再通过激活单元得到输出。<br>$$ a = f(WX + b) $$</p>
+<p>但是在重建阶段，会以隐藏层的输出作为输入，乘以共享权重W，加上新的偏置项b2，来试图还原可见层的输入X。<br><img src="./img/RBM_2.jpeg"></p>
+<p>这种重建称为生成学习，不同于分类器执行的判别学习。<br>判别学习将输入映射到标签上，在样本数据和标签之间绘制条件概率；<br>生成学习得到的是输入的一种概率分布。</p>
+<p>RBM使用KL散度来度量真实输入和还原输入的分布的差异。<br>RBM的优化算法试图最小化这种差异，使两种概率分布逐渐重合。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/06/04/ML-KLDivergence/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/04/ML-KLDivergence/" itemprop="url">KL散度</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-04T10:01:44+08:00">
+                2018-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  479
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>KL散度(Kullback-Leibler Divergence)是一种量化两种概率分布P和Q之间差异的方式，又称作相对熵。</p>
+<p><strong>熵(Entropy)</strong><br>对概率分布P，信息度量单位熵的公式如下：<br>$$ H = -\sum^{N}_{i=1} p(x_i) \cdot log\,p(x_i) $$</p>
+<p>1.上式的Log没有确定底数，可以是2、e或者10.<br>如果以2为底数，则熵值H可以看做是编码信息所需要的最少二进制位个数。<br>但是熵值H并没有给出编码的最优化方式，即如何使用最少的位数编码。<br>2.熵衡量的是信息的不确定性。<br>如果概率分布P只有1个值，$p(x_i)=1$，那么H=0，不确定性为0；<br>如果有8个值得均匀分布，$p(x_i)=\frac{1}{8}$，以2为底数时，H=3</p>
+<p><strong>相对熵</strong><br>如果用概率分布Q来近似概率分布P，那么信息的损失——KL散度定义为：<br>$$ D_{KL}(p \mid\mid q) = \sum_{i=1}^N p(x_i)\cdot(log\, p(x_i) - log\, q(x_i)) = \sum_{i=1}^N p(x_i)\cdot log\frac{ p(x_i)}{q(x_i)} $$</p>
+<p>KL散度度量的是一种分布到另一种分布的熵的损失，但<strong>并不是</strong>距离。<br>KL散度不符合对称性，即 从P到Q 和 从Q到P 所损失的信息是不一样的。</p>
+<p><strong>交叉熵</strong><br>在给定概率分布P时，使用概率分布Q所指定的策略，来消除系统不确定性，所需要付出的努力大小：<br>$$ C = -\sum^{N}_{i=1} p(x_i) \cdot log\,q(x_i) $$</p>
+<p>交叉熵越低，概率分布Q越接近P，所指定的策略就越好。<br>当Q=P时，$q(x_i) = p(x_i)$，交叉熵=信息熵，此时的策略为最优策略，达到最小值下限。<br>在分类算法中，使用交叉熵作为目标函数，使交叉熵尽可能小，就能使得学习到的概率分布尽可能接近真实分布。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/30/Python-sklearn-TSNE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/30/Python-sklearn-TSNE/" itemprop="url">sklearn.manifold.TSNE</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-30T10:39:29+08:00">
+                2018-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  190
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>t-SNE(t-distributed Stochastic Neighbor Embedding)是Embedding的一种，可以将高维数据映射到低维空间，并保持数据的相似性。<br>t-SNE是一种“非线性降维”，通常用来视觉直观验证算法有效性，很少用来降维并后接分类器。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sklearn</span>.<span class="title">manifold</span>.<span class="title">TSNE</span><span class="params">(n_components=<span class="number">2</span>, perplexity=<span class="number">30.0</span>, early_exaggeration=<span class="number">12.0</span>, </span></span></span><br><span class="line"><span class="class"><span class="params">    learning_rate=<span class="number">200.0</span>, n_iter=<span class="number">1000</span>, n_iter_without_progress=<span class="number">300</span>, min_grad_norm=<span class="number">1e-07</span>, </span></span></span><br><span class="line"><span class="class"><span class="params">    metric=’euclidean’, init=’random’, verbose=<span class="number">0</span>, random_state=None, method=’barnes_hut’, angle=<span class="number">0.5</span>)</span></span></span><br></pre></td></tr></table></figure>
+<p>参数</p>
+<ul>
+<li>n_componets: 降维后的空间维度，默认2</li>
+<li>perplexity: 困惑度，最近邻数量，通常5-50，tSNE对该参数不敏感</li>
+</ul>
+<p>方法</p>
+<ul>
+<li>fit(X, y=None)</li>
+<li>fit_transform(X, y=None)</li>
+<li>get_params</li>
+<li>set_params()</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.manifold <span class="keyword">import</span> TSNE</span><br><span class="line"></span><br><span class="line">X = np.array([[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>], [<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>], [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>], [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]])</span><br><span class="line">X_embedded = TSNE(n_components=<span class="number">2</span>).fit_transform(X)</span><br><span class="line">X_embedded.shape <span class="comment">#(4,2)</span></span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/28/DL-Optimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/28/DL-Optimization/" itemprop="url">神经网络配置与性能提升</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-28T15:02:35+08:00">
+                2018-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  486
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="激活函数Activation"><a href="#激活函数Activation" class="headerlink" title="激活函数Activation"></a>激活函数Activation</h4><ol>
+<li><p>Sigmoid: 现已基本不用，缺点有三 </p>
+<ul>
+<li>饱和区会杀死梯度</li>
+<li>输出0~1全为正，那么梯度全为正负，使w更新方向受限制(所以输入数据mean=0最好)</li>
+<li>指数运算开销大</li>
+</ul>
+</li>
+<li><p>Tanh: 解决了Mean=0的问题，仍会杀死梯度、指数运算</p>
+</li>
+<li>Relu: 收敛速度约6倍，没有mean=0，会有神经元“死亡”；一般为首选</li>
+<li>Leaky Relu、Max Out、ELU: 可尝试</li>
+</ol>
+<h4 id="初始化Initialization"><a href="#初始化Initialization" class="headerlink" title="初始化Initialization"></a>初始化Initialization</h4><ol>
+<li>全为0，所有节点结果相同；太小，梯度消失；太大，网络饱和</li>
+<li>Xavier/Glorot: 使输入输出方差相同，适合搭配tanh</li>
+<li>He: 方差除2，适合搭配relu</li>
+</ol>
+<h4 id="优化器Optimizer"><a href="#优化器Optimizer" class="headerlink" title="优化器Optimizer"></a>优化器Optimizer</h4><ol>
+<li>SGD: 经典方法，通常较慢</li>
+<li>动量: 收敛速度加快，但容易over shooting，即步长降低得慢</li>
+<li>RMSProp: 各方向步长尽量均衡</li>
+<li>Adam: RMSProp + 动量，一般为首选</li>
+</ol>
+<h4 id="损失函数Loss"><a href="#损失函数Loss" class="headerlink" title="损失函数Loss"></a>损失函数Loss</h4><ol>
+<li>铰链Hinge: 主要用于SVM</li>
+<li>互熵Cross Entropy Loss: 用于Logistic、Softmax分类</li>
+<li>平方Square Loss: 用于最小二乘法(OLS)</li>
+<li>指数Exponential Loss: 用于Adaboost等集成学习算法</li>
+</ol>
+<h4 id="克服overfitting"><a href="#克服overfitting" class="headerlink" title="克服overfitting"></a>克服overfitting</h4><ol>
+<li>Batch Normalization一般为首选，效果不好时再考虑其他手段；通常在Activation层之前。</li>
+<li>Dropout相当于内部集成，注意测试时不用drop，得分要乘以比例p</li>
+<li>Data Augmentation: 生成更多训练数据</li>
+</ol>
+<p>Q: 如何识别？<br>A: 画出学习曲线，观察训练误差和验证误差</p>
+<h4 id="超参数Hyperparameters"><a href="#超参数Hyperparameters" class="headerlink" title="超参数Hyperparameters"></a>超参数Hyperparameters</h4><ol>
+<li>Learning Rate是最重要的超参数，没有之一。<br>网格搜索同样适用于深层神经网络的超参调整，每次选用少量的epoch测试。</li>
+<li>Learning Rate Decay是二阶超参，不需要一开始就引入。<br>注意Learning Rate Decay和Adam的原理相悖，通常不兼容。</li>
+</ol>
+<h4 id="模型集成Ensemble"><a href="#模型集成Ensemble" class="headerlink" title="模型集成Ensemble"></a>模型集成Ensemble</h4><p>训练10个参数不同的模型，对预测结果投票，期望提升2%</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/19/ML-FeatureImportance/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2678,901 +3600,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/05/Keras-Models/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/05/Keras-Models/" itemprop="url">Keras模型Models</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-05T11:24:23+08:00">
-                2018-05-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  254
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Keras有两种类型的模型，序贯模型(Sequential)和函数式模型(Functional)。<br>函数式模型应用更广泛，序贯模型是函数式模型的一种特殊情况。</p>
-<p>两类模型有一些通用方法：</p>
-<ul>
-<li>model.summary(): 输出模型概况，实际调用的是keras.utils.print_summary</li>
-<li>model.get_config(): 返回包含配置信息的python字典，配置信息可用于重构</li>
-<li>model.get_layer(): 根据层名称或下标获得层对象</li>
-<li>model.get_weights(): 返回模型权重，类型为numpy array</li>
-<li>model.set_weights(): 从numpy array将权重载入给模型</li>
-<li>model.to_json: 返回代表模型的JSON字符串，只包含网络结构，不包括权值</li>
-<li>model.to_yaml: 返回代表模型的YAML字符串</li>
-<li>model.save_weights(filepath): 将权重保存到指定路径，文件类型HDF5(.h5)</li>
-<li>model.load_weights(filepath, by_name=False): 从HDF5中加载权重</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 从config重构</span></span><br><span class="line">config = model.get_config()</span><br><span class="line">model1 = Model.from_config(config)</span><br><span class="line">model2 = Sequential.from_config(config)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从json重构</span></span><br><span class="line"><span class="keyword">from</span> models <span class="keyword">import</span> model_from_json</span><br><span class="line">json_string = model.to_json()</span><br><span class="line">model = model_from_json(json_string)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从yaml重构</span></span><br><span class="line"><span class="keyword">from</span> models <span class="keyword">import</span> model_from_yaml</span><br><span class="line">yaml_string = model.to_yaml()</span><br><span class="line">model = model_from_yaml(yaml_string)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/05/Keras-Wrapper/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/05/Keras-Wrapper/" itemprop="url">Keras包装器Wrapper</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-05T10:24:54+08:00">
-                2018-05-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  192
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Bidirectional"><a href="#Bidirectional" class="headerlink" title="Bidirectional"></a>Bidirectional</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Bidirectional(layer, merge_mode=<span class="string">'concat'</span>, weights=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>RNN层的双向包装器。</p>
-<ul>
-<li>layer: RNN层实例</li>
-<li>merge_mode: 前后向输出的结合方式，{‘sum’,’mul’,’concat’,’ave’,None}；若None则不结合，以列表形式返回</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model = Sequential()</span><br><span class="line">model.add(Bidirectional(LSTM(<span class="number">10</span>, return_sequences=<span class="keyword">True</span>), input_shape=(<span class="number">5</span>,<span class="number">10</span>)))</span><br><span class="line">model.add(Bidirectional(LSTM(<span class="number">10</span>)))</span><br><span class="line">model.add(Desnse(<span class="number">5</span>))</span><br><span class="line">model.add(Activation(<span class="string">'softmax'</span>))</span><br><span class="line">model.compile(loss=<span class="string">'categorical_crossentropy'</span>, optimizer=<span class="string">'rmsprop'</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="TimeDistributed"><a href="#TimeDistributed" class="headerlink" title="TimeDistributed"></a>TimeDistributed</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.TimeDistributed(layer)</span><br></pre></td></tr></table></figure>
-<p>将层应用到输入的每个时间切片上。<br>输入数据至少有3个维度，其中第1个维度将会被认为是时间维。<br>例如有32个example的batch，数据形状为(32,10,16)，那么input_shape 就是(10,16)，其中10将会被当做时间维。</p>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model = Sequential()</span><br><span class="line">model.add(TimeDistributed(Dense(<span class="number">8</span>), input_shape=(<span class="number">10</span>,<span class="number">16</span>)))<span class="comment">#output_shape = (10,8)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># with Conv2D</span></span><br><span class="line">model.add(TimeDistributed(Conv2D(<span class="number">64</span>,(<span class="number">3</span>,<span class="number">3</span>)), input_shape=(<span class="number">10</span>,<span class="number">299</span>,<span class="number">299</span>,<span class="number">3</span>)))</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/05/Keras-Noise/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/05/Keras-Noise/" itemprop="url">Keras噪声层Noise</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-05T10:06:06+08:00">
-                2018-05-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  170
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>噪声层用于给数据附加随机的噪声，用以克服过拟合。<br>也是一种正则化，仅在训练时使用。</p>
-<h4 id="GaussianNoise"><a href="#GaussianNoise" class="headerlink" title="GaussianNoise"></a>GaussianNoise</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.GaussianNoise(stddev)</span><br></pre></td></tr></table></figure>
-<p><strong>添加</strong>均值为0，标准差为stddev的高斯噪声。</p>
-<h4 id="GaussianDropout"><a href="#GaussianDropout" class="headerlink" title="GaussianDropout"></a>GaussianDropout</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.GaussianDropout(rate)</span><br></pre></td></tr></table></figure>
-<p><strong>乘以</strong>将均值1，标准差为$\sqrt{\frac{rate}{1-rate}}$ 的噪声。<br>multiplicative noise 指在信号处理中，乘进原信号的随机噪声。</p>
-<h4 id="AlphaDropout"><a href="#AlphaDropout" class="headerlink" title="AlphaDropout"></a>AlphaDropout</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.AlphaDropout(rate, noise_shape=<span class="keyword">None</span>, seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>使输入数据的均值和方差保持不变，保持数据的自规范性。<br>通过随机将激活值设为负饱和值，alpha dropout 和selu激活函数配合较好。<br>噪声的标准差也是$\sqrt{\frac{rate}{1-rate}}$</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/04/Keras-BatchNormalization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/04/Keras-BatchNormalization/" itemprop="url">Keras规范化层BatchNormalization</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T21:30:40+08:00">
-                2018-05-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  240
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在每次迭代的batch里，对上一层的输出规范化。算法分两步：</p>
-<ol>
-<li>Normalize: 将输出变为均值0，标准差1；</li>
-<li>Scale and Shift: 加入新的均值和方差，避免失去学习到的信息</li>
-</ol>
-<p>用公式表示算法流程：<br>$$\begin{align}<br>\mu_B &amp;\leftarrow \frac{1}{m} \sum_{i=1}^m x_i  &amp;&amp;\text{batch mean} \\<br>\sigma_B^2 &amp;\leftarrow \frac{1}{m} \sum_{i=1}^m \;(x_i-\mu_B)^2 &amp;&amp;\text{batch variance} \\<br>\hat{x_i} &amp;\leftarrow \frac{x_i - \mu_B}{\sqrt{\sigma_B^2 + \epsilon}} &amp;&amp;\text{normalize} \\<br>y_i &amp;\leftarrow \gamma\hat{x_i} + \beta \equiv BN_{\gamma,\beta}\;(x_i) &amp;&amp;\text{scale and shift}<br>\end{align} $$</p>
-<p>代码<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.BatchNormalization(axis=<span class="number">-1</span>, momentum=<span class="number">0.99</span>, epsilon=<span class="number">0.001</span>, </span><br><span class="line">	center=<span class="keyword">True</span>, scale=<span class="keyword">True</span>, </span><br><span class="line">	beta_initializer=<span class="string">'zeros'</span>, gamma_initializer=<span class="string">'ones'</span>, </span><br><span class="line">	moving_mean_initializer=<span class="string">'zeros'</span>, moving_variance_initializer=<span class="string">'ones'</span>, </span><br><span class="line">	beta_regularizer=<span class="keyword">None</span>, gamma_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	beta_constraint=<span class="keyword">None</span>, gamma_constraint=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>axis: 指定要规范化的轴</li>
-<li>momentum: 移动平均和移动方差的冲量，公式如下：<br>  moving_mean = momentum × moving_mean + (1 - momentum) × batch_mean<br>  moving_var = momentum × moving_var + (1 - momentum) × batch_var</li>
-<li>epsilon: 加到方差里的小浮点数，避免除数为0</li>
-<li>center: 若True，则给规范化后的tensor加上偏移量beta</li>
-<li>scale: 若True，则乘以gamma</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/04/Keras-Merge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/04/Keras-Merge/" itemprop="url">Keras融合层Merge</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T15:07:20+08:00">
-                2018-05-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  197
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Merge-Layers"><a href="#Merge-Layers" class="headerlink" title="Merge Layers"></a>Merge Layers</h4><p>接受一个tensor的list(大多数要求shape相同)，返回一个tensor作为计算结果。</p>
-<ul>
-<li>Add: keras.layers.Add()</li>
-<li>Subtract: keras.layers.Subtract()</li>
-<li>Multiply: keras.layers.Multiply(), 元素积</li>
-<li>Dot: keras.layers.Dot(axes, normalizer=False), 点积</li>
-<li>Average: keras.layers.Average()</li>
-<li>Maximum: keras.layers.Maximum()</li>
-<li>Concatenate: keras.layers.Concatenate(axis=-1)</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> keras</span><br><span class="line"></span><br><span class="line">input1 = keras.layers.Input(shape=(<span class="number">16</span>,))</span><br><span class="line">input2 = keras.layers.Input(shape=(<span class="number">32</span>,))</span><br><span class="line">x1 = keras.layers.Dense(<span class="number">8</span>, activation=<span class="string">'relu'</span>)(input1)</span><br><span class="line">x2 = keras.layers.Dense(<span class="number">8</span>, activation=<span class="string">'relu'</span>)(input2)</span><br><span class="line"></span><br><span class="line">added = keras.layers.Add()([x1, x2])</span><br><span class="line"></span><br><span class="line">out = keras.layers.Dense(<span class="number">4</span>)(added)</span><br><span class="line">model = keras.models.Model(inputs=[input1, input2], outputs=out)</span><br></pre></td></tr></table></figure>
-<h4 id="Functional-Interface"><a href="#Functional-Interface" class="headerlink" title="Functional Interface"></a>Functional Interface</h4><p>包括add, substract, multiply, dot, average, maximum和concatenate<br>提供函数式写法的接口，实现功能和上文一样。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> keras</span><br><span class="line"></span><br><span class="line">input1 = keras.layers.Input(shape=(<span class="number">16</span>,))</span><br><span class="line">input2 = keras.layers.Input(shape=(<span class="number">32</span>,))</span><br><span class="line">x1 = keras.layers.Dense(<span class="number">8</span>, activation=<span class="string">'relu'</span>)(input1)</span><br><span class="line">x2 = keras.layers.Dense(<span class="number">8</span>, activation=<span class="string">'relu'</span>)(input2)</span><br><span class="line"></span><br><span class="line">added = keras.layers.add([x1, x2])</span><br><span class="line"></span><br><span class="line">out = keras.layers.Dense(<span class="number">4</span>)(added)</span><br><span class="line">model = keras.models.Model(inputs=[input1, input2], outputs=out)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/04/Keras-Embedding/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/04/Keras-Embedding/" itemprop="url">Keras嵌入层Embedding</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T14:45:24+08:00">
-                2018-05-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  137
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Embedding嵌入层将正整数转换为固定大小的向量，例如将字符的数字编码转为word embedding向量([3790]-&gt;[3,5,0,12])<br>Embedding层只能作为模型的第一层。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Embedding(input_dim, output_dim, embeddings_initializer=<span class="string">'uniform'</span>, </span><br><span class="line">	embeddings_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	embeddings_constraint=<span class="keyword">None</span>, mask_zero=<span class="keyword">False</span>, input_length=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>输入shape: (batch_size, sequence_length)<br>输出shape: (batch_size, sequence_length, output_dim)</p>
-<ul>
-<li>input_dim: 输入字典长度，最大下标+1</li>
-<li>output_dim: 输出长度</li>
-<li>mask_zero: 是否将输入中的’0’当做padding而全部忽略</li>
-<li>input_length: 输入序列的长度；不指定时后续层的输出维度无法推断</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3627,7 +3654,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">285</span>
+                  <span class="site-state-item-count">291</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3729,7 +3756,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">103.6k</span>
+    <span title="Site words total count">105.7k</span>
   
 </div>
 
