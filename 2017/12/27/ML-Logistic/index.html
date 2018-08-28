@@ -79,21 +79,22 @@
 
 
 
-<meta name="description" content="将线性回归函数f映射到(0,1)，得到经典的线性分类器Logistic Regression。虽然名字叫做“回归”，但实际上是一种分类模型。 $$h_{w,b}(x)=g(f(w,x,b))=\frac{1}{1+e^{-f}}=\frac{1}{1+e^{-(w^{T}x+b)}}$$    线性分类器是最基本和最常用的分类模型。受限于数据特征和分类目标之间的线性假设。 代价函数Logistic">
+<meta name="description" content="将线性回归函数f映射到(0,1)，得到经典的线性分类器Logistic Regression。虽然名字叫做“回归”，但实际上是一种分类模型。 $$h_{w,b}(x)=g(f(w,x,b))=\frac{1}{1+e^{-f}}=\frac{1}{1+e^{-(w^{T}x+b)}}$$    线性分类器是最基本和最常用的分类模型。受限于数据特征和分类目标之间的线性假设。 代价函数 Logisti">
 <meta name="keywords" content="Machine Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Logistic Regression">
 <meta property="og:url" content="http://mirokule.github.io/2017/12/27/ML-Logistic/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="将线性回归函数f映射到(0,1)，得到经典的线性分类器Logistic Regression。虽然名字叫做“回归”，但实际上是一种分类模型。 $$h_{w,b}(x)=g(f(w,x,b))=\frac{1}{1+e^{-f}}=\frac{1}{1+e^{-(w^{T}x+b)}}$$    线性分类器是最基本和最常用的分类模型。受限于数据特征和分类目标之间的线性假设。 代价函数Logistic">
+<meta property="og:description" content="将线性回归函数f映射到(0,1)，得到经典的线性分类器Logistic Regression。虽然名字叫做“回归”，但实际上是一种分类模型。 $$h_{w,b}(x)=g(f(w,x,b))=\frac{1}{1+e^{-f}}=\frac{1}{1+e^{-(w^{T}x+b)}}$$    线性分类器是最基本和最常用的分类模型。受限于数据特征和分类目标之间的线性假设。 代价函数 Logisti">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://mirokule.github.io/img/logistic.jpg">
+<meta property="og:image" content="http://mirokule.github.io/img/cross_entropy.png">
 <meta property="og:image" content="http://mirokule.github.io/img/logisticY1.png">
 <meta property="og:image" content="http://mirokule.github.io/img/logisticY0.png">
-<meta property="og:updated_time" content="2018-02-02T02:20:40.393Z">
+<meta property="og:updated_time" content="2018-08-28T07:58:10.697Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Logistic Regression">
-<meta name="twitter:description" content="将线性回归函数f映射到(0,1)，得到经典的线性分类器Logistic Regression。虽然名字叫做“回归”，但实际上是一种分类模型。 $$h_{w,b}(x)=g(f(w,x,b))=\frac{1}{1+e^{-f}}=\frac{1}{1+e^{-(w^{T}x+b)}}$$    线性分类器是最基本和最常用的分类模型。受限于数据特征和分类目标之间的线性假设。 代价函数Logistic">
+<meta name="twitter:description" content="将线性回归函数f映射到(0,1)，得到经典的线性分类器Logistic Regression。虽然名字叫做“回归”，但实际上是一种分类模型。 $$h_{w,b}(x)=g(f(w,x,b))=\frac{1}{1+e^{-f}}=\frac{1}{1+e^{-(w^{T}x+b)}}$$    线性分类器是最基本和最常用的分类模型。受限于数据特征和分类目标之间的线性假设。 代价函数 Logisti">
 <meta name="twitter:image" content="http://mirokule.github.io/img/logistic.jpg">
 
 
@@ -357,7 +358,8 @@
 <p>$$h_{w,b}(x)=g(f(w,x,b))=\frac{1}{1+e^{-f}}=\frac{1}{1+e^{-(w^{T}x+b)}}$$</p>
 <p><img src="/img/logistic.jpg" alt="Logistic" align="middle">  </p>
 <p>线性分类器是最基本和最常用的分类模型。<br>受限于数据特征和分类目标之间的线性假设。</p>
-<h4 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h4><p>Logistic Regression不能使用和线性回归同样的代价函数，因为Logistic使原代价函数蜿蜒，产生多个局部最小值，不能使用GDA求得最小值。<br>故引入新的代价函数：<br>$$ J(\theta) = \frac{1}{m}\sum_{i=1}^{m}Cost(h_{\theta}(x^{(i)}),y^{(i)}) $$<br>$$ Cost(h_{\theta}(x),y) = -log(h_{\theta}(x))  \;\;\;\;\; if \;\; y = 1 $$<br>$$ Cost(h_{\theta}(x),y) = -log(1-h_{\theta}(x)) \;\;\;\;\; if \;\;  y = 0 $$</p>
+<h4 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h4><p><img src="/img/cross_entropy.png"></p>
+<p>Logistic Regression不能使用和线性回归同样的代价函数，因为Logistic使原代价函数蜿蜒，产生多个局部最小值，不能使用GDA求得最小值。<br>故引入新的代价函数：<br>$$ J(\theta) = \frac{1}{m}\sum_{i=1}^{m}Cost(h_{\theta}(x^{(i)}),y^{(i)}) $$<br>$$ Cost(h_{\theta}(x),y) = -log(h_{\theta}(x))  \;\;\;\;\; if \;\; y = 1 $$<br>$$ Cost(h_{\theta}(x),y) = -log(1-h_{\theta}(x)) \;\;\;\;\; if \;\;  y = 0 $$</p>
 <p><img src="/img/logisticY1.png" width="250"><img src="/img/logisticY0.png" width="250"></p>
 <p>将Cost的分段函数合并，代价函数J可以写作：<br>$$ J(\theta) = -\frac{1}{m} \sum_{i=1}^{m}[y^{(i)} log(h_{\theta}(x^{(i)})) + (1-y^{(i)})log(1-h_{\theta}(x^{(i)}))] $$<br>向量形式：<br>$$ J(\theta) = \frac{1}{m}\cdot (-y^T log(h) - (1-y)^T log(1-h)) $$</p>
 <p>Gradient Descent迭代求解：<br>$$ \theta_j := \theta_j - \frac{\alpha}{m} \sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})x_j^{(i)} $$<br>向量形式：<br>$$ \theta := \theta - \frac{\alpha}{m} X^T(g(X\theta - \vec{y})) $$</p>
@@ -489,7 +491,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">291</span>
+                  <span class="site-state-item-count">294</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -502,7 +504,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -607,7 +609,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">105.7k</span>
+    <span title="Site words total count">106.8k</span>
   
 </div>
 

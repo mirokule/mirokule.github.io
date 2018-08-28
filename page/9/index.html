@@ -262,6 +262,487 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/17/DP-Sandbox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/17/DP-Sandbox/" itemprop="url">DesignPattern-Sandbox</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-17T11:24:36+08:00">
+                2016-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  339
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="子类沙盒"><a href="#子类沙盒" class="headerlink" title="子类沙盒"></a>子类沙盒</h4><ul>
+<li><strong>简介</strong></li>
+</ul>
+<p>基类定义一个抽象的沙盒方法和一些预定义的操作集合。<br>将它们设置为protected，以供子类调用。<br>每个派生出的沙盒子类根据基类提供的操作实现沙盒函数。<br>例如超能力，不同的超能力需要调用物理引擎、粒子、声音等多种功能。<br>可以将操作方法抽象到基类中，提高复用效率，降低子类和外部的耦合。</p>
+<ul>
+<li><strong>适用情况</strong></li>
+</ul>
+<p>1.有一个带有大量子类的基类；<br>2.基类能提供所有子类可能需要执行的操作集合；<br>3.子类之间有重叠的代码；<br>4.希望使子类和外部程序的耦合最小化。</p>
+<ul>
+<li><strong>设计决策</strong></li>
+</ul>
+<p>1.将哪些操作抽象到基类中是需要考虑的。过多的抽象将使基类臃肿。如果某操作只被1个子类使用，则无需抽象到基类中。<br>2.如果基类臃肿，考虑将相关操作进一步抽象成辅助类，比如SoundPlayer；将辅助类的引用提供给子类，代替直接的操作方法调用。</p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 基类</span></span><br><span class="line">Abstract <span class="class"><span class="keyword">class</span> <span class="title">SuperPower</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">activate</span><span class="params">()</span></span>; <span class="comment">//抽象沙盒方法，子类必须实现</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">move</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">playSound</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">spawnParticles</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 子类</span></span><br><span class="line">class SkyLaunch: SuperPower</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> override <span class="keyword">void</span> <span class="title">activate</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		move();</span><br><span class="line">		playSound();</span><br><span class="line">		spawnParticles();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/17/DP-Facade/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/17/DP-Facade/" itemprop="url">DesignPattern-FacadePattern</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-17T11:16:33+08:00">
+                2016-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  633
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>外观模式（Facade Pattern）隐藏系统的复杂性，并向客户端提供了一个客户端可以访问系统的接口。<br>这种类型的设计模式属于结构型模式，它向现有的系统添加一个接口，来隐藏系统的复杂性。</p>
+<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><ul>
+<li><p><strong>意图</strong><br>为子系统中的一组接口提供一个一致的界面，外观模式定义了一个高层接口，这个接口使得这一子系统更加容易使用。</p>
+</li>
+<li><p><strong>主要解决</strong><br>降低访问复杂系统的内部子系统时的复杂度，简化客户端与之的接口。</p>
+</li>
+<li><p><strong>何时使用</strong><br>1、客户端不需要知道系统内部的复杂联系，整个系统只需提供一个”接待员”即可。<br>2、定义系统的入口。 </p>
+</li>
+<li><p><strong>如何解决</strong><br>客户端不与系统耦合，外观类与系统耦合。</p>
+</li>
+<li><p><strong>关键代码</strong><br>在客户端和复杂系统之间再加一层，这一次将调用顺序、依赖关系等处理好。</p>
+</li>
+<li><p><strong>应用实例</strong><br>1、去医院看病，可能要去挂号、门诊、划价、取药，让患者或患者家属觉得很复杂，如果有提供接待人员，只让接待人员来处理，就很方便。<br>2、JAVA 的三层开发模式。</p>
+</li>
+<li><p><strong>优点</strong><br>1、减少系统相互依赖。<br>2、提高灵活性。<br>3、提高了安全性。 </p>
+</li>
+<li><p><strong>缺点</strong><br>不符合开闭原则，如果要改东西很麻烦，继承重写都不合适。</p>
+</li>
+<li><p><strong>使用场景</strong><br>1、为复杂的模块或子系统提供外界访问的模块。<br>2、子系统相对独立。<br>3、预防低水平人员带来的风险。 </p>
+</li>
+<li><p><strong>注意事项</strong><br>在层次化结构中，可以使用外观模式定义系统中每一层的入口。</p>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/12/17/DP-Facade/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/17/DP-Template/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/17/DP-Template/" itemprop="url">DesignPattern-TemplatePattern</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-17T11:03:43+08:00">
+                2016-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  731
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>模板模式<br>基类定义了通用的模板/框架，子类实现其中的细节。<br>一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。<br>这种类型的设计模式属于行为型模式。</p>
+<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><ul>
+<li><p><strong>意图</strong><br>定义一个操作中的算法的骨架，而将一些步骤延迟到子类中。<br>模板方法使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。</p>
+</li>
+<li><p><strong>主要解决</strong><br>一些方法通用，却在每一个子类都重新写了这一方法。</p>
+</li>
+<li><p><strong>何时使用</strong><br>有一些通用的方法。</p>
+</li>
+<li><p><strong>如何解决</strong><br>将这些通用算法抽象出来。</p>
+</li>
+<li><p><strong>关键代码</strong><br>在抽象类实现，其他步骤在子类实现。</p>
+</li>
+<li><p><strong>应用实例</strong><br>1、在造房子的时候，地基、走线、水管都一样，只有在建筑的后期才有加壁橱加栅栏等差异。<br>2、西游记里面菩萨定好的 81 难，这就是一个顶层的逻辑骨架。<br>3、Spirng 中对 Hibernate 的支持，将一些已经定好的方法封装起来，比如开启事务、获取 Session、关闭 Session 等，程序员不重复写那些已经规范好的代码，直接丢一个实体就可以保存。 </p>
+</li>
+<li><p><strong>优点</strong><br>1、封装不变部分，扩展可变部分。<br>2、提取公共代码，便于维护。<br>3、行为由父类控制，子类实现。 </p>
+</li>
+<li><p><strong>缺点</strong><br>每一个不同的实现都需要一个子类来实现，导致类的个数增加，使得系统更加庞大。</p>
+</li>
+<li><p><strong>使用场景</strong><br>1、有多个子类共有的方法，且逻辑相同。<br>2、重要的、复杂的方法，可以考虑作为模板方法。</p>
+</li>
+<li><p><strong>注意事项</strong><br>为防止恶意操作，一般模板方法都加上 final 关键词(Java)。</p>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/12/17/DP-Template/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/17/DP-Interpreter/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2921,430 +3402,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/30/Unity-Lambda/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/30/Unity-Lambda/" itemprop="url">Unity-Lambda</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T16:11:59+08:00">
-                2016-11-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  156
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Lambda是没有函数名的函数，又称匿名函数；通常临时创建在其他函数中。<br>和closure闭包很像。<br>格式为 () =&gt; {}</p>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetWebImage</span>(<span class="params">Action&lt;Texture2D&gt; callbackFunc</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (_webImage == <span class="literal">null</span>) &#123;</span><br><span class="line">		StartCoroutine(_network.DownloadImage( </span><br><span class="line">			(Texture2d image) =&gt; &#123;</span><br><span class="line">				_webImage = image;</span><br><span class="line">				callbackFunc(_webImage);</span><br><span class="line">			&#125;</span><br><span class="line">		));</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		callbackFunc(_webImage);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>本段代码的目的是缓存图片。在前端显示和底层网络数据获取的回调之间，将图片保存下来。<br>network.DownloadImage(Action<texture2d> func)需要传入回调函数，在这里创建了Lambda函数作为参数传入。<br>Lambda函数接受图片作为输入参数，在本地保存后，再调用前端的回调函数显示图片。</texture2d></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/30/Unity-XML/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/30/Unity-XML/" itemprop="url">Unity-XML</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T15:44:35+08:00">
-                2016-11-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  37
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Mono包含xml的解析器。</p>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Xml</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnXMLDataLoaded</span>(<span class="params"><span class="keyword">string</span> data</span>) </span>&#123;</span><br><span class="line">	XmlDocument doc = <span class="keyword">new</span> XmlDocument ();</span><br><span class="line">	doc.LoadXml (data);</span><br><span class="line"></span><br><span class="line">	XmlNode root = doc.DocumentElement;</span><br><span class="line">	XmlNode node = root.SelectSingleNode (<span class="string">"clouds"</span>);</span><br><span class="line">	<span class="keyword">string</span> <span class="keyword">value</span> = node.Attributes [<span class="string">"value"</span>].Value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/30/C#-Delegation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/30/C#-Delegation/" itemprop="url">C#-Delegation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T15:19:14+08:00">
-                2016-11-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  205
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="委托的类型"><a href="#委托的类型" class="headerlink" title="委托的类型"></a>委托的类型</h5><h6 id="1-Delegate"><a href="#1-Delegate" class="headerlink" title="1.Delegate"></a>1.Delegate</h6><p>Delegate至少0个参数，至多32个参数，可以无返回值，也可以指定返回值类型。<br>例：public delegate int MethodtDelegate(int x, int y);表示有两个参数，并返回int型。</p>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">int</span> <span class="title">MyDelegateMethod</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> MyDelegateMethod method;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>) </span>&#123;</span><br><span class="line">	method = <span class="keyword">new</span> MyDelegateMethod(Add);</span><br><span class="line">	Console.WriteLine(method(<span class="number">10</span>, <span class="number">12</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">Add</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="2-Predicate"><a href="#2-Predicate" class="headerlink" title="2.Predicate"></a>2.Predicate</h6><p>Predicate有且只有一个参数，返回值固定为bool</p>
-<h6 id="3-Action"><a href="#3-Action" class="headerlink" title="3.Action"></a>3.Action</h6><p>Action是无返回值的泛型委托。<br>Action可以有参数，Action<int, string=""> 表示有传入参数int, string。<br>例：public void Test<t> (Action<t> action, T p)</t></t></int,></p>
-<h6 id="4-Func"><a href="#4-Func" class="headerlink" title="4.Func"></a>4.Func</h6><p>Func是有返回值的泛型委托。<br>Func<int> 表示无参，有返回值int的委托。<br>Func<object, string,="" int=""> 表示传入参数为object,string，返回值为int的委托。<br>    public int Test<t1, t2="">(Func<t1,t2,int> func, T1 a, T2 b) {<br>        return func(a, b);<br>    }</t1,t2,int></t1,></object,></int></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3399,7 +3456,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">291</span>
+                  <span class="site-state-item-count">294</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3412,7 +3469,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3501,7 +3558,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">105.7k</span>
+    <span title="Site words total count">106.8k</span>
   
 </div>
 

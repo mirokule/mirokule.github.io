@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="批规范化(Batch Normalization)是将神经网络每层的输入信号规范化，得到特定均值和方差强度的输入。批规范化应作用于非线性环节之前，即缩放$z^{[l]}$. 算法分两步：  Normalize: 去均值和方差，变为(0,1)分布 Shift and Scale: 加入新的均值和方差  $$ \begin{cases}\mu = \frac{1}{m} \sum_{i=1}^m z^">
+<meta name="description" content="批规范化(Batch Normalization)是将神经网络每层的输入信号规范化，得到特定均值和方差强度的输入。批规范化应作用于非线性环节之前，即缩放$z^{[l]}$基于Mini-Batch SGD，每次处理一个Batch的数据。 原理在深层神经网络中，非线性变换前的激活输入值在网络加深或训练次数增多时，其分布会向激活函数取值区间的上下限两端靠近。这会导致后向传播的梯度消失，使训练深层神经网络">
 <meta name="keywords" content="Machine Learning,Deep Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Batch Normalization">
 <meta property="og:url" content="http://mirokule.github.io/2018/04/12/DL-BatchNormalization/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="批规范化(Batch Normalization)是将神经网络每层的输入信号规范化，得到特定均值和方差强度的输入。批规范化应作用于非线性环节之前，即缩放$z^{[l]}$. 算法分两步：  Normalize: 去均值和方差，变为(0,1)分布 Shift and Scale: 加入新的均值和方差  $$ \begin{cases}\mu = \frac{1}{m} \sum_{i=1}^m z^">
+<meta property="og:description" content="批规范化(Batch Normalization)是将神经网络每层的输入信号规范化，得到特定均值和方差强度的输入。批规范化应作用于非线性环节之前，即缩放$z^{[l]}$基于Mini-Batch SGD，每次处理一个Batch的数据。 原理在深层神经网络中，非线性变换前的激活输入值在网络加深或训练次数增多时，其分布会向激活函数取值区间的上下限两端靠近。这会导致后向传播的梯度消失，使训练深层神经网络">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-04T14:19:00.518Z">
+<meta property="og:updated_time" content="2018-06-13T08:09:50.627Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Batch Normalization">
-<meta name="twitter:description" content="批规范化(Batch Normalization)是将神经网络每层的输入信号规范化，得到特定均值和方差强度的输入。批规范化应作用于非线性环节之前，即缩放$z^{[l]}$. 算法分两步：  Normalize: 去均值和方差，变为(0,1)分布 Shift and Scale: 加入新的均值和方差  $$ \begin{cases}\mu = \frac{1}{m} \sum_{i=1}^m z^">
+<meta name="twitter:description" content="批规范化(Batch Normalization)是将神经网络每层的输入信号规范化，得到特定均值和方差强度的输入。批规范化应作用于非线性环节之前，即缩放$z^{[l]}$基于Mini-Batch SGD，每次处理一个Batch的数据。 原理在深层神经网络中，非线性变换前的激活输入值在网络加深或训练次数增多时，其分布会向激活函数取值区间的上下限两端靠近。这会导致后向传播的梯度消失，使训练深层神经网络">
 
 
 
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  197
+                  387
                 </span>
               
 
@@ -349,11 +349,16 @@
       
 
       
-        <p>批规范化(Batch Normalization)是将神经网络每层的输入信号规范化，得到特定均值和方差强度的输入。<br>批规范化应作用于非线性环节之前，即缩放$z^{[l]}$.</p>
+        <p>批规范化(Batch Normalization)是将神经网络每层的输入信号规范化，得到特定均值和方差强度的输入。<br>批规范化应作用于非线性环节之前，即缩放$z^{[l]}$<br>基于Mini-Batch SGD，每次处理一个Batch的数据。</p>
+<p><strong>原理</strong><br>在深层神经网络中，非线性变换前的激活输入值在网络加深或训练次数增多时，其分布会向激活函数取值区间的上下限两端靠近。<br>这会导致后向传播的梯度消失，使训练深层神经网络越来越困难。<br>Batch Normalization就是强行将数据分布拉回N~(0,1)的正太分布，避免梯度消失。</p>
 <p><strong>算法</strong><br>分两步：</p>
 <ol>
-<li>Normalize: 去均值和方差，变为(0,1)分布</li>
-<li>Shift and Scale: 加入新的均值和方差</li>
+<li>Normalize: 去均值和方差<ul>
+<li>训练时，由每个batch的m个样本求得，数据变为(0,1)分布</li>
+<li>预测时，使用训练集的全局均值和方差，由每个batch的均值、方差计算得到</li>
+</ul>
+</li>
+<li>Shift and Scale: 加入新的均值和方差，增强网络表达能力；这两个参数需要通过训练来学习</li>
 </ol>
 <p>$$ \begin{cases}<br>\mu = \frac{1}{m} \sum_{i=1}^m z^{(i)} \\<br>\sigma = \frac{1}{m} \sum_{i=1}^m(z^{(i)} - \mu)^2 \\<br>z^{norm} = \frac{z^{(i)} - \mu}{\sqrt{\sigma^2+\epsilon}} \\<br>\hat{z} = \gamma z^{norm} + \beta<br>\end{cases} $$</p>
 <p>其中$\gamma$和$\beta$是需要训练的超参数</p>
@@ -479,7 +484,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">291</span>
+                  <span class="site-state-item-count">294</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -492,7 +497,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -581,7 +586,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">105.7k</span>
+    <span title="Site words total count">106.8k</span>
   
 </div>
 
