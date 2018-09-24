@@ -262,6 +262,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/09/19/Unity-MLAgents/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/19/Unity-MLAgents/" itemprop="url">ML-Agents Toolkit</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T15:28:31+08:00">
+                2018-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  385
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>ML-Agents Toolkit是Unity推出的机器学习组件，可用来训练游戏AI。<br>训练算法包括强化学习、模仿学习等。</p>
+<p><img src="/img/ml-agents.png"></p>
+<p>ML-Agents主要包括以下几个部分：</p>
+<ul>
+<li>Learning Enviroment: 包括游戏场景和角色<ul>
+<li>Agents: 绑在GameObject上，给出观测并执行动作；必须对应1个Brain</li>
+<li>Brains: 拥有策略，接收观测值并给出动作；可以对应多个Agents</li>
+<li>Academy: 控制全局变量，安排Brain更新顺序</li>
+</ul>
+</li>
+<li>Python API: 包括训练过程的算法，独立于Unity</li>
+<li>External Communicator: 用于上述两部分的沟通</li>
+</ul>
+<h6 id="Brain类型"><a href="#Brain类型" class="headerlink" title="Brain类型"></a>Brain类型</h6><ul>
+<li>External: 策略由外部的python API输入</li>
+<li>Internal: 策略由内部的TF Model决定</li>
+<li>Player: 策略由玩家用键盘鼠标输入</li>
+<li>Heuristic: 策略由硬编码决定；可用于测试、对比等</li>
+</ul>
+<h6 id="TensorFlowSharp"><a href="#TensorFlowSharp" class="headerlink" title="TensorFlowSharp"></a>TensorFlowSharp</h6><p>TensorFlow并不支持Unity使用的C#语言，故训练好的Brain并不能直接在Unity中使用，而需要通过插件TensorFlowSharp来调用。</p>
+<h4 id="训练方式"><a href="#训练方式" class="headerlink" title="训练方式"></a>训练方式</h4><p>ML-Agents提供多种训练Brain的方法。</p>
+<h6 id="1-Built-in-Training-and-Inference"><a href="#1-Built-in-Training-and-Inference" class="headerlink" title="1.Built-in Training and Inference"></a>1.Built-in Training and Inference</h6><p>最常用的两步法：</p>
+<ul>
+<li>Training：构建训练场景，指定Brain为”External”，使python API可以调用该场景。训练得到Brain文件(TF Model)。</li>
+<li>Inference：在任意场景中使用训练好的Brain文件，指定Brain模式”Internal”，需要TensorFlowSharp插件。</li>
+</ul>
+<h6 id="2-Custom-Training-and-Inference"><a href="#2-Custom-Training-and-Inference" class="headerlink" title="2.Custom Training and Inference"></a>2.Custom Training and Inference</h6><p>自定义Training和Inference过程的算法。<br>两步中Brain都为”External”，通过Python API控制。</p>
+<h6 id="3-Curriculum-Learning"><a href="#3-Curriculum-Learning" class="headerlink" title="3.Curriculum Learning"></a>3.Curriculum Learning</h6><p>渐进地学习复杂环境下的策略</p>
+<h6 id="4-Imitation-Learning"><a href="#4-Imitation-Learning" class="headerlink" title="4.Imitation Learning"></a>4.Imitation Learning</h6><p>模仿学习，通过模仿现有的例子来生成策略。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/08/28/ML-ErrorSource/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3383,145 +3550,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/09/ML-DecisionBoundary/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/09/ML-DecisionBoundary/" itemprop="url">决策边界示意图</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-09T08:48:41+08:00">
-                2018-05-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  0
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="/img/classifier_comparison.png"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3576,7 +3604,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">294</span>
+                  <span class="site-state-item-count">295</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3678,7 +3706,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">106.8k</span>
+    <span title="Site words total count">107.2k</span>
   
 </div>
 

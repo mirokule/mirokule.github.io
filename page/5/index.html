@@ -262,6 +262,199 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/05/Python-NumPy-RavelFlatten/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/05/Python-NumPy-RavelFlatten/" itemprop="url">NumPy数组降维</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-05T15:05:08+08:00">
+                2018-04-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  327
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>NumPy中可以用于维度缩减的函数有：</p>
+<ul>
+<li>ravel: 1-D,就地生效</li>
+<li>flatten: 1-D,返回副本</li>
+<li>squeeze: 移除shape为1的维度</li>
+<li>reshape: 指定维度</li>
+</ul>
+<h4 id="1-ravel"><a href="#1-ravel" class="headerlink" title="1. ravel()"></a>1. ravel()</h4><p>numpy.ravel(a, order=’C’)<br>将数组降维，返回一维数组；如果没有必要，不会产生原数据的副本，而是<strong>就地生效</strong><br>相当于rashape(-1, order=order)</p>
+<p>参数</p>
+<ul>
+<li>a：输入array</li>
+<li>order: {‘C’, ‘F’, ‘A’, ‘K’}，默认’C’<ul>
+<li>‘C’: C-style，先处理行</li>
+<li>‘F’: Fortran-style，先处理列</li>
+<li>‘A’: Auto，如果a在内存中是Fortran contiguous则’F’，否则’C’</li>
+<li>‘K’: 按内存顺序</li>
+</ul>
+</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>y：1-D ndarray</li>
+</ul>
+<h4 id="2-flatten"><a href="#2-flatten" class="headerlink" title="2. flatten()"></a>2. flatten()</h4><p>numpy.ndarray.flatten(order=’C’)<br>返回数组降维后的<strong>副本</strong></p>
+<p>参数</p>
+<ul>
+<li>order: {‘C’,’F’,’A’,’K’}</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>y: ndarray</li>
+</ul>
+<h4 id="3-squeeze"><a href="#3-squeeze" class="headerlink" title="3. squeeze()"></a>3. squeeze()</h4><p>numpy.squeeze(a, axis=None)<br>移除 single-dimensional entries，即shape中为1的维度。</p>
+<p>参数</p>
+<ul>
+<li>a: 输入array</li>
+<li>axis: 指定要缩减的轴，若该轴的shape大于1，则报错</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>squeezed: ndarray</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = np.array([[[<span class="number">0</span>],[<span class="number">1</span>],[<span class="number">2</span>]]])</span><br><span class="line">x.shape <span class="comment">#(1,3,1)</span></span><br><span class="line">np.squeeze(x).shape <span class="comment">#(3,)</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">0</span>).shape <span class="comment">#(3,1)</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">1</span>).shape <span class="comment">#报错</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">2</span>).shape <span class="comment">#(1,3)</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="4-reshape"><a href="#4-reshape" class="headerlink" title="4. reshape()"></a>4. reshape()</h4><p>numpy.reshape(a, newshape, order=’C’)<br>为数组指定新的shape</p>
+<p>参数</p>
+<ul>
+<li>a: 输入array</li>
+<li>newshape: int表示该维度长度，-1表示自动推断</li>
+<li>order: {‘C’, ‘F’, ‘A’}</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>reshaped_array: ndarray</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = np.arange(<span class="number">6</span>).reshape(<span class="number">3</span>,<span class="number">2</span>)</span><br><span class="line">np.reshape(a, <span class="number">6</span>)</span><br><span class="line">np.reshape(a, (<span class="number">2</span>,<span class="number">3</span>), order=<span class="string">'F'</span>)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/02/ML-Stacking/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3379,153 +3572,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/21/Stat-QQPlot/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/21/Stat-QQPlot/" itemprop="url">Q-Q图</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T09:53:46+08:00">
-                2018-03-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  223
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h4><p>Q-Q图将两个概率分布的分位数放在一起比较，若分布线性相关，则应绘制一条直线。<br>固定一种为正态分布，则可观察另一套样本是否近似服从正态分布。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> stats</span><br><span class="line"><span class="comment"># 默认和正态分布比较</span></span><br><span class="line">stats.probplot(data, plot=plt)</span><br></pre></td></tr></table></figure></p>
-<p><img src="/img/probplot.png"></p>
-<h4 id="作图步骤"><a href="#作图步骤" class="headerlink" title="作图步骤"></a>作图步骤</h4><ol>
-<li>将原始观察数据从小到大排列：$x_1,x_2,…,x_n$</li>
-<li>计算$x$对应的分位频率$p_i=(i-\frac{1}{2})/n,i=1,2,…,n$，这里$P$可以有多种定义。</li>
-<li>计算$p$对应的标准正态分位数$q$:<br>$$ P\left{X\leq q_1\right} = \int_{-\infty}^{q_1}\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}} dx = p_i $$</li>
-<li>将数对$(q_i, x_i)$画在坐标平面上。</li>
-</ol>
-<p>因为$q_i$由$p_i$唯一确定，所以若数据$x_i$的分布与正态分布非常接近，则点$(q_i,x_i)$应大致成一条直线。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3580,7 +3626,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">294</span>
+                  <span class="site-state-item-count">295</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3682,7 +3728,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">106.8k</span>
+    <span title="Site words total count">107.2k</span>
   
 </div>
 
