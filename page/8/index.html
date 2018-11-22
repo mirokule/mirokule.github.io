@@ -262,6 +262,1007 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-NormalEquations/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/ML-NormalEquations/" itemprop="url">Normal Equations</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T10:56:55+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  462
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Normal Equations可以直接解出最小二乘法的参数估计值，不需要GDA的迭代过程。</p>
+<p>高斯曾经证明，在所有无偏的线性估计类中，最小二乘法是其中方差最小的。</p>
+<h4 id="推导"><a href="#推导" class="headerlink" title="推导"></a>推导</h4><p>线性回归模型 $X\theta=y$ 形如方程 $Ax=b$</p>
+<p>当矩阵A的 $m&gt;n$，即训练样本数m大于特征数n时，A的n个列向量无法充满整个m维空间，方程没有解。</p>
+<p>故使用最小二乘法(LSE)，使残差e最小，$Ax$尽可能逼近$b$:</p>
+<p>$$ min(H) = min(\left|\left|e\right|\right|^2) = min(\left|\left|b-Ax\right|\right|^2) $$</p>
+<p>从向量投影的角度来看，将向量b投影到A平面时，e与A平面垂直，距离最短，从而使误差最小。</p>
+<p><img src="/img/projection.png" alt="projection" width="300px"></p>
+<p>如图，$\vec{p}$ 是 $\vec{b}$ 在A平面内的投影，所以有</p>
+<p>$$ \vec{p} = x_1\vec{a_1} + x_2\vec{a_2} +…+ x_n\vec{a_n} = Ax $$</p>
+<p>$$ \vec{e} = \vec{b} - \vec{p} = b - Ax $$</p>
+<p>又因为 $\vec{e}$ 与A平面垂直，所以</p>
+<p>$$ A\times \vec{e} = 0 \;\;\;\; \Rightarrow \;\;\;\; A^T(b-Ax) = 0 $$</p>
+<p>将括号展开可以得到</p>
+<p>$$ x = (A^TA)^{-1}A^T\cdot b $$</p>
+<p>$$ p = Ax = A(A^TA)^{-1}A^T\cdot b $$</p>
+<p>其中，$P = A(A^TA)^{-1}A^T$称为投影矩阵，可以将 $\vec{b}$ 投影成 $\vec{p}$。</p>
+<p>投影矩阵P具有两个性质：</p>
+<ul>
+<li>$P^T = P$: P是对称矩阵</li>
+<li>$P^2 = P$: 二次投影仍是本身，即投影之后的投影不会改变</li>
+</ul>
+<p>另外，在线性回归模型中，$x$就是最小二乘法求出来的$\theta$，即</p>
+<p>$$ \theta = (X^TX)^{-1}X^Ty $$</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>不需要选择步长$\alpha$</li>
+<li>不需要迭代</li>
+<li>需要计算矩阵$(X^TX)^{-1}$，复杂度$O(n^3)$，当n很大时计算速度慢</li>
+</ul>
+<p><strong>如果$(X^TX)$不可逆</strong>怎么办？</p>
+<ul>
+<li>可能存在冗余特征，使矩阵线性相关</li>
+<li>特征数太多，删除部分特征，或使用正则化(Regularization)</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/12/ML-FeatureEngineering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/ML-FeatureEngineering/" itemprop="url">特征工程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T09:39:47+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  540
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>对输入特征的处理可大致分为：</p>
+<ol>
+<li>特征修补</li>
+<li>特征变换</li>
+<li>特征生成</li>
+</ol>
+<h4 id="1-特征修补"><a href="#1-特征修补" class="headerlink" title="1.特征修补"></a>1.特征修补</h4><p>主要处理数据中的缺失和错误，包括</p>
+<ul>
+<li>重复(Duplicated)：删除重复记录</li>
+<li>异常(Outliers)：删除异常点</li>
+<li>缺失(Missing)：删除或修补缺失字段</li>
+</ul>
+<h4 id="2-特征变换"><a href="#2-特征变换" class="headerlink" title="2.特征变换"></a>2.特征变换</h4><p>处理连续数字、以数字或字符表示的类别字段等。</p>
+<h6 id="类别"><a href="#类别" class="headerlink" title="类别"></a>类别</h6><table>
+<thead>
+<tr>
+<th style="text-align:center">类别字段</th>
+<th style="text-align:center">有大小</th>
+<th style="text-align:center">无大小</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">数字类别</td>
+<td style="text-align:center">保持有序编码，LabelEncoder</td>
+<td style="text-align:center">转为字符类型，one-hot编码</td>
+</tr>
+<tr>
+<td style="text-align:center">字符类别</td>
+<td style="text-align:center">手动映射为有序数字，map</td>
+<td style="text-align:center">one-hot编码,get_dummies</td>
+</tr>
+</tbody>
+</table>
+<p>数字和字符的区别在于，数字可以比较大小，引入有序的信息，会被模型利用。<br>因而有序的字符类别(如L, XL, XXL)实际蕴含的信息是如(2,3,4)的数字;<br>无序的数字类别(如房型20,30,40)实际蕴含的信息是如(A,B,C)的字符。<br>二值(T/N)是一种特殊的类别，视为有序或无序皆可。</p>
+<p>One-hot编码对基于树的模型而言不是很好，可能会生成一棵很深的、不平衡的树才能达到较好的准确率。</p>
+<h6 id="连续数字"><a href="#连续数字" class="headerlink" title="连续数字"></a>连续数字</h6><p>检查偏度，不符合正态分布的，尽量转为正态分布(为了使残差满足正态分布?)<br>转换手段包括但不限于：</p>
+<ul>
+<li>取Log：适合正偏(右侧长尾)</li>
+<li>box-cox变换等: 要求输入为正数，不适用值较少的数字类别</li>
+</ul>
+<h3 id="3-特征生成"><a href="#3-特征生成" class="headerlink" title="3.特征生成"></a>3.特征生成</h3><p>通过特征之间的组合，得到新的特征：</p>
+<ul>
+<li>线性组合：$x_i + x_j + x_k$</li>
+<li>特征相乘：$x_i * x_j$</li>
+<li>特征乘方：$x_i^2$</li>
+</ul>
+<h4 id="Scaling-and-Normalization"><a href="#Scaling-and-Normalization" class="headerlink" title="Scaling and Normalization"></a>Scaling and Normalization</h4><p>Feature Scaling: Make sure features are on a similar scale.</p>
+<p>$$ x_i := \frac{x_i}{s_i} $$</p>
+<p>Mean Normalization: Replace $x_i$ with $x_i-\mu_i$ to make features have approximately zero means</p>
+<p>$$ x_i := \frac{x_i-\mu_i}{s_i} $$</p>
+<ul>
+<li>$\mu_i$ Average of all the values for feature(i)</li>
+<li>$s_i$ Range of values(max-min), or Standard Deviation</li>
+</ul>
+<p><strong>对结果的影响</strong></p>
+<ul>
+<li>Scaling是对X的列向量进行缩放，向量方向不变，X列向量张成的平面不变，y的投影不变，e不变，$\theta$改变</li>
+<li>Normalization改变了列向量方向，改变了平面、投影、误差？</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/Calculus-Integration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/11/Calculus-Integration/" itemprop="url">积分</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T12:31:44+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  489
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="The-Definite-Integral-as-a-Limit-of-Riemann-Sums"><a href="#The-Definite-Integral-as-a-Limit-of-Riemann-Sums" class="headerlink" title="The Definite Integral as a Limit of Riemann Sums"></a>The Definite Integral as a Limit of Riemann Sums</h4><p>$$ \lim_{n\rightarrow ∞} \sum_{k=1}^{n}f(c_{k})\Delta x = I = \int_{a}^{b} f(x)dx $$</p>
+<h4 id="Area-Under-a-Curve-as-a-Definite-Integral"><a href="#Area-Under-a-Curve-as-a-Definite-Integral" class="headerlink" title="Area Under a Curve as a Definite Integral"></a>Area Under a Curve as a Definite Integral</h4><p>If $y=f(x)$ is nonnegative and integrable over a closed interval $[a,b]$, then the <strong>area under the curve $y = f(x)$ over $[a,b]$</strong> is the integral of $f$ from $a$ to $b$</p>
+<p>$$ A = \int_{a}^{b} f(x)dx $$</p>
+<p>if $f$ and $g$ are continuous with $f(x)\geq g(x)$ throughout $[a,b]$, then the area of the region between the curves $y=f(x)$ and $y=g(x)$ from a to b is the integral of (f-g) from $a$ to $b$:</p>
+<p>$$ A = \int_{a}^{b} [f(x) - g(x)]dx $$</p>
+<h4 id="The-Average-of-Mean-Value-of-a-Function"><a href="#The-Average-of-Mean-Value-of-a-Function" class="headerlink" title="The Average of Mean Value of a Function"></a>The Average of Mean Value of a Function</h4><p>If $f$ is integrable on $[a,b]$, the its average value on $[a,b]$, also called its mean value, is</p>
+<p>$$ av(f) = \frac{1}{b-a}\int_{a}^{b} f(x)dx $$</p>
+<h4 id="Little-oh-and-Big-oh"><a href="#Little-oh-and-Big-oh" class="headerlink" title="Little-oh and Big-oh"></a>Little-oh and Big-oh</h4><p>A function $f$ is of small order than $g$ as $x\rightarrow ∞$ if $\lim_{x\rightarrow ∞} \frac{f(x)}{g(x)} = 0$.</p>
+<p>We indicate this by writing $f=o(g)$ (“f is little-oh of g”)</p>
+<p>$f$ is of at most the order of $g$ as $x\rightarrow ∞$ if there is a positive integer $M$ for which</p>
+<p>$$ \frac{f(x)}{g(x)} \leq M $$</p>
+<p>for $x$ sufficiently large. We indicate this by writing $f=O(g)$ (“f is big-oh of g”)</p>
+<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Existence-of-Definite-Integrals"><a href="#The-Existence-of-Definite-Integrals" class="headerlink" title="The Existence of Definite Integrals"></a>The Existence of Definite Integrals</h4><p>A continuous function is integrable. That is, if a function $f$ is continuous on an interval $[a,b]$, then its definite integral over $[a,b]$ exists.</p>
+<p>连续则可积，不要求可导。</p>
+<h4 id="The-Mean-Value-Theorem-for-Definite-Integrals"><a href="#The-Mean-Value-Theorem-for-Definite-Integrals" class="headerlink" title="The Mean Value Theorem for Definite Integrals"></a>The Mean Value Theorem for Definite Integrals</h4><p>If $f$ is continuous on $[a,b]$, then at some point $c$ in $[a,b]$,</p>
+<p>$$ f(c) = \frac{1}{b-a} \int_{a}^{b} f(x)dx $$</p>
+<h4 id="The-Fundamental-Theorem-of-Calculus"><a href="#The-Fundamental-Theorem-of-Calculus" class="headerlink" title="The Fundamental Theorem of Calculus"></a>The Fundamental Theorem of Calculus</h4><p>If $f$ is continuous on $[a,b]$ then $F(x) = \int_{a}^{x} f(t)dt$ is continuous on $[a,b]$ and differentiable on $(a,b)$ and its derivative is $f(x)$</p>
+<p>$$ F’(x) = \frac{d}{dx} \int_{a}^{x} f(t)dt = f(x) $$</p>
+<p>If $f$ is continuous at every point of $[a,b]$ and $F$ is any antiderivative of $f$ on [a,b], then</p>
+<p>$$ \int_{a}^{b} f(x)dx = F(b) - F(a) $$</p>
+<h4 id="The-Substitution-Rule"><a href="#The-Substitution-Rule" class="headerlink" title="The Substitution Rule"></a>The Substitution Rule</h4><p>If $u=g(x)$ is a differentiable function whose range is an interval $I$ and $f$ is continuous on $I$, then</p>
+<p>$$ \int f(g(x))g’(x)dx = \int f(u)du $$</p>
+<p>If $g’$ is continuous on the interval $[a,b]$ and $f$ is continuous on the range of $g$, then </p>
+<p>$$ \int_{a}^{b} f(g(x)) \cdot g’(x)dx = \int_{g(a)}^{g(b)} f(u)du $$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/ML-GDA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/11/ML-GDA/" itemprop="url">梯度下降法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T09:38:33+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  612
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h4><p>多元函数$f(x,y)$分别对$x,y$求偏导数，得到的向量$(\frac{\partial f}{\partial x},\frac{\partial f}{\partial y})^T$，称作梯度$grad f(x,y)$或者$\triangledown f(x,y)$。<br>梯度向量方向是函数增加最快的方向，更容易找到极大值；负梯度向量方向是函数减少最快的方向，更容易找到极小值。</p>
+<h4 id="梯度下降法-Gradient-Descent-Algorithm"><a href="#梯度下降法-Gradient-Descent-Algorithm" class="headerlink" title="梯度下降法(Gradient Descent Algorithm)"></a>梯度下降法(Gradient Descent Algorithm)</h4><p><img src="/img/GDA.png" alter="GDA"></p>
+<p>repeat until convergence {</p>
+<p>$$ \theta_{j} := \theta_{j} - \alpha \frac{\partial}{\partial\theta_{j}}J(\theta_{0}, \theta_{1}) $$</p>
+<p>(for j = 0 and j = 1)}(Batch Gradient Descent)</p>
+<p><strong>说明</strong></p>
+<ul>
+<li>$\alpha$ 学习速率(Leaning Rate)，迭代的步长，太小收敛慢，太大可能导致在最优解附近来回波动</li>
+<li>收敛到的局部最优解不一定是全局最优解，但对于最小二乘法的弓型损失函数来说唯一的局部最优解就是全局最优解</li>
+</ul>
+<h6 id="种类"><a href="#种类" class="headerlink" title="种类"></a>种类</h6><ul>
+<li>Batch Gradient Descent: 每次迭代使用全部m个样本，最优梯度方向，计算开销大，可以使用mapreduce</li>
+<li>Stochastic Gradient Descent: 每次迭代使用1个样本，随机梯度方向，适合大样本，需要将输入数据shuffle</li>
+<li>Mini-batch Gradient Descent: 每次迭代使用b个(2~100)样本</li>
+<li>Online Learning: 每次迭代使用1个样本，学习后丢弃样本，适合数据流，模型会跟随输入数据的趋势改变</li>
+</ul>
+<p><img src="/img/sgd.png"><br><img src="/img/minibatch.png"><br><strong>判断收敛</strong></p>
+<ul>
+<li>Batch: 观察$J_{train}(\theta)$, 每次跌代后是否变小</li>
+<li>Stochastic: 观察$Cost=\frac{1}{2}(h_{\theta}(x^{(i)})-y^{(i)})^2$均值，每k次迭代后是否变小</li>
+</ul>
+<h6 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h6><ol>
+<li><p>Batch Gradient Descent</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#(Batch) Gradient Descent:</span></span><br><span class="line">X = data_input</span><br><span class="line">Y = labels</span><br><span class="line">parameters = initialize_parameters(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="comment"># Forward propagation</span></span><br><span class="line">    a, caches = forward_propagation(X, parameters)</span><br><span class="line">    <span class="comment"># Compute cost.</span></span><br><span class="line">    cost = compute_cost(a, Y)</span><br><span class="line">    <span class="comment"># Backward propagation.</span></span><br><span class="line">    grads = backward_propagation(a, caches, parameters)</span><br><span class="line">    <span class="comment"># Update parameters.</span></span><br><span class="line">    parameters = update_parameters(parameters, grads)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Stochastic Gradient Descent</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Stochastic Gradient Descent:</span></span><br><span class="line">X = data_input</span><br><span class="line">Y = labels</span><br><span class="line">parameters = initialize_parameters(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, m):</span><br><span class="line">        <span class="comment"># Forward propagation</span></span><br><span class="line">        a, caches = forward_propagation(X[:,j], parameters)</span><br><span class="line">        <span class="comment"># Compute cost</span></span><br><span class="line">        cost = compute_cost(a, Y[:,j])</span><br><span class="line">        <span class="comment"># Backward propagation</span></span><br><span class="line">        grads = backward_propagation(a, caches, parameters)</span><br><span class="line">        <span class="comment"># Update parameters.</span></span><br><span class="line">        parameters = update_parameters(parameters, grads)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Mini-batch Gradient Descent<br><img src="/img/minibatch_shuffle.png"><br><img src="/img/minibatch_partition.png"></p>
+</li>
+</ol>
+<p>算法分为两步，首先Shuffle，然后Partition。<br>分块大小常采用2的幂指数，比如64，128，256，512</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Step 1: Shuffle (X, Y)</span></span><br><span class="line">permutation = list(np.random.permutation(m))</span><br><span class="line">shuffled_X = X[:, permutation]</span><br><span class="line">shuffled_Y = Y[:, permutation].reshape((<span class="number">1</span>,m))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 2: Partition (shuffled_X, shuffled_Y). Minus the end case.</span></span><br><span class="line">num_complete_minibatches = math.floor(m/mini_batch_size) <span class="comment"># number of mini batches </span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, num_complete_minibatches):</span><br><span class="line">    mini_batch_X = shuffled_X[:, k*mini_batch_size : (k+<span class="number">1</span>)*mini_batch_size]</span><br><span class="line">    mini_batch_Y = shuffled_Y[:, k*mini_batch_size : (k+<span class="number">1</span>)*mini_batch_size]</span><br><span class="line">    mini_batch = (mini_batch_X, mini_batch_Y)</span><br><span class="line">    mini_batches.append(mini_batch)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Handling the end case (last mini-batch &lt; mini_batch_size)</span></span><br><span class="line"><span class="keyword">if</span> m % mini_batch_size != <span class="number">0</span>:</span><br><span class="line">    mini_batch_X = shuffled_X[:, (mini_batch_size * num_complete_minibatches) : m]</span><br><span class="line">    mini_batch_Y = shuffled_Y[:, (mini_batch_size * num_complete_minibatches) : m]</span><br><span class="line">    mini_batch = (mini_batch_X, mini_batch_Y)</span><br><span class="line">    mini_batches.append(mini_batch)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/06/Calculus-NewtonMethod/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/06/Calculus-NewtonMethod/" itemprop="url">牛顿法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T11:25:22+08:00">
+                2018-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  83
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Procedure-for-Newton’s-Method"><a href="#Procedure-for-Newton’s-Method" class="headerlink" title="Procedure for Newton’s Method"></a>Procedure for Newton’s Method</h4><ol>
+<li><p>Guess a first approximation to a solution of the equation $f(x)=0$.</p>
+</li>
+<li><p>Use the first approximation to get a second, the second to get a third, and so on, using the formula</p>
+</li>
+</ol>
+<p>$$ x_{n+1} = x_{n} - \frac{f(x_{n})}{f’{x_{n}}} $$</p>
+<p>if $f’(x_{n}) \neq 0$</p>
+<p><img src="/img/newton.png" alt="Newton"></p>
+<ul>
+<li>Newton’s method does not always converge</li>
+<li>When Newton’s method converges to a root, it may not be the root you have in mind</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/06/ML-Tensorflow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/06/ML-Tensorflow/" itemprop="url">Tensorflow</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T09:58:28+08:00">
+                2018-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  284
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.使用Tensorflow输出一句话：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化常亮字符串</span></span><br><span class="line">greeting = tf.constant(<span class="string">'Hello!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动会话并执行</span></span><br><span class="line">session = tf.Session()</span><br><span class="line">result = sess.run(greeting)</span><br><span class="line"><span class="keyword">print</span> result</span><br><span class="line">sess.close()</span><br></pre></td></tr></table></figure>
+<p>2.线性函数计算：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">matrix1 = tf.constant([[<span class="number">3.</span>, <span class="number">3.</span>]])</span><br><span class="line">matrix2 = tf.constant([[<span class="number">2.</span>],[<span class="number">2.</span>]])</span><br><span class="line"></span><br><span class="line">product = tf.matmul(maxtrx1, matrix2)</span><br><span class="line">linear = tf.add(product, tf.constant(<span class="number">2.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">	result = sess.run(linear)</span><br><span class="line">	<span class="keyword">print</span> result</span><br></pre></td></tr></table></figure>
+<p>3.自定义线性分类器</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义变量并设定初始值</span></span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">1</span>]))</span><br><span class="line">W = tf.Variable(tf.random_uniform([<span class="number">1</span>,<span class="number">2</span>],<span class="number">-1.0</span>,<span class="number">1.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义目标函数、损失函数</span></span><br><span class="line">y = tf.matmul(W, X_train) + b</span><br><span class="line">loss = tf.reduce_mean(tf.square(y - y_train))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用梯度下降法估计参数，设定步长为0.01</span></span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(<span class="number">0.01</span>)</span><br><span class="line">train = optimizer.minimize(loss)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化所有变量</span></span><br><span class="line">init = tf.initialize_all_variables()</span><br><span class="line">sess = tf.Session()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 迭代训练参数</span></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> srange(<span class="number">0</span>,<span class="number">1000</span>):</span><br><span class="line">	sess.run(train)</span><br><span class="line">	<span class="keyword">if</span> step %<span class="number">200</span> == <span class="number">0</span>:</span><br><span class="line">		<span class="keyword">print</span> step, sess.run(W), sess.run(b)</span><br></pre></td></tr></table></figure>
+<p>4.skflow工具包是对Tensorflow进一步的封装，以求与Scikit-learn使用类似的接口。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> skflow</span><br><span class="line"></span><br><span class="line">tf_lr = skflow.TensorFlowLinearRegressor(steps=<span class="number">10000</span>, learning_rate=<span class="number">0.01</span>, batch_size=<span class="number">50</span>)</span><br><span class="line">tf_lr.fit(X_train, y_train)</span><br><span class="line">tf_lr_y_predict = tf_lr.predict(X_test)</span><br><span class="line"></span><br><span class="line">tf_dnn_regressor - skflow.TensorFlowDNNRegressor(hidden_units=[<span class="number">100</span>,<span class="number">40</span>], steps=<span class="number">10000</span>, learning_rate=<span class="number">0.01</span>, batch_size=<span class="number">50</span>)</span><br><span class="line">tf_dnn_regressor.fit(X_train, y_train)</span><br><span class="line">tf_dnn_regressor_y_predict = tf_dnn_regressor.predict(X_test)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/03/ML-XGBoost/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2393,932 +3394,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/03/31/C#-BitOperation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/31/C#-BitOperation/" itemprop="url">C#-BitOperation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-31T18:04:49+08:00">
-                2017-03-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  203
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="异或"><a href="#异或" class="headerlink" title="异或"></a>异或</h4><p>异或：两者相同为0，两者不同为1；命题为 “两者的值不同”，“有且仅有一个为真”。<br>用途：<br>(1)快速比较两个值： a ^ b == 0<br>(2)翻转特定位置：与00100按位异或将使原数字的第3位翻转<br>(3)判断一个二进制数中1的数量是奇数还是偶数<br>(4)不使用其他空间，交换两个值</p>
-<h4 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h4><figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 移位运算            </span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">7</span>;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">        Console.WriteLine(i &gt;&gt; j);   <span class="comment">//输出结果为1</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 异或运算</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">int</span> x = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">int</span> y = <span class="number">3</span>;</span><br><span class="line">        y ^= x;   <span class="comment">//等价与y=y^x</span></span><br><span class="line">        Console.WriteLine(y);        <span class="comment"><span class="doctag">///</span>/输出结果为6</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 或运算            </span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">7</span>;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">        Console.WriteLine(i | j);   <span class="comment">//输出结果为7</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 与运算            </span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">7</span>;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">        Console.WriteLine(i &amp; j);   <span class="comment">//输出结果为2</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/03/03/LeetCode-Problem025/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/03/LeetCode-Problem025/" itemprop="url">LeetCode-Problem025</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-03T12:23:09+08:00">
-                2017-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  226
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Reverse-Nodes-in-k-Group"><a href="#Reverse-Nodes-in-k-Group" class="headerlink" title="Reverse Nodes in k-Group"></a>Reverse Nodes in k-Group</h2><h4 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h4><p>Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.</p>
-<p>k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes in the end should remain as it is.</p>
-<p>You may not alter the values in the nodes, only nodes itself may be changed.</p>
-<p>Only constant memory is allowed.</p>
-<p>For example,<br>Given this linked list: 1-&gt;2-&gt;3-&gt;4-&gt;5</p>
-<p>For k = 2, you should return: 2-&gt;1-&gt;4-&gt;3-&gt;5</p>
-<p>For k = 3, you should return: 3-&gt;2-&gt;1-&gt;4-&gt;5</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/03/03/LeetCode-Problem025/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/01/03/LeetCode-Problem447/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/03/LeetCode-Problem447/" itemprop="url">LeetCode-Problem447</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-03T13:27:31+08:00">
-                2017-01-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  242
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h4><p>Given n points in the plane that are all pairwise distinct, a “boomerang” is a tuple of points (i, j, k) such that the distance between i and j equals the distance between i and k (the order of the tuple matters).</p>
-<p>Find the number of boomerangs. You may assume that n will be at most 500 and coordinates of points are all in the range [-10000, 10000] (inclusive).</p>
-<p>Example:<br>Input:<br>[[0,0],[1,0],[2,0]]</p>
-<p>Output:<br>2</p>
-<p>Explanation:<br>The two boomerangs are [[1,0],[0,0],[2,0]] and [[1,0],[2,0],[0,0]]</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/01/03/LeetCode-Problem447/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/21/DP-Prototype/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/21/DP-Prototype/" itemprop="url">DesignPattern-Prototype</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-21T10:44:59+08:00">
-                2016-12-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  758
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>原型模式<br>使用特定实例来创建特定种类的对象，并且通过拷贝原型来创建新的对象。</p>
-<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><ul>
-<li><strong>主要解决</strong></li>
-</ul>
-<p>在运行期建立和删除原型。</p>
-<ul>
-<li><strong>何时使用</strong></li>
-</ul>
-<p>1、当一个系统应该独立于它的产品创建，构成和表示时。<br>2、当要实例化的类是在运行时刻指定时，例如，通过动态装载。<br>3、为了避免创建一个与产品类层次平行的工厂类层次时。<br>4、当一个类的实例只能有几个不同状态组合中的一种时。建立相应数目的原型并克隆它们可能比每次用合适的状态手工实例化该类更方便一些。</p>
-<ul>
-<li><strong>如何解决</strong></li>
-</ul>
-<p>利用已有的一个原型对象，快速地生成和原型对象一样的实例。</p>
-<ul>
-<li><strong>关键代码</strong> </li>
-</ul>
-<p>1、实现克隆操作，在 JAVA 继承 Cloneable，重写 clone()，在 .NET 中可以使用 Object 类的 MemberwiseClone() 方法来实现对象的浅拷贝或通过序列化的方式来实现深拷贝。<br> 2、原型模式同样用于隔离类对象的使用者和具体类型（易变类）之间的耦合关系，它同样要求这些”易变类”拥有稳定的接口。</p>
-<ul>
-<li><strong>应用实例</strong> </li>
-</ul>
-<p>1、细胞分裂。<br>2、JAVA 中的 Object clone() 方法。</p>
-<ul>
-<li><strong>优点</strong> </li>
-</ul>
-<p>1、性能提高。<br>2、逃避构造函数的约束。</p>
-<ul>
-<li><strong>缺点</strong> </li>
-</ul>
-<p>1、配备克隆方法需要对类的功能进行通盘考虑，这对于全新的类不是很难，但对于已有的类不一定很容易，特别当一个类引用不支持串行化的间接对象，或者引用含有循环结构的时候。<br>2、必须实现 Cloneable 接口。<br>3、逃避构造函数的约束。</p>
-<ul>
-<li><strong>使用场景</strong> </li>
-</ul>
-<p>1、资源优化场景。<br>2、类初始化需要消化非常多的资源，这个资源包括数据、硬件资源等。<br>3、性能和安全要求的场景。<br>4、通过 new 产生一个对象需要非常繁琐的数据准备或访问权限，则可以使用原型模式。<br>5、一个对象多个修改者的场景。<br>6、一个对象需要提供给其他对象访问，而且各个调用者可能都需要修改其值时，可以考虑使用原型模式拷贝多个对象供调用者使用。<br>7、在实际项目中，原型模式很少单独出现，一般是和工厂方法模式一起出现，通过 clone 的方法创建一个对象，然后由工厂方法提供给调用者。原型模式已经与 Java 融为浑然一体，大家可以随手拿来使用。</p>
-<ul>
-<li><strong>注意事项</strong></li>
-</ul>
-<p>与通过对一个类进行实例化来构造新对象不同的是，原型模式是通过拷贝一个现有对象生成新对象的。浅拷贝实现 Cloneable，重写，深拷贝是通过实现 Serializable 读取二进制流。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/20/DP-TypeObject/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/20/DP-TypeObject/" itemprop="url">DesignPattern-TypeObject</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-20T21:46:10+08:00">
-                2016-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  102
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><strong>意图</strong></li>
-</ul>
-<p>游戏中有许多怪物和怪物类型，同一类型的怪物具有相同的攻击力和生命值。<br>1.使用派生类，每种类型都派生为一个类；<br>2.使用类型类breed，每个怪物拥有breed的一个实例。</p>
-<ul>
-<li><strong>使用情境</strong></li>
-</ul>
-<p>当需要定义一些不同“种类”的东西，又不想把种类硬编码进类型系统。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/20/DP-GameEngineOptimization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/20/DP-GameEngineOptimization/" itemprop="url">DesignPattern-GameEngineOptimization</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-20T21:13:09+08:00">
-                2016-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  405
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="数据局部性"><a href="#数据局部性" class="headerlink" title="数据局部性"></a>数据局部性</h4><ul>
-<li><strong>意图</strong></li>
-</ul>
-<p>通过合理组织数据利用CPU的缓存机制来加快内存访问速度。<br>保持数据处于连续的内存中，增加CPU缓存的命中几率，从而提高处理速度。</p>
-<ul>
-<li><strong>实现</strong></li>
-</ul>
-<p>1.将组件模式的组件放在数组中，比如PhysicsComponent[MAX_ENTITIES]<br>2.将活动的组件放在数组前端<br>3.将冷热数据分解。热数据是每帧都会用到的数据，冷数据是不会频繁使用的数据，比如怪物被消灭后的掉落信息。</p>
-<hr>
-<h4 id="脏标记模式"><a href="#脏标记模式" class="headerlink" title="脏标记模式"></a>脏标记模式</h4><ul>
-<li><strong>意图</strong></li>
-</ul>
-<p>一组原始数据随世界变化，一组衍生数据经过一些代价昂贵的操作由原始数据确定，比如子对象的位置和朝向。<br>当原始数据改变时，给衍生数据设置脏标记；当需要衍生数据时，如果有脏标记则重新计算，否则使用缓存数据。<br>这样对场景中大量的静态物体，不用每次都重新计算位置和朝向等。</p>
-<hr>
-<h4 id="对象池"><a href="#对象池" class="headerlink" title="对象池"></a>对象池</h4><ul>
-<li><strong>意图</strong></li>
-</ul>
-<p>使用固定的对象池重用对象，取代单独地分配和释放对象。</p>
-<ul>
-<li><strong>使用情境</strong><br>1.对象需要频繁的创建和销毁；<br>2.对象的大小一致；<br>3.对象内存分配较慢，或者会产生内存碎片；<br>4.每个对象封装着获取代价昂贵而且可重用的资源，比如数据库、网络的连接等</li>
-</ul>
-<hr>
-<h4 id="空间分区"><a href="#空间分区" class="headerlink" title="空间分区"></a>空间分区</h4><ul>
-<li><strong>意图</strong></li>
-</ul>
-<p>将对象存储在根据位置组织的数据结构中，以高效地定位它们</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3368,7 +3448,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">295</span>
+                  <span class="site-state-item-count">301</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3381,7 +3461,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3470,7 +3550,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">107.2k</span>
+    <span title="Site words total count">111.1k</span>
   
 </div>
 

@@ -262,6 +262,952 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/21/RL-ImportanceSampling/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/21/RL-ImportanceSampling/" itemprop="url">重要性采样</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-21T15:52:59+08:00">
+                2018-11-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  545
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="数学期望"><a href="#数学期望" class="headerlink" title="数学期望"></a>数学期望</h4><h6 id="离散型"><a href="#离散型" class="headerlink" title="离散型"></a>离散型</h6><p>$$ E(x) = \sum_{k=1}^{\infty} x_k p_k $$</p>
+<h6 id="连续型"><a href="#连续型" class="headerlink" title="连续型"></a>连续型</h6><p>$$ E(x) = \int_{-\infty}^{\infty} xf(x) dx $$</p>
+<h4 id="蒙特卡洛积分"><a href="#蒙特卡洛积分" class="headerlink" title="蒙特卡洛积分"></a>蒙特卡洛积分</h4><p>假设有某个函数f(x)，无法直接求出积分<br>$$ \int_{a}^{b} f(x) dx $$</p>
+<p>这个函数在[a,b]上的积分，实际上是函数曲线和x轴围成的区域的面积，记做A。<br>那么在y轴上，必然存在一个位置h，使得h、a、b围成的长方形的面积也等于A。而这个h，就是函数f(x)在作用域[a,b]上的平均值。<br>所以问题转化为如何在[a,b]上求出f(x)的平均值。<br><img src="\img\mc1.jpeg"></p>
+<p>蒙特卡洛方法是，在[a,b]内取大量的随机值$x_i$，计算$f(x_i)$，然后将所有的$f(x_i)$取平均值，作为h的估计值。<br>在实际应用中，只能取到有限的值，因而误差是不可避免的。因而如何使用更少的样本数量，得到误差更小的h值，也是改进的方向之一。<br>用一个公式来概括蒙特卡洛积分：<br>$$ \int_{a}^{b} f(x)dx \approx \frac{b-a}{N} \sum_{i=1}^{N} f(x_i)$$</p>
+<h4 id="重要性采样"><a href="#重要性采样" class="headerlink" title="重要性采样"></a>重要性采样</h4><p>蒙特卡洛积分是在[a,b]上均匀采样，但对于非均匀分布的函数f(x)来说，函数值大的地方对平均值的影响更大，因而我们希望能在函数值大的地方多采集一些数据。<br>例如下图f(x)是高斯分布，两边的值对积分的贡献少，黄色的采样点就可以少一些。<br><img src="/img/mc2.jpeg"></p>
+<p>因而引入概率密度函数$p(x_i)$，作为采样点对最终积分的重要度权重。<br>p(x)有一个重要的特性：<br>$$ \int_{-\infty}^{\infty} p(x)dx = 1 $$<br>于是我们得到新的积分函数：<br>$$ \int_a^b f(x)dx \approx \frac{1}{N} \sum_{i=0}{N} \frac{f(x_i)}{p(x_i)}$$</p>
+<p><img src="/img/ImportanceSampling.png"></p>
+<p>原分布密度P(s)，采样器密度Q(x)，权重<br>$$ w_r = \frac{P^{*}(x^{(r)})}{Q^{*}(x^{(r)})} $$</p>
+<p>Q(x)中x的值低于P(x)的地方，权重将大于1，得到更多的表示；<br>Q(x)中x的值高于P(x)的地方，权重将小于1，降低表示强度。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/17/RL-TDLambda/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/17/RL-TDLambda/" itemprop="url">TD($\lambda$)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-17T09:26:28+08:00">
+                2018-11-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  375
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward.</p>
+<h4 id="n-step-TD"><a href="#n-step-TD" class="headerlink" title="n-step TD"></a>n-step TD</h4><p>TD方法除了之前介绍的1-step TD之外，还有一系列其他方法：<br><img src="/img/nstepTD.png"></p>
+<p>Return Gt的原定义：<br>$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T $$</p>
+<p>n-step 的定义：<br>$$ G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^n V_{t+n-1}(S_{t+n}) $$</p>
+<p>迭代公式变为：<br>$$ V_{t+n}(S_t) = V_{t+n-1}(S_t) + \alpha[G_{t:t+n} - V_{t+n-1}(S_t)] $$</p>
+<h4 id="lambda-return"><a href="#lambda-return" class="headerlink" title="$\lambda$ return"></a>$\lambda$ return</h4><p>$\lambda$-return $G_t^{\lambda}$ 将所有n-step returns $G_t^{(n)}$加权，使用权重$(1-\lambda)\lambda^{n-1}$<br>信号强度以速率$\lambda$减弱，因子(1-$\lambda$)是为了使等比数列权重的和为1.<br>$$ G_t^{\lambda} = (1-\lambda)\sum_{n-1}^{\infty} \lambda^{n-1} G_t^{(n)} $$</p>
+<p>迭代公式变为：<br>$$ V(S_t) \leftarrow V(S_t) + \alpha(G_t^{\lambda} - V(S_t)) $$</p>
+<h6 id="前向视角"><a href="#前向视角" class="headerlink" title="前向视角"></a>前向视角</h6><p>前向视角假设一个人坐在当前状态流上，通过观看将来状态的值函数来估计当前的值函数。<br>由于用到了将来时刻的值函数，因而要等到episode结束，跟MC方法相似。</p>
+<h6 id="后向视角"><a href="#后向视角" class="headerlink" title="后向视角"></a>后向视角</h6><p>后向视角假设一个人坐在当前状态流上，对已经经历过的状态喊话，报告当前状态的回报和TD偏差。<br>不需要等待episode结束，每一步都在更新值函数，是增量式方法。</p>
+<p>首先计算TD偏差：<br>$$ \delta_t = R_{t+1} + \gamma V(S_{t+1}) - V(S_t) $$</p>
+<p>未完待续</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/16/RL-Temporal-Difference/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/16/RL-Temporal-Difference/" itemprop="url">无模型的时序差分方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-16T15:02:58+08:00">
+                2018-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  683
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1-TD-Prediction"><a href="#1-TD-Prediction" class="headerlink" title="1.TD Prediction"></a>1.TD Prediction</h3><p>时序差分学习(Temporal-Diffrernce Learning)是MC和DP的结合，不要求完整的episode(无需终止状态)。<br>像MC一样Sample，像DP一样bootstrapping. Bootstrapping自举，是指当前状态的值函数计算用到了后继状态的值函数。<br>本文先讨论one-step TD,即TD(0).</p>
+<h4 id="1-1-算法"><a href="#1-1-算法" class="headerlink" title="1.1 算法"></a>1.1 算法</h4><p>输入要评估的策略$\pi$<br>随机初始化V(s)<br>Repeat(对每个episode):<br>&emsp; 初始化S<br>&emsp; Repeat(对episode的每一步):<br>&emsp;&emsp; A ← 策略$\pi$为状态S指定的动作<br>&emsp;&emsp; 执行动作A，观察R,S’<br>&emsp;&emsp; V(s) ← V(s) + $\alpha$[R+$\gamma$V(S’)-V(S)]<br>&emsp;&emsp; S ← S’<br>&emsp; 直到S为终止状态</p>
+<h4 id="1-2-比较"><a href="#1-2-比较" class="headerlink" title="1.2 比较"></a>1.2 比较</h4><p>MC：根据每次的$G_t$来更新$V(S_t)$<br>$$ V(S_t) \leftarrow V(S_t) + \alpha(G_t - V(S_t))$$</p>
+<p>TD(0): 用估计值$R_{t+1} + \gamma V(S_{t+1})$代替$G_t$<br>$$ V(S_t) \leftarrow V(S_t) + \alpha(R_{t+1} + \gamma V(S_{t+1}) - V(S_t)) $$</p>
+<p>TD和MC同样都是通过采样，多次实验来学习。<br>不同的是，TD利用了马尔科夫性质，总是收敛于最可能的马尔科夫解，因而在马尔科夫过程中表现更好。<br>MC没有利用马尔科夫性质，在非马尔科夫过程中表现更好。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:center">Bootstrapping</th>
+<th style="text-align:center">No Bootstrapping</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Sample</td>
+<td style="text-align:center">Temporal Difference</td>
+<td style="text-align:center">Monte Carlo</td>
+</tr>
+<tr>
+<td style="text-align:left">No Sample</td>
+<td style="text-align:center">Dynamic Programming</td>
+<td style="text-align:center">Exhausitive Search</td>
+</tr>
+</tbody>
+</table>
+<h4 id="1-3-误差分析"><a href="#1-3-误差分析" class="headerlink" title="1.3 误差分析"></a>1.3 误差分析</h4><h6 id="Bias"><a href="#Bias" class="headerlink" title="Bias"></a>Bias</h6><p>Return $G_t = R_{t+1}+\gamma R_{t+2}+\cdots +\gamma^{T-1}R_T$ 无偏，因为期望值就是值函数的定义<br>True TD target $R_{t+1} + \gamma v_{\pi}(S_{t+1})$ 无偏，因为$v_{\pi}(S_{t+1})$是真实值，可以推导得到<br>TD target $R_{t+1} + \gamma V(S_{t+1})$ 有偏，因为$V(S_{t+1})$也是估计值</p>
+<h6 id="Variance"><a href="#Variance" class="headerlink" title="Variance"></a>Variance</h6><p>Return $G_t$要等到最终状态出现，经过很多步，因而随机性大，方差很大。<br>TD target的方差比Return小得多，因为只有1步估计，引入的噪声少。</p>
+<p>所以MC高方差，无偏差；TD低方差，有偏差。</p>
+<h3 id="2-TD-Control"><a href="#2-TD-Control" class="headerlink" title="2.TD Control"></a>2.TD Control</h3><h4 id="2-1-On-Policy-Sarsa"><a href="#2-1-On-Policy-Sarsa" class="headerlink" title="2.1 On-Policy: Sarsa"></a>2.1 On-Policy: Sarsa</h4><p>遵循GPI框架，仍然分为两步：</p>
+<ul>
+<li>策略评估：使用动作值函数Q(s,a),因从(S,A)到(S’,A’)而得名</li>
+<li>策略改进：仍然是$\epsilon -greedy$</li>
+</ul>
+<h6 id="Q-s-a-评估算法"><a href="#Q-s-a-评估算法" class="headerlink" title="Q(s,a)评估算法"></a>Q(s,a)评估算法</h6><p>随机初始化Q(s,a)<br>Repeat(对每个episode):<br>&emsp; 初始化S<br>&emsp; 从当前策略($\epsilon -greedy$)中选择S对应的动作A<br>&emsp; Repeat(对episode的每一步):<br>&emsp;&emsp; 执行动作A，观察R,S’<br>&emsp;&emsp; 从当前策略中选择S’对应的动作A’<br>&emsp;&emsp; Q(S,A) ← Q(S,A) + $\alpha$[R+$\gamma$Q(S’,A’)-Q(S,A)]<br>&emsp;&emsp; S ← S’; A ← A’;<br>&emsp; 直到S为终止状态</p>
+<h4 id="2-2-Off-Policy-Q-learning"><a href="#2-2-Off-Policy-Q-learning" class="headerlink" title="2.2 Off-Policy: Q-learning"></a>2.2 Off-Policy: Q-learning</h4><p>行动策略采用$\epsilon$-greedy，而目标策略采用贪心策略，不需要Importance Sampling.<br>类比DP中的Value Iteration，在更新时无视原策略，直接选用最大值：<br>$$ Q(S_t,A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma\underset{a}{max}Q(S_{t+1},a) - Q(S_t, A_t)] $$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/16/RL-MonteCarlo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/16/RL-MonteCarlo/" itemprop="url">无模型的蒙特卡罗方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-16T14:10:59+08:00">
+                2018-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,009
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>有模型的策略迭代和值迭代方法都可以用广义策略迭代方法(Generalized Policy Iteration, GPI)来描述：首先对当前策略评估，然后利用值函数改进当前策略。<br>但在无模型的强化学习过程中，转移概率矩阵P未知，因而不能使用Bellman方程，必须使用其他方法来做策略评估。<br>可用的定义式：<br>$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid S_t=s] $$<br>$$ q_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid S_t=s, A_t=a] $$</p>
+<p>可用的关系式：<br>$$ v_{\pi}(s) = \sum_{a\in A} \pi(a\mid s) q_{\pi}(s,a) $$</p>
+<h3 id="1-Monte-Carlo-Prediction"><a href="#1-Monte-Carlo-Prediction" class="headerlink" title="1.Monte-Carlo Prediction"></a>1.Monte-Carlo Prediction</h3><p>蒙特卡罗方法直接从经验片段中学习，通过多次实验取平均值，作为回报的期望值，即$v_{\pi}(s)$.<br>只对片段化的MDP有效，即必须有终止状态。<br>计算平均值的方法有两种：</p>
+<ul>
+<li>First-Visit: 只统计每个episode中，首次访问该状态的回报</li>
+<li>Every-Visit: 每次访问该状态的回报。</li>
+</ul>
+<h6 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">计数 N(s)← N(s) + 1</span><br><span class="line">回报 S(s)← S(s) + Gt</span><br><span class="line">均值 V(s) = S(s) / N(s)</span><br></pre></td></tr></table></figure>
+<h3 id="2-Monte-Carlo-Control"><a href="#2-Monte-Carlo-Control" class="headerlink" title="2.Monte-Carlo Control"></a>2.Monte-Carlo Control</h3><p>根据策略的数量，可以分为两种：</p>
+<ul>
+<li>On-policy: 采样和改进的是同一种策略，又称同策略；因为要兼顾探索，故得到的是最优策略的近似解</li>
+<li>Off-policy: 采样和改进的是不同的策略，又称异策略</li>
+</ul>
+<h4 id="2-1-On-policy-Control"><a href="#2-1-On-policy-Control" class="headerlink" title="2.1 On-policy Control"></a>2.1 On-policy Control</h4><p>在策略改进中使用评估算法会有2个问题：</p>
+<ul>
+<li>仅有估计的$v_{\pi}(s)$不足以选出最优策略$q_*$：用实验直接估计q(s,a)</li>
+<li>不能保证动作空间A里的每个动作a都被取到：初始状态选用不同的(s,a)(Exploring Starts, 不够通用)；以一定概率选择其他的动作</li>
+</ul>
+<h6 id="2-1-1-Monte-Carlo-ES-Exploring-Starts"><a href="#2-1-1-Monte-Carlo-ES-Exploring-Starts" class="headerlink" title="2.1.1 Monte Carlo ES(Exploring Starts)"></a>2.1.1 Monte Carlo ES(Exploring Starts)</h6><p>(1)随机选取$S_0, A_0$作为初始状态，需保证S、A空间中的每一对都有可能被选到<br>(2)遵循策略$\pi$，产生一个经验片段episode<br>(3)对片段中的每一对(s,a):<br>&emsp;&emsp; G ← (s,a)第一次出现后的回报<br>&emsp;&emsp; Returns(s,a) ← Returns(s,a) + G<br>&emsp;$emsp; Q(s,a) ← Returns(s,a)取平均值<br>(4)对片段中的每个状态s:<br>&emsp;&emsp; $\pi(s) \leftarrow argmax_a\, Q(s,a)$</p>
+<p>例如原策略是(18,hit)(19,hit)(20,stick)，通过设定初始值，实验中会出现(18,stick)(19,stick)(20,hit)这些本来不会探索到的(s,a)策略。</p>
+<h6 id="2-1-2-epsilon-greedy-policy"><a href="#2-1-2-epsilon-greedy-policy" class="headerlink" title="2.1.2 $\epsilon-greedy policy$"></a>2.1.2 $\epsilon-greedy policy$</h6><p>在初始状态中穷尽(s,a)往往是困难的，因而ES方法的应用范围有限。<br>另一种方法是在策略改进时，以概率$\epsilon$随机选取一个动作，以概率$1-\epsilon$选择贪心动作。<br>如果动作空间共有m个动作，那么策略为：<br>(1)遵循策略$\pi$产生片段episode<br>(2)对片段中的每一对(s,a):<br>&emsp;&emsp; G ← (s,a)第一次出现后的回报<br>&emsp;&emsp; Returns(s,a) ← Returns(s,a) + G<br>&emsp;&emsp; Q(s,a) ← Returns(s,a)取平均值<br>(3)对片段中的每个状态s:<br>$$ \pi (a|s) =<br>\begin{cases}<br>&amp;\epsilon / m + 1 - \epsilon \;\;\; if\, a^* = argmax\,Q(s,a) \\<br>&amp;\epsilon / m  \;\;\; otherwise<br>\end{cases} $$ </p>
+<p>评估和改进的都是$\epsilon$-soft策略。<br>所谓soft策略是指，对任意状态s和动作a，有$\pi(a|s) &gt; 0$ </p>
+<h4 id="2-2-Off-Policy"><a href="#2-2-Off-Policy" class="headerlink" title="2.2 Off-Policy"></a>2.2 Off-Policy</h4><p>On-policy并没有得到最优策略$\pi_*$。因为要兼顾exploration，得到的实际上是近似最优策略。<br>Off-Policy使用两个策略，用于探索、产生数据的称作behavior policy，学习改进的目标称作target policy.</p>
+<h6 id="2-2-1-Importance-Sampling"><a href="#2-2-1-Importance-Sampling" class="headerlink" title="2.2.1 Importance Sampling"></a>2.2.1 Importance Sampling</h6><p>用一种简单分布(采样概率分布)来估计另一种复杂分布(原概率分布)的积分值。采样概率分布与原概率分布越接近，方差越小。<br><img src="/img/ImportanceSampling.png"></p>
+<p>目标策略$\pi$为要估计的原概率分布，行动策略b作为采样概率分布。<br>重要性权重为：<br>$$ \rho_t^T = \prod_{k=t}^{T-1} \frac{\pi(A_k | S_k)}{\mu(A_k | S_k)} $$</p>
+<p>对MC来说，重要性采样的方差太大。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/16/RL-DynamicProgramming/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/16/RL-DynamicProgramming/" itemprop="url">有模型的动态规划算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-16T09:32:21+08:00">
+                2018-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  476
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>MDP符合使用动态规划求解的条件，可以使用Bellman方程求解。</p>
+<h4 id="Policy-Evaluation"><a href="#Policy-Evaluation" class="headerlink" title="Policy Evaluation"></a>Policy Evaluation</h4><p>给定策略$\pi$，计算每个状态s的v.<br>由于模型已知，转移概率矩阵p已知，v(s)和v(s’)的关系已知，所以可以从后向前迭代。<br>当两轮迭代的结果相差不大时，迭代结束。</p>
+<table><tr><td bgcolor="#D1EEEE">Initialize an array V(s)=0, for all $s \in S^+$<br>Repeat<br>&emsp;&emsp; $ \Delta \leftarrow 0 $<br>&emsp;&emsp; for each $s \in S$:<br>&emsp;&emsp;&emsp;&emsp; v $\leftarrow$ V(s)<br>&emsp;&emsp;&emsp;&emsp; V(s) $\leftarrow \sum_a \pi (a\mid s) \sum_{s’,r} p(s’,r\mid s,a)[r+\gamma V(s’)]$<br>&emsp;&emsp;&emsp;&emsp; $\Delta \leftarrow max(\Delta, \left |v - V(s)\right|)$<br>until $\Delta &lt; \theta$<br>Output V $\approx v_{\pi}$<br></td></tr></table>
+
+<h4 id="Policy-Improvement"><a href="#Policy-Improvement" class="headerlink" title="Policy Improvement"></a>Policy Improvement</h4><p>在当前状态s采用新动作a，之后的状态继续沿用策略$\pi$，此时$\pi ‘(s)=a$.<br>如果$q_{\pi ‘}(s,a) \geq v_{\pi}(s)$则新策略更优。</p>
+<h4 id="Policy-Iteration"><a href="#Policy-Iteration" class="headerlink" title="Policy Iteration"></a>Policy Iteration</h4><p>两步循环。</p>
+<ol>
+<li>Policy Evatuation: 计算各状态s的v</li>
+<li>Policy Improvement: 寻找更好的策略</li>
+</ol>
+<table><tr><td bgcolor="#D1EEEE">1.Initialization<br>V(s) and $\pi$(s) arbitrarily for all $s \in S^+$<br><br>2.Policy Evaluation<br>Repeat<br>&emsp;&emsp; $ \Delta \leftarrow 0 $<br>&emsp;&emsp; for each $s \in S$:<br>&emsp;&emsp;&emsp;&emsp; v $\leftarrow$ V(s)<br>&emsp;&emsp;&emsp;&emsp; V(s) $\leftarrow \sum_a \pi (a\mid s) \sum_{s’,r} p(s’,r\mid s,a)[r+\gamma V(s’)]$<br>&emsp;&emsp;&emsp;&emsp; $\Delta \leftarrow max(\Delta, \left |v - V(s)\right|)$<br>until $\Delta &lt; \theta$<br><br>3.Policy Improvement<br>&emsp;&emsp; policy-stable $\leftarrow$ true<br>&emsp;&emsp; For each $s \in S$:<br>&emsp;&emsp;&emsp;&emsp; old-action $\leftarrow \pi(s)$<br>&emsp;&emsp;&emsp;&emsp; $\pi(s) \leftarrow argmax_a\sum_{s’,r}p(s’,r\mid s,a)[r+\gamma V(s’)]$<br>&emsp;&emsp;&emsp;&emsp; if old-action $neq \pi(s)$, then policy-stable $\leftarrow$ false<br>&emsp;&emsp; if policy-stable, then stop and return V $\approx v_<em>$ and $\pi \approx \pi_</em>$;<br>&emsp;&emsp; else go to 2<br></td></tr></table>
+
+<h4 id="Value-Iteration"><a href="#Value-Iteration" class="headerlink" title="Value Iteration"></a>Value Iteration</h4><p>将policy evaluation和improvement整合到一步动作中，节约了大量计算。<br>在更新V(s)时不是取加权和，而是取最大值。相当于挑选出最优动作，然后取最优动作的q值。</p>
+<table><tr><td bgcolor="#D1EEEE">Initialize array V arbitratily<br>Repeat<br>&emsp;&emsp; $\Delta \leftarrow 0 $<br>&emsp;&emsp; for each $s \in S$:<br>&emsp;&emsp;&emsp;&emsp; v $\leftarrow$ V(s)<br>&emsp;&emsp;&emsp;&emsp; V(s) $\leftarrow \max_a\sum_{s’,r} p(s’,r\mid s,a)[r+\gamma V(s’)]$<br>&emsp;&emsp;&emsp;&emsp; $\Delta \leftarrow max(\Delta, \left |v - V(s)\right|)$<br><br>Output a deterministic policy, $\pi \approx \pi_*$, such that<br>$\pi(s) = argmax_a \sum_{s’,r} p(s’,r\mid s,a)[r+\gamma V(s’)]$<br></td></tr></table>
+
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/13/RL-Markov/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/13/RL-Markov/" itemprop="url">强化学习的马尔科夫描述</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T15:47:47+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  819
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h4><ol>
+<li><p>马尔科夫性质<br>系统的下一个状态$s_{t+1}$仅与$s_t$有关，而与之前的状态都无关，称作马尔科夫性质。<br>$$ P[s_{t+1}\mid s_t] = P[s_{t+1}\mid s_1,\cdots,s_t]$$</p>
+</li>
+<li><p>马尔科夫过程<br>马尔科夫过程是一个二元组(S,P)，其中S是有限状态集合，P是状态转移概率。<br>转移到$s_{t+1}$的概率P仅与当前状态$s_t$有关，即满足马尔科夫性质。<br>从某个状态出发，可能有多个马尔科夫链。</p>
+</li>
+<li><p>马尔科夫决策过程<br>引入动作和奖励。<br>马尔科夫决策过程由元组(S,A,P,R,$\gamma$)描述。其中A是有限的动作集，R是回报函数，$\gamma$是折扣因子。</p>
+</li>
+</ol>
+<h4 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a>函数定义</h4><h6 id="1-策略-pi"><a href="#1-策略-pi" class="headerlink" title="1.策略$\pi$"></a>1.策略$\pi$</h6><p>从状态到动作的映射，即给定状态s时，指定动作概率，也就是动作集A的一个分布。<br>$$ \pi(a\mid s) = p[A_t = a\mid S_t = s] $$</p>
+<p>如果策略$\pi$是确定的，那么该策略在每个状态s指定唯一确定的动作a。</p>
+<h6 id="2-回报R"><a href="#2-回报R" class="headerlink" title="2.回报R"></a>2.回报R</h6><p>从每个状态s离开时，立即得到的回报r.<br>累积回报：从当前时刻起，将后续每个时刻的估计回报叠加。折扣因子$\gamma$可以避免死循环，同时由于对未来估计的不确定性，离当前时刻越远的估计回报越要打折。<br>$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1} $$</p>
+<p>如果策略不是确定的，那么未来某个状态s可能采取不同的动作a，得到的r就不同。因而$G_t$也不是确定的，而是一种分布。</p>
+<h6 id="3-状态值函数v"><a href="#3-状态值函数v" class="headerlink" title="3.状态值函数v"></a>3.状态值函数v</h6><p>$G_t$在状态s处的期望值。<br>$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1} \mid S_t=s] $$</p>
+<p>状态值函数与策略是对应的，不同策略的状态值函数不同。</p>
+<h6 id="4-状态-行为值函数q"><a href="#4-状态-行为值函数q" class="headerlink" title="4.状态-行为值函数q"></a>4.状态-行为值函数q</h6><p>每对(状态，动作)回报的期望值。<br>$$ q_{\pi}(s,a) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1} \mid S_t=s, A_t=a] $$</p>
+<h4 id="贝尔曼方程"><a href="#贝尔曼方程" class="headerlink" title="贝尔曼方程"></a>贝尔曼方程</h4><p>实际计算和编程时，不使用上述定义式，而是用推导形式的Bellman方程：<br>$$ v_{\pi}(s) = E[R_{t+1} + \gamma v_{\pi}(S_{t+1})\mid S_t=s] $$<br>$$ q_{\pi}(s,a) = E[R_{t+1} + \gamma q_{\pi}(S_{t+1}, A_{t+1})\mid S_t=s, A_t=a] $$</p>
+<p>推导过程：<br>$$ v_{\pi}(s) = \sum_{a\in A} \pi(a\mid s) q_{\pi}(s,a) $$<br>$$ q_{\pi}(s,a) = R_s^a + \gamma\sum_{s’\in S}P_{ss’}^a v_{\pi}(s’) $$<br>$$ v_{\pi}(s) = \sum_{a\in A} \pi(a\mid s) (R_s^a + \gamma\sum_{s’\in S}P_{ss’}^a v_{\pi}(s’)) $$<br>$$ q_{\pi}(s,a) = R_s^a + \gamma\sum_{s’\in S}P_{ss’}^a \sum_{a’\in A} \pi(a’\mid s’) q_{\pi}(s’,a’) $$</p>
+<h4 id="最优值"><a href="#最优值" class="headerlink" title="最优值"></a>最优值</h4><p>在所有策略中最大的值函数是最优状态值函数：<br>$$ v^*(s) = \underset{\pi}{max}\, v_{\pi}(s) $$</p>
+<p>在所有策略中最大的状态-行为值函数是最优状态-行为值函数：<br>$$ q^*(s,a) = \underset{\pi}{max}\, q_{\pi}(s,a) $$</p>
+<p>若已知最优状态-动作值函数，则最优策略可以通过最大化$q(s,a)$来决定。<br>所以计算过程的目的是找到$q^*(s,a)$，从而达到寻找最优策略的最终目标。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/09/19/Unity-MLAgents/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2514,1047 +3460,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/18/Python-pandas-SetOptions/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/18/Python-pandas-SetOptions/" itemprop="url">pandas.set_option</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-18T10:06:42+08:00">
-                2018-05-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  178
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>pandas.set_option(pat, value)<br>为pandas的设置选项指定新值，可用选项包括：</p>
-<ul>
-<li>compute.[use_bottleneck, use_numexpr]</li>
-<li>display.[chop_threshold, colheader_justify, column_space, date_dayfirst, date_yearfirst, encoding, expand_frame_repr, float_format]</li>
-<li>display.html.[border, table_schema, use_mathjax]</li>
-<li>display.[large_repr]</li>
-<li>display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow, repr]</li>
-<li>display.[max_categories, max_columns, max_colwidth, max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse, notebook_repr_html, pprint_nest_depth, precision, show_dimensions]</li>
-<li>display.unicode.[ambiguous_as_wide, east_asian_width]</li>
-<li>display.[width]</li>
-<li>html.[border]</li>
-<li>io.excel.xls.[writer]</li>
-<li>io.excel.xlsm.[writer]</li>
-<li>io.excel.xlsx.[writer]</li>
-<li>io.hdf.[default_format, dropna_table]</li>
-<li>io.parquet.[engine]</li>
-<li>mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]</li>
-<li>plotting.matplotlib.[register_converters]</li>
-</ul>
-<p>常用选项</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">名称</th>
-<th style="text-align:left">类型</th>
-<th style="text-align:left">含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">display.chop_threshold</td>
-<td style="text-align:left">None or float</td>
-<td style="text-align:left">小于阈值的float将显示为0</td>
-</tr>
-<tr>
-<td style="text-align:left">display.max_columns</td>
-<td style="text-align:left">int</td>
-<td style="text-align:left">最大列数，大于该值的将被显示为省略号</td>
-</tr>
-<tr>
-<td style="text-align:left">display.max_colwidth</td>
-<td style="text-align:left">int</td>
-<td style="text-align:left">列宽度</td>
-</tr>
-<tr>
-<td style="text-align:left">display.width</td>
-<td style="text-align:left">int</td>
-<td style="text-align:left">横向显示宽度</td>
-</tr>
-<tr>
-<td style="text-align:left">display.precisioin</td>
-<td style="text-align:left">int</td>
-<td style="text-align:left">小数点后位数</td>
-</tr>
-<tr>
-<td style="text-align:left">display.date_dayfirst</td>
-<td style="text-align:left">False</td>
-<td style="text-align:left">日期格式 19/05/2018</td>
-</tr>
-<tr>
-<td style="text-align:left">display.date_yearfist</td>
-<td style="text-align:left">False</td>
-<td style="text-align:left">日期格式 2018/05/19</td>
-</tr>
-<tr>
-<td style="text-align:left">display.encoding</td>
-<td style="text-align:left">UTF-8</td>
-<td style="text-align:left">字符集</td>
-</tr>
-</tbody>
-</table>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/18/Python-pandas-ReadCSV/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/18/Python-pandas-ReadCSV/" itemprop="url">pandas.read_csv</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-18T07:52:15+08:00">
-                2018-05-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  286
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pandas.read_csv(filepath_or_buffer, sep=<span class="string">', '</span>, delimiter=<span class="keyword">None</span>, </span><br><span class="line">	header=<span class="string">'infer'</span>, names=<span class="keyword">None</span>, index_col=<span class="keyword">None</span>, usecols=<span class="keyword">None</span>, </span><br><span class="line">	squeeze=<span class="keyword">False</span>, prefix=<span class="keyword">None</span>, mangle_dupe_cols=<span class="keyword">True</span>, dtype=<span class="keyword">None</span>, </span><br><span class="line">	engine=<span class="keyword">None</span>, converters=<span class="keyword">None</span>, true_values=<span class="keyword">None</span>, false_values=<span class="keyword">None</span>, </span><br><span class="line">	skipinitialspace=<span class="keyword">False</span>, skiprows=<span class="keyword">None</span>, nrows=<span class="keyword">None</span>, na_values=<span class="keyword">None</span>, </span><br><span class="line">	keep_default_na=<span class="keyword">True</span>, na_filter=<span class="keyword">True</span>, verbose=<span class="keyword">False</span>, skip_blank_lines=<span class="keyword">True</span>, </span><br><span class="line">	parse_dates=<span class="keyword">False</span>, infer_datetime_format=<span class="keyword">False</span>, keep_date_col=<span class="keyword">False</span>, </span><br><span class="line">	date_parser=<span class="keyword">None</span>, dayfirst=<span class="keyword">False</span>, iterator=<span class="keyword">False</span>, chunksize=<span class="keyword">None</span>, </span><br><span class="line">	compression=<span class="string">'infer'</span>, thousands=<span class="keyword">None</span>, decimal=<span class="string">b'.'</span>, lineterminator=<span class="keyword">None</span>, </span><br><span class="line">	quotechar=<span class="string">'"'</span>, quoting=<span class="number">0</span>, escapechar=<span class="keyword">None</span>, comment=<span class="keyword">None</span>, encoding=<span class="keyword">None</span>, </span><br><span class="line">	dialect=<span class="keyword">None</span>, tupleize_cols=<span class="keyword">None</span>, error_bad_lines=<span class="keyword">True</span>, warn_bad_lines=<span class="keyword">True</span>, </span><br><span class="line">	skipfooter=<span class="number">0</span>, doublequote=<span class="keyword">True</span>, delim_whitespace=<span class="keyword">False</span>, low_memory=<span class="keyword">True</span>, </span><br><span class="line">	memory_map=<span class="keyword">False</span>, float_precision=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>参数</p>
-<ul>
-<li>filepath_or_buffer: 文件路径</li>
-<li>sep: 分隔符，默认’,’，正则’\r\t’</li>
-<li>delimiter: sep的别名</li>
-<li>header: 指定行数作为列名，header=0则从第一行推断</li>
-<li>names: 外部传递的列名，对应header=None</li>
-<li>squeeze: 如果文件只包含一列，则返回一个Series</li>
-<li>prefix: 没有列标题时，给列标题添加前缀</li>
-<li>dtype: 每列数据的数据类型</li>
-<li>nrows: 需要读取的行数</li>
-<li>thousands: 千分位分隔符</li>
-<li>decimal: 小数点</li>
-<li>encoding: 字符集编码类型</li>
-</ul>
-<p><strong>分块读取大文件</strong></p>
-<ol>
-<li><p>通过参数chunksize指定文件分块大小，返回可迭代的对象TextFileReader</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">reader = pd.read_csv(<span class="string">'tmp.csv'</span>, sep=<span class="string">'|'</span>, chunksize=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> chunk <span class="keyword">in</span> reader:</span><br><span class="line">	print(chunk)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>指定iterator=True也可以返回一个TextFileReader</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">reader = pd.read_csv(<span class="string">'tmp.csv'</span>, iterator=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">chunk = reader.get_chunk(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">print</span> chunk</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/16/Python-sklearn-ConfusionMatrix/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/16/Python-sklearn-ConfusionMatrix/" itemprop="url">混淆矩阵ConfusionMatrix</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-16T11:31:21+08:00">
-                2018-05-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  336
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Confusion Matrix用于直观显示多分类问题中，分类结果的错误分布。<br><img src="/img/confusionMatrix.png" width="600"><br>图中第(i,j)个单元格表示类别i的样本被学习器分类到类别j的数量。</p>
-<h6 id="API"><a href="#API" class="headerlink" title="API"></a>API</h6><p>sklearn.metrics.confusion_matrix(y_true, y_pred, labels=None, sample_weight=None)<br>参数</p>
-<ul>
-<li>y_true: 真实值</li>
-<li>y_pred: 预测值</li>
-<li>labels: 标签</li>
-<li>sample_weight: 样本权重</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>C: array, shape=[n_classes, n_classes]</li>
-</ul>
-<h6 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h6><ol>
-<li><p>数字类别</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line">y_true = [<span class="number">2</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">0</span>,<span class="number">1</span>]</span><br><span class="line">y_pred = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">0</span>,<span class="number">2</span>]</span><br><span class="line">confusion_matrix(y_true, y_pred)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>文本类别</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y_true=[<span class="string">'cat'</span>,<span class="string">'cat'</span>,<span class="string">'ant'</span>,<span class="string">'bird'</span>,<span class="string">'ant'</span>]</span><br><span class="line">y_pred=[<span class="string">'bird'</span>,<span class="string">'ant'</span>,<span class="string">'ant'</span>,<span class="string">'cat'</span>,<span class="string">'bird'</span>]</span><br><span class="line">confusion_matrix(y_true, y_pred, labels=[<span class="string">'ant'</span>,<span class="string">'bird'</span>,<span class="string">'cat'</span>]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>二分类问题中，混淆矩阵2×2，可以直接获得tn,fn,tp,fp</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tn, fp, fn, tp = confusion_matrix([<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]).ravel()</span><br><span class="line">(tn, fp, fn, tp)<span class="comment">#(0,2,1,1)</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h6 id="绘图"><a href="#绘图" class="headerlink" title="绘图"></a>绘图</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cnf_matrix = confusion_matrix(y_test, y_pred)</span><br><span class="line">plt.figure()</span><br><span class="line">plot_confusion_matrix(cnf_matrix, classes=class_names, title=<span class="string">'Confusion matrix, without normalization'</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plot_confusion_matrix</span><span class="params">(cm, classes, normalize=False, title=<span class="string">'Confusion matrix'</span>, cmap=plt.cm.Blues)</span>:</span></span><br><span class="line">    <span class="comment"># normalize是显示比例，而不是数量    </span></span><br><span class="line">    <span class="keyword">if</span> normalize:</span><br><span class="line">        cm = cm.astype(<span class="string">'float'</span>) / cm.sum(axis=<span class="number">1</span>)[:, np.newaxis]</span><br><span class="line">        print(<span class="string">"Normalized confusion matrix"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'Confusion matrix, without normalization'</span>)</span><br><span class="line"></span><br><span class="line">    print(cm)</span><br><span class="line"></span><br><span class="line">    plt.imshow(cm, interpolation=<span class="string">'nearest'</span>, cmap=cmap)</span><br><span class="line">    plt.title(title)</span><br><span class="line">    plt.colorbar()</span><br><span class="line">    tick_marks = np.arange(len(classes))</span><br><span class="line">    plt.xticks(tick_marks, classes, rotation=<span class="number">45</span>)</span><br><span class="line">    plt.yticks(tick_marks, classes)</span><br><span class="line"></span><br><span class="line">    fmt = <span class="string">'.2f'</span> <span class="keyword">if</span> normalize <span class="keyword">else</span> <span class="string">'d'</span></span><br><span class="line">    thresh = cm.max() / <span class="number">2.</span></span><br><span class="line">    <span class="keyword">for</span> i, j <span class="keyword">in</span> itertools.product(range(cm.shape[<span class="number">0</span>]), range(cm.shape[<span class="number">1</span>])):</span><br><span class="line">        plt.text(j, i, format(cm[i, j], fmt),</span><br><span class="line">                 horizontalalignment=<span class="string">"center"</span>,</span><br><span class="line">                 color=<span class="string">"white"</span> <span class="keyword">if</span> cm[i, j] &gt; thresh <span class="keyword">else</span> <span class="string">"black"</span>)</span><br><span class="line"></span><br><span class="line">    plt.tight_layout()</span><br><span class="line">    plt.ylabel(<span class="string">'True label'</span>)</span><br><span class="line">    plt.xlabel(<span class="string">'Predicted label'</span>)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/16/Keras-Callbacks/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/16/Keras-Callbacks/" itemprop="url">Keras回调函数Callbacks</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-16T09:53:21+08:00">
-                2018-05-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  496
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>回调函数是一组在训练的特定阶段被调用的函数，可以用来观察网络内部的状态。<br>回调函数通常被传递到模型的 fit() 方法中。</p>
-<h4 id="Callback"><a href="#Callback" class="headerlink" title="Callback"></a>Callback</h4><p>keras.callbacks.Callback()<br>回调函数的抽象类，定义新的回调函数必须继承此类</p>
-<h4 id="BaseLogger"><a href="#BaseLogger" class="headerlink" title="BaseLogger"></a>BaseLogger</h4><p>keras.callbacks.BaseLogger()<br>Callback that accumulates epoch averages of metrics.<br>计算metrics指标的累加epoch平均值。<br>在每个keras模型中自动调用。</p>
-<h4 id="History"><a href="#History" class="headerlink" title="History"></a>History</h4><p>keras.callbacks.History()<br>History对象即为fit() 方法的返回值。<br>在每个keras模型中自动调用。<br>History.history是一个字典，键值包括[‘acc’,’loss’,’val_acc’,’val_loss’,’lr’]等。<br>value是长度=epoch的列表，即每个epoch记录一次数据。</p>
-<h4 id="ReduceLROnPlateau"><a href="#ReduceLROnPlateau" class="headerlink" title="ReduceLROnPlateau"></a>ReduceLROnPlateau</h4><p>keras.callbacks.ReduceLROnPlateau(monitor=’val_loss’, factor=0.1, patience=10, verbose=0, mode=’auto’, epsilon=0.0001, cooldown=0, min_lr=0)<br>当评价指标不再提升时，减少学习速率。<br>参数</p>
-<ul>
-<li>mointor: 要监测的评价指标</li>
-<li>factor: 减少因子，更新方式lr = lr × factor</li>
-<li>patience: 经过多少个epoch而评价指标不变时，减少学习率的动作会被触发</li>
-<li>mode: ‘auto’,’min’,’max’, 评价指标的正常变动方向</li>
-<li>epsilon: 小于该阈值，则认为评价指标“无变化”</li>
-<li>cooldown: 学习率减少后，经过多少个epoch后才会再次触发</li>
-<li>min_lr: 学习速率下限</li>
-</ul>
-<h4 id="EarlyStopping"><a href="#EarlyStopping" class="headerlink" title="EarlyStopping"></a>EarlyStopping</h4><p>keras.callbacks.EarlyStopping(monitor=’val_loss’, min_delta=0, patience=0, verbose=0, mode=’auto’)<br>当评价指标不再提升时，中止训练。<br>参数</p>
-<ul>
-<li>monitor: 要监测的评价指标</li>
-<li>min_delta: 提升的最小阈值</li>
-<li>patience: 经过多少个epoch而评价指标不变时，触发动作</li>
-<li>verbose: 信息展示模式</li>
-<li>mode: ‘auto’,’min’,’max’</li>
-</ul>
-<h4 id="ModelCheckpoint"><a href="#ModelCheckpoint" class="headerlink" title="ModelCheckpoint"></a>ModelCheckpoint</h4><p>keras.callbacks.ModelCheckpoint(filepath, monitor=’val_loss’, verbose=0, save_best_only=False, save_weights_only=False, mode=’auto’, period=1)<br>在每个epoch后将模型保存到文件。<br>参数</p>
-<ul>
-<li>filepath: 文件路径，可以包含格式，例如weights.{epoch:02d}-{val_loss:.2f}.hdf5</li>
-<li>save_best_only: 是否只保存在验证集上性能最好的模型 </li>
-<li>save_weights_only: ‘True’只保存权重，’False’保存整个模型(包括结构、配置等)</li>
-<li>period: 两次保存之间间隔的epoch数</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/15/Keras-Installation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/15/Keras-Installation/" itemprop="url">基于TensorFlow的Keras安装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-15T16:48:21+08:00">
-                2018-05-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  202
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>安装环境</p>
-<ul>
-<li>MacOS: 没有N卡，不支持GPU版本的tensorflow，无需CUDA；使用CPU版本</li>
-<li>Anaconda：由社区提供对tensorflow的支持，没有任何官方支持</li>
-</ul>
-<p>安装步骤</p>
-<ol>
-<li><p>创建conda环境</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">conda create -n tensorflow pip python=<span class="number">2.7</span> <span class="comment"># or python=3.5, etc</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>激活该conda环境</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">source activate tensorflow</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>安装TensorFlow<br>使用pip install 而不是conda install</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看pip版本</span></span><br><span class="line">pip -V <span class="comment"># for Python 2.7</span></span><br><span class="line">pip3 -V <span class="comment"># for Python 3.n</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装方法</span></span><br><span class="line">pip install tensorflow</span><br><span class="line">pip3 install tensorflow</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选方法：如果上一步失败则直接使用软件包网址</span></span><br><span class="line">tfBinaryURL = https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow<span class="number">-1.6</span><span class="number">.0</span>-py3-none-any.whl </span><br><span class="line">pip install --upgrade tfBinaryURL</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>安装相关包</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install numpy scipy pandas</span><br><span class="line">pip install matplotlib seaborn</span><br><span class="line">pip install scikit-learn scikit-image</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>安装Keras</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install keras</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>验证</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/fchollet/keras.git</span><br><span class="line">cd keras/examples/</span><br><span class="line">python mnist_mlp.py</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/15/Keras-ImageDataGenerator/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/15/Keras-ImageDataGenerator/" itemprop="url">Keras图片生成器ImageDataGenerator</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-15T10:08:46+08:00">
-                2018-05-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  511
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>图片生成器用于Data Augmentation，将会生成一个batch的图像数据。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.preprocessing.image.ImageDataGenerator(featurewise_center=<span class="keyword">False</span>, samplewise_center=<span class="keyword">False</span>,</span><br><span class="line">    featurewise_std_normalization=<span class="keyword">False</span>, samplewise_std_normalization=<span class="keyword">False</span>,</span><br><span class="line">    zca_whitening=<span class="keyword">False</span>, zca_epsilon=<span class="number">1e-6</span>,</span><br><span class="line">    rotation_range=<span class="number">0.</span>, width_shift_range=<span class="number">0.</span>, height_shift_range=<span class="number">0.</span>,</span><br><span class="line">    shear_range=<span class="number">0.</span>, zoom_range=<span class="number">0.</span>, channel_shift_range=<span class="number">0.</span>,</span><br><span class="line">    fill_mode=<span class="string">'nearest'</span>, cval=<span class="number">0.</span>,</span><br><span class="line">    horizontal_flip=<span class="keyword">False</span>, vertical_flip=<span class="keyword">False</span>,</span><br><span class="line">    rescale=<span class="keyword">None</span>, preprocessing_function=<span class="keyword">None</span>, data_format=K.image_data_format())</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong></p>
-<ul>
-<li>featurewise_center: 使输入数据的每个特征去中心化(均值为0)</li>
-<li>samplewise_center: 使输入数据的每个样本去中心化</li>
-<li>featurewise_std_normalization: 使输入数据的每个特征规范化</li>
-<li>samplewise_std_normalization: 使输入数据的每个样本规范化</li>
-<li>zca_whitening: 对输入数据施加ZCA白化</li>
-<li>zca_epsilon: zca使用的epsilon</li>
-<li>rotation_range: 随机旋转的角度</li>
-<li>width_shift_range: 水平偏移的幅度</li>
-<li>height_shift_range: 竖直偏移的幅度</li>
-<li>shear_range: 剪切变换的强度</li>
-<li>zoom_range: 随机缩放的强度</li>
-<li>channel_shift_range:</li>
-<li>fill_mode: ‘constant’,’nearest’, ‘reflect’, ‘wrap’超出边界的点的处理方式</li>
-<li>cval: ‘constant’时的常量填充值</li>
-<li>horizontal_flip: 是否随机水平翻转</li>
-<li>vertical_flip: 是否随机竖直翻转</li>
-<li>rescale: 重缩放因子</li>
-<li>preprocessing_function: 在数据提升之后运行，应用于每个输入的函数</li>
-<li>data_format: ‘channel_first’, ‘channel_last’</li>
-</ul>
-<p><strong>方法</strong></p>
-<ul>
-<li>fit(x, augment=False, rounds=1): 计算数据变换需要的统计信息，只有使用featruewise_center, featurewise_std_normalization, 或zca_whitening时需要此函数</li>
-<li>flow(self, X, y, batch_size=32, shuffle=True, seed=None, save_to_dir=None, save_prefix=’’, save_format=’png’): 接受numpy数组，生成数据提升后的batch数据，无限循环</li>
-<li>flow_from_directory(directory, target_size=(256, 256), color_mode=’rgb’,<br>  classes=None, class_mode=’categorical’, batch_size=32, shuffle=True,<br>  seed=None, save_to_dir=None, save_prefix=’’, save_format=’png’,<br>  follow_links=False, subset=None, interpolation=’nearest’)</li>
-</ul>
-<p><strong>实例</strong><br>1.使用 flow()<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">datagen = ImageDataGenerator(featurewise_center=<span class="keyword">True</span>, feature_std_normalization=<span class="keyword">True</span>,</span><br><span class="line">	rotation_range=<span class="number">20</span>, width_shift_range=<span class="number">0.2</span>, height_shift_range=<span class="number">0.2</span>, horizontal_flip=true)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算数据提升需要的参数</span></span><br><span class="line">datagen.fit(x_train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 实时数据提升，用于训练模型</span></span><br><span class="line">model.fit_generator(datagen.flow(x_train, y_train, batch_size=<span class="number">32</span>), </span><br><span class="line">	steps_per_epoch=len(x_train)/<span class="number">32</span>, epochs=epochs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 另一种手动写法</span></span><br><span class="line"><span class="keyword">for</span> e <span class="keyword">in</span> range(epochs):</span><br><span class="line">	batches = <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> x_batch, y_batch <span class="keyword">in</span> datagen.flow(x_train, y_train, batch_size=<span class="number">32</span>):</span><br><span class="line">		model.fit(x_batch, y_batch)</span><br><span class="line">		batches += <span class="number">1</span></span><br><span class="line">		<span class="keyword">if</span> batches &gt;= len(x_train) / <span class="number">32</span>:</span><br><span class="line">			<span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
-<p>2.使用 flow_from_directory()<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train_datagen = ImageDataGenerator(rescale=<span class="number">1.</span>/<span class="number">255</span>, shear_range=<span class="number">0.2</span>, </span><br><span class="line">	zoom_range=<span class="number">0.2</span>, horizontal_flip=<span class="keyword">True</span>)</span><br><span class="line">test_datagen = ImageDataGenerator(rescale=<span class="number">1.</span>/<span class="number">255</span>)</span><br><span class="line"></span><br><span class="line">train_generator = train_datagen.flow_from_directory(<span class="string">'data/train'</span>, </span><br><span class="line">	target_size=(<span class="number">150</span>,<span class="number">150</span>), batch_size=<span class="number">32</span>, class_mode=<span class="string">'binary'</span>)</span><br><span class="line">validation_generator = test_datagen.flow_from_directory(<span class="string">'data/validation'</span>,</span><br><span class="line">	target_size=(<span class="number">150</span>,<span class="number">150</span>), batch_size=<span class="number">32</span>, class_mode=<span class="string">'binary'</span>)</span><br><span class="line"></span><br><span class="line">model.fit_generator(train_generator,</span><br><span class="line">	steps_per_epoch=<span class="number">2000</span>, epochs=<span class="number">50</span>,</span><br><span class="line">	validation_data = validation_generator,</span><br><span class="line">	validation_steps=<span class="number">800</span>)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3604,7 +3514,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">295</span>
+                  <span class="site-state-item-count">301</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3617,7 +3527,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3706,7 +3616,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">107.2k</span>
+    <span title="Site words total count">111.1k</span>
   
 </div>
 

@@ -262,6 +262,930 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/08/Unity-CharacterController/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/08/Unity-CharacterController/" itemprop="url">Unity-CharacterController</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-08T10:26:00+08:00">
+                2016-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  409
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Unity中模拟物理碰撞效果有两套方法：<br>1.刚体和碰撞体(Rigidbody和Collider)<br>2.角色控制器(Character Controller)</p>
+<p>在FPS类游戏中，角色在高速运动时可以立刻停下转身，并不符合物理规律，不适用Rigidbody，应使用Character Controller。<br>Character Controller允许在仅受制于碰撞影响的情况下控制物体的运动，不需要再添加collider和rigidbody.</p>
+<p>Character Controller有以下特点：</p>
+<ul>
+<li>可以碰撞</li>
+<li>不受力，不能通过物理效果被其他对象影响</li>
+<li>不会对碰撞的物体施加力，通过OnControllerColliderHit() 自行编写其他物体的碰撞行为</li>
+</ul>
+<h4 id="SimpleMove"><a href="#SimpleMove" class="headerlink" title="SimpleMove"></a>SimpleMove</h4><pre><code>public bool SimpleMove(Vector3 speed);
+//以一定的速度移动角色控制器
+//重力自动运用
+//返回值表示是否着地
+
+cc = GetComponet&lt;CharacterController&gt;();
+cc.SimpleMove(speed * direction)
+</code></pre><h4 id="Move"><a href="#Move" class="headerlink" title="Move"></a>Move</h4><pre><code>public CollisionFlags Move(Vector3 motion);
+//不考虑重力，需要手动添加
+</code></pre><h4 id="OnControllerColliderHit"><a href="#OnControllerColliderHit" class="headerlink" title="OnControllerColliderHit"></a>OnControllerColliderHit</h4><pre><code>void OnControllerColliderHit(ControllerColliderHit hit)
+</code></pre><p>返回类型ControllerColliderHit，包含信息：</p>
+<ul>
+<li>collider    The collider that was hit by the controller.</li>
+<li>controller    The controller that hit the collider.</li>
+<li>gameObject    The game object that was hit by the controller.</li>
+<li>moveDirection    The direction the CharacterController was moving in when the collision occured.</li>
+<li>moveLength    How far the character has travelled until it hit the collider.</li>
+<li>normal    The normal of the surface we collided with in world space.</li>
+<li>point    The impact point in world space.</li>
+<li>rigidbody    The rigidbody that was hit by the controller.</li>
+<li>transform    The transform that was hit by the controller.</li>
+</ul>
+<h4 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h4><ul>
+<li>collider  The collider that was hit by the controller.</li>
+<li>controller   The controller that hit the collider.</li>
+<li>gameObject The game object that was hit by the controller.</li>
+<li>moveDirection Approximately the direction from the center of the capsule to the point we touch.</li>
+<li>moveLength How far the character has travelled until it hit the collider.</li>
+<li>normal The normal of the surface we collided with in world space.</li>
+<li>point  The impact point in world space.</li>
+<li>rigidbody The rigidbody that was hit by the controller.</li>
+<li>transform The transform that was hit by the controller.</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/08/Unity-CameraFollow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/08/Unity-CameraFollow/" itemprop="url">Unity-CameraFollow</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-08T09:43:01+08:00">
+                2016-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  250
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="案例1"><a href="#案例1" class="headerlink" title="案例1"></a>案例1</h4><p>第三人称游戏中，镜头始终跟随主角，如球、飞机、人物等。<br>本例将缓动摄像机，至角色身后的固定位置。</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> Transform target;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> distance = <span class="number">10.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> height = <span class="number">5.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> heightDamping = <span class="number">2.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> rotationDamping = <span class="number">3.0</span>f;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LateUpdate</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (target) &#123;</span><br><span class="line">		<span class="comment">// compute rotation </span></span><br><span class="line">		<span class="keyword">float</span> wantedRotationAngle = target.eulerAngles.y;</span><br><span class="line">		<span class="keyword">float</span> currentRotationAngle = transform.eulerAngles.y;</span><br><span class="line">		currentRotationAngle = Mathf.LerpAngle (currentRotationAngle, wantedRotationAngle, rotationDamping * Time.deltaTime);</span><br><span class="line">		Quaternion currentRotation = Quaternion.Euler (<span class="number">0</span>, currentRotationAngle, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// compute height</span></span><br><span class="line">		<span class="keyword">float</span> wantedHeight = target.position.y + height;</span><br><span class="line">		<span class="keyword">float</span> currentHeight = transform.position.y;</span><br><span class="line">		currentHeight = Mathf.Lerp (currentHeight, wantedHeight, heightDamping * Time.deltaTime);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// set position by vector minus</span></span><br><span class="line">		transform.position = target.position - currentRotation * Vector3.forward * distance; <span class="comment">// xz plane</span></span><br><span class="line">		transform.position = <span class="keyword">new</span> Vector3 (transform.position.x, currentHeight, transform.position.z);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// set rotation</span></span><br><span class="line">		transform.LookAt (target);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="案例2"><a href="#案例2" class="headerlink" title="案例2"></a>案例2</h4><p>本例将旋转摄像机，360度绕角色移动观察。</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">OrbitCamera</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">[<span class="meta">SerializeField</span>] <span class="keyword">private</span> Transform target;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> rotSpeed = <span class="number">1.5</span>f;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">float</span> _rotationY;</span><br><span class="line"><span class="keyword">private</span> Vector3 _offset;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	_rotationY = transform.eulerAngles.y;</span><br><span class="line">	_offset = target.position - transform.position;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LateUpdate</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">float</span> horInput = Input.GetAxis (<span class="string">"Horizontal"</span>);</span><br><span class="line">	<span class="keyword">if</span> (horInput != <span class="number">0</span>) &#123;</span><br><span class="line">		_rotationY += horInput * rotSpeed; <span class="comment">// use keyboard to rotate</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		_rotationY += Input.GetAxis (<span class="string">"Mouse X"</span>) * rotSpeed * <span class="number">3</span>;  <span class="comment">// use mouse to rotate</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	Quaternion rotation = Quaternion.Euler (<span class="number">0</span>, _rotationY, <span class="number">0</span>);</span><br><span class="line">	transform.position = target.position - (rotation * _offset); <span class="comment">// set new position</span></span><br><span class="line">	transform.LookAt (target); <span class="comment">// set new rotation</span></span><br><span class="line">&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/08/Unity-ControllerPlane/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/08/Unity-ControllerPlane/" itemprop="url">Unity-ControllerPlane</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-08T08:42:46+08:00">
+                2016-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  131
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="2D-Plane"><a href="#2D-Plane" class="headerlink" title="2D Plane"></a>2D Plane</h4><p>Move horizontal and vertical</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">float</span> moveHorizontal = Input.GetAxis (<span class="string">"Horizontal"</span>);</span><br><span class="line"><span class="keyword">float</span> moveVertical = Input.GetAxis (<span class="string">"Vertical"</span>);</span><br><span class="line">Vector3 movement = <span class="keyword">new</span> Vector3 (moveHorizontal, <span class="number">0.0</span>f, moveVertical);</span><br><span class="line">Rigidbody rb = GetComponent&lt;Rigidbody&gt; ();</span><br><span class="line"><span class="keyword">if</span> (rb != <span class="literal">null</span>) &#123;</span><br><span class="line">	rb.velocity = movement * speed;</span><br><span class="line">	rb.position = <span class="keyword">new</span> Vector3 (Mathf.Clamp (rb.position.x, boundary.xMin, boundary.xMax), <span class="number">0.0</span>f, Mathf.Clamp (rb.position.z, boundary.zMin, boundary.zMax));</span><br><span class="line">	rb.rotation = Quaternion.Euler (<span class="number">0.0</span>f, <span class="number">0.0</span>f, rb.velocity.x * -tilt);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3D-Plane"><a href="#3D-Plane" class="headerlink" title="3D Plane"></a>3D Plane</h4><p>Turn and tilt</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> accelerator : Vector3 = Input.acceleration;</span><br><span class="line"></span><br><span class="line">euler.y += accelerator.x * turnSpeed; <span class="comment">// turn</span></span><br><span class="line">euler.z = Mathf.Lerp(euler.z, -accelerator.x * maxTurnLean, <span class="number">0.2</span>); <span class="comment">// lean left or right</span></span><br><span class="line">euler.x = Mathf.Lerp(euler.x, accelerator.y * maxTilt, <span class="number">0.2</span>); <span class="comment">// tilt forward or backward</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> rot : Quaternion = Quaternion.Euler(euler);</span><br><span class="line">transform.rotation = Quaternion.Lerp (transform.rotation, rot, sensitivity);</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/07/Unity-Basic2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/07/Unity-Basic2/" itemprop="url">Unity-Basic2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-07T10:02:09+08:00">
+                2016-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,178
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Game Narrative 故事叙述<br>Casual game 休闲游戏<br>Arcade game 街机游戏</p>
+<h4 id="Texture："><a href="#Texture：" class="headerlink" title="Texture："></a>Texture：</h4><p>TextureType：贴图类型<br>AlphafromGrayscal: 使用灰度创建Alpha，当需要unity为贴图创建一条alpha通道，使用它转换得到的灰度值来渲染透明度<br>WrapMode：包裹模式，决定贴图会无限次平铺还是只会一次。Repeat就是重复平铺。Clamp会让贴图的边缘拉升并在改变大小时候填满任何缝隙<br>FilterMode：图像过滤模式，在拉伸时候对贴图过滤，比如[Point]点过滤，在很近看贴图时候，可能感觉不均。Bilinear它会时近看贴图显得模糊。Trilinear它会在不同mipmap层次之间模糊。<br>AnisoLevel：设置各项异性过滤器的级别，同属的可以理解为当你从一个比较陡的角度来看，贴图现实的可以有多细腻，渲染的等级越高，越占内存</p>
+<p>Cast Shadows： Two Sided 两侧(如plane正反面)都能阻挡光照，产生阴影</p>
+<p>ScaleFactor：缩放系数，使用这个属性在导入资源后设置其大小。<br>MeshCompression：网格压缩的比例[Off，Low，Medium，High]不可否认，压缩时可以节约内存的。<br>OptimizeMesh：为提高GPU性能记录网格顶点和索引。<br>GenerateColliders：是否在场景中让网格对象具有碰状体表现，通俗的说就是实心的，不可以穿体而过。<br>SwapUVs：交换UV，当你导入一个网格对象时候，着色器可能会使用错误的UV通道，若果发现资源异常[比如带光照图时候]，选中这个复选框。<br>Generate Lightmap UVs：为UV2生成光照贴图。</p>
+<p>Normals&amp;Tangents：该项设置计算法线切线<br>Normals：计算法线，import表示使用导入的网格法线，Calculate表示重新计算网格法线。<br>Tangents：计算切线，import表示使用导入的网格切线，Calulate表示重新计算切线。<br>Smoothing angle：法线平滑角度，告诉引擎在角度值为多少时候吧一个边缘视为硬边缘。<br>Split Tangents：是否分离切线,如果模型在场景渲染后现实UV缝隙，要开启它。</p>
+<h4 id="Materials"><a href="#Materials" class="headerlink" title="Materials:"></a>Materials:</h4><p>Standard以及Standard(Specular setup)两者的区别是, Standard使用了金属模拟的外观, 而Standard(Specular Setup)使用了镜面模拟的外观。<br>使用中, 对于任何不是金属的材质, 都应该选择Standard(Specular Setup).</p>
+<p>RenderingMode 渲染模式：<br>Opaque 不透明，例如石头，适用于所有的不透明的物体<br>Cutout 镂空，例如破布，透明度不是0%就是100%，不存在半透明的区域。<br>Fade 完全隐去，用于非现实的透明物体，与Transparent的区别为高光反射会随着透明度而消失。<br>Transparent 透明，例如玻璃，适用于像彩色玻璃一样的半透明物体，高光反射不会随透明而消失。</p>
+<p>Albedo 就是Diffuse漫射的意思, 但是这里的Alpha通道还会控制透明程度，在无光照时显现的颜色<br>Normal 增强效果，使低精度贴图看起来像高精度<br>Occlution 在非直接光照如周围物体漫反射光照下的效果<br>Smoothness 物体表面光滑程度，控制光照在微观表面的反射效果<br>Specular 镜面反射，控制反射强度<br>Metallic 像金属一样的效果<br>Emission 发光度<br>Ambient Occlusion 环境光遮蔽，描绘物体和物体相交或靠近的时候遮挡周围漫反射光线的效果，可以解决或改善漏光、飘和阴影不实等问题</p>
+<p>Tiling 表示UV坐标的缩放倍数<br>Offset 表示UV坐标的起始位置</p>
+<h4 id="RigidBody"><a href="#RigidBody" class="headerlink" title="RigidBody"></a>RigidBody</h4><p>Is Kinematic：是否开启动力学，开启后不在受物理引擎的影响，只能通过Transform属性来操作。此属性一般用来模拟平台的移动，或带有铰链关节链接刚体的动画。</p>
+<p>Interpolate：插值，用于控制刚体运动抖动的情况，有以下三种值可选。<br>-None：没有插值<br>-Interpolate：内插值，基于前一帧的Transform来平滑此次的Transform。<br>-Extrapolate：外插值，基于下一帧的Transform来平滑此次的Transform。</p>
+<p>Collsion Detection：碰撞检测，用于控制避免高速运动的对象穿过其他对象而未发生碰撞。<br>-Discrete：离散碰撞检测（默认值），与场景中其他多有碰撞体进行碰撞检测。<br>-Continuous：连续碰撞检测，此模式对物理性能会有很大影响，如果不需要对快速运动的对象进行碰撞检测，就是用离散模式。<br>-Continuous Dynamic：连续动态碰撞检测模式。</p>
+<p>Physics.Raycast 光线投射,在场景中投下可与所有碰撞器碰撞的一条光线</p>
+<h4 id="Light："><a href="#Light：" class="headerlink" title="Light："></a>Light：</h4><p>Illumination 照明<br>Halo 光环<br>Flare 闪光，耀斑</p>
+<p>Area Light,俗称面灯。没有任何实时光照的效果，仅用于Light baking即烘焙<br>Bounce Intensity:间接光照的效果强度<br>Culling mask 剔除遮罩，只照亮某些层<br>Cookie 投影遮罩。使用灰度纹理图准确的控制游戏灯光，做出格子光特效等<br>Soft Shadow: 相比Hard Shadow具有更加柔和的边缘</p>
+<p>LightMap烘焙：<br>1.所要烘焙物体的mesh 必须要有合适的lightmapping uv。如果不确定的话，就在导入模型设置中勾选 Generate Lightmap UVs<br>2.任何Mesh Renderer, Skinned Mesh Renderer 或者 Terrain都要标注为static(lightmap static)</p>
+<p>Light Probe Group：<br>LightProbe，可以让动态物体在烘焙好的场景里面受到光的照射效果，（墙烘焙，probe烘焙，球动态；灯光关闭后，墙不会反光照亮球，probe会照亮球）</p>
+<p>Baking 灯光烘焙类型:<br>Baking 仅在烘焙时使用，运行时不可见；影响Baked LightMap，不会照亮Dynamic物体<br>RealTime 运行时使用；影响Realtime LightMap，照亮所有物体<br>Mixed 在运行和烘焙时都使用。<br>LightMap Bake + Light Probe 提供直接照射和间接照射的模拟方案，等同于RealTime的效果。运行时关闭RealTime，降低计算量</p>
+<h4 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h4><p>Miscellaneous 混杂的，多种多样的;Animation和Animator在Component中的上级菜单…</p>
+<p>Animation Clip 动画片段<br>Animator 控制多个Animation之间的跳转<br>Avatar 骨骼</p>
+<p>Dope Sheet 摄影表，水平方向上列出关键帧</p>
+<p>Animator Transitions<br>Mute 该转移被禁用，用于状态机的调试<br>Solo 优先于一般转移使用，用于状态机的调试</p>
+<h4 id="Script"><a href="#Script" class="headerlink" title="Script"></a>Script</h4><p>[Header(“xxxx”)] 在Inspector面板中的标题<br>[HideInInspector] 在Inspector面板中不显示的public变量<br>[SerializeField] 将Private变量输出到Inspector面板<br>[System.Serializable] 为类添加可序列化的属性(Attribut,not Property)</p>
+<p>Invoke(methodName, 5) 5秒之后调用 SendMsg() 方法；是一种委托<br>InvokeRepeating (methodName : string, time : float, repeatRate : float)<br>在time秒调用methodName方法,每隔repeatRate时间调用一次</p>
+<p>yield return 10 等待10帧？</p>
+<h4 id="Navigation"><a href="#Navigation" class="headerlink" title="Navigation"></a>Navigation</h4><p>Nav Mesh 根据Navigation Static的物体烘焙生成可导航的区域<br>Nav Mesh Obstacle 动态的导航区域内的障碍，选中Carve(雕刻，切开)则从Nave Mesh中切除本身所占区域，用于移动后静止的物体<br>Nav Mesh Agent 游戏对象的寻路Agent，agent.SetDestination(position)设定目标</p>
+<p>Off-mesh link 手动添加的Nav Mesh各离散区域之间的连接</p>
+<h4 id="Audio："><a href="#Audio：" class="headerlink" title="Audio："></a>Audio：</h4><p>Audio Clip : audio data，导入到unity中的音频文件都是audio clip<br>Audio Sources : 挂载这audio clip的Object，相当于是一个音频控制器，可以用它来控制音频的播放、停止、以及设置一些播放参数等<br>Audio Listener : 音效的监听者，注意一个scene同时只能有一个listener，一般挂载到main camera上或者主角身上</p>
+<p>Output：输出到Audio Mixer<br>Reverb 反响，混响；获取音频剪辑（Audio Clip）并且根据音频侦听器所在的混响区进行失真处理<br>Pitch 音调<br>Stereo Pan 左右声道偏好</p>
+<p>Audio Format:<br>Native: 效果好，适合较短音效<br>Compressed:有压缩，适合较长的音效</p>
+<p>Load Type:<br>Decompress on load: 解压缩后进入内存，可以避免运行时计算开销，但内存消耗很大，适用于较小的压缩声音<br>Compressed in memory: 压缩后进入内存，在播放时解压缩，有轻微的性能开销，适用于较大文件<br>Gapless looping : 无缝循环，对于loop音频，有可能由于压缩导致破坏循环，这种情况下可以通过设置这个变量来解决</p>
+<p>Audio Mixers<br>Mixers：工程里所有的Mixer列表<br>Snapshot：指定参数的快照<br>Groups：Audio Source的分组<br>Views：指定某些Group可见的视图<br>Attenuation 衰减<br>Duck Volume：接收其他Group发送的信号，改变自己的一些属性，比如音量大小。 </p>
+<h4 id="UI"><a href="#UI" class="headerlink" title="UI"></a>UI</h4><p>Raycast Target: 是否可点击<br>Preserve Aspect: 保持横纵比</p>
+<p>Anchors： UI元素的顶点到Anchors的距离固定，长宽等会随之变化<br>Pivot：旋转、缩放的轴心</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/09/06/Unity-Mecanim/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/09/06/Unity-Mecanim/" itemprop="url">Unity-Mecanim</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-06T10:57:44+08:00">
+                2016-09-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  272
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Modelling: 建模，创建由多边形或三角形组成的网格模型<br>Rigging: 骨骼绑定，为模型建立骨骼关节层级(Joint Hierarchy)，定义内部骨骼结构及相互运动关系<br>Skinning: 蒙皮，将网格模型与关节层级关联，通过关节的动画来控制网格的运动</p>
+<p>Avatar: 从Macanim的简化人形骨架结构到用户实际提供的骨架结构的映射<br>Muscle: 肌肉用来限制不同骨骼的运动范围<br>Mask: 身体遮罩，控制身体的某一部分是否受动画的影响</p>
+<p>前向动力学: 子关节的位置由父节点的旋转角度决定，节点链末端的节点位置由链条上各个节点的旋转角和相对位移决定<br>逆向动力学: 给定末端节点的位置，逆推出节点链上所有其他节点的位置，例如用手触碰物体</p>
+<p>Blend Tree: 混合树，对两个或更多个相似的运动进行混合，例如跑动时向左或向右倾斜转弯</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/08/24/Unity-Rigidbody/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/24/Unity-Rigidbody/" itemprop="url">Unity-Rigidbody</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-24T16:36:13+08:00">
+                2016-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  66
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="AddForce"><a href="#AddForce" class="headerlink" title="AddForce"></a>AddForce</h4><p>Add a force to the rigidbody.</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddForce</span>(<span class="params">Vector3 force, ForceMode mode = ForceMode.Force</span>)</span>;</span><br><span class="line"></span><br><span class="line">target.AddForce(jumpspeed * target.transform.up, ForceMode.VelocityChange);</span><br><span class="line">target.AddForce(movement.normalized * appliedSpeed, ForceMode.VelocityChange);</span><br></pre></td></tr></table></figure>
+<p>Force Mode:</p>
+<ul>
+<li>.Force: Add a continuous force, using its mass</li>
+<li>.Impulse: Add an instant impulse, using its mass</li>
+<li>.Acceleration: Add a continuous acceleration, ignoring its mass</li>
+<li>.VelocityChange: Add an instant velocity change, ignoring its mass</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/08/23/Unity-Input/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2404,964 +3328,11 @@ x_train, x_text, y_train, y_test = cross_validation.train_test_split(train_data,
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/26/Python-Matplotlib/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/26/Python-Matplotlib/" itemprop="url">Python-Matplotlib</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-26T15:54:39+08:00">
-                2016-05-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  279
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Matplotlib.pyplot提供了一套和matlab类似的命令API，用于交互式制图。<br>matplotlib提供的是比较底层的命令，若要制作完整图表，需要依次添加各种元素。<br>故常用其他包封装的高级绘图命令来生成复杂的图表。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> numpy.random <span class="keyword">import</span> randn</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘图区与子区域</span></span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>,<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">fig = plt.figure()</span><br><span class="line">ax1 = fig.add_subplot(<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>) <span class="comment"># 2*2区域的第1个子图</span></span><br><span class="line"></span><br><span class="line">fig, axes = plt.subplots(<span class="number">2</span>,<span class="number">3</span>) <span class="comment"># 创建2*3个子区域并返回数组</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调整子区域边框宽度</span></span><br><span class="line">subplots_adjust(left=<span class="keyword">None</span>, bottom=<span class="keyword">None</span>, right=<span class="keyword">None</span>, top=<span class="keyword">None</span>, wspace=<span class="keyword">None</span>, hspace=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 图线类型</span></span><br><span class="line">plt.plot(x,y,label=<span class="string">"$sin(x)$"</span>,color=<span class="string">"red"</span>,linewidth=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">ax1.plot(x,z,<span class="string">"b--"</span>,label=<span class="string">"$cos(x^2)$"</span>)</span><br><span class="line">ax2.hist(randn(<span class="number">100</span>), bins=<span class="number">20</span>, color=<span class="string">'k'</span>, alpha=<span class="number">0.3</span>)</span><br><span class="line">ax3.scatter(np.arrange(<span class="number">30</span>), np.arrange(<span class="number">30</span>)+<span class="number">3</span>*randn(<span class="number">30</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 标签和图例</span></span><br><span class="line">plt.xlabel(<span class="string">"Time(s)"</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Volt"</span>)</span><br><span class="line">plt.title(<span class="string">"PyPlot First Example"</span>)</span><br><span class="line"></span><br><span class="line">ax1.set_xticks([<span class="number">3</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">12</span>,<span class="number">15</span>]) <span class="comment"># 横轴刻度</span></span><br><span class="line"></span><br><span class="line">plt.ylim(<span class="number">-1.2</span>,<span class="number">1.2</span>) <span class="comment">#设置Y轴的范围</span></span><br><span class="line">plt.legend() <span class="comment">#显示图例</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 文字注解</span></span><br><span class="line">ax1.text(x,y,<span class="string">'text'</span>,family=<span class="string">'monospace'</span>,fontsize=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">plt.show() <span class="comment">#显示绘图</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存到文件</span></span><br><span class="line">plt.savefig(<span class="string">'figpath.png'</span>, dpi=<span class="number">400</span>, bbox_inches=<span class="string">'tight'</span>)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/25/Python-NumPy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/25/Python-NumPy/" itemprop="url">NumPy</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-25T15:19:25+08:00">
-                2016-05-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  992
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>NumPy(Numerical Python)是高性能科学计算和数据分析的基础包。它是高级工具的构建基础。<br>NumPy最重要的特点是它的N维数组对象ndarray.<br>NumPy的运算是基于数组的，不同于Math基于数字。<br>Numpy的设计目的是处理大数据，默认传递引用，而不是复制数据。</p>
-<h2 id="ndarray"><a href="#ndarray" class="headerlink" title="ndarray"></a>ndarray</h2><p>ndarray是<strong>同种元素</strong>的多维数组，快速而灵活的大数据集容器。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建</span></span><br><span class="line">A = np.array(mylist)</span><br><span class="line">A = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]], dtype = np.int32)</span><br><span class="line">A = np.asarray([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]) <span class="comment">#当数据源是ndarray时，array()仍会copy副本，而asarray()不会</span></span><br><span class="line">A = np.arange(<span class="number">15</span>).reshape(<span class="number">3</span>,<span class="number">5</span>) <span class="comment">#arrange()是Python内置range()函数的数组版本</span></span><br><span class="line">A = np.linspace(<span class="number">0</span>,<span class="number">4</span>,<span class="number">9</span>)</span><br><span class="line">A = np.zeros((<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">A = np.repeat([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],<span class="number">3</span>)</span><br><span class="line">B = A.astype(np.float64) <span class="comment">#转换数据类型，astype()总会创建一份新的拷贝</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 属性</span></span><br><span class="line">A.ndim <span class="comment">#秩, rank, number of axes(dimensions)</span></span><br><span class="line">A.size <span class="comment">#数组元素个数, product of the elements of shape</span></span><br><span class="line">A.shape <span class="comment">#维度(3,2), dimensions of the array</span></span><br><span class="line">A.dtype <span class="comment">#数据类型, type of the elements in the array</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 矩阵运算</span></span><br><span class="line">A+B <span class="comment">#元素相加</span></span><br><span class="line">A*B <span class="comment">#元素乘法，将对应位置的数字分别相乘</span></span><br><span class="line">A**<span class="number">2</span> <span class="comment">#元素平方	</span></span><br><span class="line">A.dot(B) <span class="comment">#矩阵乘法</span></span><br><span class="line">np.dot(A,B) <span class="comment">#矩阵乘法</span></span><br><span class="line">A.T <span class="comment">#转置矩阵</span></span><br><span class="line">inv(A), pinv(A) <span class="comment">#逆矩阵</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数学方法</span></span><br><span class="line">A.max()</span><br><span class="line">A.argmax() <span class="comment">#最大值的索引</span></span><br><span class="line">A.mean()</span><br><span class="line">A.std()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切片</span></span><br><span class="line">v[<span class="number">4</span>:] = <span class="number">12</span> <span class="comment">#将元素赋值给选区，称为broadcasting</span></span><br><span class="line">v[<span class="number">-5</span>::<span class="number">-2</span>]</span><br><span class="line">A[<span class="number">3</span>,<span class="number">3</span>:<span class="number">6</span>] = A[<span class="number">3</span>][<span class="number">3</span>:<span class="number">6</span>] <span class="comment">#两种写法等价</span></span><br><span class="line">A[:,:<span class="number">1</span>]</span><br><span class="line">A[[<span class="number">4</span>,<span class="number">3</span>,<span class="number">0</span>,<span class="number">6</span>]] <span class="comment">#花式索引(Fancy indexing)，返回指定行</span></span><br><span class="line">A[A&gt;<span class="number">30</span>] = <span class="number">30</span></span><br><span class="line">A[(names=<span class="string">'Bob'</span>)|(names=<span class="string">'Alice'</span>)] <span class="comment">#Python关键字and和or在布尔型数组中无效</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 拷贝</span></span><br><span class="line">A2 = A[:<span class="number">3</span>,:<span class="number">3</span>] <span class="comment">#传递引用，修改A2也会改变A</span></span><br><span class="line">A2 = A[<span class="number">1</span>:<span class="number">3</span>].copy() <span class="comment">#传递数据，修改A2不会改变A</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/05/25/Python-NumPy/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/25/Stat-Basic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/25/Stat-Basic/" itemprop="url">统计基础</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-25T10:59:20+08:00">
-                2016-05-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  378
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Average"><a href="#Average" class="headerlink" title="Average"></a>Average</h4><ul>
-<li>Mode(众数): the most frequency</li>
-<li>Median(中位数): sort and the number in the median</li>
-<li>Mean(平均值): sum(numbers) / n</li>
-</ul>
-<h4 id="Variance"><a href="#Variance" class="headerlink" title="Variance"></a>Variance</h4><ul>
-<li>Absolute Deviation(绝对差): |xi - x`|</li>
-<li>Variance(方差): sum(|xi - x`|^2) / n</li>
-<li>Standard Deviation(标准差): root(var)</li>
-<li>样本的标准差: /n</li>
-<li>用样本估计总体的标准差: /(n-1)</li>
-</ul>
-<h4 id="协方差和相关系数"><a href="#协方差和相关系数" class="headerlink" title="协方差和相关系数"></a>协方差和相关系数</h4><p>协方差(Covariance)是变量与均值之差乘积的期望:<br>$$ Cov(X,Y)=E\left [ (X-\mu_x)(Y-\mu_y)\right ] $$<br>两个变量同向变化则协方差为正；反向变化则协方差为负。</p>
-<p>相关系数(Correlation Coefficient)是协方差除以变量各自的标准差:<br>$$ \rho = \frac{Cov(X,Y)}{\sigma_X\sigma_Y} $$<br>相关系数可以看做是剔除了变量量纲影响、标准化后的特殊协方差。<br>当相关系数为1时，说明两个变量变化的正向相似度最大，完全正相关；反之-1时为完全负相关。</p>
-<h4 id="正态分布"><a href="#正态分布" class="headerlink" title="正态分布"></a>正态分布</h4><p>偏度(Skewness)是描述变量取值分布对称性的统计量，是样本的三阶标准化矩。<br>$$ Skewness = E\left[(\frac{x-\mu}{\sigma})^3\right] = \frac{E\left[(X-\mu)^3 \right]}{\sigma^3} $$</p>
-<ul>
-<li>等于0：标准正态分布</li>
-<li>大于0：右侧长尾，正偏</li>
-<li>小于0：左侧长尾，负偏</li>
-</ul>
-<p>峰度(Kurtosis)是描述变量所有取值分布形态陡缓程度的统计量，是样本的四阶标准化矩。<br>$$ Kurtosis =  E\left[(\frac{x-\mu}{\sigma})^4\right] = \frac{E\left[(X-\mu)^4 \right]}{\sigma^4}$$</p>
-<ul>
-<li>等于3：标准正态分布</li>
-<li>大于3：更陡峭，尖顶峰</li>
-<li>小于3：更平缓，平顶峰</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/24/Python-pandas/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/24/Python-pandas/" itemprop="url">Pandas</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-24T22:02:10+08:00">
-                2016-05-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1,003
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><strong>Pandas</strong> is a module for data analysis based on <strong>Numpy</strong>.<br>There are two data types in pandas: <strong>Series</strong> and <strong>DataFrame</strong>.<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">pd.Series?</span><br></pre></td></tr></table></figure></p>
-<h2 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h2><p>Series可以看做是定长的有序字典。<br>在数据运算时，Series可以自动对齐数据，即只对index相同的value运算，不重叠的索引处将引入NaN.</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 生成	</span></span><br><span class="line">s = pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], index=[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>]) <span class="comment"># dtype: int64</span></span><br><span class="line">s = pd.Series([<span class="string">'Bear'</span>,<span class="string">'Tiger'</span>,<span class="keyword">None</span>]) <span class="comment"># dtype: object    </span></span><br><span class="line">s = pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="keyword">None</span>]) <span class="comment"># dtype: float64，None将记为NaN</span></span><br><span class="line">s = pd.Series(dictionary)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新索引，不存在的索引可引入缺失值</span></span><br><span class="line">s = s.reindex([<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>], fill_value=<span class="number">0</span>)</span><br><span class="line">s = s.reindex(range(<span class="number">6</span>), method = <span class="string">'ffill'</span>) <span class="comment">#ffill前向填充，bfill后向填充</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取，如果索引对应多个值，将返回Series；否则返回标量</span></span><br><span class="line">s.iloc[<span class="number">3</span>] = s[<span class="number">3</span>] <span class="comment"># 按位置选取, s[n]当index为数字时等同于按index选取</span></span><br><span class="line">s.loc[<span class="string">'id1'</span>] = s[<span class="string">'id1'</span>] <span class="comment"># 按index名称选取</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 向量化语句运行速度远远快于循环语句</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">summary = np.sum(s)</span><br><span class="line">s += <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 排序</span></span><br><span class="line">s.sort_index() <span class="comment">#对索引排序</span></span><br><span class="line">s.order() <span class="comment">#对值排序，缺失值NaN会被放到末尾</span></span><br></pre></td></tr></table></figure>
-<p>Series 的 index 和 values 实际仍为互相独立的 ndarray 数组。</p>
-<h2 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h2><p>DataFrame是一个表格型的数据结构。<br>它既有行索引也有列索引，values可以有多列，每列可以是不同的值类型，可以将各列看成是共享index的Series类型。<br>对齐操作将同时发生在行和列上。</p>
-<h4 id="生成数据"><a href="#生成数据" class="headerlink" title="生成数据"></a>生成数据</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">   data = &#123;<span class="string">'num'</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="string">'year'</span>: [<span class="number">2001</span>,<span class="number">2002</span>,<span class="number">2003</span>], <span class="string">'pop'</span>: [<span class="number">1.2</span>,<span class="number">1.5</span>,<span class="number">1.7</span>]&#125;</span><br><span class="line">   df = pd.DataFrame(data, index = [<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>], columns = [<span class="string">'c1'</span>,<span class="string">'c2'</span>,<span class="string">'c3'</span>]</span><br><span class="line">   ‘’‘</span><br><span class="line">	c1	c2	c3</span><br><span class="line">one	<span class="number">1</span>	<span class="number">2001</span>	<span class="number">1.2</span></span><br><span class="line">two	<span class="number">2</span>	<span class="number">2002</span>	<span class="number">1.5</span></span><br><span class="line">three	<span class="number">3</span>	<span class="number">2003</span>	<span class="number">1.7</span></span><br><span class="line">   ’‘’    </span><br><span class="line">   df.reindex(index=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], columns=[<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>], method=<span class="string">'ffill'</span>)</span><br><span class="line">   <span class="keyword">for</span> index, passenger <span class="keyword">in</span> df.iterrows(): <span class="comment">#迭代器，遍历每行记录</span></span><br><span class="line">       <span class="keyword">print</span> passenger[<span class="string">'Age'</span>]</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/05/24/Python-pandas/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/21/ML-Methods/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/21/ML-Methods/" itemprop="url">机器学习方法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-21T16:55:31+08:00">
-                2016-05-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  408
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Supervised-Learning"><a href="#Supervised-Learning" class="headerlink" title="Supervised Learning"></a>Supervised Learning</h2><h4 id="Linear"><a href="#Linear" class="headerlink" title="Linear"></a>Linear</h4><ul>
-<li>Pros: Easy to interpret results, computationally inexpensive</li>
-<li>Cons: Poorly models nonlinear data</li>
-<li>Works with: Numeric values, Nominal values</li>
-</ul>
-<h4 id="k-Nearest-Neighbors"><a href="#k-Nearest-Neighbors" class="headerlink" title="k-Nearest Neighbors"></a>k-Nearest Neighbors</h4><ul>
-<li>Pros: High accuracy, insensitive to outliers, no assumptions about data(精度高，对异常值不敏感，无假设)</li>
-<li>Cons: Computationally expensive, requires a lot of memory(计算消耗大)</li>
-<li>Works with: Numeric values, nominal values</li>
-</ul>
-<h4 id="Decision-Trees"><a href="#Decision-Trees" class="headerlink" title="Decision Trees"></a>Decision Trees</h4><ul>
-<li>Pros: Computationally cheap to use, easy for humans to understand learned results, missing values OK, can deal with irrelevant features</li>
-<li>Cons: Prone to overfitting(容易过拟合)</li>
-<li>Works with: Numeric values, nominal values</li>
-</ul>
-<h4 id="Naive-Bayes"><a href="#Naive-Bayes" class="headerlink" title="Naive Bayes"></a>Naive Bayes</h4><ul>
-<li>Pros: Works with a small amount of data, handles multiple classes</li>
-<li>Cons: Sensitive to how the input data is prepared</li>
-<li>Works with: Nominal values</li>
-</ul>
-<h4 id="Logistic-Regression"><a href="#Logistic-Regression" class="headerlink" title="Logistic Regression"></a>Logistic Regression</h4><ul>
-<li>Pros: Computationally inexpensive, easy to implement, knowledge representation easy to interpret(计算代价不高，易于实现和解释)</li>
-<li>Cons: Prone to underfitting, may have low accuracy(容易欠拟合，不能保证精度)</li>
-<li>Works with: Numeric values, nomial values</li>
-</ul>
-<p>分类时，多重线性回归：z = w0x0 + w1x1 + w1x2 + … + wnxn，不能保证z ~ [0,1]。<br>故使用 f(z) = 1 / (1 + e^(-z)) ~ (0, 1) 映射至(0,1)<br>if f(z) &gt; 0.5, then -&gt; 1; else -&gt; 0<br>只能分为2类，描述事件发生或不发生。</p>
-<p>How to get w?<br>极大似然估计：选择w，使得L(w|x) = P(X=x)<br>求导数，解方程，使用<strong>Gradient Ascent</strong>(梯度上升)或者<strong>Gradient Descent</strong>(梯度下降)</p>
-<pre><code>Start with all weights set to 1
-Repeat R number of times:
-    Caculate the gradient of the entire dataset
-    Update the weights vector by alpha*gradient
-    Return the weights vector
-</code></pre><h4 id="Support-Vector-Machines"><a href="#Support-Vector-Machines" class="headerlink" title="Support Vector Machines"></a>Support Vector Machines</h4><ul>
-<li>Pros: Low generalization error, computationally inexpensive, easy to interpret results</li>
-<li>Cons: Sensitivie to tuning parameters and kernel choice, natively only handles binary classification</li>
-<li>Works with: Numeric values, nominal values</li>
-</ul>
-<p>The points closest to the separating hyperplane are known as <strong>support vectors</strong>.</p>
-<h4 id="AdaBoost"><a href="#AdaBoost" class="headerlink" title="AdaBoost"></a>AdaBoost</h4><ul>
-<li>Pros: Low generalization error, easy to code, works with most classifiers, no parameters to adjust</li>
-<li>Cons: Sensitive to outliers</li>
-<li>Works with: Numeric values, nominal values</li>
-</ul>
-<h2 id="Unsupervised-Learning"><a href="#Unsupervised-Learning" class="headerlink" title="Unsupervised Learning"></a>Unsupervised Learning</h2><h4 id="k-Means"><a href="#k-Means" class="headerlink" title="k-Means"></a>k-Means</h4><ul>
-<li>Pros: Easy to implement</li>
-<li>Cons: Can converge at local minima, slow on very large datasets</li>
-<li>Works with: Numeric values</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/21/ML-Tips/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/21/ML-Tips/" itemprop="url">机器学习Tips</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-21T14:29:37+08:00">
-                2016-05-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  395
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="问题分类"><a href="#问题分类" class="headerlink" title="问题分类"></a>问题分类</h4><ul>
-<li>Supervised Learning: Approximation<ul>
-<li>Classification: y ~ {0,1}</li>
-<li>Regression: y ~ [0,1] ~ R</li>
-</ul>
-</li>
-<li>Unsupervised Learning: Description</li>
-<li>Reinforcement Learning</li>
-</ul>
-<h4 id="数据分类"><a href="#数据分类" class="headerlink" title="数据分类"></a>数据分类</h4><p>原始数据可能包含多种不同的类别，每个类别的数据特征不同，比如宝可梦种类、交易数据的个人/商家等。<br>建模前应辨别是否需要将数据分离，针对不同特点的数据分别建模。</p>
-<h4 id="一般步骤"><a href="#一般步骤" class="headerlink" title="一般步骤"></a>一般步骤</h4><ol>
-<li>快速建模，容忍不精确</li>
-<li>画出学习曲线，判断overfitting还是underfitting，是否需要更多的样本量/特征</li>
-<li>引入的特征一般最高到二次，即$x_i^2$；因为我们默认对现实中的问题，平滑的曲线可能更正确(三次以上会有波动)</li>
-<li>误差分析，从错误样本中找出改进方向</li>
-</ol>
-<h4 id="评估"><a href="#评估" class="headerlink" title="评估"></a>评估</h4><ul>
-<li>Precision(准确率，查准率) = $\frac{TP}{TP + FP} = \frac{TP}{预测真}$ 所有预测为真的结果里，有多少是正确的</li>
-<li>Recall(召回率，查全率) = $\frac{TP}{TP + FN} = \frac{TP}{实际真}$ 所有实际为真的样本里，有多少被预测了出来</li>
-<li>F1 Score = $\frac{2PR}{P+R}$ 权衡precision和recall</li>
-</ul>
-<h4 id="Induction-Deduction-Abduction"><a href="#Induction-Deduction-Abduction" class="headerlink" title="Induction, Deduction, Abduction"></a>Induction, Deduction, Abduction</h4><p><strong>Induction</strong> 归纳<br>    Cause -&gt; (Rule) -&gt; Effect, <strong>not</strong> always true</p>
-<p><strong>Deduction</strong>演绎<br>    Cause -&gt; Rule -&gt; (Effect), always true</p>
-<p><strong>Abduction</strong>溯因<br>    (Cause) -&gt; Rule -&gt; Effect, <strong>not</strong> always true</p>
-<p>With effect data, we use <strong>abduction</strong> to find its causes, then try to get a rule by <strong>induction</strong>, and finally deal with new data with <strong>deduction</strong>.</p>
-<h4 id="逻辑"><a href="#逻辑" class="headerlink" title="逻辑"></a>逻辑</h4><ul>
-<li>与(AND):$p\wedge q$，两个都为真{2}</li>
-<li>或(OR):$p\vee q$，至少一个为真{1,2}</li>
-<li>异或(XOR):$p\bigoplus q$，只有一个为真{1}</li>
-<li>或非(NOR = NOT + OR)，两个都为假{0}</li>
-<li>与非(NAND= NOT + AND)，至少一个假{0,1}</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3411,7 +3382,7 @@ Repeat R number of times:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">295</span>
+                  <span class="site-state-item-count">301</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3424,7 +3395,7 @@ Repeat R number of times:
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3513,7 +3484,7 @@ Repeat R number of times:
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">107.2k</span>
+    <span title="Site words total count">111.1k</span>
   
 </div>
 
