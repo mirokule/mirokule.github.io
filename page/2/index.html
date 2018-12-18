@@ -262,6 +262,435 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/19/Python-pandas-DataFrame/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/19/Python-pandas-DataFrame/" itemprop="url">pandas.DataFrame</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-19T11:12:59+08:00">
+                2018-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  449
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>class pandas.DataFrame(data=None, index=None, columns=None, dtype=None, copy=False)</p>
+<h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><p><strong>数据容量</strong></p>
+<ul>
+<li>ndims: 维度</li>
+<li>shape: 尺寸(h,w,b)</li>
+<li>size: 元素个数=h×w×b</li>
+<li>dtypes: 元素类型</li>
+</ul>
+<p><strong>表格组成</strong></p>
+<ul>
+<li>axes: 横纵轴的列表</li>
+<li>index: 行标签</li>
+<li>columns: 列标签</li>
+<li>values: 值的numpy数组</li>
+</ul>
+<p><strong>数据选取</strong></p>
+<ul>
+<li>at: 根据行列名称选取单个元素</li>
+<li>iat: 根据行列序号选取单个元素</li>
+<li>loc: 根据行列名称\Boolean序列选取内容</li>
+<li>iloc: 根据行列序号选取内容</li>
+</ul>
+<p><strong>其他</strong></p>
+<ul>
+<li>T: 转置</li>
+<li>empty: 是否为空</li>
+</ul>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p><strong>重复数据</strong></p>
+<ul>
+<li>duplicated(): 返回boolean序列</li>
+<li>drop_duplicates()</li>
+</ul>
+<p><strong>缺失值</strong></p>
+<ul>
+<li>isna(), isnull()</li>
+<li>notna(), notnull()</li>
+<li>dropna()</li>
+<li>fillna()</li>
+</ul>
+<p><strong>添加删除</strong></p>
+<ul>
+<li>append(): 添加行</li>
+<li>insert(): 插入列</li>
+<li>drop(): 删除行或列 </li>
+</ul>
+<p><strong>替换更新</strong></p>
+<ul>
+<li>replace(): 用新值替换旧的</li>
+<li>update(): 用另一个dataframe中的元素更新</li>
+</ul>
+<p><strong>重命名行列标签</strong></p>
+<ul>
+<li>rename(), rename_axis()</li>
+<li>add_prefix(), add_suffix(): 给标签添加前缀\后缀</li>
+</ul>
+<p><strong>查看内容</strong></p>
+<ul>
+<li>head(n), tail(n)</li>
+<li>info(): 简明摘要</li>
+<li>describe(): 统计信息</li>
+</ul>
+<p><strong>统计函数</strong></p>
+<ul>
+<li>sum()</li>
+<li>prod(), product()</li>
+<li>std(), var()</li>
+<li>skew(), kurt(), kurtosis()</li>
+<li>max(), min(), mean(), mode(), median()</li>
+</ul>
+<p><strong>单表运算</strong></p>
+<ul>
+<li>clip(), clip_lower(), clipupper()</li>
+<li>round()</li>
+<li>abs()</li>
+</ul>
+<p><strong>双表运算</strong></p>
+<ul>
+<li>add(): 两个dataframe的元素相加</li>
+<li>sub(), subtract()</li>
+<li>dot(): 矩阵乘法</li>
+<li>mul(), multiply(): 元素乘法</li>
+<li>div, divide()</li>
+<li>mod(): 取模</li>
+<li>corrwith(): 相关性</li>
+</ul>
+<p><strong>双表合并</strong></p>
+<ul>
+<li>merge()</li>
+<li>join()</li>
+<li>combine()</li>
+<li>combine_first()</li>
+</ul>
+<p><strong>重排</strong></p>
+<ul>
+<li>squeeze()</li>
+<li>stack()</li>
+<li>unstack()</li>
+<li>pivot</li>
+<li>pivot_table()</li>
+</ul>
+<p><strong>排序抽样</strong></p>
+<ul>
+<li>sort_index()</li>
+<li>sort_values()</li>
+<li>sample(n): 抽样样本</li>
+<li>nlargest(n), nsmallest(n): 根据指定列排序后，返回最大/最小的n行</li>
+</ul>
+<p><strong>迭代器</strong></p>
+<ul>
+<li>items(), iteritems(): (</li>
+<li>iterrows()</li>
+</ul>
+<p><strong>绘图</strong></p>
+<ul>
+<li>plot()</li>
+<li>boxplot()</li>
+<li>hist()</li>
+</ul>
+<p><strong>存储</strong></p>
+<ul>
+<li>to_csv()</li>
+<li>to_excel()</li>
+<li>to_hdf()</li>
+</ul>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p><strong>插入列</strong><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df = pd.DataFrame(columns=[<span class="string">'A'</span>,<span class="string">'B'</span>], data=[[<span class="number">1</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">4</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接使用新列名，只能在最右侧添加一列</span></span><br><span class="line">df[<span class="string">'C'</span>] = [<span class="number">5</span>,<span class="number">6</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用pd.concat，不能指定位置，可以添加多列</span></span><br><span class="line">pd.concat([df, pd.DataFrame(columns=[<span class="string">'D'</span>,<span class="string">'E'</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用reindex，可以指定位置，可以添加多列</span></span><br><span class="line">df.reindex(columns=list(<span class="string">'BCADE'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用insert()</span></span><br><span class="line">df.insert(loc, column, value, allow_duplicates=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/19/ML-ImbalancedClasses/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/19/ML-ImbalancedClasses/" itemprop="url">Imbalanced Classes</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-19T09:11:05+08:00">
+                2018-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  347
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>不平衡的数据集是指不同类别的样本数差距过大。<br>例如二分类问题中90个负样本，10个正样本。使用Accuracy会得到虚假的高准确率。</p>
+<h4 id="应对方案"><a href="#应对方案" class="headerlink" title="应对方案"></a>应对方案</h4><h6 id="1-收集更多数据"><a href="#1-收集更多数据" class="headerlink" title="1. 收集更多数据"></a>1. 收集更多数据</h6><p>数据分布可能改变，另外收集更多的小类别样本对后续重采样也有帮助。</p>
+<h6 id="2-更换Metric指标"><a href="#2-更换Metric指标" class="headerlink" title="2. 更换Metric指标"></a>2. 更换Metric指标</h6><p>推荐使用：</p>
+<ul>
+<li>Confusion Matrix</li>
+<li>Precision</li>
+<li>Recall</li>
+<li>F1 Score</li>
+</ul>
+<p>或者</p>
+<ul>
+<li>Kappa</li>
+<li>ROC Curve</li>
+</ul>
+<h6 id="3-重采样"><a href="#3-重采样" class="headerlink" title="3. 重采样"></a>3. 重采样</h6><p>对现有数据集重采样的方法有二：</p>
+<ul>
+<li>over-sampling: 向小类别样本集中添加样本的拷贝</li>
+<li>under-sampling: 从大类别样本集中删除样本</li>
+</ul>
+<h6 id="4-合成样本"><a href="#4-合成样本" class="headerlink" title="4. 合成样本"></a>4. 合成样本</h6><p>生成实际上并不存在的新样本，最常用的方法是SMOTE：Synthetic Minority Over-sampling Technique</p>
+<h6 id="5-使用不同的学习器"><a href="#5-使用不同的学习器" class="headerlink" title="5. 使用不同的学习器"></a>5. 使用不同的学习器</h6><p>Tree-Based Model通常也能在不平衡数据集上表现良好。</p>
+<h6 id="6-增加惩罚项"><a href="#6-增加惩罚项" class="headerlink" title="6. 增加惩罚项"></a>6. 增加惩罚项</h6><p>提高小类别样本分类错误时的cost，使分类器更注重这些样本。</p>
+<h6 id="7-另一种数据洞察"><a href="#7-另一种数据洞察" class="headerlink" title="7. 另一种数据洞察"></a>7. 另一种数据洞察</h6><p>将小类别样本分类问题当做另一种学习任务来处理：</p>
+<ul>
+<li>异常检测(Anomaly Detection): 将小类别样本当做异常点，使用异常检测的算法来识别</li>
+<li>变化检测(Change Detection): 类似于寻找用户行为的变化</li>
+</ul>
+<h6 id="8-创造性"><a href="#8-创造性" class="headerlink" title="8. 创造性"></a>8. 创造性</h6><p>将问题分解为较小的子问题集</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/18/Python-pandas-SetOptions/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3149,317 +3578,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/04/Keras-Pooling/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/04/Keras-Pooling/" itemprop="url">Keras池化层Pooling</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T11:10:49+08:00">
-                2018-05-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  110
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="MaxPooling1D-MaxPooling2D-MaxPooling3D"><a href="#MaxPooling1D-MaxPooling2D-MaxPooling3D" class="headerlink" title="MaxPooling1D, MaxPooling2D, MaxPooling3D"></a>MaxPooling1D, MaxPooling2D, MaxPooling3D</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.MaxPooling1D(pool_size=<span class="number">2</span>, strides=<span class="keyword">None</span>, padding=<span class="string">'valid'</span>)</span><br><span class="line">keras.layers.MaxPooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=<span class="keyword">None</span>, padding=<span class="string">'valid'</span>, data_format=<span class="keyword">None</span>)</span><br><span class="line">keras.layers.MaxPooling3D(pool_size=(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>), strides=<span class="keyword">None</span>, padding=<span class="string">'valid'</span>, data_format=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>pool_size: 池化窗口大小</li>
-<li>strides: 步长</li>
-<li>padding: ‘valid’,’same’</li>
-<li>data_format: ‘channels_first’, ‘channels_last’</li>
-</ul>
-<h4 id="AveragePooling1D-AveragePooling2D-AveragePooling3D"><a href="#AveragePooling1D-AveragePooling2D-AveragePooling3D" class="headerlink" title="AveragePooling1D, AveragePooling2D, AveragePooling3D"></a>AveragePooling1D, AveragePooling2D, AveragePooling3D</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.AveragePooling1D(pool_size=<span class="number">2</span>, strides=<span class="keyword">None</span>, padding=<span class="string">'valid'</span>)</span><br><span class="line">keras.layers.AveragePooling2D(pool_size=(<span class="number">2</span>, <span class="number">2</span>), strides=<span class="keyword">None</span>, padding=<span class="string">'valid'</span>, data_format=<span class="keyword">None</span>)</span><br><span class="line">keras.layers.AveragePooling3D(pool_size=(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>), strides=<span class="keyword">None</span>, padding=<span class="string">'valid'</span>, data_format=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="GlobalMaxPooling1D-GlobalMaxPooling2D"><a href="#GlobalMaxPooling1D-GlobalMaxPooling2D" class="headerlink" title="GlobalMaxPooling1D, GlobalMaxPooling2D"></a>GlobalMaxPooling1D, GlobalMaxPooling2D</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.GlobalMaxPooling1D()</span><br><span class="line">keras.layers.GlobalMaxPooling2D(data_format=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="GlobalAveragePooling1D-GlobalAveragePooling2D"><a href="#GlobalAveragePooling1D-GlobalAveragePooling2D" class="headerlink" title="GlobalAveragePooling1D, GlobalAveragePooling2D"></a>GlobalAveragePooling1D, GlobalAveragePooling2D</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.GlobalAveragePooling1D()</span><br><span class="line">keras.layers.GlobalAveragePooling2D(data_format=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/04/Keras-Convolutional/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/04/Keras-Convolutional/" itemprop="url">Keras卷积层Convolutional</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T10:27:28+08:00">
-                2018-05-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  564
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Conv1D-Conv2D-Conv3D"><a href="#Conv1D-Conv2D-Conv3D" class="headerlink" title="Conv1D, Conv2D, Conv3D"></a>Conv1D, Conv2D, Conv3D</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Conv1D(filters, kernel_size, strides=<span class="number">1</span>, padding=<span class="string">'valid'</span>, </span><br><span class="line">	dilation_rate=<span class="number">1</span>, activation=<span class="keyword">None</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">keras.layers.Conv2D(filters, kernel_size, strides=(<span class="number">1</span>, <span class="number">1</span>), padding=<span class="string">'valid'</span>, data_format=<span class="keyword">None</span>, </span><br><span class="line">	dilation_rate=(<span class="number">1</span>, <span class="number">1</span>), activation=<span class="keyword">None</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">keras.layers.Conv3D(filters, kernel_size, strides=(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>), padding=<span class="string">'valid'</span>, data_format=<span class="keyword">None</span>, </span><br><span class="line">	dilation_rate=(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>), activation=<span class="keyword">None</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>一维卷积层(时域卷积)，用来在一维输入信号上进行邻域滤波。<br>二维卷积层，对图像的空域卷积。<br>三维卷积层对三维的输入进行滑动窗卷积。</p>
-<ul>
-<li>filters: 卷积核的数目</li>
-<li>kernel_size: 卷积核的长度和宽度</li>
-<li>strides: 卷积步长；若为单个整数则表示在各个维度步长相同；与dilation_rate不兼容</li>
-<li>padding: ‘valid’,’same’</li>
-<li>data_format: ‘channels_first’,’channels_last’，指定通道维的位置</li>
-<li>dilation_rate: 膨胀比率；与strides不兼容</li>
-<li>activation: 激活函数，不指定则不使用</li>
-<li>use_bias: 是否使用偏置项</li>
-</ul>
-<h4 id="SeparableCon2D"><a href="#SeparableCon2D" class="headerlink" title="SeparableCon2D"></a>SeparableCon2D</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.SeparableConv2D(filters, kernel_size, strides=(<span class="number">1</span>, <span class="number">1</span>), padding=<span class="string">'valid'</span>, data_format=<span class="keyword">None</span>, </span><br><span class="line">	dilation_rate=(<span class="number">1</span>, <span class="number">1</span>), depth_multiplier=<span class="number">1</span>, activation=<span class="keyword">None</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	depthwise_initializer=<span class="string">'glorot_uniform'</span>, pointwise_initializer=<span class="string">'glorot_uniform'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	depthwise_regularizer=<span class="keyword">None</span>, pointwise_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	depthwise_constraint=<span class="keyword">None</span>, pointwise_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>在深度方向上的可分离卷积，可看做两个卷积核的叠加。<br>首先对每个channel分别卷积(depthwise)，然后将结果卷积混合到输出(pointwise)。</p>
-<ul>
-<li>depth_multipiler: 第一步(depthwise)中每个输入channel生成多少个输出channel</li>
-</ul>
-<h4 id="Conv2DTranspose"><a href="#Conv2DTranspose" class="headerlink" title="Conv2DTranspose"></a>Conv2DTranspose</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Conv2DTranspose(filters, kernel_size, strides=(<span class="number">1</span>, <span class="number">1</span>), padding=<span class="string">'valid'</span>, data_format=<span class="keyword">None</span>, </span><br><span class="line">	activation=<span class="keyword">None</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>转置卷积层(反卷积)，用于卷积结果的逆向变换。<br>例如，将具有卷积层输出shape的tensor转换为卷积层输入shape的tensor.</p>
-<h4 id="Cropping1D-Cropping2D-Cropping3D"><a href="#Cropping1D-Cropping2D-Cropping3D" class="headerlink" title="Cropping1D, Cropping2D, Cropping3D"></a>Cropping1D, Cropping2D, Cropping3D</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Cropping1D(cropping=(<span class="number">1</span>,<span class="number">1</span>))</span><br><span class="line">keras.layers.Cropping2D(cropping=((<span class="number">0</span>, <span class="number">0</span>), (<span class="number">0</span>, <span class="number">0</span>)), data_format=<span class="keyword">None</span>)</span><br><span class="line">keras.layers.Cropping3D(cropping=((<span class="number">1</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">1</span>)), data_format=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>对输入裁剪，cropping=(i,j)指定在每个轴的首、尾分别裁掉多少个元素。</p>
-<h4 id="UpSampling1D-UpSampling2D-UpSampling3D"><a href="#UpSampling1D-UpSampling2D-UpSampling3D" class="headerlink" title="UpSampling1D, UpSampling2D, UpSampling3D"></a>UpSampling1D, UpSampling2D, UpSampling3D</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.UpSampling1D(size=<span class="number">2</span>)</span><br><span class="line">keras.layers.UpSampling2D(size=(<span class="number">2</span>, <span class="number">2</span>), data_format=<span class="keyword">None</span>)</span><br><span class="line">keras.layers.UpSampling3D(size=(<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>), data_format=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>将每个轴的元素分别重复(i,j,k)次。</p>
-<h4 id="ZeroPadding1D-ZeroPadding2D-ZeroPadding3D"><a href="#ZeroPadding1D-ZeroPadding2D-ZeroPadding3D" class="headerlink" title="ZeroPadding1D, ZeroPadding2D, ZeroPadding3D"></a>ZeroPadding1D, ZeroPadding2D, ZeroPadding3D</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.ZeroPadding1D(padding=<span class="number">1</span>)</span><br><span class="line">keras.layers.ZeroPadding2D(padding=(<span class="number">1</span>, <span class="number">1</span>), data_format=<span class="keyword">None</span>)</span><br><span class="line">keras.layers.ZeroPadding3D(padding=(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>), data_format=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>在数据每个维度上的边界处填充(i,j,k)个0.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3514,7 +3632,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">301</span>
+                  <span class="site-state-item-count">303</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3527,7 +3645,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3616,7 +3734,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">111.1k</span>
+    <span title="Site words total count">112.7k</span>
   
 </div>
 

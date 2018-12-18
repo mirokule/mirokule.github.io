@@ -262,6 +262,327 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-Initializing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/10/DL-Initializing/" itemprop="url">神经网络权重初始化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T08:20:04+08:00">
+                2018-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  400
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>深度学习中的权重初始化对模型收敛速度和模型质量有重要影响</strong>。</p>
+<ul>
+<li>对tanh，W可初始化为$randn(n^{[l]}, n^{[l-1]}) \ast \sqrt{\frac{1}{n^{[l-1]}}}$ (Xavier Initialization)</li>
+<li>对ReLU，W可初始化为$randn(n^{[l]}, n^{[l-1]}) \ast \sqrt{\frac{2}{n^{[l-1]}}}$ (He Initialization)</li>
+<li>也可以初始化为$randn(n^{[l]}, n^{[l-1]}) + \sqrt{\frac{1}{n^{[l-1]}\,+\,n^{[l]}}}$ </li>
+</ul>
+<h4 id="简化模型"><a href="#简化模型" class="headerlink" title="简化模型"></a>简化模型</h4><p>每层只有一个神经元的神经网络：<br><img src="/img/singleNN.png"><br>损失函数为$C$，各层输出分别是$a_1, a_2, a_3, a_4$<br>根据求导的链式法则有：<br>$$ \frac{\partial C}{\partial \omega_1}=a_0\sigma’(z_1)\omega_2\sigma’(z_2)\omega_3\sigma’(z_3)\omega_4\sigma’(z_4)\frac{\partial C}{\partial a_4} $$<br>$$ \frac{\partial C}{\partial b_1}=\sigma’(z_1)\omega_2\sigma’(z_2)\omega_3\sigma’(z_3)\omega_4\sigma’(z_4)\frac{\partial C}{\partial a_4} $$</p>
+<h4 id="0-全部为0"><a href="#0-全部为0" class="headerlink" title="0. 全部为0"></a>0. 全部为0</h4><p>全部初始化为0是不可接受的，这会导致所有节点的行为相同，网络失效。<br>后向传播时，梯度也全为0，参数无法更新。</p>
+<h4 id="1-随机初始化"><a href="#1-随机初始化" class="headerlink" title="1. 随机初始化"></a>1. 随机初始化</h4><p>随机初始化的分布选择不当，也会导致网络优化陷入困境。</p>
+<ul>
+<li>参数过大，会带来梯度爆炸</li>
+<li>参数过小，会带来梯度消失</li>
+</ul>
+<h4 id="2-Xavier初始化"><a href="#2-Xavier初始化" class="headerlink" title="2. Xavier初始化"></a>2. Xavier初始化</h4><p>主要思想：保持输入和输出的方差一致，这就避免了所有输出值都趋向于0</p>
+<ul>
+<li>配合tanh等函数能获得比较好的结果</li>
+<li>ReLU和PReLU效果不好</li>
+</ul>
+<h4 id="3-He初始化"><a href="#3-He初始化" class="headerlink" title="3. He初始化"></a>3. He初始化</h4><p>主要思想：假定ReLU网络中每一层只有一半的神经元被激活，所以要保持方差不变，只需要在Xavier的基础上除以2</p>
+<ul>
+<li>配合ReLU效果较好</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-ActivationFunction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/10/DL-ActivationFunction/" itemprop="url">激活函数(Activation Function)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T07:27:43+08:00">
+                2018-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  444
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>激活函数用于在学习器中引入非线性因素。<br>$$ Y = Activation(\Sigma(weight \ast input) + bias) $$<br>不引入非线性因素的神经网络，本质上仍是一个线性回归模型。</p>
+<p>激活函数主要有以下几种：</p>
+<ul>
+<li>sigmoid: 适合分类器</li>
+<li>tanh: sigmoid改进版</li>
+<li>ReLU: 大多数情况下适用，只能在隐藏层中使用</li>
+<li>Leaky ReLU: 避免死神经元</li>
+</ul>
+<p><strong>选择经验</strong><br>选择激活函数时，可以先从<strong>ReLU</strong>开始。<br>如果ReLU没有提供最优结果，再尝试其他激活函数。</p>
+<h4 id="1-sigmoid"><a href="#1-sigmoid" class="headerlink" title="1. sigmoid"></a>1. sigmoid</h4><p>曾将广泛使用的激活函数，由于自身缺陷，目前已很少使用。</p>
+<ul>
+<li>当输入远离原点时，梯度太小；多层神经网络中，太小的各层梯度叠加后会消失，使学习速度缓慢</li>
+<li>输出不以0为中心</li>
+<li>要进行指数运算</li>
+</ul>
+<p><img src="/img/sigmoid.png"><br>$$ sigmoid(x) = \frac{1}{1+e^{-x}} $$<br>目前仅在将值分类到特定类别时使用，比如最终输出$y\in(0,1)$的网络中的最后一层。</p>
+<h4 id="2-tanh"><a href="#2-tanh" class="headerlink" title="2. tanh"></a>2. tanh</h4><p>tanh是sigmoid的一个放大版本，梯度比sigmoid更陡。<br>tanh解决了所有值符号相同的问题，输出区间(-1,1)，为0为中心。<br><img src="/img/tanh.png"></p>
+<p>$$ tanh(x) = 2\ast sigmoid(2x) - 1 $$<br>$$ tanh(x) = \frac{2}{1+e^{-2x}} - 1 $$</p>
+<h4 id="3-ReLU"><a href="#3-ReLU" class="headerlink" title="3. ReLU"></a>3. ReLU</h4><p>ReLU是使用最广泛的激活函数。<br>最大的优点在于不会同时激活所有的神经元，这种稀疏性使其变得高效且易于计算。<br><img src="/img/relu.png"></p>
+<p>$$ ReLU(x) = max(0, x) $$</p>
+<h4 id="4-Leaky-ReLU-PReLU"><a href="#4-Leaky-ReLU-PReLU" class="headerlink" title="4. Leaky ReLU / PReLU"></a>4. Leaky ReLU / PReLU</h4><p>在ReLU中，当x小于0时梯度为0，使得该区域的神经元死亡。<br>为了解决这个问题，用斜线代替水平线，去除零梯度。<br><img src="/img/prelu.png"></p>
+<p>$$ PReLU(x) = ax\; for \; x &lt; 0 $$<br>$$ PReLU(x) = x\; for \; x \geq 0 $$</p>
+<p>这里a是一个很小的值，比如0.01.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-GradientChecking/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3358,363 +3679,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/27/Python-pandas-Sort/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/27/Python-pandas-Sort/" itemprop="url">pandas排序相关函数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T13:52:51+08:00">
-                2018-03-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  257
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-sort-values"><a href="#1-sort-values" class="headerlink" title="1.sort_values"></a>1.sort_values</h4><p>DataFrame.sort_values(by, axis=0, ascending=True, inplace=False, kind=’quicksort’, na_position=’last’)<br>对某列或某几列values排序，返回排序后的DataFrame.</p>
-<p>参数</p>
-<ul>
-<li>by: str, list, 排序依据的列名</li>
-<li>axis: 默认0对行排序，1对列</li>
-<li>ascending: 默认True升序</li>
-<li>inplace: 默认False返回拷贝</li>
-<li>kind: {‘quicksort’,’mergesort’,’heapsort’}排序算法</li>
-<li>na_position: {‘first’, ‘last’}，把NaN放在开头还是末尾</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>sorted_obj: DataFrame</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.sort_values(by=[<span class="string">'col1'</span>,<span class="string">'col2'</span>])</span><br><span class="line">df.sort_values(by=[<span class="string">'col1'</span>], ascending=<span class="keyword">False</span>)</span><br><span class="line">df.sort_values(by=[<span class="string">'col1'</span>], na_position=<span class="string">'first'</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="2-sort-index"><a href="#2-sort-index" class="headerlink" title="2.sort_index"></a>2.sort_index</h4><p>DataFrame.sort_values(axis=0, level=None, ascending=True, inplace=False, kind=’quicksort’, na_position=’last’, sort_remaining=True, by=None)</p>
-<p>参数</p>
-<ul>
-<li>axis, ascending, inplace, kind, na_position: 同上</li>
-<li>level: 多层索引中指定index level</li>
-<li>sort_remaining: 多层索引中，对指定level排序后，继续对剩余的index排序</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>sorted_obj: DataFrame</li>
-</ul>
-<h4 id="3-nlargest"><a href="#3-nlargest" class="headerlink" title="3.nlargest"></a>3.nlargest</h4><p>DataFrame.nlargest(n, columns, keep=’first’)<br>返回排序后最大的N个样本(整行)。</p>
-<p>参数</p>
-<ul>
-<li>n: 返回值的个数</li>
-<li>columns: str, list，排序依据的列名</li>
-<li>keep: {‘first’,’last’}若有重复值，取开头的还是末尾的</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>return: DataFrame</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.nlargest(<span class="number">3</span>,<span class="string">'col1'</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="4-nsmallest"><a href="#4-nsmallest" class="headerlink" title="4.nsmallest"></a>4.nsmallest</h4><p>DataFrame.nsmallest(n, columns, keep=’first’)<br>参考nlargest.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/26/Python-sklearn-Split/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/26/Python-sklearn-Split/" itemprop="url">交叉验证Split划分</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-26T11:26:06+08:00">
-                2018-03-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  446
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-KFold"><a href="#1-KFold" class="headerlink" title="1.KFold"></a>1.KFold</h4><p>class sklearn.model_selection.KFold(n_splits=3, shuffle=False, random_state=None)<br>将所有数据划成k份，使用k-1份训练，保留1份用于验证。<br>通常建议使用5份或10份；当k=n时，等同于Leave One Out。</p>
-<p>参数</p>
-<ul>
-<li>n_splits: number of folds，最小2</li>
-<li>shuffle: 划分前是否Shuffle</li>
-<li>random_state: 当shuffle==True时使用的种子</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>get_n_splits(X=None, y=None, groups=None): number of splits</li>
-<li>split(X, y=None, groups=None): generate indices to split data into training and test set</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> KFold</span><br><span class="line"></span><br><span class="line">kf = KFold(n_splits=<span class="number">2</span>)</span><br><span class="line">kf.split(data)</span><br><span class="line">kf.get_n_splits(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环</span></span><br><span class="line"><span class="keyword">for</span> train_index, test_index <span class="keyword">in</span> kf.split(X):</span><br><span class="line">	print(<span class="string">"Train:"</span>, train_index, <span class="string">"Test:"</span>, test_index)</span><br><span class="line"><span class="comment"># TRAIN:[2 3], TEST:[0,1]</span></span><br><span class="line"><span class="comment"># TRAIN:[0 1], TEST:[2,3]</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="2-Repeated-KFold"><a href="#2-Repeated-KFold" class="headerlink" title="2.Repeated KFold"></a>2.Repeated KFold</h4><p>class sklearn.model_selection.RepeatedKFold(n_splits=5, n_repeats=10, random_state=None)<br>将KFold重复n次，每次可以生成不同的划分。</p>
-<p>参数</p>
-<ul>
-<li>n_splits: number of folds</li>
-<li>n_repeats: number of times repeated</li>
-<li>random_state</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>get_n_splits(X=None, y=None, groups=None)</li>
-<li>split(X, y=None, groups=None)</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> RepeatedKFold</span><br><span class="line">rkf = RepeatedKFold(n_splits=<span class="number">2</span>, n_repeats=<span class="number">2</span>, random_state=<span class="number">12313</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="3-ShuffleSplit"><a href="#3-ShuffleSplit" class="headerlink" title="3.ShuffleSplit"></a>3.ShuffleSplit</h4><p>class sklearn.model_selection.ShuffleSplit(n_splits=10, test_size=’default’, train_size=None, random_state=None)<br>可以分别指定splits和test_size，样本shuffle后再划分。<br>和KFold相比，重复次数和划分方式实现了解耦。</p>
-<p>参数</p>
-<ul>
-<li>n_splits: number of re-shuffling &amp; splitting </li>
-<li>test_size: 如果train_size没有指定，则默认0.1</li>
-<li>train_size: (0.0~1.0)，或者用整数表示的样本数</li>
-<li>random_state:</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>get_n_splits(X=None, y=None, groups=None)</li>
-<li>split(X, y=None, groups=None)</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> ShuffleSplit</span><br><span class="line">ss = ShuffleSplit(n_splits=<span class="number">3</span>, test_size=<span class="number">0.25</span>, random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="4-Leave-One-Out-LOO"><a href="#4-Leave-One-Out-LOO" class="headerlink" title="4.Leave One Out(LOO)"></a>4.Leave One Out(LOO)</h4><p>每次使用n-1个样本训练模型，用剩余的1个样本验证。<br>每次训练出的模型差别不大，测试结果的波动较大。<br>通常不如划分为5份或10份。</p>
-<h4 id="5-Leave-P-Out-LPO"><a href="#5-Leave-P-Out-LPO" class="headerlink" title="5.Leave P Out(LPO)"></a>5.Leave P Out(LPO)</h4><p>每次保留p个样本用于验证，使用n-p个样本训练。<br>与LOO和KFold的区别在于，p&gt;1时测试集可能是<strong>重复</strong>的。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3769,7 +3733,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">301</span>
+                  <span class="site-state-item-count">303</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3782,7 +3746,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3871,7 +3835,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">111.1k</span>
+    <span title="Site words total count">112.7k</span>
   
 </div>
 

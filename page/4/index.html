@@ -262,6 +262,378 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/21/DL-WordEmbedding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/21/DL-WordEmbedding/" itemprop="url">Word Embedding</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-21T15:13:44+08:00">
+                2018-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,543
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Word Embedding是要从数据中自动学习到输入空间到Distributed Representation空间的映射f.</p>
+<h3 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h3><p>单词的One-hot编码失去了单词词意之间的联系。<br>例如man和woman的距离应该小于man和apple的距离，而在one-hot编码中，每个单词之间的距离都一样。<br>为了解决这个问题，引入Word Embedding编码，可以看做是一种类别编码。<br>例如embedding矩阵有300个维度，每个单词在这300个维度上都有一个分数，同类单词的分数应该相近。</p>
+<p>用E来表示embedding矩阵，那么有$E\cdot O_j = e_j$。<br>其中$O_j$是单词的one-hot编码，$e_j$是单词的embedding编码。<br>embedding编码不仅引入单词语意的相关性，还缩短了编码长度(onehot词汇表10k -&gt; embedding维度300).<br>可以通过t-SNE等非线性变换方式将每个单词的300维embedding编码投射到2-D平面上，观察不同单词之间的距离。</p>
+<p>如果要量化单词之间的相似性，方法有二：</p>
+<ul>
+<li>cosine相似性：计算向量夹角$ \frac{u^Tv}{\mid\mid u-v \mid\mid} $</li>
+<li>差值距离：$\mid\mid u-v \mid\mid^2$</li>
+</ul>
+<h6 id="提升泛化能力"><a href="#提升泛化能力" class="headerlink" title="提升泛化能力"></a>提升泛化能力</h6><p>Word Embedding极大提升了<strong>训练数据较少</strong>时模型的泛化能力。<br>将模型的输入由单词的one-hot编码改为embedding编码后，即便模型遇到一个从未见过的新词，也可以通过embedding编码推断出新词的类别、近似语意。<br><strong>注意</strong>：对输入数据较多的模型，比如翻译等，word embedding并不适用。</p>
+<h3 id="如何得到embedding矩阵"><a href="#如何得到embedding矩阵" class="headerlink" title="如何得到embedding矩阵"></a>如何得到embedding矩阵</h3><p>学习任务的输入是10k one-hot编码(x)，输出是300类别编码(y)。<br>在训练开始时我们并不知道Y是什么，没有样本，所以这是一个无监督学习。无监督学习的常用方法有二：</p>
+<ol>
+<li>挖掘输入X之间的关系，比如聚类；</li>
+<li>以目标输出Y构建一个新的任务：$g: y \rightarrow z$，其中z值已知。这样用数据X可以训练得到$k: x \rightarrow z$，也就是$z = g(f(x))$，中间的表达式$y=f(x)$是我们真正想要的目标。</li>
+</ol>
+<p>Word Embedding的训练方法偏向2.</p>
+<h4 id="1-Word2Vec"><a href="#1-Word2Vec" class="headerlink" title="1. Word2Vec"></a>1. Word2Vec</h4><p>Word2Vec模型中，主要有Skip-Gram和CBOW两种模型。<br>从直观上看，Skip-Gram是给定input word来预测上下文，而CBOW是给定上下文来预测input word。<br>本文以Skip-Gram为例。</p>
+<p><strong>Fake Task</strong><br>如上节所述，对非监督学习，我们要训练一个目标是任务z的神经网络，而神经网络的隐藏层参数才是真正的目标y。<br>神经网络的设计要求(x,z)可知可训练，那么就取(输入单词，上下文单词)来作为训练数据。神经网络的Fake Task z是通过输入一个单词，预测哪些单词最可能在其上下文出现。输出是多个单词的出现概率，使用softmax。<br>直观理解：语意相近的单词，比如kitty和cat，在训练数据中和它们一起出现的上下文单词也相近，对应网络中softmax的输出相近，因而隐藏层参数也相近。</p>
+<p><strong>输入数据</strong><br><img src="/img/skipGram.jpeg"><br>以上图距离为例，依次选取每个单词作为input word。设定窗口宽带为2，则从上下文就能得到形如(input, output)的训练数据。<br>得到单词对后，将其one-hot编码。假设词汇表有10k单词，那么模型的输入、输出都是10k维向量。</p>
+<p><strong>隐藏层</strong><br><img src="/img/word2vec.jpeg"><br>假设要用300个特征来表示一个单词，那么隐藏层的参数维度是(10k × 300)，没有使用激活函数。<br>当神经网络训练完毕后，这个隐藏层的(10k × 300)参数矩阵就是我们的目标y——embedding矩阵。<br>在实际计算中，由于输入是10k维度的稀疏矩阵，且one-hot编码只有1维是数字1，因而并不会消耗资源计算矩阵乘法，而是直接选取参数矩阵的某行。</p>
+<p><strong>网络训练</strong><br>(10k × 300)网络共有300万个参数，使用梯度下降法训练是相当慢的。更糟糕的是需要大量的样本数据来避免过拟合。<br>可以采用一些优化手段：</p>
+<ul>
+<li>将单词组合作为一个单词：比如New York</li>
+<li>对高频次单词抽样来减少训练样本数：the、to这种单词无助于语义理解，应以一定概率(或者全部)删除</li>
+<li>Negative Sampling：对每个样本(input, output)，从不是output的9999个单词中选取k个作为负样本一起加入训练，这样每次更新只针对参数矩阵的k+1行。例如k=5，那么每次更新300×6=1800个参数。</li>
+</ul>
+<h4 id="2-GloVe"><a href="#2-GloVe" class="headerlink" title="2. GloVe"></a>2. GloVe</h4><p>没有使用神经网络，而是统计规律。</p>
+<p><strong>共现矩阵</strong><br>定义 $X_{i,k}$ 是单词i的上下文中出现单词k的次数；<br>$X_i = \sum_k X_{i,k}$ 是单词i的上下文中出现单词k的总次数；<br>$P_{i,k} = P(k|i) = \frac{X_{i,k}}{X_i}$ 是单词k出现在单词i上下文的条件概率；<br>$ratio_{i,j,k} = \frac{P_{i,k}}{P_{j,k}}$ 是单词k出现在单词i、单词j上下文的概率之比。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">$ratio_{i,j,k}$</th>
+<th style="text-align:center">单词j,k相关</th>
+<th style="text-align:center">单词j,k不相关</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">单词i,k相关</td>
+<td style="text-align:center">趋近1</td>
+<td style="text-align:center">很大</td>
+</tr>
+<tr>
+<td style="text-align:center">单词i,k不相关</td>
+<td style="text-align:center">很小</td>
+<td style="text-align:center">趋近1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>目标函数</strong><br>假设我们得到了词向量$v_i, v_j, v_k$，通过某种函数计算的$ratio_{i,j,k}$ 与上表统计规律相符的话，就意味着词向量中蕴含了共现矩阵的信息。<br>经过一系列推导，得到目标函数如下：<br>$$ J = \sum_{i,j}^Nf(X_{i,j})(v_j^Tv_j + b_i + b_j - log(X_{i,j}))^2 $$</p>
+<p>其中权重函数$f(x)$应满足如下条件：</p>
+<ol>
+<li>$f(0)=0$：避免log(0)运算</li>
+<li>$f(x)$是非减函数：出现次数越多，权重越大</li>
+<li>$f(x)$对较大的x不能取太大的值：the、to这类单词</li>
+</ol>
+<p>综合这3点将$f(x)$定义为：<br>$$ f(x)=<br>\begin{cases}<br>(\frac{x}{x_{max}})^\alpha , \;\;if \;x&lt; x_{max} \\<br>1, \;\;if \;x\geq x_{max}<br>\end{cases} $$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/21/DL-RNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/21/DL-RNN/" itemprop="url">RNN</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-21T08:41:49+08:00">
+                2018-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  511
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>循环神经网络(Recurrent Neural Networks, RNN)是一种通过隐藏层节点周期性的连接，来捕捉序列化数据中动态信息的神经网络。<br><img src="/img/RNNTime.jpg"><br>经典RNN在预测&lt;t&gt;时刻的信息时，使用了前面&lt;t-k&gt;时刻的信息，没有使用后面&lt;t+k&gt;时刻的信息。<br>与之对应的变种：</p>
+<ul>
+<li>Bidirectional RNN：数据双向流动，后面的信息也参与前面信息的预测</li>
+<li>Deep RNNS：在每个时刻t，引入更多的层级。由于输入维度很大，通常不超过3层。</li>
+</ul>
+<h4 id="基本算法"><a href="#基本算法" class="headerlink" title="基本算法"></a>基本算法</h4><h6 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h6><p><img src="/img/RNN.png"><br><img src="/img/rnn_step_forward.png"></p>
+<h6 id="后向传播"><a href="#后向传播" class="headerlink" title="后向传播"></a>后向传播</h6><p><img src="/img/rnn_step_backprop.png"></p>
+<h4 id="结构类型"><a href="#结构类型" class="headerlink" title="结构类型"></a>结构类型</h4><p><img src="/img/rnn_n2n.jpeg"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">输入输出</th>
+<th style="text-align:center">输出单值</th>
+<th style="text-align:center">输出序列</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">输入单值</td>
+<td style="text-align:center">图片分类</td>
+<td style="text-align:center">生成诗歌/语音/音乐</td>
+</tr>
+<tr>
+<td style="text-align:center">输入序列</td>
+<td style="text-align:center">根据文章判断类型/情感</td>
+<td style="text-align:center">自然语言/语音处理</td>
+</tr>
+</tbody>
+</table>
+<h4 id="长期依赖问题-Long-Term-Dependency"><a href="#长期依赖问题-Long-Term-Dependency" class="headerlink" title="长期依赖问题(Long-Term Dependency)"></a>长期依赖问题(Long-Term Dependency)</h4><p>描述：&lt;t&gt;时刻的预测，需要前面&lt;t-N&gt;时刻的信息参照，其中N是很大的数。<br>比如语言模型中，主语后面接了一个很长的定语从句，然后出现了谓词，要根据主语判断谓词的单复数。<br>解决方法：网络中引入memory cell($c^{&lt;t&gt;}$)，将&lt;t&gt;时刻的特定信息保存下来。</p>
+<h6 id="1-LSTM"><a href="#1-LSTM" class="headerlink" title="1. LSTM"></a>1. LSTM</h6><p><img src="/img/LSTM.png"></p>
+<ul>
+<li>$c^{t}$: 当前时刻的记忆内容</li>
+<li>$\tilde{c}^{&lt;t&gt;}$: 当前时刻的备胎(由输入得到)，需进一步计算决定是否更新记忆</li>
+<li>$a^{t}$: 当前时刻的输出，进入下一时刻的Cell，或者变换后作为输出$y^{&lt;t&gt;}$</li>
+<li>$\Gamma_f^{&lt;t&gt;}$: Forget gate，为0时则忘记上一时刻的记忆内容$c^{&lt;t-1&gt;}$</li>
+<li>$\Gamma_u^{&lt;t&gt;}$: Update gate，为1时则使用当前时刻的候选$\tilde{c}^{&lt;t&gt;}$来更新记忆$c^{&lt;t&gt;}$</li>
+<li>$\Gamma_o^{&lt;t&gt;}$: Output gate，为1时则使用当前时刻的记忆$c^{&lt;t&gt;}$生成输出$a^{&lt;t&gt;}$</li>
+</ul>
+<h6 id="2-GRU"><a href="#2-GRU" class="headerlink" title="2. GRU"></a>2. GRU</h6><p><img src="/img/GRU.png"><br>GRU作为LSTM的一种变体，将Forget Gate和Update Gate合并到了一起。<br>有些结构还引入了Relative Gate等改动。<br>构造简单，效果出众，训练速度快，近年非常流行。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/19/DL-CNNNeuralStyle/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3073,7 +3445,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  338
+                  511
                 </span>
               
 
@@ -3100,18 +3472,23 @@
       
         
           
-            <p>过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。</p>
+            <p>机器学习的根本问题是优化和泛化之间的对立。优化(optimization)是指在训练数据上得到最佳性能；泛化(generalization)是指在前所未见的数据上的性能好坏。<br>过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。</p>
 <p>过拟合的处理方法包括：</p>
 <ul>
 <li>增加训练样本：Data Augmentation数据扩增</li>
+<li>减少网络容量：需要保证不会欠拟合</li>
 <li>正则化<ul>
-<li>L2</li>
-<li>Drop Out</li>
+<li>L1,L2</li>
+<li>Drop Out:核心思想是在每层的输出值中引入噪声，打破不显著的偶然模式</li>
 </ul>
 </li>
 <li>Early Stopping：不符合‘一次解决一个问题’的原则</li>
 </ul>
-<h4 id="1-L2正则化"><a href="#1-L2正则化" class="headerlink" title="1. L2正则化"></a>1. L2正则化</h4><p>在损失函数的末尾增加正则项：<br>$$ C = C_0 + \frac{\lambda}{2m} \sum_{\omega}\omega^2$$<br>原参数的导数变为：<br>$$ \frac{\partial C}{\partial \omega} = \frac{\partial C_0}{\partial \omega} + \frac{\lambda}{m}\omega $$<br>$$ \frac{\partial C}{\partial b} = \frac{\partial C_0}{\partial b} $$<br>每次迭代时，会使$\omega$变得更小，称作weight decay.</p>
+<h6 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h6><p>正则机制只在训练过程中添加，不会进入测试过程。<br>例如Keras的模型有两个模式：训练模式和测试模式。测试模式就不会启用正则机制。</p>
+<h4 id="1-L2正则化"><a href="#1-L2正则化" class="headerlink" title="1. L2正则化"></a>1. L2正则化</h4><p>在损失函数的末尾增加正则项：<br>$$ C = C_0 + \frac{\lambda}{2m} \sum_{\omega}\omega^2$$</p>
+<p>原参数的导数变为：<br>$$ \frac{\partial C}{\partial \omega} = \frac{\partial C_0}{\partial \omega} + \frac{\lambda}{m}\omega $$<br>$$ \frac{\partial C}{\partial b} = \frac{\partial C_0}{\partial b} $$</p>
+<p>每次迭代时，会使$\omega$变得更小，称作weight decay.</p>
+<p>正则项只在训练时添加，会使训练损失增大。</p>
 <h4 id="2-Drop-Out"><a href="#2-Drop-Out" class="headerlink" title="2. Drop Out"></a>2. Drop Out</h4><p>随机舍弃部分神经元，减少网络中的节点数。<br>算法流程：</p>
 <ol>
 <li>设定阈值prob_keep</li>
@@ -3128,327 +3505,6 @@
 <li>前向传播和后向传播都要drop out</li>
 <li>drop out打破了参数之间的共适应，近似理解为每次只调整部分参数</li>
 </ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-Initializing/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/10/DL-Initializing/" itemprop="url">神经网络权重初始化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T08:20:04+08:00">
-                2018-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  400
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>深度学习中的权重初始化对模型收敛速度和模型质量有重要影响</strong>。</p>
-<ul>
-<li>对tanh，W可初始化为$randn(n^{[l]}, n^{[l-1]}) \ast \sqrt{\frac{1}{n^{[l-1]}}}$ (Xavier Initialization)</li>
-<li>对ReLU，W可初始化为$randn(n^{[l]}, n^{[l-1]}) \ast \sqrt{\frac{2}{n^{[l-1]}}}$ (He Initialization)</li>
-<li>也可以初始化为$randn(n^{[l]}, n^{[l-1]}) + \sqrt{\frac{1}{n^{[l-1]}\,+\,n^{[l]}}}$ </li>
-</ul>
-<h4 id="简化模型"><a href="#简化模型" class="headerlink" title="简化模型"></a>简化模型</h4><p>每层只有一个神经元的神经网络：<br><img src="/img/singleNN.png"><br>损失函数为$C$，各层输出分别是$a_1, a_2, a_3, a_4$<br>根据求导的链式法则有：<br>$$ \frac{\partial C}{\partial \omega_1}=a_0\sigma’(z_1)\omega_2\sigma’(z_2)\omega_3\sigma’(z_3)\omega_4\sigma’(z_4)\frac{\partial C}{\partial a_4} $$<br>$$ \frac{\partial C}{\partial b_1}=\sigma’(z_1)\omega_2\sigma’(z_2)\omega_3\sigma’(z_3)\omega_4\sigma’(z_4)\frac{\partial C}{\partial a_4} $$</p>
-<h4 id="0-全部为0"><a href="#0-全部为0" class="headerlink" title="0. 全部为0"></a>0. 全部为0</h4><p>全部初始化为0是不可接受的，这会导致所有节点的行为相同，网络失效。<br>后向传播时，梯度也全为0，参数无法更新。</p>
-<h4 id="1-随机初始化"><a href="#1-随机初始化" class="headerlink" title="1. 随机初始化"></a>1. 随机初始化</h4><p>随机初始化的分布选择不当，也会导致网络优化陷入困境。</p>
-<ul>
-<li>参数过大，会带来梯度爆炸</li>
-<li>参数过小，会带来梯度消失</li>
-</ul>
-<h4 id="2-Xavier初始化"><a href="#2-Xavier初始化" class="headerlink" title="2. Xavier初始化"></a>2. Xavier初始化</h4><p>主要思想：保持输入和输出的方差一致，这就避免了所有输出值都趋向于0</p>
-<ul>
-<li>配合tanh等函数能获得比较好的结果</li>
-<li>ReLU和PReLU效果不好</li>
-</ul>
-<h4 id="3-He初始化"><a href="#3-He初始化" class="headerlink" title="3. He初始化"></a>3. He初始化</h4><p>主要思想：假定ReLU网络中每一层只有一半的神经元被激活，所以要保持方差不变，只需要在Xavier的基础上除以2</p>
-<ul>
-<li>配合ReLU效果较好</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-ActivationFunction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/10/DL-ActivationFunction/" itemprop="url">激活函数(Activation Function)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T07:27:43+08:00">
-                2018-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  444
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>激活函数用于在学习器中引入非线性因素。<br>$$ Y = Activation(\Sigma(weight \ast input) + bias) $$<br>不引入非线性因素的神经网络，本质上仍是一个线性回归模型。</p>
-<p>激活函数主要有以下几种：</p>
-<ul>
-<li>sigmoid: 适合分类器</li>
-<li>tanh: sigmoid改进版</li>
-<li>ReLU: 大多数情况下适用，只能在隐藏层中使用</li>
-<li>Leaky ReLU: 避免死神经元</li>
-</ul>
-<p><strong>选择经验</strong><br>选择激活函数时，可以先从<strong>ReLU</strong>开始。<br>如果ReLU没有提供最优结果，再尝试其他激活函数。</p>
-<h4 id="1-sigmoid"><a href="#1-sigmoid" class="headerlink" title="1. sigmoid"></a>1. sigmoid</h4><p>曾将广泛使用的激活函数，由于自身缺陷，目前已很少使用。</p>
-<ul>
-<li>当输入远离原点时，梯度太小；多层神经网络中，太小的各层梯度叠加后会消失，使学习速度缓慢</li>
-<li>输出不以0为中心</li>
-<li>要进行指数运算</li>
-</ul>
-<p><img src="/img/sigmoid.png"><br>$$ sigmoid(x) = \frac{1}{1+e^{-x}} $$<br>目前仅在将值分类到特定类别时使用，比如最终输出$y\in(0,1)$的网络中的最后一层。</p>
-<h4 id="2-tanh"><a href="#2-tanh" class="headerlink" title="2. tanh"></a>2. tanh</h4><p>tanh是sigmoid的一个放大版本，梯度比sigmoid更陡。<br>tanh解决了所有值符号相同的问题，输出区间(-1,1)，为0为中心。<br><img src="/img/tanh.png"></p>
-<p>$$ tanh(x) = 2\ast sigmoid(2x) - 1 $$<br>$$ tanh(x) = \frac{2}{1+e^{-2x}} - 1 $$</p>
-<h4 id="3-ReLU"><a href="#3-ReLU" class="headerlink" title="3. ReLU"></a>3. ReLU</h4><p>ReLU是使用最广泛的激活函数。<br>最大的优点在于不会同时激活所有的神经元，这种稀疏性使其变得高效且易于计算。<br><img src="/img/relu.png"></p>
-<p>$$ ReLU(x) = max(0, x) $$</p>
-<h4 id="4-Leaky-ReLU-PReLU"><a href="#4-Leaky-ReLU-PReLU" class="headerlink" title="4. Leaky ReLU / PReLU"></a>4. Leaky ReLU / PReLU</h4><p>在ReLU中，当x小于0时梯度为0，使得该区域的神经元死亡。<br>为了解决这个问题，用斜线代替水平线，去除零梯度。<br><img src="/img/prelu.png"></p>
-<p>$$ PReLU(x) = ax\; for \; x &lt; 0 $$<br>$$ PReLU(x) = x\; for \; x \geq 0 $$</p>
-<p>这里a是一个很小的值，比如0.01.</p>
 
           
         
@@ -3538,7 +3594,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">301</span>
+                  <span class="site-state-item-count">303</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3551,7 +3607,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3640,7 +3696,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">111.1k</span>
+    <span title="Site words total count">112.7k</span>
   
 </div>
 

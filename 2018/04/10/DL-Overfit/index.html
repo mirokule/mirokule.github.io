@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。 过拟合的处理方法包括：  增加训练样本：Data Augmentation数据扩增 正则化 L2 Drop Out   Early Stopping：不符合‘一次解决一个问题’的原则  1. L2正则化在损失函数的末尾增加正则项：$$ C = C_0 + \frac{\lambda}{2m} \su">
+<meta name="description" content="机器学习的根本问题是优化和泛化之间的对立。优化(optimization)是指在训练数据上得到最佳性能；泛化(generalization)是指在前所未见的数据上的性能好坏。过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。 过拟合的处理方法包括：  增加训练样本：Data Augmentation数据扩增 减少网络容量：需要保证不会欠拟合 正则化">
 <meta name="keywords" content="Machine Learning,Deep Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="神经网络过拟合">
 <meta property="og:url" content="http://mirokule.github.io/2018/04/10/DL-Overfit/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。 过拟合的处理方法包括：  增加训练样本：Data Augmentation数据扩增 正则化 L2 Drop Out   Early Stopping：不符合‘一次解决一个问题’的原则  1. L2正则化在损失函数的末尾增加正则项：$$ C = C_0 + \frac{\lambda}{2m} \su">
+<meta property="og:description" content="机器学习的根本问题是优化和泛化之间的对立。优化(optimization)是指在训练数据上得到最佳性能；泛化(generalization)是指在前所未见的数据上的性能好坏。过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。 过拟合的处理方法包括：  增加训练样本：Data Augmentation数据扩增 减少网络容量：需要保证不会欠拟合 正则化">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-10T02:16:08.254Z">
+<meta property="og:updated_time" content="2018-12-17T06:04:19.714Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络过拟合">
-<meta name="twitter:description" content="过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。 过拟合的处理方法包括：  增加训练样本：Data Augmentation数据扩增 正则化 L2 Drop Out   Early Stopping：不符合‘一次解决一个问题’的原则  1. L2正则化在损失函数的末尾增加正则项：$$ C = C_0 + \frac{\lambda}{2m} \su">
+<meta name="twitter:description" content="机器学习的根本问题是优化和泛化之间的对立。优化(optimization)是指在训练数据上得到最佳性能；泛化(generalization)是指在前所未见的数据上的性能好坏。过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。 过拟合的处理方法包括：  增加训练样本：Data Augmentation数据扩增 减少网络容量：需要保证不会欠拟合 正则化">
 
 
 
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  338
+                  511
                 </span>
               
 
@@ -349,18 +349,23 @@
       
 
       
-        <p>过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。</p>
+        <p>机器学习的根本问题是优化和泛化之间的对立。优化(optimization)是指在训练数据上得到最佳性能；泛化(generalization)是指在前所未见的数据上的性能好坏。<br>过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。</p>
 <p>过拟合的处理方法包括：</p>
 <ul>
 <li>增加训练样本：Data Augmentation数据扩增</li>
+<li>减少网络容量：需要保证不会欠拟合</li>
 <li>正则化<ul>
-<li>L2</li>
-<li>Drop Out</li>
+<li>L1,L2</li>
+<li>Drop Out:核心思想是在每层的输出值中引入噪声，打破不显著的偶然模式</li>
 </ul>
 </li>
 <li>Early Stopping：不符合‘一次解决一个问题’的原则</li>
 </ul>
-<h4 id="1-L2正则化"><a href="#1-L2正则化" class="headerlink" title="1. L2正则化"></a>1. L2正则化</h4><p>在损失函数的末尾增加正则项：<br>$$ C = C_0 + \frac{\lambda}{2m} \sum_{\omega}\omega^2$$<br>原参数的导数变为：<br>$$ \frac{\partial C}{\partial \omega} = \frac{\partial C_0}{\partial \omega} + \frac{\lambda}{m}\omega $$<br>$$ \frac{\partial C}{\partial b} = \frac{\partial C_0}{\partial b} $$<br>每次迭代时，会使$\omega$变得更小，称作weight decay.</p>
+<h6 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h6><p>正则机制只在训练过程中添加，不会进入测试过程。<br>例如Keras的模型有两个模式：训练模式和测试模式。测试模式就不会启用正则机制。</p>
+<h4 id="1-L2正则化"><a href="#1-L2正则化" class="headerlink" title="1. L2正则化"></a>1. L2正则化</h4><p>在损失函数的末尾增加正则项：<br>$$ C = C_0 + \frac{\lambda}{2m} \sum_{\omega}\omega^2$$</p>
+<p>原参数的导数变为：<br>$$ \frac{\partial C}{\partial \omega} = \frac{\partial C_0}{\partial \omega} + \frac{\lambda}{m}\omega $$<br>$$ \frac{\partial C}{\partial b} = \frac{\partial C_0}{\partial b} $$</p>
+<p>每次迭代时，会使$\omega$变得更小，称作weight decay.</p>
+<p>正则项只在训练时添加，会使训练损失增大。</p>
 <h4 id="2-Drop-Out"><a href="#2-Drop-Out" class="headerlink" title="2. Drop Out"></a>2. Drop Out</h4><p>随机舍弃部分神经元，减少网络中的节点数。<br>算法流程：</p>
 <ol>
 <li>设定阈值prob_keep</li>
@@ -502,7 +507,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">301</span>
+                  <span class="site-state-item-count">303</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -515,7 +520,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -586,7 +591,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-L2正则化"><span class="nav-number">1.</span> <span class="nav-text">1. L2正则化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Drop-Out"><span class="nav-number">2.</span> <span class="nav-text">2. Drop Out</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#注意"><span class="nav-number">1.</span> <span class="nav-text">注意</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-L2正则化"><span class="nav-number"></span> <span class="nav-text">1. L2正则化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Drop-Out"><span class="nav-number"></span> <span class="nav-text">2. Drop Out</span></a></div>
             
 
           </div>
@@ -620,7 +625,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">111.1k</span>
+    <span title="Site words total count">112.7k</span>
   
 </div>
 
