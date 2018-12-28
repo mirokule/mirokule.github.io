@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Gate of Babylon">
 <meta property="og:description" content="回调函数是一组在训练的特定阶段被调用的函数，可以用来观察网络内部的状态。回调函数通常被传递到模型的 fit() 方法中。 Callbackkeras.callbacks.Callback()回调函数的抽象类，定义新的回调函数必须继承此类 BaseLoggerkeras.callbacks.BaseLogger()Callback that accumulates epoch averages of">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-16T03:30:23.907Z">
+<meta property="og:updated_time" content="2018-12-28T08:17:11.893Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Keras回调函数Callbacks">
 <meta name="twitter:description" content="回调函数是一组在训练的特定阶段被调用的函数，可以用来观察网络内部的状态。回调函数通常被传递到模型的 fit() 方法中。 Callbackkeras.callbacks.Callback()回调函数的抽象类，定义新的回调函数必须继承此类 BaseLoggerkeras.callbacks.BaseLogger()Callback that accumulates epoch averages of">
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  496
+                  638
                 </span>
               
 
@@ -353,6 +353,8 @@
 <h4 id="Callback"><a href="#Callback" class="headerlink" title="Callback"></a>Callback</h4><p>keras.callbacks.Callback()<br>回调函数的抽象类，定义新的回调函数必须继承此类</p>
 <h4 id="BaseLogger"><a href="#BaseLogger" class="headerlink" title="BaseLogger"></a>BaseLogger</h4><p>keras.callbacks.BaseLogger()<br>Callback that accumulates epoch averages of metrics.<br>计算metrics指标的累加epoch平均值。<br>在每个keras模型中自动调用。</p>
 <h4 id="History"><a href="#History" class="headerlink" title="History"></a>History</h4><p>keras.callbacks.History()<br>History对象即为fit() 方法的返回值。<br>在每个keras模型中自动调用。<br>History.history是一个字典，键值包括[‘acc’,’loss’,’val_acc’,’val_loss’,’lr’]等。<br>value是长度=epoch的列表，即每个epoch记录一次数据。</p>
+<h4 id="TensorBoard"><a href="#TensorBoard" class="headerlink" title="TensorBoard"></a>TensorBoard</h4><p>当使用TensorFlow作为后台时，也可以在CallBack函数里使用TensorBoard.<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">callbacks = [</span><br><span class="line">	keras.callbacks.TensorBoard(</span><br><span class="line">		log_dir=<span class="string">'my_log_dir'</span>, <span class="comment"># 日志写入位置</span></span><br><span class="line">		histogram_freq=<span class="number">1</span>, <span class="comment"># 每一轮都要记录激活直方图</span></span><br><span class="line">		embeddings_freq=<span class="number">1</span>, <span class="comment"># 每一轮都要记录嵌入数据</span></span><br><span class="line">	)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">history = model.fit(X_train, y_train,</span><br><span class="line">	epochs = <span class="number">20</span>,</span><br><span class="line">	batch_size = <span class="number">128</span>,</span><br><span class="line">	validation_split = <span class="number">0.2</span>,</span><br><span class="line">	callbacks = callbacks)</span><br></pre></td></tr></table></figure></p>
+<p>启动之后，通过浏览器打开<a href="http://localhost:6006查看" target="_blank" rel="noopener">http://localhost:6006查看</a><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tensorboard --logdir=my_log_dir</span><br></pre></td></tr></table></figure></p>
 <h4 id="ReduceLROnPlateau"><a href="#ReduceLROnPlateau" class="headerlink" title="ReduceLROnPlateau"></a>ReduceLROnPlateau</h4><p>keras.callbacks.ReduceLROnPlateau(monitor=’val_loss’, factor=0.1, patience=10, verbose=0, mode=’auto’, epsilon=0.0001, cooldown=0, min_lr=0)<br>当评价指标不再提升时，减少学习速率。<br>参数</p>
 <ul>
 <li>mointor: 要监测的评价指标</li>
@@ -363,6 +365,7 @@
 <li>cooldown: 学习率减少后，经过多少个epoch后才会再次触发</li>
 <li>min_lr: 学习速率下限</li>
 </ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">callbacks_list = [</span><br><span class="line">	keras.callbacks.ReduceLROnPlateau(</span><br><span class="line">		moniter = <span class="string">'val_loss'</span>,</span><br><span class="line">		factor = <span class="number">0.1</span>,</span><br><span class="line">		patience = <span class="number">10</span>,</span><br><span class="line">	)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h4 id="EarlyStopping"><a href="#EarlyStopping" class="headerlink" title="EarlyStopping"></a>EarlyStopping</h4><p>keras.callbacks.EarlyStopping(monitor=’val_loss’, min_delta=0, patience=0, verbose=0, mode=’auto’)<br>当评价指标不再提升时，中止训练。<br>参数</p>
 <ul>
 <li>monitor: 要监测的评价指标</li>
@@ -371,6 +374,7 @@
 <li>verbose: 信息展示模式</li>
 <li>mode: ‘auto’,’min’,’max’</li>
 </ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">callbacks_list = [</span><br><span class="line">	keras.callbacks.EarlyStopping(</span><br><span class="line">		monitor = <span class="string">'acc'</span>,</span><br><span class="line">		patience = <span class="number">1</span>,</span><br><span class="line">	),</span><br><span class="line">	keras.callbacks.ModelCheckpoint(</span><br><span class="line">		filepath = <span class="string">'my_model.h5'</span>,</span><br><span class="line">		monitor = <span class="string">'val_loss'</span>,</span><br><span class="line">		save_best_only = <span class="keyword">True</span>,</span><br><span class="line">	)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, </span><br><span class="line">	loss=<span class="string">'binary_crossentropy'</span>, </span><br><span class="line">	metrics=[<span class="string">'acc'</span>])</span><br><span class="line"></span><br><span class="line">model.fit(x,y,</span><br><span class="line">	epochs = <span class="number">10</span>,</span><br><span class="line">	batch_size = <span class="number">32</span>,</span><br><span class="line">	callbacks=callbacks_list,</span><br><span class="line">	validation_data=(x_val, y_val))</span><br><span class="line"></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h4 id="ModelCheckpoint"><a href="#ModelCheckpoint" class="headerlink" title="ModelCheckpoint"></a>ModelCheckpoint</h4><p>keras.callbacks.ModelCheckpoint(filepath, monitor=’val_loss’, verbose=0, save_best_only=False, save_weights_only=False, mode=’auto’, period=1)<br>在每个epoch后将模型保存到文件。<br>参数</p>
 <ul>
 <li>filepath: 文件路径，可以包含格式，例如weights.{epoch:02d}-{val_loss:.2f}.hdf5</li>
@@ -503,7 +507,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">303</span>
+                  <span class="site-state-item-count">306</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -587,7 +591,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Callback"><span class="nav-number">1.</span> <span class="nav-text">Callback</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BaseLogger"><span class="nav-number">2.</span> <span class="nav-text">BaseLogger</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#History"><span class="nav-number">3.</span> <span class="nav-text">History</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ReduceLROnPlateau"><span class="nav-number">4.</span> <span class="nav-text">ReduceLROnPlateau</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EarlyStopping"><span class="nav-number">5.</span> <span class="nav-text">EarlyStopping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ModelCheckpoint"><span class="nav-number">6.</span> <span class="nav-text">ModelCheckpoint</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Callback"><span class="nav-number">1.</span> <span class="nav-text">Callback</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BaseLogger"><span class="nav-number">2.</span> <span class="nav-text">BaseLogger</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#History"><span class="nav-number">3.</span> <span class="nav-text">History</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TensorBoard"><span class="nav-number">4.</span> <span class="nav-text">TensorBoard</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ReduceLROnPlateau"><span class="nav-number">5.</span> <span class="nav-text">ReduceLROnPlateau</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EarlyStopping"><span class="nav-number">6.</span> <span class="nav-text">EarlyStopping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ModelCheckpoint"><span class="nav-number">7.</span> <span class="nav-text">ModelCheckpoint</span></a></li></ol></div>
             
 
           </div>
@@ -621,7 +625,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">113.4k</span>
+    <span title="Site words total count">115.7k</span>
   
 </div>
 

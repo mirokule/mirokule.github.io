@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Reinforcement Learning,Gym," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="名称辨析：  Q-Learning: 时间差分TD的异策略(off-policy control)方法； Network: 值函数逼近的非线性内核； Deep: 深度学习。  DQN对Q-Learning的改进主要体现在3个方面：  使用深度卷积神经网络：处理输入的游戏屏幕图像 训练过程使用经验回放(受海马体启发)：打破数据关联 用目标网络单独处理TD偏差  网络结构 1.卷积层没有使用池化(po">
+<meta name="keywords" content="Reinforcement Learning,Gym">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deep Q-Learning Network">
+<meta property="og:url" content="http://mirokule.github.io/2018/12/28/RL-DQN/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="名称辨析：  Q-Learning: 时间差分TD的异策略(off-policy control)方法； Network: 值函数逼近的非线性内核； Deep: 深度学习。  DQN对Q-Learning的改进主要体现在3个方面：  使用深度卷积神经网络：处理输入的游戏屏幕图像 训练过程使用经验回放(受海马体启发)：打破数据关联 用目标网络单独处理TD偏差  网络结构 1.卷积层没有使用池化(po">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://mirokule.github.io/img/DQN.png">
+<meta property="og:updated_time" content="2018-12-28T07:52:00.008Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Deep Q-Learning Network">
+<meta name="twitter:description" content="名称辨析：  Q-Learning: 时间差分TD的异策略(off-policy control)方法； Network: 值函数逼近的非线性内核； Deep: 深度学习。  DQN对Q-Learning的改进主要体现在3个方面：  使用深度卷积神经网络：处理输入的游戏屏幕图像 训练过程使用经验回放(受海马体启发)：打破数据关联 用目标网络单独处理TD偏差  网络结构 1.卷积层没有使用池化(po">
+<meta name="twitter:image" content="http://mirokule.github.io/img/DQN.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2018/12/28/RL-DQN/"/>
+
+
+
+
+
+  <title>Deep Q-Learning Network | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/12/28/RL-DQN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Deep Q-Learning Network</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-28T11:24:33+08:00">
+                2018-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  910
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>名称辨析：</p>
+<ul>
+<li>Q-Learning: 时间差分TD的异策略(off-policy control)方法；</li>
+<li>Network: 值函数逼近的非线性内核；</li>
+<li>Deep: 深度学习。</li>
+</ul>
+<p>DQN对Q-Learning的改进主要体现在3个方面：</p>
+<ul>
+<li>使用深度卷积神经网络：处理输入的游戏屏幕图像</li>
+<li>训练过程使用经验回放(受海马体启发)：打破数据关联</li>
+<li>用目标网络单独处理TD偏差</li>
+</ul>
+<h4 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h4><p><img src="/img/DQN.png"></p>
+<p>1.卷积层没有使用池化(pooling)。<br>池化层的作用更多是目标检测，即检测图片中是否包含特定物体，而不关心物体的位置；<br>与之相反的是，玩游戏时物体的位置非常重要，而图像中包含的物体数量几乎有限而确定，所以没有添加池化层。</p>
+<p>2.输出层一次给出所有的Q(s,a)<br>如果将(s,a)作为网络的输入来计算Q值，那么对每个a，都要从头到尾计算一次。这对于CNN来说计算量太大。<br>故只使用屏幕图像(s)作为输入，输出层对应count(a)个节点，一次计算给出所有的Q(s,a)值。</p>
+<p>3.输入层包括前4帧画面<br>为了得到物体的运动轨迹，判断当前静态画面中物体的速度方向，将前4帧的历史画面一并作为输入。</p>
+<h4 id="Experience-Replay"><a href="#Experience-Replay" class="headerlink" title="Experience Replay"></a>Experience Replay</h4><p>训练网络的数据格式为&lt;s,a,r,s’&gt;，是智能体在实验中得到的经验。<br>在同一个episode里，实验数据前后关联，如果依次用来作为训练数据输入网络，会使得网络过拟合，学习到特定episode的知识。而下个episode的数据到来时，网络面对全新的数据又会不稳定。<br>故将每次的实验数据保留到一个集合中，训练时从数据集里抽样，由来自不同episode的数据来打破关联性。<br>保留数据集的容量有上限。到达上限同时又有新数据进入时，将删除旧数据。</p>
+<h4 id="Target-Network"><a href="#Target-Network" class="headerlink" title="Target Network"></a>Target Network</h4><p>损失函数仍然使用目标值和预测值的偏差平方：<br>$$ Loss = (r+\gamma\,\underset{a’}{max}\,Q(s’,a’;\theta) - Q(s,a;\theta))^2$$</p>
+<p>由于目标值里也包含参数$\theta$，而且这个$\theta$不在后向传播时同步更新，因而目标值和预测值的差距会越来越大。因而引入两个网络，每隔一段时间将训练网络的参数拷贝到目标网络中。这时目标网络中的$\theta$可以看做另一个参数，更新方式为：<br>$$ \theta_{t+1} = \theta_t + \alpha[r + \gamma\,\underset{a’}{max}\,Q(s’,a’;\theta^-)]\nabla Q(s,a;\theta)$$</p>
+<h4 id="部分实现"><a href="#部分实现" class="headerlink" title="部分实现"></a>部分实现</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    init.run()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num_episodes):</span><br><span class="line">        done = <span class="keyword">False</span></span><br><span class="line">        obs = env.reset()</span><br><span class="line">        epoch = <span class="number">0</span></span><br><span class="line">        episodic_reward = <span class="number">0</span></span><br><span class="line">        actions_counter = Counter() </span><br><span class="line">        episodic_loss = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> done:</span><br><span class="line">            obs = preprocess_observation(obs)</span><br><span class="line"></span><br><span class="line">	    <span class="comment"># 根据当前屏幕状态s1评估所有的Q(s1,a)</span></span><br><span class="line">            actions = mainQ_outputs.eval(feed_dict=&#123;X:[obs], in_training_mode:<span class="keyword">False</span>&#125;)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 获得动作</span></span><br><span class="line">            action = np.argmax(actions, axis=<span class="number">-1</span>)</span><br><span class="line">            actions_counter[str(action)] += <span class="number">1</span> </span><br><span class="line">            action = epsilon_greedy(action, global_step)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 执行动作</span></span><br><span class="line">            next_obs, reward, done, _ = env.step(action)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 保存记录</span></span><br><span class="line">            exp_buffer.append([obs, action, preprocess_observation(next_obs), reward, done])</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 一段时间后开始训练</span></span><br><span class="line">            <span class="keyword">if</span> global_step % steps_train == <span class="number">0</span> <span class="keyword">and</span> global_step &gt; start_steps:</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 抽样</span></span><br><span class="line">                o_obs, o_act, o_next_obs, o_rew, o_done = sample_memories(batch_size)</span><br><span class="line"></span><br><span class="line">                o_obs = [x <span class="keyword">for</span> x <span class="keyword">in</span> o_obs]</span><br><span class="line">                o_next_obs = [x <span class="keyword">for</span> x <span class="keyword">in</span> o_next_obs]</span><br><span class="line">                next_act = mainQ_outputs.eval(feed_dict=&#123;X:o_next_obs, in_training_mode:<span class="keyword">False</span>&#125;)</span><br><span class="line">                y_batch = o_rew + discount_factor * np.max(next_act, axis=<span class="number">-1</span>) * (<span class="number">1</span>-o_done) </span><br><span class="line"></span><br><span class="line">                <span class="comment"># 合并日志 </span></span><br><span class="line">                mrg_summary = merge_summary.eval(feed_dict=&#123;X:o_obs, y:np.expand_dims(y_batch, axis=<span class="number">-1</span>), X_action:o_act, in_training_mode:<span class="keyword">False</span>&#125;)</span><br><span class="line">                file_writer.add_summary(mrg_summary, global_step)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 训练网络</span></span><br><span class="line">                train_loss, _ = sess.run([loss, training_op], feed_dict=&#123;X:o_obs, y:np.expand_dims(y_batch, axis=<span class="number">-1</span>), X_action:o_act, in_training_mode:<span class="keyword">True</span>&#125;)</span><br><span class="line">                episodic_loss.append(train_loss)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 定期拷贝参数</span></span><br><span class="line">            <span class="keyword">if</span> (global_step+<span class="number">1</span>) % copy_steps == <span class="number">0</span> <span class="keyword">and</span> global_step &gt; start_steps:</span><br><span class="line">                copy_target_to_main.run()</span><br><span class="line">                </span><br><span class="line">            obs = next_obs</span><br><span class="line">            epoch += <span class="number">1</span></span><br><span class="line">            global_step += <span class="number">1</span></span><br><span class="line">            episodic_reward += reward</span><br><span class="line">        </span><br><span class="line">        print(<span class="string">'Epoch'</span>, epoch, <span class="string">'Reward'</span>, episodic_reward,)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
+          
+            <a href="/tags/Gym/" rel="tag"># Gym</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/28/RL-Approximation/" rel="next" title="值函数逼近">
+                <i class="fa fa-chevron-left"></i> 值函数逼近
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">万人迷</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">306</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#网络结构"><span class="nav-number">1.</span> <span class="nav-text">网络结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Experience-Replay"><span class="nav-number">2.</span> <span class="nav-text">Experience Replay</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Target-Network"><span class="nav-number">3.</span> <span class="nav-text">Target Network</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#部分实现"><span class="nav-number">4.</span> <span class="nav-text">部分实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">115.7k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

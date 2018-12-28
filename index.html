@@ -262,6 +262,472 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/12/28/RL-DQN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/28/RL-DQN/" itemprop="url">Deep Q-Learning Network</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-28T11:24:33+08:00">
+                2018-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  910
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>名称辨析：</p>
+<ul>
+<li>Q-Learning: 时间差分TD的异策略(off-policy control)方法；</li>
+<li>Network: 值函数逼近的非线性内核；</li>
+<li>Deep: 深度学习。</li>
+</ul>
+<p>DQN对Q-Learning的改进主要体现在3个方面：</p>
+<ul>
+<li>使用深度卷积神经网络：处理输入的游戏屏幕图像</li>
+<li>训练过程使用经验回放(受海马体启发)：打破数据关联</li>
+<li>用目标网络单独处理TD偏差</li>
+</ul>
+<h4 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h4><p><img src="/img/DQN.png"></p>
+<p>1.卷积层没有使用池化(pooling)。<br>池化层的作用更多是目标检测，即检测图片中是否包含特定物体，而不关心物体的位置；<br>与之相反的是，玩游戏时物体的位置非常重要，而图像中包含的物体数量几乎有限而确定，所以没有添加池化层。</p>
+<p>2.输出层一次给出所有的Q(s,a)<br>如果将(s,a)作为网络的输入来计算Q值，那么对每个a，都要从头到尾计算一次。这对于CNN来说计算量太大。<br>故只使用屏幕图像(s)作为输入，输出层对应count(a)个节点，一次计算给出所有的Q(s,a)值。</p>
+<p>3.输入层包括前4帧画面<br>为了得到物体的运动轨迹，判断当前静态画面中物体的速度方向，将前4帧的历史画面一并作为输入。</p>
+<h4 id="Experience-Replay"><a href="#Experience-Replay" class="headerlink" title="Experience Replay"></a>Experience Replay</h4><p>训练网络的数据格式为&lt;s,a,r,s’&gt;，是智能体在实验中得到的经验。<br>在同一个episode里，实验数据前后关联，如果依次用来作为训练数据输入网络，会使得网络过拟合，学习到特定episode的知识。而下个episode的数据到来时，网络面对全新的数据又会不稳定。<br>故将每次的实验数据保留到一个集合中，训练时从数据集里抽样，由来自不同episode的数据来打破关联性。<br>保留数据集的容量有上限。到达上限同时又有新数据进入时，将删除旧数据。</p>
+<h4 id="Target-Network"><a href="#Target-Network" class="headerlink" title="Target Network"></a>Target Network</h4><p>损失函数仍然使用目标值和预测值的偏差平方：<br>$$ Loss = (r+\gamma\,\underset{a’}{max}\,Q(s’,a’;\theta) - Q(s,a;\theta))^2$$</p>
+<p>由于目标值里也包含参数$\theta$，而且这个$\theta$不在后向传播时同步更新，因而目标值和预测值的差距会越来越大。因而引入两个网络，每隔一段时间将训练网络的参数拷贝到目标网络中。这时目标网络中的$\theta$可以看做另一个参数，更新方式为：<br>$$ \theta_{t+1} = \theta_t + \alpha[r + \gamma\,\underset{a’}{max}\,Q(s’,a’;\theta^-)]\nabla Q(s,a;\theta)$$</p>
+<h4 id="部分实现"><a href="#部分实现" class="headerlink" title="部分实现"></a>部分实现</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    init.run()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num_episodes):</span><br><span class="line">        done = <span class="keyword">False</span></span><br><span class="line">        obs = env.reset()</span><br><span class="line">        epoch = <span class="number">0</span></span><br><span class="line">        episodic_reward = <span class="number">0</span></span><br><span class="line">        actions_counter = Counter() </span><br><span class="line">        episodic_loss = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> done:</span><br><span class="line">            obs = preprocess_observation(obs)</span><br><span class="line"></span><br><span class="line">	    <span class="comment"># 根据当前屏幕状态s1评估所有的Q(s1,a)</span></span><br><span class="line">            actions = mainQ_outputs.eval(feed_dict=&#123;X:[obs], in_training_mode:<span class="keyword">False</span>&#125;)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 获得动作</span></span><br><span class="line">            action = np.argmax(actions, axis=<span class="number">-1</span>)</span><br><span class="line">            actions_counter[str(action)] += <span class="number">1</span> </span><br><span class="line">            action = epsilon_greedy(action, global_step)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 执行动作</span></span><br><span class="line">            next_obs, reward, done, _ = env.step(action)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 保存记录</span></span><br><span class="line">            exp_buffer.append([obs, action, preprocess_observation(next_obs), reward, done])</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 一段时间后开始训练</span></span><br><span class="line">            <span class="keyword">if</span> global_step % steps_train == <span class="number">0</span> <span class="keyword">and</span> global_step &gt; start_steps:</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 抽样</span></span><br><span class="line">                o_obs, o_act, o_next_obs, o_rew, o_done = sample_memories(batch_size)</span><br><span class="line"></span><br><span class="line">                o_obs = [x <span class="keyword">for</span> x <span class="keyword">in</span> o_obs]</span><br><span class="line">                o_next_obs = [x <span class="keyword">for</span> x <span class="keyword">in</span> o_next_obs]</span><br><span class="line">                next_act = mainQ_outputs.eval(feed_dict=&#123;X:o_next_obs, in_training_mode:<span class="keyword">False</span>&#125;)</span><br><span class="line">                y_batch = o_rew + discount_factor * np.max(next_act, axis=<span class="number">-1</span>) * (<span class="number">1</span>-o_done) </span><br><span class="line"></span><br><span class="line">                <span class="comment"># 合并日志 </span></span><br><span class="line">                mrg_summary = merge_summary.eval(feed_dict=&#123;X:o_obs, y:np.expand_dims(y_batch, axis=<span class="number">-1</span>), X_action:o_act, in_training_mode:<span class="keyword">False</span>&#125;)</span><br><span class="line">                file_writer.add_summary(mrg_summary, global_step)</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 训练网络</span></span><br><span class="line">                train_loss, _ = sess.run([loss, training_op], feed_dict=&#123;X:o_obs, y:np.expand_dims(y_batch, axis=<span class="number">-1</span>), X_action:o_act, in_training_mode:<span class="keyword">True</span>&#125;)</span><br><span class="line">                episodic_loss.append(train_loss)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 定期拷贝参数</span></span><br><span class="line">            <span class="keyword">if</span> (global_step+<span class="number">1</span>) % copy_steps == <span class="number">0</span> <span class="keyword">and</span> global_step &gt; start_steps:</span><br><span class="line">                copy_target_to_main.run()</span><br><span class="line">                </span><br><span class="line">            obs = next_obs</span><br><span class="line">            epoch += <span class="number">1</span></span><br><span class="line">            global_step += <span class="number">1</span></span><br><span class="line">            episodic_reward += reward</span><br><span class="line">        </span><br><span class="line">        print(<span class="string">'Epoch'</span>, epoch, <span class="string">'Reward'</span>, episodic_reward,)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/12/28/RL-Approximation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/28/RL-Approximation/" itemprop="url">值函数逼近</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-28T10:14:34+08:00">
+                2018-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  604
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。<br>此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s作为函数的输入，s对应的值v作为函数的输出。<br>值函数的内核有不同的选择：</p>
+<ul>
+<li>线性：线性函数，$\hat{v}=\theta^Ts$</li>
+<li>非线性：神经网络</li>
+</ul>
+<h4 id="监督学习描述"><a href="#监督学习描述" class="headerlink" title="监督学习描述"></a>监督学习描述</h4><p>之前的方法中，每轮更新的是当前状态的$V_{\pi}(s)$或者$Q(s,a)$；现在我们将其转化为监督学习问题，要从数据中学习的是$\theta$，而更新$\theta$会使得所有状态的$\hat{v}(s,\theta)$改变。<br>训练的目标函数为：<br>$$ \underset{\theta}{argmin}(q(s,a)-\hat{q}(s,a,\theta))^2$$</p>
+<p>训练数据可以写作$(S_t,U_t)$，其中$U_t$是：</p>
+<ul>
+<li>MC: $G_t$</li>
+<li>TD(0): $r+\gamma V(s’,a’)$</li>
+<li>TD($\lambda$): $G_t^{\lambda}$</li>
+</ul>
+<p>故参数的随机梯度更新为：<br>$$ \theta_{t+1} = \theta_t + \alpha[U_t - \hat{v}(S_t,\theta_t)]\nabla\hat{v}(S_t,\theta_t)$$</p>
+<p>对于TD(0)方法，目标函数中也包含参数$\theta$，但在求梯度时忽略$\theta$对目标函数$U_t$的影响。这种方法不是完全的梯度法，因此也称为半梯度法。</p>
+<h4 id="收敛性"><a href="#收敛性" class="headerlink" title="收敛性"></a>收敛性</h4><p>训练神经网络时，对数据的假设是<strong>独立同分布</strong>。<br>而强化学习过程采集到的数据是<strong>关联</strong>的，用于训练神经网络并不稳定，因而神经网络往往是不收敛的。</p>
+<h4 id="基函数"><a href="#基函数" class="headerlink" title="基函数"></a>基函数</h4><p>进一步地，在线性逼近中，值函数可以写作：<br>$$ \hat{v}(s,\theta) = \theta^T\phi(s) $$</p>
+<p>其中$\phi(s)$是状态s的特征函数，也称为基函数。<br>常见的基函数包括：</p>
+<ul>
+<li>多项式基函数：$s_1, s_2, s_1s_2, s_1^2, s_2^3,\cdots$</li>
+<li>傅里叶基函数：$cos(i\pi s)$</li>
+<li>径向基函数：$exp(-\frac{\left | s-c_i \right |^2}{2\sigma_i^2})$</li>
+</ul>
+<h4 id="批量更新"><a href="#批量更新" class="headerlink" title="批量更新"></a>批量更新</h4><p>前面讨论的都是根据单条数据来更新，虽然计算简单，但样本数据利用率不高。<br>批量更新的方法是将单条数据保留形成数据集，对每个数据集找到最好的拟合函数。<br>可以使用线性最小二乘法逼近：<br>$$ LS(\theta) = \sum_{t=1}^T(v_t^{\pi} - \hat{v}_t^{\pi}(s_t,\theta))^2 $$<br>此时线性模型的参数更新量为：<br>$$ \Delta\theta = \alpha\sum_{t=1}^T[v_t^{\pi} - \theta^T\phi(s_t)]\phi(s_t) $$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/12/24/RL-MAB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/24/RL-MAB/" itemprop="url">多臂赌博机(MAB)问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-24T11:12:59+08:00">
+                2018-12-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  479
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>多臂赌博机问题研究的是同时具有多条臂来操纵1台老虎机，也可以看做多台单臂老虎机。每条臂的动作会得到不同的回报，需要找出哪条臂会提供最大的回报。<br>每拉动一条臂相当于采取一步行动a，若定义时刻i的回报为$r_i$，则有：<br>$$ Q(a) = \frac{r_1 + r_2 + \cdots + r_k}{k} $$</p>
+<p>如果平均实验，即在每条臂上都重复n次，那么绝大多数实验选取的都是非最优解，会使得成本损失较多。<br>如何兼顾exploration和exploit，既能找出回报最大的解，又能在非最优解上减少实验次数？</p>
+<h4 id="epsilon-greedy-策略"><a href="#epsilon-greedy-策略" class="headerlink" title="$\epsilon-greedy$策略"></a>$\epsilon-greedy$策略</h4><p>每次以概率$\epsilon$选择当前回报最大的臂，以$1-\epsilon$的概率随机选择一条臂。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">epsilon_greedy</span><span class="params">(epsilon)</span>:</span></span><br><span class="line">    rand = np.random.random()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> rand &lt; epsilon:</span><br><span class="line">        action = env.action_space.sample()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        action = np.argmax(Q)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> action</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_rounds):</span><br><span class="line">    arm = epsilon_greedy(<span class="number">0.5</span>)</span><br><span class="line">    </span><br><span class="line">    observation, reward, done, info = env.step(arm)</span><br><span class="line">    </span><br><span class="line">    count[arm] += <span class="number">1</span></span><br><span class="line">    sum_rewards[arm] += reward</span><br><span class="line">    Q[arm] = sum_rewards[arm] / count[arm]</span><br><span class="line"></span><br><span class="line">print(<span class="string">'The optimal arm is &#123;&#125;'</span>.format(np.argmax(Q)))</span><br></pre></td></tr></table></figure></p>
+<h4 id="Softmax-Exploration"><a href="#Softmax-Exploration" class="headerlink" title="Softmax Exploration"></a>Softmax Exploration</h4><p>也称作Boltzmann Exploration，是一种产生随机策略的方法。<br>公式如下：<br>$$ P_t(a) = \frac{exp(Q_t(a)/\tau)}{\sum_{i=1}^n exp(Q_t(i)/\tau)}$$</p>
+<ul>
+<li>引入了Q值和温度参数$\tau$。当$\tau$变大时，每条臂被选择的概率趋于相同；当$\tau$变小时，当前平均回报Q值更大的臂被选择的概率更大。</li>
+<li>得到每条臂的概率后，算法会随机一个阈值，当累加概率大于该阈值时则选择当前臂</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">softmax</span><span class="params">(tau)</span>:</span></span><br><span class="line">    total = sum([math.exp(val/tau) <span class="keyword">for</span> val <span class="keyword">in</span> Q])</span><br><span class="line">    probs = [math.exp(val/tau) / total <span class="keyword">for</span> val <span class="keyword">in</span> Q]</span><br><span class="line">    </span><br><span class="line">    threshold = random.random() </span><br><span class="line">    cumulative_prob = <span class="number">0.0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(probs)):</span><br><span class="line">        cumulative_prob += probs[i]</span><br><span class="line">        <span class="keyword">if</span> (cumulative_prob &gt; threshold):</span><br><span class="line">            <span class="keyword">return</span> i</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> np.argmax(probs)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_rounds):</span><br><span class="line">    arm = softmax(<span class="number">0.5</span>)</span><br><span class="line">    </span><br><span class="line">    observation, reward, done, info = env.step(arm)</span><br><span class="line">    </span><br><span class="line">    count[arm] += <span class="number">1</span></span><br><span class="line">    sum_rewards[arm] += reward</span><br><span class="line">    Q[arm] = sum_rewwards[arm]/count[arm]</span><br><span class="line"></span><br><span class="line">print(<span class="string">"The optimal arm is &#123;&#125;"</span>.format(np.argmax(Q)))</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/12/17/ML-Workflow/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2904,494 +3370,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/28/DL-Optimization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/28/DL-Optimization/" itemprop="url">神经网络配置与性能提升</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-28T15:02:35+08:00">
-                2018-05-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  486
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="激活函数Activation"><a href="#激活函数Activation" class="headerlink" title="激活函数Activation"></a>激活函数Activation</h4><ol>
-<li><p>Sigmoid: 现已基本不用，缺点有三 </p>
-<ul>
-<li>饱和区会杀死梯度</li>
-<li>输出0~1全为正，那么梯度全为正负，使w更新方向受限制(所以输入数据mean=0最好)</li>
-<li>指数运算开销大</li>
-</ul>
-</li>
-<li><p>Tanh: 解决了Mean=0的问题，仍会杀死梯度、指数运算</p>
-</li>
-<li>Relu: 收敛速度约6倍，没有mean=0，会有神经元“死亡”；一般为首选</li>
-<li>Leaky Relu、Max Out、ELU: 可尝试</li>
-</ol>
-<h4 id="初始化Initialization"><a href="#初始化Initialization" class="headerlink" title="初始化Initialization"></a>初始化Initialization</h4><ol>
-<li>全为0，所有节点结果相同；太小，梯度消失；太大，网络饱和</li>
-<li>Xavier/Glorot: 使输入输出方差相同，适合搭配tanh</li>
-<li>He: 方差除2，适合搭配relu</li>
-</ol>
-<h4 id="优化器Optimizer"><a href="#优化器Optimizer" class="headerlink" title="优化器Optimizer"></a>优化器Optimizer</h4><ol>
-<li>SGD: 经典方法，通常较慢</li>
-<li>动量: 收敛速度加快，但容易over shooting，即步长降低得慢</li>
-<li>RMSProp: 各方向步长尽量均衡</li>
-<li>Adam: RMSProp + 动量，一般为首选</li>
-</ol>
-<h4 id="损失函数Loss"><a href="#损失函数Loss" class="headerlink" title="损失函数Loss"></a>损失函数Loss</h4><ol>
-<li>铰链Hinge: 主要用于SVM</li>
-<li>互熵Cross Entropy Loss: 用于Logistic、Softmax分类</li>
-<li>平方Square Loss: 用于最小二乘法(OLS)</li>
-<li>指数Exponential Loss: 用于Adaboost等集成学习算法</li>
-</ol>
-<h4 id="克服overfitting"><a href="#克服overfitting" class="headerlink" title="克服overfitting"></a>克服overfitting</h4><ol>
-<li>Batch Normalization一般为首选，效果不好时再考虑其他手段；通常在Activation层之前。</li>
-<li>Dropout相当于内部集成，注意测试时不用drop，得分要乘以比例p</li>
-<li>Data Augmentation: 生成更多训练数据</li>
-</ol>
-<p>Q: 如何识别？<br>A: 画出学习曲线，观察训练误差和验证误差</p>
-<h4 id="超参数Hyperparameters"><a href="#超参数Hyperparameters" class="headerlink" title="超参数Hyperparameters"></a>超参数Hyperparameters</h4><ol>
-<li>Learning Rate是最重要的超参数，没有之一。<br>网格搜索同样适用于深层神经网络的超参调整，每次选用少量的epoch测试。</li>
-<li>Learning Rate Decay是二阶超参，不需要一开始就引入。<br>注意Learning Rate Decay和Adam的原理相悖，通常不兼容。</li>
-</ol>
-<h4 id="模型集成Ensemble"><a href="#模型集成Ensemble" class="headerlink" title="模型集成Ensemble"></a>模型集成Ensemble</h4><p>训练10个参数不同的模型，对预测结果投票，期望提升2%</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/19/ML-FeatureImportance/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/19/ML-FeatureImportance/" itemprop="url">特征重要性评估(Feature Importance Evaluation)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-19T15:12:27+08:00">
-                2018-05-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  446
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>特征对目标变量预测的相对重要性，可以通过决策树中使用特征作为决策节点的相对顺序来评估。<br>决策树顶部使用的特征，将对更多样本的最终预测决策做出贡献。<br>因此，可以通过每个特征对最终预测做出贡献的样本比例，来评估该特征的重要性。</p>
-<p>通过对多个随机树中的预期贡献率取平均，可以减少这种估计的方差。</p>
-<p>sklearn.ensemble模块包含两个基于随机决策树的平均算法：Random Forest 和 Extra-Tress.<br>这两种算法都是在构造过程中引入随机性来创建一组不同的分类器。</p>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p>实例一: 特征重要性二维可视化<br><img src="/img/featureImportance_1.png" width="500"><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.dataset <span class="keyword">import</span> fetch_olivetti_faces</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> ExtraTreesClassifier</span><br><span class="line"></span><br><span class="line">n_jobs=<span class="number">1</span> <span class="comment">#单核</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据</span></span><br><span class="line">data = fetch_oliveetti_faces()</span><br><span class="line">X = data.images.reshape((len(data.images),<span class="number">-1</span>))</span><br><span class="line">y = data.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建学习器</span></span><br><span class="line">forest = ExtraTreesClassifier(n_estimators=<span class="number">1000</span>, max_features=<span class="number">128</span>, n_jobs=n_jobs)</span><br><span class="line">forest.fit(X,y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出特征重要性</span></span><br><span class="line">importances = forest.feature_importances_</span><br><span class="line">importances = importances.reshape(data.image[<span class="number">0</span>].shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘图</span></span><br><span class="line">plt.matshow(importances. cmap=plt.cm.hot)</span><br><span class="line">plt.title(<span class="string">"Pixel importances with forests of trees"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
-<p>实例二：特征重要性一维可视化<br><img src="/img/featureImportance_2.png" width="600"><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_classification</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> ExtraTreesClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成测试数据</span></span><br><span class="line">X,y = make_classification(n_samples=<span class="number">1000</span>, n_features=<span class="number">10</span>, n_informative=<span class="number">3</span>, n_classes=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 选取学习器</span></span><br><span class="line">forest = ExtraTreesClassifier(n_estimators=<span class="number">250</span>, random_state=<span class="number">0</span>)</span><br><span class="line">forest.fit(X,y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出特征重要性</span></span><br><span class="line">importances = forest.feature_importances_</span><br><span class="line">std = np.std([tree.feature_importances_ <span class="keyword">for</span> tree <span class="keyword">in</span> forest.estimators_], axis=<span class="number">0</span>)</span><br><span class="line">indices = np.argsort(importances)[::<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印</span></span><br><span class="line">print(<span class="string">"Feature ranking:"</span>)</span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> range(X.shape[<span class="number">1</span>]):</span><br><span class="line">    print(<span class="string">"%d. feature %d (%f)"</span> % (f+<span class="number">1</span>, indices[f], importances[indices[f]]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘图</span></span><br><span class="line">plt.figure()</span><br><span class="line">plt.title(<span class="string">"Feature importances"</span>)</span><br><span class="line">plt.bar(range(X.shape[<span class="number">1</span>]), importances[indices], color=<span class="string">'r'</span>, yerr=std[indices], align=<span class="string">'center'</span>)</span><br><span class="line">plt.xticks(range(X.shape[<span class="number">1</span>]), indices)</span><br><span class="line">plt.xlim([<span class="number">-1</span>, X.shape[<span class="number">1</span>]])</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/19/ML-MissingValues/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/19/ML-MissingValues/" itemprop="url">缺失值处理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-19T14:23:20+08:00">
-                2018-05-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  573
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>缺失值的处理方法分为三类：</p>
-<ul>
-<li>删除：删除含有缺失字段的样本</li>
-<li>修补：有多种方法</li>
-<li>不处理：直接使用不完整数据作为输入</li>
-</ul>
-<h3 id="修补方法"><a href="#修补方法" class="headerlink" title="修补方法"></a>修补方法</h3><ol>
-<li><p>人工修补(filling manually)<br>由了解数据的用户填写，偏离最小，填充效果最好。<br>成本巨大，当数据规模大时不适用。</p>
-</li>
-<li><p>特殊值(Special values)<br>将缺失值当做一种特殊的属性值来处理，不同于其他的任何属性值。例如’unknown’.<br>可能导致严重的数据偏离。一般不推荐使用。</p>
-</li>
-<li><p>均值填充(Mean/Mode Completer)<br>用现存数据的多数信息来推测缺失值。<br>数值型字段，使用其他样本在该字段上的均值；<br>非数值型字段，使用出现次数最多的值。</p>
-</li>
-<li><p>热卡填充(Hot deck imputation)<br>在完整数据中找到一个最相似的对象，然后用这个最相似对象的值填充。<br>缺点在于难以定义相似标准。</p>
-</li>
-<li><p>聚类填充(clustering imputation)<br>首先确定与缺失样本距离最近的k个样本，然后用k个样本的均值填充。</p>
-</li>
-<li><p>所有可能的值填充(all possible values)<br>使用空缺属性值的所有可能的取值来填充。<br>计算代价大，可能的测试方案多。</p>
-</li>
-<li><p>组合完整化方法(Combinatorial Completer)<br>使用所有可能的属性取值来试，从中选择最好的一个作为填补的属性值。</p>
-</li>
-<li><p>回归(Regression)<br>基于完整的数据集，建立回归方程。将缺失记录的已知属性值代入方程，得到缺失值的回归估计值。<br>当变量不是线性相关时，会导致有偏差的估计。</p>
-</li>
-<li><p>极大似然估计(Max Likelihood)<br>通过观察数据的边际分布可以对未知参数进行极大似然估计。<br>最常采用的计算方法是期望值最大化(Expectation Maximization, EM)。<br>适用大样本，计算很复杂。</p>
-</li>
-<li><p>多重插补(Multiple Imputation)<br>来源于贝叶斯估计，认为待修补的值是随机的，来自于已观测到的值。<br>具体实践上通常是估计出待插补的值，然后加上不同的噪声，形成多组可选插补值。</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3446,7 +3424,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">303</span>
+                  <span class="site-state-item-count">306</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3548,7 +3526,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">113.4k</span>
+    <span title="Site words total count">115.7k</span>
   
 </div>
 

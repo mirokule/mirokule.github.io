@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="TensorBoard的诸多功能之一是将计算图可视化，通过读取TensorFlow的事件文件来运行。TensorFlow的事件文件包含运行TensorFlow时生成的总结数据。 步骤1. 标注首先在计算图中想要输出的节点里标注总结指令(summary operations)。例如记录学习速率如何变化，就向节点附加 tf.summary.scalar;想要显示某层的权重分布，就附加 tf.summa">
+<meta name="description" content="TensorBoard是TensorFlow内置的可视化工具，可以在训练过程中以可视化的方法监控模型内部发生的一切。TensorBoard的功能包括：  在训练过程中以可视化的方式监控指标 将模型结构可视化 将激活和梯度的直方图可视化 以三维的形式研究嵌入  TensorBoard通过读取TensorFlow的事件文件来运行。TensorFlow的事件文件包含运行TensorFlow时生成的总结数">
 <meta name="keywords" content="Deep Learning,TensorFlow">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TensorBoard">
 <meta property="og:url" content="http://mirokule.github.io/2018/04/27/TF-TensorBoard/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="TensorBoard的诸多功能之一是将计算图可视化，通过读取TensorFlow的事件文件来运行。TensorFlow的事件文件包含运行TensorFlow时生成的总结数据。 步骤1. 标注首先在计算图中想要输出的节点里标注总结指令(summary operations)。例如记录学习速率如何变化，就向节点附加 tf.summary.scalar;想要显示某层的权重分布，就附加 tf.summa">
+<meta property="og:description" content="TensorBoard是TensorFlow内置的可视化工具，可以在训练过程中以可视化的方法监控模型内部发生的一切。TensorBoard的功能包括：  在训练过程中以可视化的方式监控指标 将模型结构可视化 将激活和梯度的直方图可视化 以三维的形式研究嵌入  TensorBoard通过读取TensorFlow的事件文件来运行。TensorFlow的事件文件包含运行TensorFlow时生成的总结数">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-27T07:54:15.875Z">
+<meta property="og:updated_time" content="2018-12-28T08:03:22.333Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TensorBoard">
-<meta name="twitter:description" content="TensorBoard的诸多功能之一是将计算图可视化，通过读取TensorFlow的事件文件来运行。TensorFlow的事件文件包含运行TensorFlow时生成的总结数据。 步骤1. 标注首先在计算图中想要输出的节点里标注总结指令(summary operations)。例如记录学习速率如何变化，就向节点附加 tf.summary.scalar;想要显示某层的权重分布，就附加 tf.summa">
+<meta name="twitter:description" content="TensorBoard是TensorFlow内置的可视化工具，可以在训练过程中以可视化的方法监控模型内部发生的一切。TensorBoard的功能包括：  在训练过程中以可视化的方式监控指标 将模型结构可视化 将激活和梯度的直方图可视化 以三维的形式研究嵌入  TensorBoard通过读取TensorFlow的事件文件来运行。TensorFlow的事件文件包含运行TensorFlow时生成的总结数">
 
 
 
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  485
+                  559
                 </span>
               
 
@@ -349,7 +349,14 @@
       
 
       
-        <p>TensorBoard的诸多功能之一是将计算图可视化，通过读取TensorFlow的事件文件来运行。<br>TensorFlow的事件文件包含运行TensorFlow时生成的总结数据。</p>
+        <p>TensorBoard是TensorFlow内置的可视化工具，可以在训练过程中以可视化的方法监控模型内部发生的一切。<br>TensorBoard的功能包括：</p>
+<ul>
+<li>在训练过程中以可视化的方式监控指标</li>
+<li>将模型结构可视化</li>
+<li>将激活和梯度的直方图可视化</li>
+<li>以三维的形式研究嵌入</li>
+</ul>
+<p>TensorBoard通过读取TensorFlow的事件文件来运行。<br>TensorFlow的事件文件包含运行TensorFlow时生成的总结数据。</p>
 <h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><h5 id="1-标注"><a href="#1-标注" class="headerlink" title="1. 标注"></a>1. 标注</h5><p>首先在计算图中想要输出的节点里标注总结指令(summary operations)。<br>例如记录学习速率如何变化，就向节点附加 tf.summary.scalar;<br>想要显示某层的权重分布，就附加 tf.summary.histgram 来收集数据。</p>
 <p>添加的summary operations并没有被计算流程依赖，因而不会自动运行，需要手动逐个运行。<br>因而使用 tf.summary.merge_all 来将这些操作合并为一个op，然后执行该合并的总结op，得到所有总结数据。<br>总结数据是一个序列化的 Summary protobuf 对象。</p>
 <p>示例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">'summaries'</span>):</span><br><span class="line">	mean = tf.reduce_mean(var)</span><br><span class="line">	tf.summary.scalar(<span class="string">'mean'</span>, mean)</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">with</span> tf.name_scope(<span class="string">'stddev'</span>):</span><br><span class="line">		stddev = tf.sqrt(tf.reduce_men(tf.square(var - mean)))</span><br><span class="line"></span><br><span class="line">	tf.summary.scalar(<span class="string">'stddev'</span>, stddev)</span><br><span class="line">	tf.summary.histogram(<span class="string">'histogram'</span>, var)</span><br><span class="line"></span><br><span class="line">merged = tf.summary.merge_all()</span><br></pre></td></tr></table></figure></p>
@@ -497,7 +504,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">303</span>
+                  <span class="site-state-item-count">306</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -615,7 +622,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">113.4k</span>
+    <span title="Site words total count">115.7k</span>
   
 </div>
 

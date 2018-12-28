@@ -262,6 +262,442 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/07/13/AD-Chartboost/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/13/AD-Chartboost/" itemprop="url">Chartboost</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-13T09:50:02+08:00">
+                2016-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  555
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>1.drop framework into supporting files</p>
+<pre><code>chartboost.framework
+StoreKit.framework
+UIKit.framework
+</code></pre><p>2.add to bridging header</p>
+<pre><code>#import &lt;UIKit/UIKit.h&gt;
+#import &lt;Chartboost/Chartboost.h&gt;
+</code></pre><p>3.Add chartboost delegate to appdelegate.swift</p>
+<pre><code>class AppDelegate: UIResponder, UIApplicationDelegate, ChartboostDelegate {
+</code></pre><p>4.in appldelegate didfinishlaunching</p>
+<pre><code>let kChartboostAppID = &quot;appid&quot;
+let kChartboostAppSignature = &quot;appsignature&quot;
+Chartboost.startWithAppId(kChartboostAppID, appSignature: kChartboostAppSignature, delegate: self)
+Chartboost.setShouldRequestInterstitialsInFirstSession(false)
+</code></pre>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/07/13/AD-Chartboost/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/06/23/Swift-PlayableRect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/23/Swift-PlayableRect/" itemprop="url">PlayableRect</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-23T15:31:35+08:00">
+                2016-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  62
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">init</span>(size: <span class="type">CGSize</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> screenSize = <span class="type">UIScreen</span>.mainScreen().bounds</span><br><span class="line">    <span class="keyword">let</span> maxAspectRatio: <span class="type">CGFloat</span> = screenSize.height / screenSize.width</span><br><span class="line">    <span class="keyword">let</span> maxAspectRatioWidth = size.height / maxAspectRatio</span><br><span class="line">    <span class="keyword">let</span> playableMargin = (size.width - maxAspectRatioWidth) / <span class="number">2.0</span></span><br><span class="line">    playableRect = <span class="type">CGRect</span>(x: playableMargin, y: <span class="number">0</span>, width: size.width - playableMargin * <span class="number">2</span>, height: size.height)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"playableRect size: <span class="subst">\(playableRect)</span>"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">super</span>.<span class="keyword">init</span>(size: size)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">required</span> <span class="keyword">init</span>(coder aDecoder: <span class="type">NSCoder</span>) &#123;</span><br><span class="line">    <span class="built_in">fatalError</span>(<span class="string">"init(coder:) has not been implemented."</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/06/10/SKAudioNode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/10/SKAudioNode/" itemprop="url">SKAudioNode</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-10T15:22:05+08:00">
+                2016-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  33
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>A SKAudioNode object is used to add an audio to a scene.</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">var</span> backgroundMusic: <span class="type">SKAudioNode</span>!</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">playBackgroundMusic</span><span class="params">(name: String)</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> backgroundMusic != <span class="literal">nil</span> &#123;</span><br><span class="line">        backgroundMusic.removeFromParent()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    backgroundMusic = <span class="type">SKAudioNode</span>(fileNamed: name)</span><br><span class="line">    backgroundMusic.autoplayLooped = <span class="literal">true</span></span><br><span class="line">    addChild(backgroundMusic)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/06/08/Swift-Types/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2817,475 +3253,6 @@ scnScene.rootNode.addChildNode(cameraNode)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/18/UI-Color/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/11/18/UI-Color/" itemprop="url">Color</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-18T11:16:59+08:00">
-                2015-11-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  137
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Elements-of-color"><a href="#Elements-of-color" class="headerlink" title="Elements of color"></a>Elements of color</h4><ol>
-<li>HSB，对应眼睛感知 </li>
-</ol>
-<ul>
-<li><strong>Hue</strong>: 色调、色相，光的波长</li>
-<li><strong>Saturation</strong>: 饱和度，鲜艳度</li>
-<li><strong>Brightness</strong>: 明度、亮度，明暗</li>
-</ul>
-<ol>
-<li>RGB，光的三原色，加色混合，叠加为白</li>
-</ol>
-<ul>
-<li><strong>Red</strong>: 红</li>
-<li><strong>Green</strong>: 绿</li>
-<li><strong>Blue</strong>: 蓝</li>
-</ul>
-<p>取值：0~255</p>
-<ol>
-<li>CMY，色(颜料)的三原色，减色混合，叠加为黑</li>
-</ol>
-<ul>
-<li><strong>Cyan</strong>: 青 = 蓝+绿</li>
-<li><strong>Magenta</strong>: 品红 = 蓝+红</li>
-<li><strong>Yellow</strong>: 黄 = 红+绿</li>
-</ul>
-<p>取值： 0~100%</p>
-<p>由于印刷工艺颜色不纯，引入黑色，代码K(与Blue区分)，组成CMYK<br>CMYK与RGB色域不完全相同，有些颜色可显示不可印刷</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/10/SK-Particle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/11/10/SK-Particle/" itemprop="url">Particle System</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-10T11:26:03+08:00">
-                2015-11-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  265
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="SKEmitterNode"><a href="#SKEmitterNode" class="headerlink" title="SKEmitterNode"></a>SKEmitterNode</h2><p>SKEmitterNode can be generated from code or sks files.</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">let</span> particleLayerNode = <span class="type">SKNode</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> engineEmitter = <span class="type">SKEmitterNode</span>(filename: <span class="string">"engine.sks"</span>)</span><br><span class="line">engineEmitter.targetNode = particleLayerNode <span class="comment">// the target node which renders the emitter's particles</span></span><br><span class="line">engineEmitter.resetSimulation() <span class="comment">// remove all existing particles and restarts the simulation</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> colorSequency = <span class="type">SKKeyframeSequency</span>(capacity: <span class="number">20</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>...<span class="built_in">count</span> &#123;</span><br><span class="line">    colorSequency.addKeyframeValue(<span class="type">SKColor</span>.whiteColor(), time:...)</span><br><span class="line">&#125;</span><br><span class="line">emitterNode.particleColorSequency = colorSequence</span><br><span class="line"></span><br><span class="line">emitterNode.particleAction = <span class="type">SKAction</span>...</span><br><span class="line"></span><br><span class="line">emitterNode.advanceSimulationTime(<span class="type">NSTimeInterval</span>(lifetime)) <span class="comment">// advance the emitter particle simulation</span></span><br></pre></td></tr></table></figure>
-<p>Target Node: The initial properties of new particles are based on the emitter, but in future frames, the particles are treated as children of the target node.</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/11/10/SK-Particle/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/05/SKLabelNode/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/11/05/SKLabelNode/" itemprop="url">SKLabelNode</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-05T15:03:15+08:00">
-                2015-11-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  84
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>An SKLabelNode is a node that draws a string. Inherits from SKNode.</p>
-<h4 id="Creating"><a href="#Creating" class="headerlink" title="Creating"></a>Creating</h4><ul>
-<li><strong>init(fontNamed fontName: String?)</strong></li>
-<li><strong>convenience init(text text: String?)</strong></li>
-</ul>
-<h4 id="Configuring"><a href="#Configuring" class="headerlink" title="Configuring"></a>Configuring</h4><ul>
-<li><strong>text</strong></li>
-<li><strong>fontColor</strong></li>
-<li><strong>fontName</strong></li>
-<li><p><strong>fontSize</strong></p>
-</li>
-<li><p><strong>color</strong></p>
-</li>
-<li><strong>colorBlendFactor</strong></li>
-<li><p><strong>blendMode</strong></p>
-</li>
-<li><p><strong>verticalAlignmentMode</strong>: SKLabelVertialAlignmentMode.BaseLine, .Center, .Top, .Bottom</p>
-</li>
-<li><strong>horizontalAlignmentMode</strong>: SKLabelHorizontalAlignmentMode.Center, .Left, .Right</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> rankLabel = <span class="type">SKLabelNode</span>(fontNamed: <span class="string">"Futura-CondensedExtraBold"</span>)</span><br><span class="line">rankLabel.fontSize = <span class="number">120</span></span><br><span class="line">       rankLabel.fontColor = <span class="type">SKColor</span>.whiteColor()</span><br><span class="line">       rankLabel.name = <span class="string">"rankLabel"</span></span><br><span class="line">       rankLabel.text = <span class="type">NSLocalizedString</span>(<span class="string">"RANK"</span>, comment: <span class="string">"rank"</span>)</span><br><span class="line">       rankLabel.verticalAlignmentMode = .<span class="type">Top</span></span><br><span class="line">       rankLabel.horizontalAlignmentMode = .<span class="type">Center</span></span><br><span class="line">       rankLabel.position = <span class="type">CGPoint</span>(</span><br><span class="line">           x: size.width / <span class="number">2</span>,</span><br><span class="line">           y: size.height / <span class="number">2</span> - <span class="number">120</span>)</span><br><span class="line">       menuLayer.addChild(rankLabel)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3340,7 +3307,7 @@ scnScene.rootNode.addChildNode(cameraNode)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">303</span>
+                  <span class="site-state-item-count">306</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3442,7 +3409,7 @@ scnScene.rootNode.addChildNode(cameraNode)
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">113.4k</span>
+    <span title="Site words total count">115.7k</span>
   
 </div>
 

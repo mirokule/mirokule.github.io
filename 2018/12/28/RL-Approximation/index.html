@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Machine Learning,Reinforcement Learning," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s作为函数的输入，s对应的值v作为函数的输出。值函数的内核有不同的选择：  线性：线性函数，$\hat{v}=\theta^Ts$ 非线性：神经网络  监督学习描述之前的方法中，每轮更新的是当前状态的$V_{\pi}(s)$">
+<meta name="keywords" content="Machine Learning,Reinforcement Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="值函数逼近">
+<meta property="og:url" content="http://mirokule.github.io/2018/12/28/RL-Approximation/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s作为函数的输入，s对应的值v作为函数的输出。值函数的内核有不同的选择：  线性：线性函数，$\hat{v}=\theta^Ts$ 非线性：神经网络  监督学习描述之前的方法中，每轮更新的是当前状态的$V_{\pi}(s)$">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-28T03:37:40.763Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="值函数逼近">
+<meta name="twitter:description" content="当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s作为函数的输入，s对应的值v作为函数的输出。值函数的内核有不同的选择：  线性：线性函数，$\hat{v}=\theta^Ts$ 非线性：神经网络  监督学习描述之前的方法中，每轮更新的是当前状态的$V_{\pi}(s)$">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2018/12/28/RL-Approximation/"/>
+
+
+
+
+
+  <title>值函数逼近 | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/12/28/RL-Approximation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">值函数逼近</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-28T10:14:34+08:00">
+                2018-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  604
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。<br>此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s作为函数的输入，s对应的值v作为函数的输出。<br>值函数的内核有不同的选择：</p>
+<ul>
+<li>线性：线性函数，$\hat{v}=\theta^Ts$</li>
+<li>非线性：神经网络</li>
+</ul>
+<h4 id="监督学习描述"><a href="#监督学习描述" class="headerlink" title="监督学习描述"></a>监督学习描述</h4><p>之前的方法中，每轮更新的是当前状态的$V_{\pi}(s)$或者$Q(s,a)$；现在我们将其转化为监督学习问题，要从数据中学习的是$\theta$，而更新$\theta$会使得所有状态的$\hat{v}(s,\theta)$改变。<br>训练的目标函数为：<br>$$ \underset{\theta}{argmin}(q(s,a)-\hat{q}(s,a,\theta))^2$$</p>
+<p>训练数据可以写作$(S_t,U_t)$，其中$U_t$是：</p>
+<ul>
+<li>MC: $G_t$</li>
+<li>TD(0): $r+\gamma V(s’,a’)$</li>
+<li>TD($\lambda$): $G_t^{\lambda}$</li>
+</ul>
+<p>故参数的随机梯度更新为：<br>$$ \theta_{t+1} = \theta_t + \alpha[U_t - \hat{v}(S_t,\theta_t)]\nabla\hat{v}(S_t,\theta_t)$$</p>
+<p>对于TD(0)方法，目标函数中也包含参数$\theta$，但在求梯度时忽略$\theta$对目标函数$U_t$的影响。这种方法不是完全的梯度法，因此也称为半梯度法。</p>
+<h4 id="收敛性"><a href="#收敛性" class="headerlink" title="收敛性"></a>收敛性</h4><p>训练神经网络时，对数据的假设是<strong>独立同分布</strong>。<br>而强化学习过程采集到的数据是<strong>关联</strong>的，用于训练神经网络并不稳定，因而神经网络往往是不收敛的。</p>
+<h4 id="基函数"><a href="#基函数" class="headerlink" title="基函数"></a>基函数</h4><p>进一步地，在线性逼近中，值函数可以写作：<br>$$ \hat{v}(s,\theta) = \theta^T\phi(s) $$</p>
+<p>其中$\phi(s)$是状态s的特征函数，也称为基函数。<br>常见的基函数包括：</p>
+<ul>
+<li>多项式基函数：$s_1, s_2, s_1s_2, s_1^2, s_2^3,\cdots$</li>
+<li>傅里叶基函数：$cos(i\pi s)$</li>
+<li>径向基函数：$exp(-\frac{\left | s-c_i \right |^2}{2\sigma_i^2})$</li>
+</ul>
+<h4 id="批量更新"><a href="#批量更新" class="headerlink" title="批量更新"></a>批量更新</h4><p>前面讨论的都是根据单条数据来更新，虽然计算简单，但样本数据利用率不高。<br>批量更新的方法是将单条数据保留形成数据集，对每个数据集找到最好的拟合函数。<br>可以使用线性最小二乘法逼近：<br>$$ LS(\theta) = \sum_{t=1}^T(v_t^{\pi} - \hat{v}_t^{\pi}(s_t,\theta))^2 $$<br>此时线性模型的参数更新量为：<br>$$ \Delta\theta = \alpha\sum_{t=1}^T[v_t^{\pi} - \theta^T\phi(s_t)]\phi(s_t) $$</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+            <a href="/tags/Reinforcement-Learning/" rel="tag"># Reinforcement Learning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/24/RL-MAB/" rel="next" title="多臂赌博机(MAB)问题">
+                <i class="fa fa-chevron-left"></i> 多臂赌博机(MAB)问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/28/RL-DQN/" rel="prev" title="Deep Q-Learning Network">
+                Deep Q-Learning Network <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">万人迷</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">306</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#监督学习描述"><span class="nav-number">1.</span> <span class="nav-text">监督学习描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#收敛性"><span class="nav-number">2.</span> <span class="nav-text">收敛性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基函数"><span class="nav-number">3.</span> <span class="nav-text">基函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#批量更新"><span class="nav-number">4.</span> <span class="nav-text">批量更新</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">115.7k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

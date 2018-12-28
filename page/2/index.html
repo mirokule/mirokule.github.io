@@ -262,6 +262,494 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/28/DL-Optimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/28/DL-Optimization/" itemprop="url">神经网络配置与性能提升</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-28T15:02:35+08:00">
+                2018-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  486
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="激活函数Activation"><a href="#激活函数Activation" class="headerlink" title="激活函数Activation"></a>激活函数Activation</h4><ol>
+<li><p>Sigmoid: 现已基本不用，缺点有三 </p>
+<ul>
+<li>饱和区会杀死梯度</li>
+<li>输出0~1全为正，那么梯度全为正负，使w更新方向受限制(所以输入数据mean=0最好)</li>
+<li>指数运算开销大</li>
+</ul>
+</li>
+<li><p>Tanh: 解决了Mean=0的问题，仍会杀死梯度、指数运算</p>
+</li>
+<li>Relu: 收敛速度约6倍，没有mean=0，会有神经元“死亡”；一般为首选</li>
+<li>Leaky Relu、Max Out、ELU: 可尝试</li>
+</ol>
+<h4 id="初始化Initialization"><a href="#初始化Initialization" class="headerlink" title="初始化Initialization"></a>初始化Initialization</h4><ol>
+<li>全为0，所有节点结果相同；太小，梯度消失；太大，网络饱和</li>
+<li>Xavier/Glorot: 使输入输出方差相同，适合搭配tanh</li>
+<li>He: 方差除2，适合搭配relu</li>
+</ol>
+<h4 id="优化器Optimizer"><a href="#优化器Optimizer" class="headerlink" title="优化器Optimizer"></a>优化器Optimizer</h4><ol>
+<li>SGD: 经典方法，通常较慢</li>
+<li>动量: 收敛速度加快，但容易over shooting，即步长降低得慢</li>
+<li>RMSProp: 各方向步长尽量均衡</li>
+<li>Adam: RMSProp + 动量，一般为首选</li>
+</ol>
+<h4 id="损失函数Loss"><a href="#损失函数Loss" class="headerlink" title="损失函数Loss"></a>损失函数Loss</h4><ol>
+<li>铰链Hinge: 主要用于SVM</li>
+<li>互熵Cross Entropy Loss: 用于Logistic、Softmax分类</li>
+<li>平方Square Loss: 用于最小二乘法(OLS)</li>
+<li>指数Exponential Loss: 用于Adaboost等集成学习算法</li>
+</ol>
+<h4 id="克服overfitting"><a href="#克服overfitting" class="headerlink" title="克服overfitting"></a>克服overfitting</h4><ol>
+<li>Batch Normalization一般为首选，效果不好时再考虑其他手段；通常在Activation层之前。</li>
+<li>Dropout相当于内部集成，注意测试时不用drop，得分要乘以比例p</li>
+<li>Data Augmentation: 生成更多训练数据</li>
+</ol>
+<p>Q: 如何识别？<br>A: 画出学习曲线，观察训练误差和验证误差</p>
+<h4 id="超参数Hyperparameters"><a href="#超参数Hyperparameters" class="headerlink" title="超参数Hyperparameters"></a>超参数Hyperparameters</h4><ol>
+<li>Learning Rate是最重要的超参数，没有之一。<br>网格搜索同样适用于深层神经网络的超参调整，每次选用少量的epoch测试。</li>
+<li>Learning Rate Decay是二阶超参，不需要一开始就引入。<br>注意Learning Rate Decay和Adam的原理相悖，通常不兼容。</li>
+</ol>
+<h4 id="模型集成Ensemble"><a href="#模型集成Ensemble" class="headerlink" title="模型集成Ensemble"></a>模型集成Ensemble</h4><p>训练10个参数不同的模型，对预测结果投票，期望提升2%</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/19/ML-FeatureImportance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/19/ML-FeatureImportance/" itemprop="url">特征重要性评估(Feature Importance Evaluation)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-19T15:12:27+08:00">
+                2018-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  446
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>特征对目标变量预测的相对重要性，可以通过决策树中使用特征作为决策节点的相对顺序来评估。<br>决策树顶部使用的特征，将对更多样本的最终预测决策做出贡献。<br>因此，可以通过每个特征对最终预测做出贡献的样本比例，来评估该特征的重要性。</p>
+<p>通过对多个随机树中的预期贡献率取平均，可以减少这种估计的方差。</p>
+<p>sklearn.ensemble模块包含两个基于随机决策树的平均算法：Random Forest 和 Extra-Tress.<br>这两种算法都是在构造过程中引入随机性来创建一组不同的分类器。</p>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p>实例一: 特征重要性二维可视化<br><img src="/img/featureImportance_1.png" width="500"><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.dataset <span class="keyword">import</span> fetch_olivetti_faces</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> ExtraTreesClassifier</span><br><span class="line"></span><br><span class="line">n_jobs=<span class="number">1</span> <span class="comment">#单核</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据</span></span><br><span class="line">data = fetch_oliveetti_faces()</span><br><span class="line">X = data.images.reshape((len(data.images),<span class="number">-1</span>))</span><br><span class="line">y = data.target</span><br><span class="line"></span><br><span class="line"><span class="comment"># 构建学习器</span></span><br><span class="line">forest = ExtraTreesClassifier(n_estimators=<span class="number">1000</span>, max_features=<span class="number">128</span>, n_jobs=n_jobs)</span><br><span class="line">forest.fit(X,y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出特征重要性</span></span><br><span class="line">importances = forest.feature_importances_</span><br><span class="line">importances = importances.reshape(data.image[<span class="number">0</span>].shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘图</span></span><br><span class="line">plt.matshow(importances. cmap=plt.cm.hot)</span><br><span class="line">plt.title(<span class="string">"Pixel importances with forests of trees"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
+<p>实例二：特征重要性一维可视化<br><img src="/img/featureImportance_2.png" width="600"><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_classification</span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> ExtraTreesClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成测试数据</span></span><br><span class="line">X,y = make_classification(n_samples=<span class="number">1000</span>, n_features=<span class="number">10</span>, n_informative=<span class="number">3</span>, n_classes=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 选取学习器</span></span><br><span class="line">forest = ExtraTreesClassifier(n_estimators=<span class="number">250</span>, random_state=<span class="number">0</span>)</span><br><span class="line">forest.fit(X,y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出特征重要性</span></span><br><span class="line">importances = forest.feature_importances_</span><br><span class="line">std = np.std([tree.feature_importances_ <span class="keyword">for</span> tree <span class="keyword">in</span> forest.estimators_], axis=<span class="number">0</span>)</span><br><span class="line">indices = np.argsort(importances)[::<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印</span></span><br><span class="line">print(<span class="string">"Feature ranking:"</span>)</span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> range(X.shape[<span class="number">1</span>]):</span><br><span class="line">    print(<span class="string">"%d. feature %d (%f)"</span> % (f+<span class="number">1</span>, indices[f], importances[indices[f]]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘图</span></span><br><span class="line">plt.figure()</span><br><span class="line">plt.title(<span class="string">"Feature importances"</span>)</span><br><span class="line">plt.bar(range(X.shape[<span class="number">1</span>]), importances[indices], color=<span class="string">'r'</span>, yerr=std[indices], align=<span class="string">'center'</span>)</span><br><span class="line">plt.xticks(range(X.shape[<span class="number">1</span>]), indices)</span><br><span class="line">plt.xlim([<span class="number">-1</span>, X.shape[<span class="number">1</span>]])</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/19/ML-MissingValues/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/19/ML-MissingValues/" itemprop="url">缺失值处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-19T14:23:20+08:00">
+                2018-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  573
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>缺失值的处理方法分为三类：</p>
+<ul>
+<li>删除：删除含有缺失字段的样本</li>
+<li>修补：有多种方法</li>
+<li>不处理：直接使用不完整数据作为输入</li>
+</ul>
+<h3 id="修补方法"><a href="#修补方法" class="headerlink" title="修补方法"></a>修补方法</h3><ol>
+<li><p>人工修补(filling manually)<br>由了解数据的用户填写，偏离最小，填充效果最好。<br>成本巨大，当数据规模大时不适用。</p>
+</li>
+<li><p>特殊值(Special values)<br>将缺失值当做一种特殊的属性值来处理，不同于其他的任何属性值。例如’unknown’.<br>可能导致严重的数据偏离。一般不推荐使用。</p>
+</li>
+<li><p>均值填充(Mean/Mode Completer)<br>用现存数据的多数信息来推测缺失值。<br>数值型字段，使用其他样本在该字段上的均值；<br>非数值型字段，使用出现次数最多的值。</p>
+</li>
+<li><p>热卡填充(Hot deck imputation)<br>在完整数据中找到一个最相似的对象，然后用这个最相似对象的值填充。<br>缺点在于难以定义相似标准。</p>
+</li>
+<li><p>聚类填充(clustering imputation)<br>首先确定与缺失样本距离最近的k个样本，然后用k个样本的均值填充。</p>
+</li>
+<li><p>所有可能的值填充(all possible values)<br>使用空缺属性值的所有可能的取值来填充。<br>计算代价大，可能的测试方案多。</p>
+</li>
+<li><p>组合完整化方法(Combinatorial Completer)<br>使用所有可能的属性取值来试，从中选择最好的一个作为填补的属性值。</p>
+</li>
+<li><p>回归(Regression)<br>基于完整的数据集，建立回归方程。将缺失记录的已知属性值代入方程，得到缺失值的回归估计值。<br>当变量不是线性相关时，会导致有偏差的估计。</p>
+</li>
+<li><p>极大似然估计(Max Likelihood)<br>通过观察数据的边际分布可以对未知参数进行极大似然估计。<br>最常采用的计算方法是期望值最大化(Expectation Maximization, EM)。<br>适用大样本，计算很复杂。</p>
+</li>
+<li><p>多重插补(Multiple Imputation)<br>来源于贝叶斯估计，认为待修补的值是随机的，来自于已观测到的值。<br>具体实践上通常是估计出待插补的值，然后加上不同的噪声，形成多组可选插补值。</p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/19/Python-pandas-DataFrame/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1289,7 +1777,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  496
+                  638
                 </span>
               
 
@@ -1320,6 +1808,8 @@
 <h4 id="Callback"><a href="#Callback" class="headerlink" title="Callback"></a>Callback</h4><p>keras.callbacks.Callback()<br>回调函数的抽象类，定义新的回调函数必须继承此类</p>
 <h4 id="BaseLogger"><a href="#BaseLogger" class="headerlink" title="BaseLogger"></a>BaseLogger</h4><p>keras.callbacks.BaseLogger()<br>Callback that accumulates epoch averages of metrics.<br>计算metrics指标的累加epoch平均值。<br>在每个keras模型中自动调用。</p>
 <h4 id="History"><a href="#History" class="headerlink" title="History"></a>History</h4><p>keras.callbacks.History()<br>History对象即为fit() 方法的返回值。<br>在每个keras模型中自动调用。<br>History.history是一个字典，键值包括[‘acc’,’loss’,’val_acc’,’val_loss’,’lr’]等。<br>value是长度=epoch的列表，即每个epoch记录一次数据。</p>
+<h4 id="TensorBoard"><a href="#TensorBoard" class="headerlink" title="TensorBoard"></a>TensorBoard</h4><p>当使用TensorFlow作为后台时，也可以在CallBack函数里使用TensorBoard.<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">callbacks = [</span><br><span class="line">	keras.callbacks.TensorBoard(</span><br><span class="line">		log_dir=<span class="string">'my_log_dir'</span>, <span class="comment"># 日志写入位置</span></span><br><span class="line">		histogram_freq=<span class="number">1</span>, <span class="comment"># 每一轮都要记录激活直方图</span></span><br><span class="line">		embeddings_freq=<span class="number">1</span>, <span class="comment"># 每一轮都要记录嵌入数据</span></span><br><span class="line">	)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">history = model.fit(X_train, y_train,</span><br><span class="line">	epochs = <span class="number">20</span>,</span><br><span class="line">	batch_size = <span class="number">128</span>,</span><br><span class="line">	validation_split = <span class="number">0.2</span>,</span><br><span class="line">	callbacks = callbacks)</span><br></pre></td></tr></table></figure></p>
+<p>启动之后，通过浏览器打开<a href="http://localhost:6006查看" target="_blank" rel="noopener">http://localhost:6006查看</a><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tensorboard --logdir=my_log_dir</span><br></pre></td></tr></table></figure></p>
 <h4 id="ReduceLROnPlateau"><a href="#ReduceLROnPlateau" class="headerlink" title="ReduceLROnPlateau"></a>ReduceLROnPlateau</h4><p>keras.callbacks.ReduceLROnPlateau(monitor=’val_loss’, factor=0.1, patience=10, verbose=0, mode=’auto’, epsilon=0.0001, cooldown=0, min_lr=0)<br>当评价指标不再提升时，减少学习速率。<br>参数</p>
 <ul>
 <li>mointor: 要监测的评价指标</li>
@@ -1330,6 +1820,7 @@
 <li>cooldown: 学习率减少后，经过多少个epoch后才会再次触发</li>
 <li>min_lr: 学习速率下限</li>
 </ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">callbacks_list = [</span><br><span class="line">	keras.callbacks.ReduceLROnPlateau(</span><br><span class="line">		moniter = <span class="string">'val_loss'</span>,</span><br><span class="line">		factor = <span class="number">0.1</span>,</span><br><span class="line">		patience = <span class="number">10</span>,</span><br><span class="line">	)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h4 id="EarlyStopping"><a href="#EarlyStopping" class="headerlink" title="EarlyStopping"></a>EarlyStopping</h4><p>keras.callbacks.EarlyStopping(monitor=’val_loss’, min_delta=0, patience=0, verbose=0, mode=’auto’)<br>当评价指标不再提升时，中止训练。<br>参数</p>
 <ul>
 <li>monitor: 要监测的评价指标</li>
@@ -1338,6 +1829,7 @@
 <li>verbose: 信息展示模式</li>
 <li>mode: ‘auto’,’min’,’max’</li>
 </ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">callbacks_list = [</span><br><span class="line">	keras.callbacks.EarlyStopping(</span><br><span class="line">		monitor = <span class="string">'acc'</span>,</span><br><span class="line">		patience = <span class="number">1</span>,</span><br><span class="line">	),</span><br><span class="line">	keras.callbacks.ModelCheckpoint(</span><br><span class="line">		filepath = <span class="string">'my_model.h5'</span>,</span><br><span class="line">		monitor = <span class="string">'val_loss'</span>,</span><br><span class="line">		save_best_only = <span class="keyword">True</span>,</span><br><span class="line">	)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, </span><br><span class="line">	loss=<span class="string">'binary_crossentropy'</span>, </span><br><span class="line">	metrics=[<span class="string">'acc'</span>])</span><br><span class="line"></span><br><span class="line">model.fit(x,y,</span><br><span class="line">	epochs = <span class="number">10</span>,</span><br><span class="line">	batch_size = <span class="number">32</span>,</span><br><span class="line">	callbacks=callbacks_list,</span><br><span class="line">	validation_data=(x_val, y_val))</span><br><span class="line"></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h4 id="ModelCheckpoint"><a href="#ModelCheckpoint" class="headerlink" title="ModelCheckpoint"></a>ModelCheckpoint</h4><p>keras.callbacks.ModelCheckpoint(filepath, monitor=’val_loss’, verbose=0, save_best_only=False, save_weights_only=False, mode=’auto’, period=1)<br>在每个epoch后将模型保存到文件。<br>参数</p>
 <ul>
 <li>filepath: 文件路径，可以包含格式，例如weights.{epoch:02d}-{val_loss:.2f}.hdf5</li>
@@ -3117,467 +3609,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/04/Keras-Embedding/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/04/Keras-Embedding/" itemprop="url">Keras嵌入层Embedding</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T14:45:24+08:00">
-                2018-05-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  137
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Embedding嵌入层将正整数转换为固定大小的向量，例如将字符的数字编码转为word embedding向量([3790]-&gt;[3,5,0,12])<br>Embedding层只能作为模型的第一层。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Embedding(input_dim, output_dim, embeddings_initializer=<span class="string">'uniform'</span>, </span><br><span class="line">	embeddings_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	embeddings_constraint=<span class="keyword">None</span>, mask_zero=<span class="keyword">False</span>, input_length=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>输入shape: (batch_size, sequence_length)<br>输出shape: (batch_size, sequence_length, output_dim)</p>
-<ul>
-<li>input_dim: 输入字典长度，最大下标+1</li>
-<li>output_dim: 输出长度</li>
-<li>mask_zero: 是否将输入中的’0’当做padding而全部忽略</li>
-<li>input_length: 输入序列的长度；不指定时后续层的输出维度无法推断</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/04/Keras-Recurrent/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/04/Keras-Recurrent/" itemprop="url">Keras循环层Recurrent</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T13:46:38+08:00">
-                2018-05-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  714
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Recurrent"><a href="#Recurrent" class="headerlink" title="Recurrent"></a>Recurrent</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.RNN(cell, return_sequences=<span class="keyword">False</span>, return_state=<span class="keyword">False</span>, </span><br><span class="line">	go_backwards=<span class="keyword">False</span>, stateful=<span class="keyword">False</span>, unroll=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
-<p>循环层的基类，所有的循环层(LSTM, GRU, SimpleRNN)都继承本层。</p>
-<ul>
-<li>cell: RNN cell实例，包括<ul>
-<li>call(input_at_t, states_at_t)方法，返回(output_at_t, states_at_t_plus_1)</li>
-<li>state_size</li>
-</ul>
-</li>
-<li>return_sequences: 默认False返回最后一个输出；若True则返回每个时刻的输出序列</li>
-<li>return_state: 是否返回最后时刻的隐状态</li>
-<li>go_backwards: 是否将输入序列逆向处理，即将最后一个当做t=1</li>
-<li>stateful: 当前batch下标为i的最终状态，将会被用作下个batch下标为i的初始状态</li>
-<li>unroll: 若True则循环层将被展开，加速计算，但会占用更多内存</li>
-</ul>
-<h4 id="SimpleRNN-SimpleRNNCell"><a href="#SimpleRNN-SimpleRNNCell" class="headerlink" title="SimpleRNN, SimpleRNNCell"></a>SimpleRNN, SimpleRNNCell</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.SimpleRNN(units, activation=<span class="string">'tanh'</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, recurrent_initializer=<span class="string">'orthogonal'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, recurrent_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, recurrent_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>, </span><br><span class="line">	dropout=<span class="number">0.0</span>, recurrent_dropout=<span class="number">0.0</span>, </span><br><span class="line">	return_sequences=<span class="keyword">False</span>, return_state=<span class="keyword">False</span>, </span><br><span class="line">	go_backwards=<span class="keyword">False</span>, stateful=<span class="keyword">False</span>, unroll=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">keras.layers.SimpleRNNCell(units, activation=<span class="string">'tanh'</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, recurrent_initializer=<span class="string">'orthogonal'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, recurrent_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, recurrent_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>, </span><br><span class="line">	dropout=<span class="number">0.0</span>, recurrent_dropout=<span class="number">0.0</span>)</span><br></pre></td></tr></table></figure>
-<p>一种全连接RNN，输出会回馈到输入。</p>
-<ul>
-<li>units: 输出维度</li>
-</ul>
-<h4 id="GRU-GRUCell"><a href="#GRU-GRUCell" class="headerlink" title="GRU, GRUCell"></a>GRU, GRUCell</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.GRU(units, activation=<span class="string">'tanh'</span>, recurrent_activation=<span class="string">'hard_sigmoid'</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, recurrent_initializer=<span class="string">'orthogonal'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, recurrent_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, recurrent_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>, </span><br><span class="line">	dropout=<span class="number">0.0</span>, recurrent_dropout=<span class="number">0.0</span>, implementation=<span class="number">1</span>, </span><br><span class="line">	return_sequences=<span class="keyword">False</span>, return_state=<span class="keyword">False</span>, go_backwards=<span class="keyword">False</span>, stateful=<span class="keyword">False</span>, unroll=<span class="keyword">False</span>, reset_after=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">keras.layers.GRUCell(units, activation=<span class="string">'tanh'</span>, recurrent_activation=<span class="string">'hard_sigmoid'</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, recurrent_initializer=<span class="string">'orthogonal'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, recurrent_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, recurrent_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>, </span><br><span class="line">	dropout=<span class="number">0.0</span>, recurrent_dropout=<span class="number">0.0</span>, implementation=<span class="number">1</span>, reset_after=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
-<p>Gated Recurrent Unit有两个变种。<br>默认实现(1406.1078v3)，reset gate 在矩阵相乘前作用于hidden state；<br>另一种实现(1406.1078v1)的顺序则相反，和CuDNNGRU (GPU-only) 兼容。<br>调用时使用’reset_after’=True，’recurrent_activation=’sigmoid’.</p>
-<h4 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.LSTM(units, activation=<span class="string">'tanh'</span>, recurrent_activation=<span class="string">'hard_sigmoid'</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, recurrent_initializer=<span class="string">'orthogonal'</span>, bias_initializer=<span class="string">'zeros'</span>,</span><br><span class="line">	unit_forget_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, recurrent_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, recurrent_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>, </span><br><span class="line">	dropout=<span class="number">0.0</span>, recurrent_dropout=<span class="number">0.0</span>, implementation=<span class="number">1</span>, </span><br><span class="line">	return_sequences=<span class="keyword">False</span>, return_state=<span class="keyword">False</span>, go_backwards=<span class="keyword">False</span>, stateful=<span class="keyword">False</span>, unroll=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">keras.layers.LSTMCell(units, activation=<span class="string">'tanh'</span>, recurrent_activation=<span class="string">'hard_sigmoid'</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, recurrent_initializer=<span class="string">'orthogonal'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	unit_forget_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, recurrent_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, recurrent_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>, </span><br><span class="line">	dropout=<span class="number">0.0</span>, recurrent_dropout=<span class="number">0.0</span>, implementation=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
-<p>Long Short Term Memory Layer.</p>
-<ul>
-<li>unit_forget_bias: 若为true将会在forget gate初始化时加1，并强制 bias_initializer=”zeros”</li>
-<li>implementatioin: mode 1会使用大量小型计算，mode 2会使用少量大型计算；根据设备与任务选择</li>
-</ul>
-<h4 id="ConvLSTM2D"><a href="#ConvLSTM2D" class="headerlink" title="ConvLSTM2D"></a>ConvLSTM2D</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.ConvLSTM2D(filters, kernel_size, strides=(<span class="number">1</span>, <span class="number">1</span>), padding=<span class="string">'valid'</span>, data_format=<span class="keyword">None</span>, </span><br><span class="line">	dilation_rate=(<span class="number">1</span>, <span class="number">1</span>), activation=<span class="string">'tanh'</span>, recurrent_activation=<span class="string">'hard_sigmoid'</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, recurrent_initializer=<span class="string">'orthogonal'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	unit_forget_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, recurrent_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, recurrent_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>, </span><br><span class="line">	return_sequences=<span class="keyword">False</span>, go_backwards=<span class="keyword">False</span>, stateful=<span class="keyword">False</span>, </span><br><span class="line">	dropout=<span class="number">0.0</span>, recurrent_dropout=<span class="number">0.0</span>)</span><br></pre></td></tr></table></figure>
-<p>和LSTM类似，但是输入变换和循环变换都是通过卷积完成的。</p>
-<h4 id="CuDNNGRU-CuDNNLSTM"><a href="#CuDNNGRU-CuDNNLSTM" class="headerlink" title="CuDNNGRU, CuDNNLSTM"></a>CuDNNGRU, CuDNNLSTM</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.CuDNNGRU(units, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, recurrent_initializer=<span class="string">'orthogonal'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, recurrent_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, recurrent_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>, </span><br><span class="line">	return_sequences=<span class="keyword">False</span>, return_state=<span class="keyword">False</span>, stateful=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">keras.layers.CuDNNLSTM(units, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, recurrent_initializer=<span class="string">'orthogonal'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	unit_forget_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, recurrent_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, recurrent_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>, </span><br><span class="line">	return_sequences=<span class="keyword">False</span>, return_state=<span class="keyword">False</span>, stateful=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
-<p>Fast GRU/LSTM implementation backed by CuDNN.<br>只能在GPU上运行，以TensorFlow作为后端。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/04/Keras-LocallyConnected/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/04/Keras-LocallyConnected/" itemprop="url">Keras局部连接层LocallyConnected</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T11:30:42+08:00">
-                2018-05-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  160
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>CNN的两大特性是：</p>
-<ul>
-<li>局部连接：相对于全连接(Dense)而言，每个神经元仅与上层的部分神经元相连</li>
-<li>权值共享：滤波器共享，权值w共用</li>
-</ul>
-<p>局部连接层(LocallyConnected)与卷积层(Conv)的相同点在于局部连接，不同点在于没有权值共享。<br>相当于不同位置的滤波器是不一样的。</p>
-<h4 id="LocallyConnected1D-LocallyConnected2D"><a href="#LocallyConnected1D-LocallyConnected2D" class="headerlink" title="LocallyConnected1D, LocallyConnected2D"></a>LocallyConnected1D, LocallyConnected2D</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.LocallyConnected1D(filters, kernel_size, strides=<span class="number">1</span>, padding=<span class="string">'valid'</span>, </span><br><span class="line">	data_format=<span class="keyword">None</span>, activation=<span class="keyword">None</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">keras.layers.LocallyConnected2D(filters, kernel_size, strides=(<span class="number">1</span>, <span class="number">1</span>), padding=<span class="string">'valid'</span>, </span><br><span class="line">	data_format=<span class="keyword">None</span>, activation=<span class="keyword">None</span>, use_bias=<span class="keyword">True</span>, </span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, bias_initializer=<span class="string">'zeros'</span>, </span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>, </span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3632,7 +3663,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">303</span>
+                  <span class="site-state-item-count">306</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3734,7 +3765,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">113.4k</span>
+    <span title="Site words total count">115.7k</span>
   
 </div>
 

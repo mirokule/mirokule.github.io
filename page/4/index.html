@@ -262,6 +262,476 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/27/TF-Tensor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/27/TF-Tensor/" itemprop="url">TensorFlow张量Tensor</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-27T08:29:24+08:00">
+                2018-04-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  715
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>TensorFlow中的核心数据单位是张量，用Numpy阵列来表示。<br>TensorFlow程序首先建立 tf.Tensor 目标图，详细说明如何基于其他可用张量来计算每个张量，然后运行该图的部分内容以获得所期望的结果。<br>tf.Tensor 有以下属性：</p>
+<ul>
+<li>数据类型(int32, float32, string)</li>
+<li>形状(shape)</li>
+</ul>
+<p>主要的特殊张量包括：</p>
+<ul>
+<li>tf.Variable</li>
+<li>tf.constant</li>
+<li>tf.placeholder</li>
+<li>tf.SparseTensor</li>
+</ul>
+<p>除 tf.Variable 之外，张量的值不可变。<br>然而，同一张量的两次评估可能会返回不同的值。</p>
+<h3 id="阶"><a href="#阶" class="headerlink" title="阶"></a>阶</h3><p>tf.Tensor 的阶就是它本身的维数，也就是秩(rank, degree)，与数学中的阶并不相同。</p>
+<ul>
+<li>0阶：标量</li>
+<li>1阶：矢量</li>
+<li>2阶：矩阵、数据表</li>
+<li>3阶：数据立体</li>
+<li>n阶：n阶张量</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 0阶</span></span><br><span class="line">str0 = tf.Variable(<span class="string">"Elephant"</span>, tf.string)</span><br><span class="line">int0 = tf.Variable(<span class="number">344</span>, tf.int32)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1阶</span></span><br><span class="line">str1 = tf.Variable([<span class="string">"hello"</span>], tf.string)</span><br><span class="line">float1 = tf.Variable([<span class="number">3.1</span>, <span class="number">2.7</span>], tf.float64)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2阶</span></span><br><span class="line">mat2 = tf.Variable([[<span class="number">7</span>],[<span class="number">11</span>]], tf.int16)</span><br><span class="line">xor2 = tf.Variable([[<span class="keyword">False</span>, <span class="keyword">True</span>], [<span class="keyword">True</span>, <span class="keyword">False</span>]], tf.bool)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4阶</span></span><br><span class="line">image4 = tf.zeros([<span class="number">10</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取阶</span></span><br><span class="line">r = tf.rank(image4)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取切片</span></span><br><span class="line">scalar = vector1[<span class="number">2</span>] <span class="comment">#1阶张量切片得到标量</span></span><br><span class="line">scalar = matrix2[<span class="number">2</span>,<span class="number">3</span>]	</span><br><span class="line">vector = matrix[<span class="number">2</span>]</span><br><span class="line">vector = matrix[:,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="形状"><a href="#形状" class="headerlink" title="形状"></a>形状</h3><p><strong>获取形状</strong><br>获取 tf.Tensor 形状的方法有两种：</p>
+<ul>
+<li>tf.Tensor.shape: 返回一个 TensorShape 目标</li>
+<li>构建一个shape相同的张量：zeros = tf.zeros(matrix.shape[1])</li>
+</ul>
+<p><strong>改变形状</strong><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tensor = tf.ones([<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])</span><br><span class="line">matrix = tf.reshape(tensor, [<span class="number">6</span>,<span class="number">10</span>]) <span class="comment">#维度乘积相等</span></span><br><span class="line">matrix = tf.reshape(tensor, [<span class="number">3</span>,<span class="number">-1</span>]) <span class="comment">#-1表示由tf自行计算维度</span></span><br><span class="line">matrix = tf.reshape(tensor, [<span class="number">4</span>,<span class="number">3</span>,<span class="number">-1</span>])</span><br></pre></td></tr></table></figure></p>
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p>一个 tf.Tensor 只能有一种数据类型。但是，可以将任意数据结构序列化为string，并存储在 tf.Tensor 中。<br>获取 tf.Tensor 的数据类型，可以使用 Tensor.dtype 属性。<br>转换数据类型，可以使用 tf.cast 方法。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">float_tensor = tf.cast(tf.constant([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]), dtype = tf.float32)</span><br></pre></td></tr></table></figure></p>
+<h3 id="评估张量"><a href="#评估张量" class="headerlink" title="评估张量"></a>评估张量</h3><p>评估张量最简单的方法是使用 Tensor.eval 方法：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">constant = tf.constant([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">tensor = constant * constant</span><br><span class="line"><span class="keyword">print</span> tensor.eval()</span><br><span class="line"></span><br><span class="line"><span class="comment">#placeholder评估前要先feed</span></span><br><span class="line">p = tf.placeholder(tf.float32)</span><br><span class="line">t = p + <span class="number">1.0</span></span><br><span class="line">t.eval(feed_dict = &#123;p: <span class="number">2.0</span>&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>eval 方法仅在默认 tf.Session 值处于活动状态时才起作用。<br>eval 方法返回一个与张量内容相同的Numpy数组。<br>注意：在没有提供placeholder值的情况下，无法评估依赖于placeholder的张量。</p>
+<h3 id="打印张量"><a href="#打印张量" class="headerlink" title="打印张量"></a>打印张量</h3><p>直接使用print tensor会输出tensor目标，而不是tensor的值。<br>使用 tf.Print 方法，传递并保持第一个参数不变，打印第二个参数。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tf.Print(input_, data, message=<span class="keyword">None</span>, first_n=<span class="keyword">None</span>, summarize=<span class="keyword">None</span>, name=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用</span></span><br><span class="line">t = &lt;&lt; some tensor operation &gt;&gt;</span><br><span class="line">t = tf.Print(t, [t])</span><br><span class="line">result = t + <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>在评估result时，会评估所有影响result的元素。评估t会导致打印其输入(t的旧值)。<br><strong>注意</strong>：该方法和jupyter notebook不兼容，只能输出到server’s output</p>
+<ul>
+<li>input_: A tensor passed through this op</li>
+<li>data: A list of tensors to print out when op is evaluated</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/25/DL-RNNSeq2Seq/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/25/DL-RNNSeq2Seq/" itemprop="url">Sequence to Sequence</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-25T08:59:46+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  469
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>经典的N-to-N RNN要求序列等长，然而现实中的大部分问题序列都不是等长的，比如机器翻译.</p>
+<h3 id="Sequence-to-Sequence"><a href="#Sequence-to-Sequence" class="headerlink" title="Sequence-to-Sequence"></a>Sequence-to-Sequence</h3><p><img src="/img/ntom.jpeg"><br>如图，使用一个RNN网络将输入X转为编码c向量(可以是隐藏层参数、输出层变换等)，再用另一个RNN网络使用c向量作为输入，得到最终输出Y。<br>整个网络可以看做是求条件概率$ P(y^{&lt;i&gt;},…,y^{&lt; T_y &gt;}|x) $.</p>
+<p>问：可以使用贪心法吗？<br>答：在每个时刻t，用贪心法求出的局部最优条件概率，不一定是全局最优条件概率。<br>例如机器翻译中，前n个词的最优翻译，不一定是整句话的最优翻译。</p>
+<h6 id="Beam-Search"><a href="#Beam-Search" class="headerlink" title="Beam Search"></a>Beam Search</h6><p>在解码的每个时刻，保留Top k 个最优解。当k=1时，算法退化为贪心法。<br>代价是要同时持有网络的k份拷贝。k越大，结果越好，运行越慢。</p>
+<h6 id="Length-Normalization"><a href="#Length-Normalization" class="headerlink" title="Length Normalization"></a>Length Normalization</h6><p>目标函数中，小于1的概率p连续相乘会使得值过小：<br>$$ \prod_{t=1}^{T_y} P(y^{&lt;t&gt;}|x,y^{&lt;1&gt;},…,y^{&lt;t-1&gt;}) $$<br>所以取Log将乘法转为加法，目标函数变为<br>$$ Log\sum_{t=1}^{T_y} P(y^{&lt;t&gt;}|x,y^{&lt;1&gt;},…,y^{&lt;t-1&gt;}) $$<br>这两个目标函数都会倾向于选择较短的翻译，所以加入规范化项：<br>$$ \frac{1}{T_y^\alpha}Log\sum_{t=1}^{T_y} P(y^{&lt;t&gt;}|x,y^{&lt;1&gt;},…,y^{&lt;t-1&gt;}) $$</p>
+<h6 id="BLEU-Score"><a href="#BLEU-Score" class="headerlink" title="BLEU Score"></a>BLEU Score</h6><p>全称BiLingual Evaluation Understudy，用于评估机器翻译的质量。<br>主要思想：机器翻译结果与若干条人工翻译的结果对比，越接近则效果越好。</p>
+<h3 id="Attention-Model"><a href="#Attention-Model" class="headerlink" title="Attention Model"></a>Attention Model</h3><p>当输入序列较长时，固定长度的编码c向量中难以包含所有序列的信息，使性能变差。<br>Attention机制的实现是在解码的每一步时，只考虑编码的若干个中间结果。<br><img src="/img/attn_model.png"><br><img src="/img/attn_mechanism.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/22/Keras-Case-Emojifier/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/22/Keras-Case-Emojifier/" itemprop="url">Keras实例：构建情感判断器Emojifier</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-22T09:26:44+08:00">
+                2018-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  455
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本文是用Keras实现的情感判断器Emojifier，使用了LSTM、Word Embedding等。<br>通过输入一段文字，判断文字情感，并用emoji符号表示。<br>使用已经训练好的embedding矩阵。</p>
+<h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><ol>
+<li>将多个输入句子X(m,1)转为index数字表示(使用字典，长度10k)</li>
+<li>将每个单词的index数字转为GloVe编码(word embedding，长度300)</li>
+<li>训练RNN网络，得到softmax输出</li>
+</ol>
+<h4 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h4><h6 id="1-sentence-gt-indices"><a href="#1-sentence-gt-indices" class="headerlink" title="1. sentence -&gt; indices"></a>1. sentence -&gt; indices</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sentences_to_indices</span><span class="params">(X, word_to_index, max_len)</span>:</span></span><br><span class="line">    m = X.shape[<span class="number">0</span>] <span class="comment"># X.shape = (m,1)                                   </span></span><br><span class="line">    X_indices = np.zeros((m, max_len)) <span class="comment"># padding每个句子长度都为max_len</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(m):                               </span><br><span class="line">        sentence_words = X[i].lower().split()</span><br><span class="line">       </span><br><span class="line">        j = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> w <span class="keyword">in</span> sentence_words:</span><br><span class="line">            X_indices[i, j] = word_to_index[w]</span><br><span class="line">            j = j+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> X_indices</span><br></pre></td></tr></table></figure>
+<h6 id="2-indices-gt-vectors"><a href="#2-indices-gt-vectors" class="headerlink" title="2. indices -&gt; vectors"></a>2. indices -&gt; vectors</h6><p>定义了embedding层，在步骤3构建计算图时使用。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pretrained_embedding_layer</span><span class="params">(word_to_vec_map, word_to_index)</span>:</span></span><br><span class="line">    <span class="comment"># 获得输入输出维度</span></span><br><span class="line">    vocab_len = len(word_to_index) + <span class="number">1</span>      <span class="comment"># keras要求+1 </span></span><br><span class="line">    emb_dim = word_to_vec_map[<span class="string">"cucumber"</span>].shape[<span class="number">0</span>]     </span><br><span class="line">   </span><br><span class="line">    <span class="comment"># 初始化权重矩阵 </span></span><br><span class="line">    emb_matrix = np.zeros((vocab_len, emb_dim))</span><br><span class="line">    <span class="comment"># 权重矩阵赋值</span></span><br><span class="line">    <span class="keyword">for</span> word, index <span class="keyword">in</span> word_to_index.items():</span><br><span class="line">        emb_matrix[index, :] = word_to_vec_map[word]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义embedding层的输入输出</span></span><br><span class="line">    embedding_layer = Embedding(vocab_len, emb_dim, trainable=<span class="keyword">False</span>)</span><br><span class="line">    <span class="comment"># 编译并赋予权重</span></span><br><span class="line">    embedding_layer.build((<span class="keyword">None</span>,))</span><br><span class="line">    embedding_layer.set_weights([emb_matrix])</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> embedding_layer</span><br></pre></td></tr></table></figure></p>
+<h6 id="3-构建计算图"><a href="#3-构建计算图" class="headerlink" title="3. 构建计算图"></a>3. 构建计算图</h6><p><img src="/img/emojifier-v2.png"><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Emojify</span><span class="params">(input_shape, word_to_vec_map, word_to_index)</span>:</span></span><br><span class="line">    <span class="comment"># 定义模型输入Input() </span></span><br><span class="line">    sentence_indices = Input(shape=input_shape, dtype=<span class="string">'int32'</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 通过Embedding layer将输入indices转为GloVe Vectors (word embedding)</span></span><br><span class="line">    embedding_layer = pretrained_embedding_layer(word_to_vec_map, word_to_index)</span><br><span class="line">    embeddings = embedding_layer(sentence_indices)  </span><br><span class="line">   </span><br><span class="line">    <span class="comment"># 由于有第2层，所以第1层的LSTM在每个时刻t都要输出 </span></span><br><span class="line">    X = LSTM(<span class="number">128</span>, return_sequences=<span class="keyword">True</span>)(embeddings)</span><br><span class="line">    X = Dropout(<span class="number">0.5</span>)(X)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 第2层LSTM只在最后一个时刻输出</span></span><br><span class="line">    X = LSTM(<span class="number">128</span>, return_sequences=<span class="keyword">False</span>)(X)</span><br><span class="line">    X = Dropout(<span class="number">0.5</span>)(X)</span><br><span class="line">    X = Dense(<span class="number">5</span>)(X)</span><br><span class="line">    X = Activation(<span class="string">'softmax'</span>)(X)</span><br><span class="line">   </span><br><span class="line">    <span class="comment"># 定义模型 </span></span><br><span class="line">    model = Model(inputs=sentence_indices, outputs=X)</span><br><span class="line">    <span class="keyword">return</span> model</span><br></pre></td></tr></table></figure></p>
+<p>模型摘要<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model = Emojify_V2((maxLen,), word_to_vec_map, word_to_index)</span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/emojifier-output.png"></p>
+<h6 id="4-编译，训练，预测"><a href="#4-编译，训练，预测" class="headerlink" title="4. 编译，训练，预测"></a>4. 编译，训练，预测</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 模型编译</span></span><br><span class="line">model.compile(loss=<span class="string">'categorical_crossentropy'</span>, optimizer=<span class="string">'adam'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型训练</span></span><br><span class="line">model.fit(X_train_indices, Y_train_oh, epochs = <span class="number">50</span>, batch_size = <span class="number">32</span>, shuffle=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型验证</span></span><br><span class="line">loss, acc = model.evaluate(X_test_indices, Y_test_oh)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型预测</span></span><br><span class="line">pred = model.predict(X_test_indices)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/21/DL-WordEmbedding/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3053,493 +3523,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/Python-NumPy-ShufflePermutation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/12/Python-NumPy-ShufflePermutation/" itemprop="url">Shuffle和Permutation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T14:52:35+08:00">
-                2018-04-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  205
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>NumPy中随机打乱数组可以使用shuffle()或者permutation()来完成。两者区别是：</p>
-<ul>
-<li>shuffle的参数只能是array_like，而permutation还可以是int，返回numpy.arange(int)</li>
-<li>shuffle返回None，就地生效，而permutation返回打乱后的数组拷贝</li>
-</ul>
-<h4 id="1-shuffle"><a href="#1-shuffle" class="headerlink" title="1.shuffle"></a>1.shuffle</h4><p>numpy.random.shuffle(x)<br>就地生效，in-place；<br>对多维数组，只重排第一轴(axis=0)</p>
-<p>参数</p>
-<ul>
-<li>x: array_like</li>
-</ul>
-<p>返回: None</p>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">arr = np.arange(<span class="number">5</span>)</span><br><span class="line">np.random.shuffle(arr) <span class="comment">#arr=[1 3 2 4 0]</span></span><br><span class="line"></span><br><span class="line">arr = np.arange(<span class="number">9</span>).reshape((<span class="number">3</span>,<span class="number">3</span>))</span><br><span class="line">np.random.shuffle(arr)</span><br></pre></td></tr></table></figure></p>
-<h4 id="2-permutation"><a href="#2-permutation" class="headerlink" title="2.permutation"></a>2.permutation</h4><p>numpy.random.permutation(x)<br>返回打乱顺序后的拷贝，内部也使用了shuffle；<br>多维数组，只针对第一轴(axis=0)打乱顺序</p>
-<p>参数</p>
-<ul>
-<li>x：int或array_like</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>out: ndarray</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.permutation(<span class="number">5</span>) <span class="comment">#array[1,4,2,3,0]</span></span><br><span class="line">np.random.permutation([<span class="number">1</span>,<span class="number">4</span>,<span class="number">9</span>,<span class="number">11</span>]) <span class="comment">#array[11,4,9,1]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于数据重排	</span></span><br><span class="line">sampler = np.random.permutation(<span class="number">5</span>)</span><br><span class="line">df.take(sampler)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/11/DL-Adam/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/11/DL-Adam/" itemprop="url">Adam梯度下降</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T09:07:45+08:00">
-                2018-04-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  741
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Adam算法全称是Adaptive Moment Estimation(自适应矩估计)，是超越其他自适应技术的优化方法。<br>Adam结合了<strong>RMSProp</strong>和<strong>Momentum</strong></p>
-<h4 id="1-Momentum"><a href="#1-Momentum" class="headerlink" title="1. Momentum"></a>1. Momentum</h4><p><strong>指数平均</strong><br>指数平均(Exponentially Weight Average)是一种将输入平滑的趋向类指标。<br>$$ v_t = \beta v_{t-1} + (1-\beta)\theta_t $$<br>可以近似看做$\frac{1}{1-\beta}$天的平均，例如$\beta=0.9$，则$v_t$近似看做最近10天的平均值。<br>$\beta$越大，$v_t$曲线越光滑；通常取为0.9.</p>
-<p><strong>动量梯度下降(Momentum)</strong><br>将指数平均应用到梯度下降算法，每次迭代更新时使用近似均值，来降低波动。<br>$$ \begin{cases}<br>v_{dW^{[l]}} = \beta v_{dW^{[l]}} + (1 - \beta) dW^{[l]} \\<br>W^{[l]} = W^{[l]} - \alpha v_{dW^{[l]}}<br>\end{cases}$$</p>
-<p>$$\begin{cases}<br>v_{db^{[l]}} = \beta v_{db^{[l]}} + (1 - \beta) db^{[l]} \\<br>b^{[l]} = b^{[l]} - \alpha v_{db^{[l]}}<br>\end{cases}$$</p>
-<p><strong>Bias Correction</strong><br>移动平均的起始点低，因为$v_{t-1}$数值较小。<br>可以通过$v_t = \frac{v_t}{1-\beta^t}$予以校正。</p>
-<h4 id="2-RMSProp"><a href="#2-RMSProp" class="headerlink" title="2. RMSProp"></a>2. RMSProp</h4><p>均方根(Root Mean Square prop)用参数除以近似标准差，降低更新方向上的波动。</p>
-<p>$$ \begin{cases}<br>S_{dW^{[l]}} = \beta S_{dW^{[l]}} + (1 - \beta) (dW^{[l]})^2 \\<br>W^{[l]} = W^{[l]} - \alpha \frac{dW^{[l]}}{\sqrt{S_{dW^{[l]}}}}<br>\end{cases}$$</p>
-<p>$$\begin{cases}<br>S_{db^{[l]}} = \beta S_{db^{[l]}} + (1 - \beta) (db^{[l]})^2 \\<br>b^{[l]} = b^{[l]} - \alpha \frac{db^{[l]}}{\sqrt{S_{db^{[l]}}}}<br>\end{cases}$$</p>
-<p>实际应用时会给分母加上$\epsilon = 10^{-8}$，保证分母不为0.</p>
-<h4 id="3-Adam"><a href="#3-Adam" class="headerlink" title="3. Adam"></a>3. Adam</h4><p>同时使用了近似均值和近似标准差：<br>$$\begin{cases}<br>v_{dW^{[l]}} = \beta_1 v_{dW^{[l]}} + (1 - \beta_1) \frac{\partial \mathcal{J} }{ \partial W^{[l]} } \\<br>v^{corrected}_{dW^{[l]}} = \frac{v_{dW^{[l]}}}{1 - (\beta_1)^t} \\<br>s_{dW^{[l]}} = \beta_2 s_{dW^{[l]}} + (1 - \beta_2) (\frac{\partial \mathcal{J} }{\partial W^{[l]} })^2 \\<br>s^{corrected}_{dW^{[l]}} = \frac{s_{dW^{[l]}}}{1 - (\beta_1)^t} \\<br>W^{[l]} = W^{[l]} - \alpha \frac{v^{corrected}_{dW^{[l]}}}{\sqrt{s^{corrected}_{dW^{[l]}}}\;\;+\;\;\varepsilon}<br>\end{cases}$$</p>
-<p><strong>算法</strong></p>
-<ol>
-<li>计算梯度的指数平均 $v$ 和 $v^{corrected}$ </li>
-<li>计算梯度平方的指数平均 $s$ 和 $s^{corrected}$ </li>
-<li>将1和2的信息结合，更新参数</li>
-<li>$\beta_1$通常取0.9，$\beta_2$通常取0.999，$\epsilon$通常取$10^{-8}$</li>
-</ol>
-<p><strong>实现</strong><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> l <span class="keyword">in</span> range(L):</span><br><span class="line">    <span class="comment"># Moving average of the gradients. Inputs: "v, grads, beta1". Output: "v".</span></span><br><span class="line">    v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = beta1 * v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta1) * grads[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)]</span><br><span class="line">    v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = beta1 * v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta1) * grads[<span class="string">"db"</span> + str(l+<span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Compute bias-corrected first moment estimate. Inputs: "v, beta1, t". Output: "v_corrected".</span></span><br><span class="line">    v_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = v[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line">    v_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = v[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Moving average of the squared gradients. Inputs: "s, grads, beta2". Output: "s".</span></span><br><span class="line">    s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = beta2 * s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta2) * (grads[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line">    s[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = beta2 * s[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + (<span class="number">1</span>-beta2) * (grads[<span class="string">"db"</span> + str(l+<span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Compute bias-corrected second raw moment estimate. Inputs: "s, beta2, t". Output: "s_corrected".</span></span><br><span class="line">    s_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] = s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line">    s_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] = s[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Update parameters. Inputs: "parameters, learning_rate, v_corrected, s_corrected, epsilon". Output: "parameters".</span></span><br><span class="line">    parameters[<span class="string">"W"</span> + str(l+<span class="number">1</span>)] = parameters[<span class="string">"W"</span> + str(l+<span class="number">1</span>)] - learning_rate * v_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] / np.sqrt(s_corrected[<span class="string">"dW"</span> + str(l+<span class="number">1</span>)] + epsilon)</span><br><span class="line">    parameters[<span class="string">"b"</span> + str(l+<span class="number">1</span>)] = parameters[<span class="string">"b"</span> + str(l+<span class="number">1</span>)] - learning_rate * v_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] / np.sqrt(s_corrected[<span class="string">"db"</span> + str(l+<span class="number">1</span>)] + epsilon)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-Overfit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/10/DL-Overfit/" itemprop="url">神经网络过拟合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T09:33:41+08:00">
-                2018-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  511
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>机器学习的根本问题是优化和泛化之间的对立。优化(optimization)是指在训练数据上得到最佳性能；泛化(generalization)是指在前所未见的数据上的性能好坏。<br>过拟合是DNN中的一个常见问题，特别是基于图像识别的学习任务：图片样本数量有限，而网络通常很复杂。</p>
-<p>过拟合的处理方法包括：</p>
-<ul>
-<li>增加训练样本：Data Augmentation数据扩增</li>
-<li>减少网络容量：需要保证不会欠拟合</li>
-<li>正则化<ul>
-<li>L1,L2</li>
-<li>Drop Out:核心思想是在每层的输出值中引入噪声，打破不显著的偶然模式</li>
-</ul>
-</li>
-<li>Early Stopping：不符合‘一次解决一个问题’的原则</li>
-</ul>
-<h6 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h6><p>正则机制只在训练过程中添加，不会进入测试过程。<br>例如Keras的模型有两个模式：训练模式和测试模式。测试模式就不会启用正则机制。</p>
-<h4 id="1-L2正则化"><a href="#1-L2正则化" class="headerlink" title="1. L2正则化"></a>1. L2正则化</h4><p>在损失函数的末尾增加正则项：<br>$$ C = C_0 + \frac{\lambda}{2m} \sum_{\omega}\omega^2$$</p>
-<p>原参数的导数变为：<br>$$ \frac{\partial C}{\partial \omega} = \frac{\partial C_0}{\partial \omega} + \frac{\lambda}{m}\omega $$<br>$$ \frac{\partial C}{\partial b} = \frac{\partial C_0}{\partial b} $$</p>
-<p>每次迭代时，会使$\omega$变得更小，称作weight decay.</p>
-<p>正则项只在训练时添加，会使训练损失增大。</p>
-<h4 id="2-Drop-Out"><a href="#2-Drop-Out" class="headerlink" title="2. Drop Out"></a>2. Drop Out</h4><p>随机舍弃部分神经元，减少网络中的节点数。<br>算法流程：</p>
-<ol>
-<li>设定阈值prob_keep</li>
-<li>每轮迭代时，生成新的随机数矩阵D</li>
-<li>将D中大于阈值的数置0，小于阈值的置1：D = D &lt; prob_keep</li>
-<li>将D作为mask，作用到神经元输出：A = A * D</li>
-<li>缩放输出，保持总量不变：A = A / prob_keep(Inverted Dropout)</li>
-<li>后向传播的dA同样mask：dA = dA * D</li>
-<li>缩放dA：dA = dA / prob_keep</li>
-</ol>
-<p>说明：</p>
-<ul>
-<li>drop out只在训练时使用，测试时不使用</li>
-<li>前向传播和后向传播都要drop out</li>
-<li>drop out打破了参数之间的共适应，近似理解为每次只调整部分参数</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3594,7 +3577,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">303</span>
+                  <span class="site-state-item-count">306</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3696,7 +3679,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">113.4k</span>
+    <span title="Site words total count">115.7k</span>
   
 </div>
 
