@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward. n-step TDTD方法除了之前介绍的1-step TD之外，还有一系列其他方法： Return Gt的原定义：$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T $$">
+<meta name="description" content="TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward. 0.n-step TDTD方法除了之前介绍的1-step TD之外，还有一系列其他方法： Return Gt的原定义：$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T">
 <meta name="keywords" content="Machine Learning,Reinforcement Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TD($\lambda$)">
 <meta property="og:url" content="http://mirokule.github.io/2018/11/17/RL-TDLambda/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward. n-step TDTD方法除了之前介绍的1-step TD之外，还有一系列其他方法： Return Gt的原定义：$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T $$">
+<meta property="og:description" content="TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward. 0.n-step TDTD方法除了之前介绍的1-step TD之外，还有一系列其他方法： Return Gt的原定义：$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://mirokule.github.io/img/nstepTD.png">
-<meta property="og:updated_time" content="2018-11-22T08:32:04.537Z">
+<meta property="og:updated_time" content="2018-12-29T07:50:20.320Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TD($\lambda$)">
-<meta name="twitter:description" content="TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward. n-step TDTD方法除了之前介绍的1-step TD之外，还有一系列其他方法： Return Gt的原定义：$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T $$">
+<meta name="twitter:description" content="TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward. 0.n-step TDTD方法除了之前介绍的1-step TD之外，还有一系列其他方法： Return Gt的原定义：$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T">
 <meta name="twitter:image" content="http://mirokule.github.io/img/nstepTD.png">
 
 
@@ -326,7 +326,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  375
+                  698
                 </span>
               
 
@@ -352,16 +352,24 @@
 
       
         <p>TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward.</p>
-<h4 id="n-step-TD"><a href="#n-step-TD" class="headerlink" title="n-step TD"></a>n-step TD</h4><p>TD方法除了之前介绍的1-step TD之外，还有一系列其他方法：<br><img src="/img/nstepTD.png"></p>
+<h4 id="0-n-step-TD"><a href="#0-n-step-TD" class="headerlink" title="0.n-step TD"></a>0.n-step TD</h4><p>TD方法除了之前介绍的1-step TD之外，还有一系列其他方法：<br><img src="/img/nstepTD.png"></p>
 <p>Return Gt的原定义：<br>$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T $$</p>
 <p>n-step 的定义：<br>$$ G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^n V_{t+n-1}(S_{t+n}) $$</p>
 <p>迭代公式变为：<br>$$ V_{t+n}(S_t) = V_{t+n-1}(S_t) + \alpha[G_{t:t+n} - V_{t+n-1}(S_t)] $$</p>
-<h4 id="lambda-return"><a href="#lambda-return" class="headerlink" title="$\lambda$ return"></a>$\lambda$ return</h4><p>$\lambda$-return $G_t^{\lambda}$ 将所有n-step returns $G_t^{(n)}$加权，使用权重$(1-\lambda)\lambda^{n-1}$<br>信号强度以速率$\lambda$减弱，因子(1-$\lambda$)是为了使等比数列权重的和为1.<br>$$ G_t^{\lambda} = (1-\lambda)\sum_{n-1}^{\infty} \lambda^{n-1} G_t^{(n)} $$</p>
+<h4 id="1-Forward-lambda-return"><a href="#1-Forward-lambda-return" class="headerlink" title="1.Forward: $\lambda$-return"></a>1.Forward: $\lambda$-return</h4><p>$G_t^{\lambda}$ 将所有n-step returns $G_t^{(n)}$加权，使用权重$(1-\lambda)\lambda^{n-1}$<br>信号强度以速率$\lambda$减弱，因子(1-$\lambda$)是为了使等比数列权重的和为1.<br>$$ G_t^{\lambda} = (1-\lambda)\sum_{n-1}^{\infty} \lambda^{n-1} G_t^{(n)} $$</p>
 <p>迭代公式变为：<br>$$ V(S_t) \leftarrow V(S_t) + \alpha(G_t^{\lambda} - V(S_t)) $$</p>
-<h6 id="前向视角"><a href="#前向视角" class="headerlink" title="前向视角"></a>前向视角</h6><p>前向视角假设一个人坐在当前状态流上，通过观看将来状态的值函数来估计当前的值函数。<br>由于用到了将来时刻的值函数，因而要等到episode结束，跟MC方法相似。</p>
-<h6 id="后向视角"><a href="#后向视角" class="headerlink" title="后向视角"></a>后向视角</h6><p>后向视角假设一个人坐在当前状态流上，对已经经历过的状态喊话，报告当前状态的回报和TD偏差。<br>不需要等待episode结束，每一步都在更新值函数，是增量式方法。</p>
-<p>首先计算TD偏差：<br>$$ \delta_t = R_{t+1} + \gamma V(S_{t+1}) - V(S_t) $$</p>
-<p>未完待续</p>
+<p>由于$G_t^{\lambda}$中包含用将来时刻的回报$R_{t+n}$，因而要等到episode结束才能更新，和MC一样是off-line算法。<br>可以想象成一个人坐在当前状态流上，观察将来状态的回报，因而称作前向视角(Forward)。</p>
+<h4 id="2-Backward-TD-lambda"><a href="#2-Backward-TD-lambda" class="headerlink" title="2.Backward: TD($\lambda$)"></a>2.Backward: TD($\lambda$)</h4><p>TD($\lambda$)相比$\lambda$-return算法有3方面的改进：</p>
+<ul>
+<li>在episode的每一步都会更新，而不用等到结束</li>
+<li>计算过程分布平均，而并非集中在结尾</li>
+<li>适用于连续过程等没有结束的情况</li>
+</ul>
+<p>资格迹$\mathbf{z}$是一个向量，和值函数逼近的参数$\mathbf{w}$等长。<br>$\mathbf{w}$像是长期记忆，记录了整个过程中学到的知识；而$\mathbf{z}$是短期记忆，只记录了前几步的信息，通过影响$\mathbf{w}$的更新来作用于结果。<br>$\mathbf{z}$在episode开始时设置为0，计算方法如下：</p>
+<p>$$\begin{cases}<br>\mathbf{z}_{-1}&amp;\leftarrow 0 \\<br>\mathbf{z}_t&amp;\leftarrow \gamma \lambda \mathbf{z}_{t-1} + \nabla \hat{v}(S_t, \mathbf{w})<br>\end{cases}$$</p>
+<p>其中$\gamma$是折扣因子，而$\lambda$和之前一样是衰减因子。<br>资格迹$\mathbf{z}$记录的是过去$\mathbf{w}$各元素的贡献，所以更新公式变为：<br>$$ \mathbf{w}_{t+1} \leftarrow \mathbf{w}_t + \alpha\delta_t\mathbf{z}_t $$</p>
+<p>其中$\delta_t$是one-step TD error，即$R_{t+1} + \gamma\hat{v}(S_{t+1}, \mathbf{w}_t) + \hat{v}(S_t,\mathbf{w}_t)$.<br>想象一个人坐在当前状态流上，对已经经历过的状态喊话，报告当前状态的回报和TD偏差，所以称作后向视角。</p>
+<p>以Sarsa($\lambda$)为例，$\mathbf{z}$影响的是policy evaluation中$\mathbf{w}$的更新，而在policy improvement中仍然是$\epsilon$-greedy算法。这是一种增量算法，数据按顺序依次进入，每一组数据都会更新参数。<br>而在DQN中，训练数据从数据集里抽样，打破了前后关联性，就用不到资格迹$\mathbf{z}$。</p>
 
       
     </div>
@@ -487,7 +495,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">306</span>
+                  <span class="site-state-item-count">307</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -571,7 +579,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#n-step-TD"><span class="nav-number">1.</span> <span class="nav-text">n-step TD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lambda-return"><span class="nav-number">2.</span> <span class="nav-text">$\lambda$ return</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#前向视角"><span class="nav-number">2.0.1.</span> <span class="nav-text">前向视角</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#后向视角"><span class="nav-number">2.0.2.</span> <span class="nav-text">后向视角</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#0-n-step-TD"><span class="nav-number">1.</span> <span class="nav-text">0.n-step TD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Forward-lambda-return"><span class="nav-number">2.</span> <span class="nav-text">1.Forward: $\lambda$-return</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Backward-TD-lambda"><span class="nav-number">3.</span> <span class="nav-text">2.Backward: TD($\lambda$)</span></a></li></ol></div>
             
 
           </div>
@@ -591,7 +599,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -605,7 +613,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">115.7k</span>
+    <span title="Site words total count">116.8k</span>
   
 </div>
 

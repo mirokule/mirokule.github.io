@@ -262,6 +262,177 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/28/ML-DecisioinTree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/28/ML-DecisioinTree/" itemprop="url">决策树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T14:22:31+08:00">
+                2017-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  606
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>决策树实际上是将空间用超平面进行划分的一种方法。<br><img src="/img/DecisionTree.png"></p>
+<h6 id="决策树算法三要素"><a href="#决策树算法三要素" class="headerlink" title="决策树算法三要素"></a>决策树算法三要素</h6><ul>
+<li>特征选择：信息增益，信息增益率，基尼指数等</li>
+<li>决策树生成：</li>
+<li>决策树剪枝</li>
+</ul>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><h4 id="1-ID3"><a href="#1-ID3" class="headerlink" title="1. ID3"></a>1. ID3</h4><p>使用信息增益选择特征，递归地构建决策树。<br>从根节点开始，对节点计算所有可能的特征的信息增益，选择信息增益最大的特征作为节点的特征，由该特征的不同取值建立子节点；再对子节点递归调用以上方法，构建决策树。直到所有特征的信息增益均很小或没有特征可以选择为止。</p>
+<h6 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h6><ul>
+<li>偏向于选择分支比较多的特征，即取值多的特征</li>
+<li>不能处理连续特征</li>
+</ul>
+<h4 id="2-C4-5"><a href="#2-C4-5" class="headerlink" title="2. C4.5"></a>2. C4.5</h4><p>相对ID3有以下几个改进：</p>
+<ul>
+<li>使用信息增益率选择特征</li>
+<li>在决策树的构造过程中对树剪枝</li>
+<li>能够处理非离散数据</li>
+<li>能够处理不完整数据</li>
+</ul>
+<h4 id="3-CART"><a href="#3-CART" class="headerlink" title="3. CART"></a>3. CART</h4><p>使用Gini指数选择特征。<br>计算每个子集的的不纯度，选取其中最小的作为树的分支。<br>是二叉树。</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><h4 id="1-分类"><a href="#1-分类" class="headerlink" title="1. 分类"></a>1. 分类</h4><p>使用不同特征组合搭建多层决策树，非线性模型。<br>考虑特征节点的选取顺序时，常用的度量方式包括信息熵(Information Gain)和基尼不纯性(Gini Impurity)。<br>决策树的推断逻辑非常直观，具有清晰的可解释性。<br>在使用时，无需将数据标准化。<br>决策树属于有参数模型，需要花费时间用于训练数据。</p>
+<h6 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"></span><br><span class="line">dtc = DecisionTreeClassifier()</span><br><span class="line">dtc.fit(X_train, y_train)</span><br><span class="line">y_predict = dtc.predict(X_test)</span><br></pre></td></tr></table></figure>
+<h4 id="2-回归"><a href="#2-回归" class="headerlink" title="2. 回归"></a>2. 回归</h4><p>回归树叶节点的数据类型不是离散型，而是连续型。<br>严格地讲，回归树不能称为“回归算法”，因为返回的是若干训练数据的均值，而不是连续值。</p>
+<h6 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeRegressor</span><br><span class="line"></span><br><span class="line">dtr = DecisionTreeRegressor()</span><br><span class="line">dtr.fit(X_train, y_train)</span><br><span class="line">dtr_y_predict = dtr.predict(X_test)</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>可以解决非线性问题</li>
+<li>不要求特征标准化</li>
+<li>决策过程直观，结果易解释</li>
+</ul>
+<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>容易过拟合</li>
+<li>稳定性差，数据的细微改变可能引起树结构的较大改变</li>
+<li>依托训练数据构建最佳的树模型是NP难问题，在有限时间内无法找到最优解</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/28/ML-KNN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3178,146 +3349,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/Unity-EditorMenu/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/13/Unity-EditorMenu/" itemprop="url">Unity-EditorMenu</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T16:40:16+08:00">
-                2016-12-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  309
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Add a top level menu item to toggle VR supported on and off.<br>This is an editor script which modifies how the Unity editor actually works.</p>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;		<span class="comment">//Enables the use of editor modifying code</span></span><br><span class="line"><span class="keyword">using</span> UnityEngine.VR;	<span class="comment">//Enables us to check VR settings</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VREditorToggle</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">string</span> ONNAME = <span class="string">"VR/Enable VR"</span>;		<span class="comment">//The name of our Enable menu item</span></span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">string</span> OFFNAME = <span class="string">"VR/Disable VR"</span>;		<span class="comment">//The name of our Disable menu item</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//This method creates the Enable menu item. When the menu item is clicked, the code</span></span><br><span class="line">	<span class="comment">//inside this method executes</span></span><br><span class="line">	[<span class="meta">MenuItem(ONNAME)</span>]</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">EnableVR</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//Turn VR Supported on</span></span><br><span class="line">		PlayerSettings.virtualRealitySupported = <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//This method "validates" the Enable menu item. It is used by the editor to format</span></span><br><span class="line">	<span class="comment">//the menu item for us</span></span><br><span class="line">	[<span class="meta">MenuItem(ONNAME, true)</span>]</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">EnableValidate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//If VR Supported is enabled, add a checkmark next to this menu item</span></span><br><span class="line">		Menu.SetChecked (ONNAME, PlayerSettings.virtualRealitySupported);</span><br><span class="line">		<span class="comment">//Return the opposite of whether or not VR is supported. Thus, if VR Supported is enabled,</span></span><br><span class="line">		<span class="comment">//this returns "false". The result is that if VR Support is enabled, this menu item is grayed-out</span></span><br><span class="line">		<span class="comment">//and cannot be selected again</span></span><br><span class="line">		<span class="keyword">return</span> !PlayerSettings.virtualRealitySupported;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//This method creates the Disable menu item. When the menu item is clicked, the code</span></span><br><span class="line">	<span class="comment">//inside this method executes</span></span><br><span class="line">	[<span class="meta">MenuItem(OFFNAME)</span>]</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DisableVR</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//Turn VR Supported off</span></span><br><span class="line">		PlayerSettings.virtualRealitySupported = <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//This method "validates" the Disable menu item. It is used by the editor to format</span></span><br><span class="line">	<span class="comment">//the menu item for us</span></span><br><span class="line">	[<span class="meta">MenuItem(OFFNAME, true)</span>]</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">DisableValidate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//If VR Supported is disabled, add a checkmark next to this menu item</span></span><br><span class="line">		Menu.SetChecked (OFFNAME, !PlayerSettings.virtualRealitySupported);</span><br><span class="line">		<span class="comment">//Return the opposite of whether or not VR is supported. Thus, if VR Supported is disabled,</span></span><br><span class="line">		<span class="comment">//this returns "true". The result is that if VR Support is disabled, this menu item is grayed-out</span></span><br><span class="line">		<span class="comment">//and cannot be selected again</span></span><br><span class="line">		<span class="keyword">return</span> PlayerSettings.virtualRealitySupported;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3372,7 +3403,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">306</span>
+                  <span class="site-state-item-count">307</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3460,7 +3491,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -3474,7 +3505,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">115.7k</span>
+    <span title="Site words total count">116.8k</span>
   
 </div>
 

@@ -262,6 +262,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/20/ML-NeuralNetworks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/20/ML-NeuralNetworks/" itemprop="url">神经网络</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-20T11:39:00+08:00">
+                2018-01-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  611
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/img/nn.png" width="400px"></p>
+<p>$a_i^{(j)}$ = “activation” of unit $i$ in layer $j$<br>$\Theta^{(j)}$ = matrix of weights controlling function mapping from layer $j$ to layer $j+1$</p>
+<h4 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h4><p>$$ a_1^{(2)}=g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3) $$<br>$$ a_2^{(2)}=g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3) $$<br>$$ a_3^{(2)}=g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3) $$<br>如果$j$层有$s_j$个单元，$j+1$层有$s_{j+1}$个单元，那么$\Theta^{(j)}$是一个$s_{j+1}*(s_j+1)$的矩阵，“+1”是因为要引入$j$层的隐藏单元，偏差项$x_0$。定义<br>$$z_k^{(i)} = \Theta_{k,0}^{(i-1)}x_0 + \Theta_{k,1}^{(i-1)}x_1+\cdot \cdot \cdot + \Theta_{k,n}^{(1)}x_n$$<br>则算法可以简写成<br>$$ z^{(j)} = \Theta^{(j-1)}a^{(j-1)} $$<br>$$ a^{(j)} = g(z^{(j)}) $$</p>
+<p><strong>随机初始值</strong><br>开始训练前，若设定$\Theta$初始值全为0，则所有层各节点的学习结果完全相同。<br>为避免这一结果，需要将$\omega$初始化为不同的较小的值，$\b$可初始化为0.<br>若$\omega$初始值较大，则sigmoid的输入值较大，梯度较小，收敛速度慢。</p>
+<p><strong>多分类</strong><br>One-vs-all，对于K个类别，$y=[0,1,…0]^T$是$k$维向量，对应输出层$k$个单元。</p>
+<p><strong>代价函数$J(\Theta)$</strong><br>$$ J(\Theta) = -\frac{1}{m}\sum_{i=1}^m\sum_{k=1}^K\left[y_k^{(i)}log((h_{\Theta}(x^{(i)}))_k) + (1-y_k^{(i)})log(1-(h_{\Theta}(x^{(i)}))_k) \right]+\frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_l+1}(\Theta_{j,i}^{(l)})^2  $$<br>其中<br>$$ cost(t) = y_k^{(t)}log(h_{\Theta}(x^{(t)})) + (1-y^{(t)})log(1-h_{\Theta}(x^{(t)})) $$<br>$\delta_j^{(l)}$是$a_j^{(l)}$的“误差”，是$cost(t)$的偏导数：<br>$$ \delta_j^{(l)} = \frac{\partial}{\partial z_j^{(l)}}cost(t) $$</p>
+<h4 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h4><p>反向传播是为了计算偏导数$\frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta)$，从而得到$min_{\Theta}J(\Theta)$</p>
+<ol>
+<li>给定训练集${(x^{(1),y^{(1)}})\cdot \cdot \cdot(x^{(m)},y^{(m)})}$</li>
+<li>设定初始值$\Delta_{i,j}^{(l)}:=0$ </li>
+<li>For $i=1$ to $m$<ol>
+<li>$a^{(1)} := x^{(i)}$</li>
+<li>用前向传播算法计算$a^{(l)},\;\; l=2,3…L$</li>
+<li>$\delta^{(L)} = a^{(L)} - y^(i)$</li>
+<li>计算$\delta ^{(L-1)}, \delta ^{(L-2)}…\delta ^{(2)}$<br>$$\delta ^{(l)}=((\Theta^{(l)})^T \delta ^{(l+1)}) .\ast a^{(l)} .\ast (1-a^{(l)}) = ((\Theta^{(l)})^T \delta ^{(l+1)}) .\ast g’(z^{(l)})$$</li>
+<li>更新$\Delta_{i,j}^{(l)} := \Delta_{i,j}^{(l)}+a_j^{(l)}\delta_i^{(l+1)}$</li>
+</ol>
+</li>
+<li>循环结束得到$D_{i,j}^{(l)}=\frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta)$<ol>
+<li>$D_{i,j}^{(l)} := \frac{1}{m}\Delta_{(i,j)}^{(l)}\;\;if\;\; j=0$</li>
+<li>$D_{i,j}^{(l)} := \frac{1}{m}\left(\Delta_{(i,j)}^{(l)}+\lambda\Theta_{i,j}^{(l)}\right)\;\;if\;\; j\neq0$</li>
+</ol>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/20/Calculus-PartialDerivatives/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3283,177 +3445,6 @@ v(1:10)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/28/ML-DecisioinTree/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/28/ML-DecisioinTree/" itemprop="url">决策树</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T14:22:31+08:00">
-                2017-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  606
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>决策树实际上是将空间用超平面进行划分的一种方法。<br><img src="/img/DecisionTree.png"></p>
-<h6 id="决策树算法三要素"><a href="#决策树算法三要素" class="headerlink" title="决策树算法三要素"></a>决策树算法三要素</h6><ul>
-<li>特征选择：信息增益，信息增益率，基尼指数等</li>
-<li>决策树生成：</li>
-<li>决策树剪枝</li>
-</ul>
-<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><h4 id="1-ID3"><a href="#1-ID3" class="headerlink" title="1. ID3"></a>1. ID3</h4><p>使用信息增益选择特征，递归地构建决策树。<br>从根节点开始，对节点计算所有可能的特征的信息增益，选择信息增益最大的特征作为节点的特征，由该特征的不同取值建立子节点；再对子节点递归调用以上方法，构建决策树。直到所有特征的信息增益均很小或没有特征可以选择为止。</p>
-<h6 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h6><ul>
-<li>偏向于选择分支比较多的特征，即取值多的特征</li>
-<li>不能处理连续特征</li>
-</ul>
-<h4 id="2-C4-5"><a href="#2-C4-5" class="headerlink" title="2. C4.5"></a>2. C4.5</h4><p>相对ID3有以下几个改进：</p>
-<ul>
-<li>使用信息增益率选择特征</li>
-<li>在决策树的构造过程中对树剪枝</li>
-<li>能够处理非离散数据</li>
-<li>能够处理不完整数据</li>
-</ul>
-<h4 id="3-CART"><a href="#3-CART" class="headerlink" title="3. CART"></a>3. CART</h4><p>使用Gini指数选择特征。<br>计算每个子集的的不纯度，选取其中最小的作为树的分支。<br>是二叉树。</p>
-<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><h4 id="1-分类"><a href="#1-分类" class="headerlink" title="1. 分类"></a>1. 分类</h4><p>使用不同特征组合搭建多层决策树，非线性模型。<br>考虑特征节点的选取顺序时，常用的度量方式包括信息熵(Information Gain)和基尼不纯性(Gini Impurity)。<br>决策树的推断逻辑非常直观，具有清晰的可解释性。<br>在使用时，无需将数据标准化。<br>决策树属于有参数模型，需要花费时间用于训练数据。</p>
-<h6 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"></span><br><span class="line">dtc = DecisionTreeClassifier()</span><br><span class="line">dtc.fit(X_train, y_train)</span><br><span class="line">y_predict = dtc.predict(X_test)</span><br></pre></td></tr></table></figure>
-<h4 id="2-回归"><a href="#2-回归" class="headerlink" title="2. 回归"></a>2. 回归</h4><p>回归树叶节点的数据类型不是离散型，而是连续型。<br>严格地讲，回归树不能称为“回归算法”，因为返回的是若干训练数据的均值，而不是连续值。</p>
-<h6 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeRegressor</span><br><span class="line"></span><br><span class="line">dtr = DecisionTreeRegressor()</span><br><span class="line">dtr.fit(X_train, y_train)</span><br><span class="line">dtr_y_predict = dtr.predict(X_test)</span><br></pre></td></tr></table></figure>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
-<li>可以解决非线性问题</li>
-<li>不要求特征标准化</li>
-<li>决策过程直观，结果易解释</li>
-</ul>
-<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><ul>
-<li>容易过拟合</li>
-<li>稳定性差，数据的细微改变可能引起树结构的较大改变</li>
-<li>依托训练数据构建最佳的树模型是NP难问题，在有限时间内无法找到最优解</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3508,7 +3499,7 @@ v(1:10)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">306</span>
+                  <span class="site-state-item-count">307</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3596,7 +3587,7 @@ v(1:10)
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -3610,7 +3601,7 @@ v(1:10)
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">115.7k</span>
+    <span title="Site words total count">116.8k</span>
   
 </div>
 

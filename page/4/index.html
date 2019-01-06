@@ -262,6 +262,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/27/TF-Graph/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/27/TF-Graph/" itemprop="url">TensorFlow计算图Graph</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-27T09:56:04+08:00">
+                2018-04-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  632
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>计算图是排列成一个图的一系列TensorFlow指令。由两种类型的对象组成：</p>
+<ul>
+<li>指令(op)：图的节点。说明消耗和生成张量的计算。</li>
+<li>张量：图的边，流经图的值。</li>
+</ul>
+<p><img src="/img/tensors_flowing.gif"><br>图中的每个指令都拥有唯一的名称。张量是根据生成它们的指令命名的，后面跟着输出索引，例如”add:0”</p>
+<h3 id="tf-Graph"><a href="#tf-Graph" class="headerlink" title="tf.Graph"></a>tf.Graph</h3><p>tf.Graph 包含两类相关信息：</p>
+<ul>
+<li>图结构：图的节点和边，指明了各个指令组合在一起的方式，但不规定它们的使用方式。</li>
+<li>图集合：TensorFlow提供了一种通用机制，将创建的对象加入特定的集合中，并与键关联。</li>
+</ul>
+<h3 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h3><p>TensorFlow提供了一个默认图，此图是上下文中所有API函数的明确参数。<br>API函数可以构建新的 tf.Operation (节点)和 tf.Tensor (边) 对象并将它们添加到 tf.Graph 实例。例如：</p>
+<ul>
+<li>tf.constant(42): 创建单个 tf.Operation，生成值42，并返回一个表示常量值得 tf.Tensor</li>
+<li>tf.matmul(x,y): 创建单个 tf.Operation，将 tf.Tensor 对象x和y的值相乘，并返回表示结果的 tf.Tensor</li>
+<li>tf.train.Optimizer.minimize: 将指令和张量添加到计算梯度的默认图，返回一个 tf.Operation</li>
+</ul>
+<p><strong>多个图</strong><br>使用 tf.Graph.as_default 上下文管理器，安装另一个 tf.Graph 来作为默认图<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">g_1 = tf.Graph()</span><br><span class="line"><span class="keyword">with</span> g_1.as_default():</span><br><span class="line">	c = tf.constant(<span class="string">"node in g_1"</span>)</span><br><span class="line">	sess_1 = tf.Session()</span><br><span class="line"></span><br><span class="line">g_2 = tf.Graph()</span><br><span class="line"><span class="keyword">with</span> g_2.as_default():</span><br><span class="line">	d = tf.constant(<span class="string">"node in g_2"</span>)</span><br><span class="line">sess_2 = tf.Session(graph=g_2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查当前的默认图</span></span><br><span class="line">g = tf.get_deafult_graph()</span><br><span class="line">print(g.get_operations())</span><br></pre></td></tr></table></figure></p>
+<h3 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h3><p>tf.Graph 对象为其包含的 tf.Operation 对象定义一个命名空间。<br>TensorFlow会自动为图中的每个指令选择唯一名称，可以由用户指定。<br>tf.Tensor 对象以输出张量的 tf.Operation 命名，名称格式为”&lt;OP_NAME&gt;:&lt;i&gt;”，其中：</p>
+<ul>
+<li>OP_NAME 是生成该张量的指令的名称</li>
+<li>i 是一个整数，表示该张量在指令的输出中的索引</li>
+</ul>
+<p>改写指令名称的方法有二：</p>
+<ul>
+<li>name：每个创建operation或返回tensor的API函数都可以接受name参数</li>
+<li>tf.name_scope：向特定上下文中创建的所有指令添加名称范围前缀。名称范围前缀用”/“分隔，重复的将使用”_1”、”_2”区分</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c_0 = tf.constant(<span class="number">0</span>, name=<span class="string">"c"</span>) <span class="comment"># c</span></span><br><span class="line">c_1 = tf.constant(<span class="number">2</span>, name=<span class="string">"c"</span>) <span class="comment"># c_1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">"outer"</span>):</span><br><span class="line">	c_2 = tf.constant(<span class="number">2</span>, name=<span class="string">"c"</span>) <span class="comment"># outer/c</span></span><br><span class="line">	<span class="keyword">with</span> tf.name_scope(<span class="string">"inner"</span>):</span><br><span class="line">		c_3 = tf.constant(<span class="number">3</span>, name=<span class="string">"c"</span>) <span class="comment"># outer/inner/c</span></span><br><span class="line">	c_4 = tf.constant(<span class="number">4</span>, name=<span class="string">"c"</span>) <span class="comment"># out/c_1</span></span><br><span class="line">	<span class="keyword">with</span> tf.name_scope(<span class="string">"inner"</span>):</span><br><span class="line">		c_5 = tf.constant(<span class="number">5</span>, name=<span class="string">"c"</span>) <span class="comment"># outer/inner_1/c</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/27/TF-Tensor/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3384,145 +3551,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/DL-LearningRateDecay/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/12/DL-LearningRateDecay/" itemprop="url">学习速率衰减(Learning Rate Decay)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T15:13:39+08:00">
-                2018-04-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  125
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>学习速率$\alpha$是所有超参数中最重要的一个。<br>随着GDA迭代的进行，参数逐渐逼近最优解的时候，有必要将$\alpha$逐渐缩小，使每次迭代的步长缩短，避免在最优解附近来回震荡。<br>逐渐减少学习速率的方法有很多种，比如<br>$$ \alpha = \frac{1}{1 + decay \cdot epoch} \alpha_0 $$<br>$$ \alpha = 0.95^{epoch} \alpha_0 $$<br>$$ \alpha = \frac{k}{\sqrt{epoch}} \alpha_0 $$<br>或者直接在迭代几十次后对$\alpha$赋值：<br>$$ \alpha = 0.5 \cdot \alpha_0 $$</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3577,7 +3605,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">306</span>
+                  <span class="site-state-item-count">307</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3665,7 +3693,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -3679,7 +3707,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">115.7k</span>
+    <span title="Site words total count">116.8k</span>
   
 </div>
 
