@@ -262,6 +262,660 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/13/ML-ErrorAnalysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/13/ML-ErrorAnalysis/" itemprop="url">误差分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T09:28:45+08:00">
+                2018-04-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  633
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-误差样本分析"><a href="#1-误差样本分析" class="headerlink" title="1.误差样本分析"></a>1.误差样本分析</h4><p><strong>误差来源</strong></p>
+<ol>
+<li>逐一检验被错误分类的样本，标识错误原因{大雾，下雨，变形，错误标签}</li>
+<li>按错误原因排序{变形，下雨，错误标签，大雾}</li>
+<li>优先解决占比高的错误原因{变形，下雨，错误标签，大雾}</li>
+</ol>
+<p><strong>错误标签</strong></p>
+<ul>
+<li>训练集(train set)：robust to random erros<ul>
+<li>错误随机分布，比例不高：无需处理</li>
+<li>系统性错误(将某一类全部标错)：需要处理</li>
+</ul>
+</li>
+<li>验证集(dev set)：看错误标签在误差来源中的比例；若能显著提高预测精度，则纠正标签</li>
+<li>测试集(test set)：和验证集保持分布一致，若验证集纠正则测试集也同步纠正</li>
+</ul>
+<p>注意：纠正标签后，训练集和验证集/测试集的分布可能会变得不同</p>
+<h4 id="2-分布不一致的数据"><a href="#2-分布不一致的数据" class="headerlink" title="2.分布不一致的数据"></a>2.分布不一致的数据</h4><p><strong>数据划分</strong><br>有时数据会有不同的来源，比如实际采集的图片和网上下载的图片。<br>不同来源数据的分布是不同的，在拆分训练集\验证集\测试集时需遵循以下原则：</p>
+<ul>
+<li>测试集：和实际目标保持同分布</li>
+<li>验证集：和测试集保持同分布</li>
+<li>训练集：分布不一致的数据全部进入训练集，避免预测目标的偏差</li>
+</ul>
+<p><strong>分布不一致带来的误差</strong><br>分布不一致的数据全部进入训练集，使得模型从训练集进入验证集后，某种程度上相当于切换了问题域。<br>验证集/测试集有不同的识别率上限，虽然差异不像迁移学习那么大，但也足以带来新的误差。<br>所以验证集的误差可能来自两方面：</p>
+<ul>
+<li>Overfit：传统的high variance </li>
+<li>Data Mismatch：验证集的问题可能更难(误差上升)，或者更简单(误差下降)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Error</th>
+<th style="text-align:left">Source</th>
+<th style="text-align:left">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">human error</td>
+<td style="text-align:left">1%</td>
+<td style="text-align:left">接近训练集的上限Bayes</td>
+</tr>
+<tr>
+<td style="text-align:left">Training error</td>
+<td style="text-align:left">3%</td>
+<td style="text-align:left">误差来自avoidable bias</td>
+</tr>
+<tr>
+<td style="text-align:left">Train-Dev error</td>
+<td style="text-align:left">6.5%</td>
+<td style="text-align:left">和训练集分布相同，误差来自variance(overfit train)</td>
+</tr>
+<tr>
+<td style="text-align:left">Dev error</td>
+<td style="text-align:left">9%</td>
+<td style="text-align:left">误差来自data mismatch</td>
+</tr>
+<tr>
+<td style="text-align:left">Test error</td>
+<td style="text-align:left">11.5%</td>
+<td style="text-align:left">和验证集分布相同，误差来自variance(overfit dev)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>误差处理</strong></p>
+<ul>
+<li>理解数据分布哪里不一致：是否有噪音、遮挡、滤镜等</li>
+<li>在训练集中引入类似验证集/测试集的数据：采集、人工合成等</li>
+</ul>
+<p>注意：人工合成中，将少量特征F组合进巨量样本中后，可能会使模型对这些特征F过拟合，失去泛化能力</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/13/ML-TransferLearning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/13/ML-TransferLearning/" itemprop="url">迁移学习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-13T07:58:34+08:00">
+                2018-04-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  319
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="迁移学习"><a href="#迁移学习" class="headerlink" title="迁移学习"></a>迁移学习</h4><p>迁移学习(Transfer Learning)是把已经训练好的模型参数迁移到新的模型。<br>考虑到学习任务的相关性，通过迁移我们期望已有模型的参数可以加快新模型的训练速度。</p>
+<p>符合以下条件的模型A可以迁移到模型B</p>
+<ul>
+<li>A和B有相同的输入</li>
+<li>A的训练数据远大于B</li>
+<li>A的低阶特征有助于学习B</li>
+</ul>
+<h4 id="多任务学习"><a href="#多任务学习" class="headerlink" title="多任务学习"></a>多任务学习</h4><p>多任务学习(Multi-Task Learning)是在一个网络中，将多个目标同时学好。<br>输出层有多个神经元，可以同时为1，不需要像softmax那样归一化处理。<br>多任务学习要求不同的学习目标之间有相关性，和迁移学习有相似之处。<br>实际应用中，多任务学习的适用场景较少，多用于计算机视觉图像领域。</p>
+<h4 id="End-to-End-Deep-Learning"><a href="#End-to-End-Deep-Learning" class="headerlink" title="End-to-End Deep Learning"></a>End-to-End Deep Learning</h4><p>将传统机器学习中的各个环节(如特征抽取、转换、预测)省略，直接使用神经网络完成从输入端到输出端(end-to-end)的所有步骤。<br>需要足够大的网络和足够多的训练样本。<br>优点是原理简单。<br>缺点是训练困难，黑盒不易理解。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/ML-Softmax/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/12/ML-Softmax/" itemprop="url">SoftMax激活函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T16:19:25+08:00">
+                2018-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  128
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>SoftMax用于在多分类问题中，将多个神经元的输出映射到(0,1)中，得到形如[0.5, 0.25, 0.25]的预测结果。<br>与之对应的是”Hard Max”，输出的是[1,0,0]。<br>将神经网络最后一层的sigmoid(二分类)激活函数换成softmax(多分类)，概率值最大的那一类即为预测类别。</p>
+<p><strong>算法</strong><br>$$\begin{cases}<br>t = e^{z^{[l]}} \\<br>a^{[l]} = \frac{e^{z^{[l]}}}{\sum t}<br>\end{cases}$$</p>
+<p><img src="/img/softmax.png"></p>
+<p><strong>代价函数</strong><br>$$ L(\hat{y}, y) = - \sum_{j=1}^{k} y_j log\hat{y_j} $$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/DL-BatchNormalization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/12/DL-BatchNormalization/" itemprop="url">Batch Normalization</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T15:22:58+08:00">
+                2018-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  387
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>批规范化(Batch Normalization)是将神经网络每层的输入信号规范化，得到特定均值和方差强度的输入。<br>批规范化应作用于非线性环节之前，即缩放$z^{[l]}$<br>基于Mini-Batch SGD，每次处理一个Batch的数据。</p>
+<p><strong>原理</strong><br>在深层神经网络中，非线性变换前的激活输入值在网络加深或训练次数增多时，其分布会向激活函数取值区间的上下限两端靠近。<br>这会导致后向传播的梯度消失，使训练深层神经网络越来越困难。<br>Batch Normalization就是强行将数据分布拉回N~(0,1)的正太分布，避免梯度消失。</p>
+<p><strong>算法</strong><br>分两步：</p>
+<ol>
+<li>Normalize: 去均值和方差<ul>
+<li>训练时，由每个batch的m个样本求得，数据变为(0,1)分布</li>
+<li>预测时，使用训练集的全局均值和方差，由每个batch的均值、方差计算得到</li>
+</ul>
+</li>
+<li>Shift and Scale: 加入新的均值和方差，增强网络表达能力；这两个参数需要通过训练来学习</li>
+</ol>
+<p>$$ \begin{cases}<br>\mu = \frac{1}{m} \sum_{i=1}^m z^{(i)} \\<br>\sigma = \frac{1}{m} \sum_{i=1}^m(z^{(i)} - \mu)^2 \\<br>z^{norm} = \frac{z^{(i)} - \mu}{\sqrt{\sigma^2+\epsilon}} \\<br>\hat{z} = \gamma z^{norm} + \beta<br>\end{cases} $$</p>
+<p>其中$\gamma$和$\beta$是需要训练的超参数</p>
+<p><strong>优势</strong></p>
+<ul>
+<li>解决梯度消失和爆炸，使每层的信号强度受控</li>
+<li>控制过拟合，可以少用或不用DropOut和正则</li>
+<li>有助于解决covariate shift(?)，即分布不一致的数据</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/12/DL-LearningRateDecay/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2972,679 +3626,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/31/ML-XGBoost-Parameters/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/31/ML-XGBoost-Parameters/" itemprop="url">XGBoost参数说明及调试</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-31T10:24:17+08:00">
-                2018-03-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  791
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><h5 id="General-Parameters-常规参数"><a href="#General-Parameters-常规参数" class="headerlink" title="General Parameters(常规参数)"></a>General Parameters(常规参数)</h5><ul>
-<li>booster[default=gbtree]: 基分类器, {gbtree, gblinear}, tree通常好于linear</li>
-<li>silent[default=0]: 为1则没有运行信息输出</li>
-<li>nthread[default to maximum number of threads available if not set]: 线程数</li>
-</ul>
-<h5 id="Booster-Parameters-模型参数"><a href="#Booster-Parameters-模型参数" class="headerlink" title="Booster Parameters(模型参数)"></a>Booster Parameters(模型参数)</h5><ul>
-<li>eta[default=0.3]: skrinkage，学习速率；越大越不容易收敛，越小越慢，通常0.01-0.2</li>
-<li>min_child_weight[default=1]: 叶节点中所有样本权重的和，参数值越小越容易过拟合</li>
-<li>max_depth[default=6]: 树的最大深度，越深越容易过拟合，通常3-10</li>
-<li>max_leaf_nodes: 最大叶节点数，设置该参数将覆盖max_depth</li>
-<li>gamma[default=0]: 指定节点分裂时所需要的loss function reduction，只有reductiion大于该值时才会继续分裂</li>
-<li>max_delta_step[default=0]: 更新步长，0表示没有约束，正值使更新步骤更加平缓，通常用不到</li>
-<li>subsample[default=1]: 给每棵树的样本采样比例，较低的值防止过拟合，但是太低也会欠拟合，通常0.5-1</li>
-<li>colsample_bytree[default=1]: 列采样比例，一般为0.5~1</li>
-<li>lambda[default=1]: L2正则化参数，越大越不容易过拟合</li>
-<li>alpha[default=0]: L1正则化参数，越大越不容易过拟合</li>
-<li>scale_pos_weight[default-1]: 取值大于0时，在类别样本不平衡的情况下有助于快速收敛</li>
-</ul>
-<h5 id="Learning-Task-Parameters-学习任务参数"><a href="#Learning-Task-Parameters-学习任务参数" class="headerlink" title="Learning Task Parameters(学习任务参数)"></a>Learning Task Parameters(学习任务参数)</h5><ul>
-<li>objectivep[default=reg:linear]: 最小化损失函数类型</li>
-<li>eval_metric: 评价函数，{rmse, mae, logloss, error, auc,…}</li>
-<li>seed: 随机种子</li>
-</ul>
-<h3 id="参数调试"><a href="#参数调试" class="headerlink" title="参数调试"></a>参数调试</h3><h4 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h4><ol>
-<li>调节参数会使预测效果变好，但并不能带来质的飞跃；</li>
-<li>XGBoost和GBDT的预测效果差别不大；</li>
-<li>能极大提升预测结果的手段包括：<ul>
-<li>feature engineering</li>
-<li>ensemble of models</li>
-</ul>
-</li>
-</ol>
-<h5 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h5><ol>
-<li>调高Learning rate，使训练时间缩短</li>
-<li>决定树的最优数量n_estimators</li>
-<li>Tree-specific parameters: max_depth, min_child_weight, gamma, subsample, colsample_bytree</li>
-<li>Regularization parameters: lambda, alpha</li>
-<li>调整其他可选参数</li>
-<li>调低Learning rate，重新运行得到最终结果</li>
-</ol>
-<h5 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> xgboost <span class="keyword">as</span> xgb</span><br><span class="line"><span class="keyword">from</span> sgboost.sklearn <span class="keyword">import</span> XGBClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.grid_search <span class="keyword">import</span> GridSearchCV</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> cross_validation, metrics</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调高Learing Rate</span></span><br><span class="line">predictors = [x <span class="keyword">for</span> x <span class="keyword">in</span> train.columns <span class="keyword">if</span> x <span class="keyword">not</span> <span class="keyword">in</span> [target, IDcol]]</span><br><span class="line">xgb1 = XGBClassifier(learing_rate=<span class="number">0.1</span>, ...)</span><br><span class="line">modelfit(xgb1, train, predictors)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 先用大粒度</span></span><br><span class="line">param_test1 = &#123; <span class="string">'max_depth'</span>: range(<span class="number">3</span>,<span class="number">10</span>,<span class="number">2</span>),</span><br><span class="line">		<span class="string">'min_child_weight'</span>: range(<span class="number">1</span>,<span class="number">6</span>,<span class="number">2</span>) &#125;</span><br><span class="line">gsearch1 = GridSearchCV(estimator = XGBClassifier( learning_rate =<span class="number">0.1</span>, n_estimators=<span class="number">140</span>, max_depth=<span class="number">5</span>,</span><br><span class="line">		min_child_weight=<span class="number">1</span>, gamma=<span class="number">0</span>, subsample=<span class="number">0.8</span>, colsample_bytree=<span class="number">0.8</span>,</span><br><span class="line">		objective= <span class="string">'binary:logistic'</span>, nthread=<span class="number">4</span>, scale_pos_weight=<span class="number">1</span>, seed=<span class="number">27</span>), </span><br><span class="line">		param_grid = param_test1, scoring=<span class="string">'roc_auc'</span>,n_jobs=<span class="number">4</span>,iid=<span class="keyword">False</span>, cv=<span class="number">5</span>)</span><br><span class="line">gsearch1.fit(train[predictors],train[target])</span><br><span class="line">gsearch1.grid_scores_, gsearch1.best_params_, gsearch1.best_score_</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再用小粒度</span></span><br><span class="line">param_test2 = &#123; <span class="string">'max_depth'</span>: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>],</span><br><span class="line">		<span class="string">'min_child_weight'</span>: [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>] &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># gamma</span></span><br><span class="line">param_test3 = &#123; <span class="string">'gamma'</span>: [i/<span class="number">10.0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">5</span>)] &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># subsample, colsample_bytree</span></span><br><span class="line">param_test4 = &#123; <span class="string">'subsample'</span>: [i/<span class="number">10.0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>,<span class="number">10</span>)],</span><br><span class="line">		<span class="string">'colsample_bytree'</span>: [i/<span class="number">10.0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">6</span>,<span class="number">10</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># regularization</span></span><br><span class="line">param_test5 = &#123; <span class="string">'alpha'</span>: [<span class="number">0</span>, <span class="number">0.01</span>, <span class="number">0.1</span>, <span class="number">1</span>, <span class="number">10</span>] &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 降低Learning Rate</span></span><br><span class="line">xgb4 = XGBClassifier(learning_rate=<span class="number">0.01</span>, ...)</span><br></pre></td></tr></table></figure>
-<p>modelfit<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">modelfit</span><span class="params">(alg, dtrain, predictors,useTrainCV=True, cv_folds=<span class="number">5</span>, early_stopping_rounds=<span class="number">50</span>)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> useTrainCV:</span><br><span class="line">    xgb_param = alg.get_xgb_params()</span><br><span class="line">    xgtrain = xgb.DMatrix(dtrain[predictors].values, label=dtrain[target].values)</span><br><span class="line">    cvresult = xgb.cv(xgb_param, xgtrain, num_boost_round=alg.get_params()[<span class="string">'n_estimators'</span>], nfold=cv_folds,</span><br><span class="line">        metrics=<span class="string">'auc'</span>, early_stopping_rounds=early_stopping_rounds, show_progress=<span class="keyword">False</span>)</span><br><span class="line">    alg.set_params(n_estimators=cvresult.shape[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fit the algorithm on the data</span></span><br><span class="line">alg.fit(dtrain[predictors], dtrain[<span class="string">'Disbursed'</span>],eval_metric=<span class="string">'auc'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># Predict training set:</span></span><br><span class="line">dtrain_predictions = alg.predict(dtrain[predictors])</span><br><span class="line">dtrain_predprob = alg.predict_proba(dtrain[predictors])[:,<span class="number">1</span>]</span><br><span class="line">    </span><br><span class="line"><span class="comment"># Print model report:</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"\nModel Report"</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"Accuracy : %.4g"</span> % metrics.accuracy_score(dtrain[<span class="string">'Disbursed'</span>].values, dtrain_predictions)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"AUC Score (Train): %f"</span> % metrics.roc_auc_score(dtrain[<span class="string">'Disbursed'</span>], dtrain_predprob)</span><br><span class="line">                </span><br><span class="line">feat_imp = pd.Series(alg.booster().get_fscore()).sort_values(ascending=<span class="keyword">False</span>)</span><br><span class="line">feat_imp.plot(kind=<span class="string">'bar'</span>, title=<span class="string">'Feature Importances'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Feature Importance Score'</span>)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/30/ML-GBDT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/30/ML-GBDT/" itemprop="url">梯度提升树(GBDT)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T08:53:06+08:00">
-                2018-03-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  152
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>GBDT(Gradient Boosting Decision Tree)是集成学习Boosting的一种。<br>但是和AdaBoost更改样本权重的算法不同，GBDT每次迭代的输入是上一轮的误差<br>模型共训练m轮，每轮产生一个弱分类器；弱分类器一般选择CART树。<br>模型可以描述为<br>$$ F_m(x) = \sum_{m=1}^{M}T(x;\theta_m) $$<br>损失函数<br>$$ \hat{\theta} = \underset{\theta_m}{arg\,min}\sum_{i=1}^{N}L(y_i,F_{m-1}(x_i)+T(x_i;\theta_m)) $$<br>每轮迭代时，都去拟合损失函数在当前模型下的负梯度，<strong>让损失函数沿着梯度方向下降</strong>是算法的关键。</p>
-<p><img src="/img/GBDT.png"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/29/ML-EnsembleLearning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/29/ML-EnsembleLearning/" itemprop="url">集成学习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T10:05:12+08:00">
-                2018-03-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  652
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>集成学习(Ensemble Learing)将多个简单的弱机器学习模型集合起来，提高学习效果。<br>一般分为三种架构：</p>
-<ul>
-<li>Bagging: 并行独立，最终投票或取平均</li>
-<li>Boosting: 串行相关，每次迭代都要改进</li>
-<li>Stacking: 分两层，第一层并行独立，第二层对预测结果训练高阶模型</li>
-</ul>
-<h4 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h4><p>基于数据随机重抽样的分类器构建方法，又称作Bootstrap Aggregation.<br>基模型之间并列无关，对所有基模型预测的结果进行综合产生最终的预测结果。<br><img src="/img/bagging.jpg"></p>
-<p>常用的bagging集成算法如随机森林。<br>集成稳定学习器不利于提高预测效果，因为集成方法不能有助于提高泛化性能。<br>稳定学习器：对训练样本的扰动较不敏感，比如kNN</p>
-<h4 id="Boosting"><a href="#Boosting" class="headerlink" title="Boosting"></a>Boosting</h4><p>基模型按次序一一训练，每次训练集按某种策略转化(比如提高前一次分错的数据集的权重)，最后对所有基模型预测的结果进行线性组合产生最终的预测结果。<br><img src="/img/boosting.jpg"></p>
-<h6 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h6><table>
-<thead>
-<tr>
-<th style="text-align:center">项目</th>
-<th style="text-align:center">Bagging</th>
-<th style="text-align:center">Boosting</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">结构</td>
-<td style="text-align:center">并行</td>
-<td style="text-align:center">串行</td>
-</tr>
-<tr>
-<td style="text-align:center">训练集</td>
-<td style="text-align:center">独立</td>
-<td style="text-align:center">依赖</td>
-</tr>
-<tr>
-<td style="text-align:center">测试</td>
-<td style="text-align:center">可并行</td>
-<td style="text-align:center">需串行</td>
-</tr>
-<tr>
-<td style="text-align:center">作用</td>
-<td style="text-align:center">减少variance</td>
-<td style="text-align:center">减少bias</td>
-</tr>
-</tbody>
-</table>
-<h6 id="AdaBoost"><a href="#AdaBoost" class="headerlink" title="AdaBoost"></a>AdaBoost</h6><p>AdaBoost是Boosting中最具代表性的算法。<br>AdaBoost中每次迭代时，会根据当前错误率改变样本的权重。通过不断重复训练和调整权重，知道训练错误率满足用户要求。</p>
-<h6 id="Gradient-Boosted"><a href="#Gradient-Boosted" class="headerlink" title="Gradient Boosted"></a>Gradient Boosted</h6><p>GBRT/GBDT 也是一种Boosting方法，每个子模型是根据已训练出的学习器的残差训练出来的，没有AdaBoost中的样本权重的概念。<br>GBRT结合了梯度迭代和回归树，准确率较高，但也有过拟合的风险。</p>
-<h4 id="Stacking"><a href="#Stacking" class="headerlink" title="Stacking"></a>Stacking</h4><p>用训练好的基模型对训练集预测，第j个基模型对第i个训练样本的预测值将作为新的训练集中第i个样本的第j个特征值，最后基于新的训练集训练。<br>算法分成了2层：</p>
-<ul>
-<li>第一层是传统的训练，训练出许多小分类器；</li>
-<li>第二层把小分类器的输出组合成一个新的训练集，训练出一个更高层次的分类器，目的是寻找相应的权重或组合方式<br><img src="/img/stacking.jpg"></li>
-</ul>
-<h6 id="比较-1"><a href="#比较-1" class="headerlink" title="比较"></a>比较</h6><p>Stacking就像是Bagging的升级版，Bagging中的结果整合方式是相同权重，而Stacking中则要寻找不同的权重</p>
-<h4 id="结果整合"><a href="#结果整合" class="headerlink" title="结果整合"></a>结果整合</h4><h6 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h6><ul>
-<li>简单平均(Simple Average)</li>
-<li>加权平均(Weighted Average)</li>
-</ul>
-<h6 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h6><ul>
-<li>简单投票(Majority Voting)</li>
-<li>加权投票(Weighted Majority Voting)</li>
-<li>概率投票(Soft Voting)</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/29/ML-RandomForest/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/29/ML-RandomForest/" itemprop="url">随机森林</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T09:48:00+08:00">
-                2018-03-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  281
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>随机森林是一种Bagging算法。<br>随机森林由许多的决策树组成，这些决策树的形成采用了随机的方法，因此也叫随机决策树。<br>随机森林中的树之间是没有关联的，测试数据由每一棵树单独分类，然后取分类结果最多的那类作为最终结果。</p>
-<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
-<li>从原始训练集中随机有放回采样m个样本，共进行n次，得到n个容量为m的子训练集</li>
-<li>对每个子训练集，分别训练决策树，得到n棵决策树</li>
-<li>将n棵树的结果整合，得到最终预测结果</li>
-</ol>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 分类</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line"></span><br><span class="line">clf = RandomForestClassifier(max_depth=<span class="number">2</span>, random_state=<span class="number">0</span>)</span><br><span class="line">clf.fit(X,y)</span><br><span class="line">clf.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 回归</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor</span><br><span class="line"></span><br><span class="line">regr = RandomForestRegressor(max_depth=<span class="number">2</span>, random_state=<span class="number">0</span>)</span><br><span class="line">regr.fit(X,y)</span><br><span class="line">regr.predict(X_test)</span><br></pre></td></tr></table></figure>
-<h4 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h4><h6 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h6><ul>
-<li>准确率较高</li>
-<li>不容易过拟合</li>
-<li>抗噪声能力强</li>
-<li>能处理高维数据</li>
-<li>数据集无需标准化</li>
-<li>训练速度快</li>
-<li>容易并行化</li>
-</ul>
-<h6 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h6><ul>
-<li>决策树个数多时，占用空间大</li>
-<li>结果不容易解释</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3699,7 +3680,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">307</span>
+                  <span class="site-state-item-count">309</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3801,7 +3782,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">116.8k</span>
+    <span title="Site words total count">117.8k</span>
   
 </div>
 

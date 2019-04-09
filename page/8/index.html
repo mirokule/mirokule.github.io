@@ -262,6 +262,605 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/28/ML-CollaborativeFiltering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/28/ML-CollaborativeFiltering/" itemprop="url">协同过滤</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T10:03:22+08:00">
+                2018-01-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  416
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>用户偏好</strong><br>从用户对物品的评分中，学习用户的偏好向量，从而预测用户对新物品的评分并推荐<br>$$J(\theta) = \frac{1}{2}\sum_{j=1}^{n_u}\sum_{i:r(i,j)=1}((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})^2+\frac{\lambda}{2}\sum_{j=1}^{n_u}\sum_{k=1}^n(\theta_k^{(j)})^2 $$</p>
+<p>$x^{(i)}$ 物品i的特征向量<br>$\theta^{(j)}$ 用户j的偏好向量<br>$r(i,j)$ 用户j是否对物品i评价<br>$y^{(i,j)}$ 用户j对物品i的评分，当$r(i,j)=1$时有效</p>
+<p><strong>物品特征</strong><br>$x^{(i)}$可以由专家给出，也可以通过用户评分来自主学习<br>$$ J(x) = \frac{1}{2}\sum_{i=1}^{n_m}\sum_{j:r(i,j)=1}((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})^2+\frac{\lambda}{2}\sum_{i=1}^{n_m}\sum_{k=1}^n(x_k^{(i)})^2 $$</p>
+<p><strong>协同过滤</strong><br>根据评分数据$y$，同时估计$\theta$和$x$<br>$$ J(x,\theta) = \frac{1}{2}\sum_{(i,j):r(i,j)=1}((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})^2 +\frac{\lambda}{2}\sum_{i=1}^{n_m}\sum_{k=1}^n(x_k^{i})^2 +\frac{\lambda}{2}\sum_{j=1}^{n_u}\sum_{k=1}^n(\theta_k^{j})^2 $$<br>算法步骤：</p>
+<ol>
+<li>初始化所有$\theta,x$为”small random values”</li>
+<li>梯度迭代求解最优化问题</li>
+<li>对用户没有标记过的物品，预测评分$\theta^Tx$</li>
+</ol>
+<p>对没有任何标记的新用户，其偏好向量为<strong>0</strong>，对任何新物品的预测评分也为<strong>0</strong>;<br>新用户的评分应该中立，而不是厌恶，故修改评分为物品评分的均值$0+\mu_i$<br>对其他用户，也要做对应修改，故在训练模型前有必要对评分进行均值标准化处理，使评分分布从[0~5]变为[-0.25~0.25]。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/27/ML-AnomalyDetection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/27/ML-AnomalyDetection/" itemprop="url">异常点检测</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-27T14:55:32+08:00">
+                2018-01-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  238
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>正例(y=1)不足，不能支持分类模型训练时，可以使用非监督学习的检测算法来识别异常点。</p>
+<p><strong>算法</strong><br>假设特征服从正态分布，并且相互独立；</p>
+<ol>
+<li>选择能有效识别异常点的特征</li>
+<li>对每个特征，求均值$\mu$和方差$\sigma^2$</li>
+<li>计算样本分布概率$p(x)$<br>$$ p(x)=\prod_{j=1}^np(x_j;\mu_j,\sigma_j^2)=\prod_{j=1}^n\frac{1}{\sqrt{2\pi}\sigma_j}exp(-\frac{(x_j-\mu_j)^2}{2\sigma^2}) $$<br>如果$p(x)&lt;\epsilon$则认为是异常点。</li>
+</ol>
+<p><strong>问题</strong></p>
+<ol>
+<li>如果特征不服从正态分布怎么办？<br>对特征转化处理，例如乘方、开方、取log等，转为近似正态分布。</li>
+<li>如果特征不独立怎么办？<br>使用多元高斯分布计算$p(x)$。</li>
+<li>如果异常点的$p(x)$不显著，不能和正常点分开怎么办？<br>观察异常点，构造显著特征，例如$\frac{x_1}{x_2}$。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/24/LinearAlgebra-LinearEquations/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/24/LinearAlgebra-LinearEquations/" itemprop="url">线性方程组和矩阵</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T13:45:51+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,165
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="线性方程组"><a href="#线性方程组" class="headerlink" title="线性方程组"></a>线性方程组</h2><p>A <strong>linear system</strong> is a collection of one or more linear equations involving the same variables. A linear system has</p>
+<ul>
+<li>no solutions</li>
+<li>exactly one solution</li>
+<li>infinitely many solutions</li>
+</ul>
+<p>方程$Ax=b$有解当且仅当$b$是$A$的各列的线性组合。<br>每个线性方程代表高维空间的一个超平面，线性方程组的解是所有超平面的交点。<br>解方程组的基本思路是把方程组用一个更容易解的等价方程组代替。<br>若两个线性方程组的增广矩阵(augmented matrix)是行等价的，则它们具有相同的解集(solution set)。</p>
+<h4 id="阶梯形矩阵"><a href="#阶梯形矩阵" class="headerlink" title="阶梯形矩阵"></a>阶梯形矩阵</h4><p>一个矩阵称为阶梯形(echelon form)(或行阶梯形)，若它有以下三个性质：</p>
+<ul>
+<li>每一非零行在每一零行之上；</li>
+<li>某一行的先导元素(leading entry)所在的列位于前一行先导元素的右面；</li>
+<li>某一先导元素所在列下方元素都是零。<br>若一个阶梯形矩阵还满足以下性质，称为简化阶梯形(reduced echelon form)：</li>
+<li>每一非零行的先导元素是1；</li>
+<li>每一先导元素1是该元素所在列的唯一非零元素。</li>
+</ul>
+<p><strong>定理</strong><br>每个矩阵行等价于唯一的简化阶梯形矩阵。<br><strong>主元位置</strong><br>矩阵中的主元位置(pivot position)是A中对应于它的阶梯形中先导元素的位置。主元列是A的含有主元位置的列。</p>
+<h4 id="线性方程组的解"><a href="#线性方程组的解" class="headerlink" title="线性方程组的解"></a>线性方程组的解</h4><p>对应主元列的变量称为基本变量，其他变量称为自由变量。<br>齐次方程$Ax=0$有非平凡解(非零向量)，当且仅当方程至少有一个自由变量。</p>
+<h4 id="线性无关"><a href="#线性无关" class="headerlink" title="线性无关"></a>线性无关</h4><p>$\mathbb{R}^n$中一组向量{$\vec{v}_1,…\vec{v}_p$}称为线性无关的，若向量方程<br>$$ x_1\vec{v_1} + x_2\vec{v_2} +\cdot\cdot\cdot+ x_p\vec{v_p} = 0 $$<br>仅有平凡解。向量组称为线性相关的，若存在不全为零的权$c_1,…c_p$，使得<br>$$ c_1\vec{v_1} + c_2\vec{v_2} +\cdot\cdot\cdot+ c_p\vec{v_p} = 0 $$<br>矩阵A的各列线性无关，当且仅当$Ax=0$仅有平凡解。<br><strong>定理</strong><br>若一个向量组的向量个数超过每个向量元素个数，那么这个向量组线性相关。即$\mathbb{R}^n$中任意向量组{$\vec{v_1},…,\vec{v_p}$}，当$p&gt;n$时线性相关。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/24/LinearAlgebra-LinearEquations/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/21/Calculus-MultipleIntegrals/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/21/Calculus-MultipleIntegrals/" itemprop="url">多元积分</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-21T07:56:54+08:00">
+                2018-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  215
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Jacobian"><a href="#Jacobian" class="headerlink" title="Jacobian"></a>Jacobian</h4><p>The Jacobian determinant or Jacobian of the corredinate transformation $x=g(u,v),\;y=h(u,v)$ is<br>$$J(u,v)=\begin{vmatrix}\frac{\partial x}{\partial u}&amp;\frac{\partial x}{\partial v} \\ \frac{\partial y}{\partial u} &amp;\frac{\partial y}{\partial v} \end{vmatrix} = \frac{\partial x}{\partial u}\frac{\partial y}{\partial v}-\frac{\partial x}{\partial v}\frac{\partial y}{\partial u}$$<br>It measures how much the transformation is expanding or contracting the area around a point G as G is transformed into R.<br>$$ \int\int_Rf(x,y)dxdy = \int\int_Gf(g(u,v),h(u,v))\left|J(u,v)\right|dudv $$<br>The Jacobian is also denoted by<br>$$ J(u,v) = \frac{\partial(x,y)}{\partial(u,v)} $$</p>
+<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="Fubini’s-Theorem"><a href="#Fubini’s-Theorem" class="headerlink" title="Fubini’s Theorem"></a>Fubini’s Theorem</h4><p>If $f(x,y)$ is continuous throughout the rectangular region $R:a\leq x\leq b,\; c\leq y\leq d$, then<br>$$ \int \int_R f(x,y)dA = \int_c^d \int_a^b f(x,y)dxdy = \int_a^b \int_c^d f(x,y)dydx $$<br>If $R$ is defined by $a\leq x\leq b,\;g_1(x)\leq y\leq g_2(x)$, with $g_1$ and $g_2$ continuous on $[a,b]$, then<br>$$ \int \int_R f(x,y)dA = \int_a^b \int_{g_1(x)}^{g_2(x)}f(x,y)dydx $$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/20/ML-NeuralNetworks/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2838,613 +3437,6 @@ v(1:10)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/01/Calculus-Continuity/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/01/Calculus-Continuity/" itemprop="url">连续</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-01T15:50:06+08:00">
-                2018-01-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  185
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Continuous-at-a-Point"><a href="#Continuous-at-a-Point" class="headerlink" title="Continuous at a Point"></a>Continuous at a Point</h4><p><strong>Interior point</strong>: A function $y = f(x)$ is <strong>continuous at an interior point c</strong> of its domain if</p>
-<p>$$ \lim_{x\rightarrow c} f(x) = f(c) $$</p>
-<p><strong>Endpoint</strong>: A function $y = f(x)$ is <strong>continuous at a left endpoint a</strong> or is <strong>continuous at a right endpoint b</strong> of its domain if</p>
-<p>$$ \lim_{x\rightarrow a^{+}} f(x) = f(a) \, or \, \lim_{x\rightarrow b^{-}} f(x) = f(b) $$</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="Intermediate-Value-Property-介值定理"><a href="#Intermediate-Value-Property-介值定理" class="headerlink" title="Intermediate Value Property(介值定理)"></a>Intermediate Value Property(介值定理)</h4><p>A function $y = f(x)$ that is continuous on a closed interval $[a,b]$ takes on every value between $f(a)$ and $f(b)$. In other words, if $y_{0}$ is any value between $f(a)$ and $f(b)$, the $y_{0} = f(c)$ for some c in $[a,b]$.</p>
-<p>若$f(x)$在$[a,b]$上连续，对$(f(a), f(b))$中的任意y，存在c，使得$f(c) = y$.</p>
-<p>若$f(x)$在区间内连续且有正负值，且方程$f(x) = 0$在区间内必有解。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/30/Calculus-Limit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/30/Calculus-Limit/" itemprop="url">极限</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-30T09:57:51+08:00">
-                2017-12-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  534
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Limit-of-a-Function"><a href="#Limit-of-a-Function" class="headerlink" title="Limit of a Function"></a>Limit of a Function</h4><p>Let $f(x)$ be defined on an open interval about $x_{0}$, except possibly at $x_{0}$ itself. We say that the <strong>limit of $f(x)$ as $x$ approaches $x_{0}$ is the number $L$ </strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $\delta &gt; 0$ such that for all x,</p>
-<p>$$ 0 &lt; \left | x - x_{0} \right | &lt; \delta \Rightarrow \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>对任意小的正数 $\epsilon$，都可以找到一个区间，在这个区间内 $\left | f(x) - L \right | &lt; \epsilon $</p>
-<p>由定义可以证明加法律、乘法律等运算规则。</p>
-<h4 id="One-Sided-Limits"><a href="#One-Sided-Limits" class="headerlink" title="One-Sided Limits"></a>One-Sided Limits</h4><p>1.We say that $f(x)$ has <strong>right-hand limit $L$ at $x_{0}$</strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}^{+}} f(x) = L $$</p>
-<p>if for every number $\epsilon &gt; 0$ there exists a corresponding number $\delta &gt; 0$ such that for all x</p>
-<p>$$ x_{0} &lt; x &lt; x_{0} + \delta \Rightarrow \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>2.We say that $f(x)$ has <strong>left-hand limit $L$ at $x_{0}$</strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}^{-}} f(x) = L $$</p>
-<p>if for every number $\epsilon &gt; 0$ there exists a corresponding number $\delta &gt; 0$ such that for all x</p>
-<p>$$ x_{0} - \delta &lt; x &lt; x_{0}   \Rightarrow   \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>3.当左右极限相等时，在该点有函数极限。</p>
-<p>A function $f(x)$ has a limit as $x$ approaches $c$ if and only if it has left-hand and right-hand limits there and these one-sided limits are equal:</p>
-<p>$$ \lim_{x\rightarrow c} f(x) = L \Leftrightarrow \lim_{x\rightarrow c^{-}} f(x) = L \; and \; \lim{x\rightarrow c^{+}} f(x) = L $$</p>
-<h4 id="Limit-as-x-approaches-∞-or-∞"><a href="#Limit-as-x-approaches-∞-or-∞" class="headerlink" title="Limit as x approaches ∞ or -∞"></a>Limit as x approaches ∞ or -∞</h4><ol>
-<li>We say that $f(x)$ has the <strong>limit $L$ as $x$ approaches infinity</strong> and write</li>
-</ol>
-<p>$$ \lim_{x\rightarrow ∞} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $M$ such that for all $x$</p>
-<p>$$ x &gt; M \Rightarrow \left |f(x) - L \right | &lt; \epsilon $$</p>
-<p>对任意小的正数$\epsilon$，都可以找到区间$(M, ∞)$，在这个区间内 $\left |f(x) - L \right | &lt; \epsilon$</p>
-<ol>
-<li>We say that $f(x)$ has the <strong>limit $L$ as $x$ approaches minus infinity</strong> and write</li>
-</ol>
-<p>$$ \lim_{x\rightarrow -∞} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $N$ such that for all $x$</p>
-<p>$$ x &lt; N \Rightarrow \left |f(x) - L \right | &lt; \epsilon $$</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Sandwich-Theorem-夹逼定理"><a href="#The-Sandwich-Theorem-夹逼定理" class="headerlink" title="The Sandwich Theorem(夹逼定理)"></a>The Sandwich Theorem(夹逼定理)</h4><p>Suppose that $g(x)\leqslant f(x)\leqslant h(x)$ for all $x$ in some open interval containing $c$, except possibly at $x = c$ itself. Suppose also that</p>
-<p>$$\lim_{x\rightarrow c} g(x) = \lim_{x\rightarrow c} h(x) = L$$</p>
-<p>Then $\lim_{x\rightarrow c} f(x) = L$</p>
-<h4 id="函数-frac-sin-theta-theta"><a href="#函数-frac-sin-theta-theta" class="headerlink" title="函数$\frac{sin\theta}{\theta}$"></a>函数$\frac{sin\theta}{\theta}$</h4><p>$$ \lim_{\theta\rightarrow 0}\frac{sin\theta}{\theta} = 1    (\theta \, in \, radians) $$</p>
-<p>因为 $ cos\theta &lt; \frac{sin\theta}{\theta} &lt; 1$，由夹逼定理可证。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/29/ML-LinearRegression/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/29/ML-LinearRegression/" itemprop="url">线性回归</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T10:19:17+08:00">
-                2017-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  237
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Boston房价预测"><a href="#Boston房价预测" class="headerlink" title="Boston房价预测"></a>Boston房价预测</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_boston</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> SGDRegressor</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> r2_score, mean_square_error, mean_absolute_error</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入数据</span></span><br><span class="line">boston = load_boston()</span><br><span class="line">X = boston.data</span><br><span class="line">y = boston.target</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=<span class="number">33</span>, test_size=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化，由于y不再是0和1，也需要标准化</span></span><br><span class="line">ss_X = StandardScaler()</span><br><span class="line">ss_y = StandardScaler()</span><br><span class="line">X_train = ss_X.fit_transform(X_train)</span><br><span class="line">X_test = ss_X.transform(X_test)</span><br><span class="line">y_train = ss_y.fit_transform(y_train)</span><br><span class="line">y_test = ss_y.transform(y_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析法训练参数</span></span><br><span class="line">lr = LinearRegression()</span><br><span class="line">lr.fit(X_train, y_train)</span><br><span class="line">lr_y_predict = lr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度下降法训练参数</span></span><br><span class="line">sgdr = SGDRegressor()</span><br><span class="line">sgdr.fit(X_train, y_train)</span><br><span class="line">sgdr_y_predict = sgdr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">lr.score(X_test, y_test)</span><br><span class="line">r2_score(y_test, lr_y_predict)</span><br><span class="line">mean_square_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(lr_y_predict))</span><br><span class="line">mean_absolute_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(lr_y_predict))</span><br></pre></td></tr></table></figure>
-<p>随机梯度下降法训练出的模型，预测精度不如解析法(Normal Equation?)训练出的模型。<br>但是计算量小，消耗时间少。<br>根据Scikit-learn官网的建议，在数据规模超过10万时，推荐使用随机梯度法估计参数模型。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/29/ML-ModelAssemble/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/29/ML-ModelAssemble/" itemprop="url">模型集成</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T09:40:42+08:00">
-                2017-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  450
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>模型集成是通过使用多个模型，获得比单独模型更好的预测效果。<br>在Kaggle比赛中，排名靠前的解决方案里几乎都能看到模型集成的方法。<br>模型集成会带来额外的计算资源消耗，虽然对竞赛不成问题，但应用在线上生产环境时要慎重。</p>
-<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>集成方法有两种：</p>
-<ul>
-<li>并行：多个模型同步进行，通过投票的方式得出最终的分类决策。例如随机森林，同时搭建多棵决策树，每棵决策树随机选取特征作为节点。</li>
-<li>串行：按照一定次序搭建多个模型，模型间存在依赖关系。每一个后续模型的加入都需要对现有模型的性能提升有贡献。例如梯度提升决策树(Gradient Tree Boosting)</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 随机森林模型</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line">rfc = RandomForestClassifier()</span><br><span class="line">rfc.fit(X_train, y_train)</span><br><span class="line">rfc_y_pred = rfc.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度提升决策树</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingClassifier</span><br><span class="line">gbc = GradientBoostingClassfier()</span><br><span class="line">gbc.fit(X_train, y_train)</span><br><span class="line">gbc_y_pred = gbc.predict(X_test)</span><br></pre></td></tr></table></figure>
-<p>随机森林分类模型一般作为基线系统(Baseline System)，用于和其他模型的性能比较。<br>集成模型训练参数需要更多的时间，往往也有更好的性能和稳定性。</p>
-<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><p>与分类集成的思路相同。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 随机森林</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor</span><br><span class="line">rfr = RandomForestRegressor()</span><br><span class="line">rfr.fit(X_train, y_train)</span><br><span class="line">rfr_y_predict = rfr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 极端森林</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> ExtraTreesRegressor</span><br><span class="line">etr = ExtraTreesRegressor()</span><br><span class="line">etr.fit(X_train, y_train)</span><br><span class="line">etr_y_predict = etr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度提升</span></span><br><span class="line"><span class="comment"># **性能最佳**</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingRegressor</span><br><span class="line">gbr = GradientBoostingRegressor()</span><br><span class="line">gbr.fit(X_train, y_train)</span><br><span class="line">gbr_y_predict = gbr.predict(X_test)</span><br></pre></td></tr></table></figure>
-<p>极端随机森林(Extremely Randomized Trees)在构建每棵树的分裂节点时，先随机收集一部分特征，然后利用信息熵和基尼不纯性等指标挑选最佳的节点特征。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3499,7 +3491,7 @@ v(1:10)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">307</span>
+                  <span class="site-state-item-count">309</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3601,7 +3593,7 @@ v(1:10)
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">116.8k</span>
+    <span title="Site words total count">117.8k</span>
   
 </div>
 

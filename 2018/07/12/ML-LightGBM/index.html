@@ -79,18 +79,21 @@
 
 
 
-<meta name="description" content="train = lgb.Dataset(train_df[columns_to_use],y ,feature_name = &quot;auto&quot;)params = &amp;#123;&apos;boosting_type&apos;: &apos;gbdt&apos;,           &apos;objective&apos;: &apos;regression&apos;,           &apos;metric&apos;: &apos;rmse&apos;,           &apos;learning_rate&apos;">
+<meta name="description" content="LightGBM全称是Light Gradient Boosting Machine，是一个基于决策树算法的分布式高性能GB框架。 特点和之前的GBM框架相比，主要改进如下： Histogram现有的GBDT工具基本都是基于预排序(pre-sorted)的算法(如XGBoost)，不能用类似mini batch的方式来训练，需要对数据多次遍历。LightGBM使用的是hitogram算法，将连续的">
 <meta name="keywords" content="Machine Learning,LightGBM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LightGBM">
 <meta property="og:url" content="http://mirokule.github.io/2018/07/12/ML-LightGBM/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="train = lgb.Dataset(train_df[columns_to_use],y ,feature_name = &quot;auto&quot;)params = &amp;#123;&apos;boosting_type&apos;: &apos;gbdt&apos;,           &apos;objective&apos;: &apos;regression&apos;,           &apos;metric&apos;: &apos;rmse&apos;,           &apos;learning_rate&apos;">
+<meta property="og:description" content="LightGBM全称是Light Gradient Boosting Machine，是一个基于决策树算法的分布式高性能GB框架。 特点和之前的GBM框架相比，主要改进如下： Histogram现有的GBDT工具基本都是基于预排序(pre-sorted)的算法(如XGBoost)，不能用类似mini batch的方式来训练，需要对数据多次遍历。LightGBM使用的是hitogram算法，将连续的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-12T08:29:41.950Z">
+<meta property="og:image" content="http://mirokule.github.io/img/level_wise.png">
+<meta property="og:image" content="http://mirokule.github.io/img/leaf_wise.png">
+<meta property="og:updated_time" content="2019-04-08T03:54:30.269Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LightGBM">
-<meta name="twitter:description" content="train = lgb.Dataset(train_df[columns_to_use],y ,feature_name = &quot;auto&quot;)params = &amp;#123;&apos;boosting_type&apos;: &apos;gbdt&apos;,           &apos;objective&apos;: &apos;regression&apos;,           &apos;metric&apos;: &apos;rmse&apos;,           &apos;learning_rate&apos;">
+<meta name="twitter:description" content="LightGBM全称是Light Gradient Boosting Machine，是一个基于决策树算法的分布式高性能GB框架。 特点和之前的GBM框架相比，主要改进如下： Histogram现有的GBDT工具基本都是基于预排序(pre-sorted)的算法(如XGBoost)，不能用类似mini batch的方式来训练，需要对数据多次遍历。LightGBM使用的是hitogram算法，将连续的">
+<meta name="twitter:image" content="http://mirokule.github.io/img/level_wise.png">
 
 
 
@@ -324,7 +327,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  44
+                  724
                 </span>
               
 
@@ -349,7 +352,40 @@
       
 
       
-        <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train = lgb.Dataset(train_df[columns_to_use],y ,feature_name = <span class="string">"auto"</span>)</span><br><span class="line"></span><br><span class="line">params = &#123;<span class="string">'boosting_type'</span>: <span class="string">'gbdt'</span>, </span><br><span class="line">          <span class="string">'objective'</span>: <span class="string">'regression'</span>, </span><br><span class="line">          <span class="string">'metric'</span>: <span class="string">'rmse'</span>, </span><br><span class="line">          <span class="string">'learning_rate'</span>: <span class="number">0.01</span>, </span><br><span class="line">          <span class="string">'num_leaves'</span>: <span class="number">100</span>, </span><br><span class="line">          <span class="string">'feature_fraction'</span>: <span class="number">0.4</span>, </span><br><span class="line">          <span class="string">'bagging_fraction'</span>: <span class="number">0.6</span>, </span><br><span class="line">          <span class="string">'max_depth'</span>: <span class="number">5</span>, </span><br><span class="line">          <span class="string">'min_child_weight'</span>: <span class="number">10</span>&#125;</span><br><span class="line"></span><br><span class="line">clf = lgb.train(params, train, num_boost_round = <span class="number">400</span>, verbose_eval=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">preds = clf.predict(test_df[columns_to_use])</span><br></pre></td></tr></table></figure>
+        <p>LightGBM全称是Light Gradient Boosting Machine，是一个基于决策树算法的分布式高性能GB框架。</p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><p>和之前的GBM框架相比，主要改进如下：</p>
+<h6 id="Histogram"><a href="#Histogram" class="headerlink" title="Histogram"></a>Histogram</h6><p>现有的GBDT工具基本都是基于预排序(pre-sorted)的算法(如XGBoost)，不能用类似mini batch的方式来训练，需要对数据多次遍历。<br>LightGBM使用的是hitogram算法，将连续的特征值分桶装进离散的箱子(bins)，占用内存更少。</p>
+<h6 id="Leaf-wise-tree-growth"><a href="#Leaf-wise-tree-growth" class="headerlink" title="Leaf_wise tree growth"></a>Leaf_wise tree growth</h6><p>现有工具大多数使用按层生长(level-wise)的决策树生长策略。<br>LightGBM采用了对增益最大的节点深入分解的方法(leaf-wise)，能产生更复杂的树，从而使得精度更高。<br>有时会过拟合，需要通过设置max-depth参数来避免。<br><img src="\img\level_wise.png"><br><img src="\img\leaf_wise.png"></p>
+<h6 id="其他优化"><a href="#其他优化" class="headerlink" title="其他优化"></a>其他优化</h6><ol>
+<li>类别特征支持，不再需要one-hot编码</li>
+<li>cache访问优化</li>
+<li>多线程优化</li>
+<li>稀疏特征优化</li>
+<li>其他</li>
+</ol>
+<h4 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h4><h6 id="核心参数"><a href="#核心参数" class="headerlink" title="核心参数"></a>核心参数</h6><ol>
+<li>boosting_type: 默认是gbdt，其他如rf, dart, doss等</li>
+<li>num_thread: 指定线程的个数</li>
+<li>objective: 任务目标默认regression，其他如binary, multi-class, cross-entropy等</li>
+<li>valid: 验证集</li>
+<li>learning_rate: 学习率，梯度下降的步长</li>
+<li>num_leaves: 一棵树上的叶子数</li>
+<li>device: 默认CPU，可选GPU</li>
+</ol>
+<h6 id="学习控制参数"><a href="#学习控制参数" class="headerlink" title="学习控制参数"></a>学习控制参数</h6><ol>
+<li>feature_fraction: 如果小于1(比如0.8)，将会在每棵树训练之前选取部分(80%)特征；可以加速训练，减少过拟合</li>
+<li>bagging_fraction:</li>
+<li>bagging_freq: 默认0，禁用bagging; 设置k意味着每k次迭代执行bagging</li>
+<li>lambda_l1, lambda_l2: 默认0，表示L1, L2正则化</li>
+</ol>
+<h4 id="代码实例"><a href="#代码实例" class="headerlink" title="代码实例"></a>代码实例</h4><ol>
+<li><p>应用</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train = lgb.Dataset(train_df[columns_to_use],y ,feature_name = <span class="string">"auto"</span>)</span><br><span class="line"></span><br><span class="line">params = &#123;<span class="string">'boosting_type'</span>: <span class="string">'gbdt'</span>, </span><br><span class="line">          <span class="string">'objective'</span>: <span class="string">'regression'</span>, </span><br><span class="line">          <span class="string">'metric'</span>: <span class="string">'rmse'</span>, </span><br><span class="line">          <span class="string">'learning_rate'</span>: <span class="number">0.01</span>, </span><br><span class="line">          <span class="string">'num_leaves'</span>: <span class="number">100</span>, </span><br><span class="line">          <span class="string">'feature_fraction'</span>: <span class="number">0.4</span>, </span><br><span class="line">          <span class="string">'bagging_fraction'</span>: <span class="number">0.6</span>, </span><br><span class="line">          <span class="string">'max_depth'</span>: <span class="number">5</span>, </span><br><span class="line">          <span class="string">'min_child_weight'</span>: <span class="number">10</span>&#125;</span><br><span class="line"></span><br><span class="line">clf = lgb.train(params, train, num_boost_round = <span class="number">400</span>, verbose_eval=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">preds = clf.predict(test_df[columns_to_use])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>GridSearch调参</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> lightgbm <span class="keyword">as</span> lgb</span><br><span class="line"><span class="keyword">from</span> sklearn.grid_search <span class="keyword">import</span> GridSearchCV  <span class="comment"># Perforing grid search</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">train_data = pd.read_csv(<span class="string">'train.csv'</span>)   <span class="comment"># 读取数据</span></span><br><span class="line">y = train_data.pop(<span class="string">'30'</span>).values   <span class="comment"># 用pop方式将训练数据中的标签值y取出来，作为训练目标，这里的‘30’是标签的列名</span></span><br><span class="line">col = train_data.columns   </span><br><span class="line">x = train_data[col].values  <span class="comment"># 剩下的列作为训练数据</span></span><br><span class="line">train_x, valid_x, train_y, valid_y = train_test_split(x, y, test_size=<span class="number">0.333</span>, random_state=<span class="number">0</span>)   <span class="comment"># 分训练集和验证集</span></span><br><span class="line">train = lgb.Dataset(train_x, train_y)</span><br><span class="line">valid = lgb.Dataset(valid_x, valid_y, reference=train)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">parameters = &#123;</span><br><span class="line">              <span class="string">'max_depth'</span>: [<span class="number">15</span>, <span class="number">20</span>, <span class="number">25</span>, <span class="number">30</span>, <span class="number">35</span>],</span><br><span class="line">              <span class="string">'learning_rate'</span>: [<span class="number">0.01</span>, <span class="number">0.02</span>, <span class="number">0.05</span>, <span class="number">0.1</span>, <span class="number">0.15</span>],</span><br><span class="line">              <span class="string">'feature_fraction'</span>: [<span class="number">0.6</span>, <span class="number">0.7</span>, <span class="number">0.8</span>, <span class="number">0.9</span>, <span class="number">0.95</span>],</span><br><span class="line">              <span class="string">'bagging_fraction'</span>: [<span class="number">0.6</span>, <span class="number">0.7</span>, <span class="number">0.8</span>, <span class="number">0.9</span>, <span class="number">0.95</span>],</span><br><span class="line">              <span class="string">'bagging_freq'</span>: [<span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">8</span>],</span><br><span class="line">              <span class="string">'lambda_l1'</span>: [<span class="number">0</span>, <span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.5</span>, <span class="number">0.6</span>],</span><br><span class="line">              <span class="string">'lambda_l2'</span>: [<span class="number">0</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">35</span>, <span class="number">40</span>],</span><br><span class="line">              <span class="string">'cat_smooth'</span>: [<span class="number">1</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">20</span>, <span class="number">35</span>]</span><br><span class="line">&#125;</span><br><span class="line">gbm = lgb.LGBMClassifier(boosting_type=<span class="string">'gbdt'</span>,</span><br><span class="line">                         objective = <span class="string">'binary'</span>,</span><br><span class="line">                         metric = <span class="string">'auc'</span>,</span><br><span class="line">                         verbose = <span class="number">0</span>,</span><br><span class="line">                         learning_rate = <span class="number">0.01</span>,</span><br><span class="line">                         num_leaves = <span class="number">35</span>,</span><br><span class="line">                         feature_fraction=<span class="number">0.8</span>,</span><br><span class="line">                         bagging_fraction= <span class="number">0.9</span>,</span><br><span class="line">                         bagging_freq= <span class="number">8</span>,</span><br><span class="line">                         lambda_l1= <span class="number">0.6</span>,</span><br><span class="line">                         lambda_l2= <span class="number">0</span>)</span><br><span class="line"><span class="comment"># 有了gridsearch我们便不需要fit函数</span></span><br><span class="line">gsearch = GridSearchCV(gbm, param_grid=parameters, scoring=<span class="string">'accuracy'</span>, cv=<span class="number">3</span>)</span><br><span class="line">gsearch.fit(train_x, train_y)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"Best score: %0.3f"</span> % gsearch.best_score_)</span><br><span class="line">print(<span class="string">"Best parameters set:"</span>)</span><br><span class="line">best_parameters = gsearch.best_estimator_.get_params()</span><br><span class="line"><span class="keyword">for</span> param_name <span class="keyword">in</span> sorted(parameters.keys()):</span><br><span class="line">    print(<span class="string">"t%s: %r"</span> % (param_name, best_parameters[param_name]))</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 
       
     </div>
@@ -446,8 +482,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -466,7 +511,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">307</span>
+                  <span class="site-state-item-count">309</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -541,6 +586,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#特点"><span class="nav-number">1.</span> <span class="nav-text">特点</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Histogram"><span class="nav-number">1.0.1.</span> <span class="nav-text">Histogram</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Leaf-wise-tree-growth"><span class="nav-number">1.0.2.</span> <span class="nav-text">Leaf_wise tree growth</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#其他优化"><span class="nav-number">1.0.3.</span> <span class="nav-text">其他优化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参数"><span class="nav-number">2.</span> <span class="nav-text">参数</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#核心参数"><span class="nav-number">2.0.1.</span> <span class="nav-text">核心参数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#学习控制参数"><span class="nav-number">2.0.2.</span> <span class="nav-text">学习控制参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实例"><span class="nav-number">3.</span> <span class="nav-text">代码实例</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -568,7 +629,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">116.8k</span>
+    <span title="Site words total count">117.8k</span>
   
 </div>
 

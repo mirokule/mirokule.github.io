@@ -262,6 +262,607 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2019/04/09/ML-LightGBM-Parameters/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/09/ML-LightGBM-Parameters/" itemprop="url">LightGBM 参数调整</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-09T16:11:57+08:00">
+                2019-04-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  231
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>同其他决策树模型的调参步骤类似：</p>
+<ol>
+<li>提高学习率，加快训练速度</li>
+<li>调整树模型基本参数</li>
+<li>调整正则化参数</li>
+<li>降低学习率，训练模型并验证</li>
+</ol>
+<h5 id="树模型参数"><a href="#树模型参数" class="headerlink" title="树模型参数"></a>树模型参数</h5><p>1.boost/boosting/boosting_type: 估计器类型，一般使用默认的gbdt<br>2.n_estimators/num_iterations/num_round/num_boost_round: 最大迭代次数，可以设为大数，然后使用early_stopping<br>3.max_depth: 树的深度越大越容易过拟合，可设为-1<br>4.<strong>num_leaves</strong>: <strong>最重要的参数</strong>，由于LightGBM使用leaf_wise算法，该参数直接决定深度<br>5.min_data_in_leaf/ min_child_samples: 取决于训练样本个数和num_leaves<br>6.min_sum_hessian_in_leaf/ min_child_weight: 使一个节点分裂的最小海森值之和 </p>
+<h5 id="正则化参数"><a href="#正则化参数" class="headerlink" title="正则化参数"></a>正则化参数</h5><p>1.feature_fraction: 每次建树使用的特征比例<br>2.bagging_fraction: 每次bagging的比例<br>3.bagging_freq: 默认为0，不使用bagging; 设置为k意味着每k轮迭代进行一次bagging<br>4.lambda_l1<br>5.lambda_l2  </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2019/04/03/Unity-UpdateOrder/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/03/Unity-UpdateOrder/" itemprop="url">Upate, FixUpdate, LateUpdate</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-03T10:31:12+08:00">
+                2019-04-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  128
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="FixedUpdate"><a href="#FixedUpdate" class="headerlink" title="FixedUpdate"></a>FixedUpdate</h5><p>固定时间间隔更新，与帧率无关。<br>如果帧率很低，可能一帧内更新多次；如果帧率很高，可能多帧才更新一次。<br>在FixedUpdate内计算运动轨迹时不需要乘以时间间隔Time.deltaTime.</p>
+<h5 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h5><p>每帧执行一次，更新的主力函数。</p>
+<h5 id="LateUpdate"><a href="#LateUpdate" class="headerlink" title="LateUpdate"></a>LateUpdate</h5><p>每帧执行一次，在Update函数完成之后。<br>常见应用包括第三人称摄像机的位置和转矩更新，以确保Update中角色的移动已经完成。</p>
+<p><img src="\img\updateOrder.svg"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2019/01/18/Python-pandas-Toolbox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/18/Python-pandas-Toolbox/" itemprop="url">Pandas小抄</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-18T16:03:19+08:00">
+                2019-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  76
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="读取Json"><a href="#读取Json" class="headerlink" title="读取Json"></a>读取Json</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_df</span><span class="params">(csv_path=<span class="string">'../input/train.csv'</span>, nrows=None)</span>:</span></span><br><span class="line">    JSON_COLUMNS = [<span class="string">'device'</span>, <span class="string">'geoNetwork'</span>, <span class="string">'totals'</span>, <span class="string">'trafficSource'</span>]</span><br><span class="line">    </span><br><span class="line">    df = pd.read_csv(csv_path, </span><br><span class="line">                     converters=&#123;column: json.loads <span class="keyword">for</span> column <span class="keyword">in</span> JSON_COLUMNS&#125;, </span><br><span class="line">                     dtype=&#123;<span class="string">'fullVisitorId'</span>: <span class="string">'str'</span>&#125;, <span class="comment"># Important!!</span></span><br><span class="line">                     nrows=nrows)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> column <span class="keyword">in</span> JSON_COLUMNS:</span><br><span class="line">        column_as_df = json_normalize(df[column])</span><br><span class="line">        column_as_df.columns = [<span class="string">f"<span class="subst">&#123;column&#125;</span>.<span class="subst">&#123;subcolumn&#125;</span>"</span> <span class="keyword">for</span> subcolumn <span class="keyword">in</span> column_as_df.columns]</span><br><span class="line">        df = df.drop(column, axis=<span class="number">1</span>).merge(column_as_df, right_index=<span class="keyword">True</span>, left_index=<span class="keyword">True</span>)</span><br><span class="line">    </span><br><span class="line">    print(<span class="string">f"Loaded <span class="subst">&#123;os.path.basename(csv_path)&#125;</span>. Shape: <span class="subst">&#123;df.shape&#125;</span>"</span>)</span><br><span class="line">    <span class="keyword">return</span> df</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2019/01/14/RL-AlgorithmStructure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/14/RL-AlgorithmStructure/" itemprop="url">增强学习算法的一般步骤</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-14T15:12:48+08:00">
+                2019-01-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  361
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>没有一种算法可以适应所有的问题。有些问题里表示一个策略是比较容易的，而有些问题去拟合模型更容易。<br>虽然算法有差别，但是几乎所有的增强学习算法都有着同样的架构：</p>
+<p><img src="/img/RLStructure.png"></p>
+<p>1.生成样本<br>样本效率是最主要的关注点。使用真实物理环境的驾驶、机器人控制问题，和使用仿真环境的模拟器，收集样本的速度会有很大差异。</p>
+<ul>
+<li>on-policy: 策略每次更改后都要重新生成样本，即训练数据必须由当前策略产生</li>
+<li>off-policy: 训练数据可以由其他策略产生，在不重新采样的情况下改变当前策略</li>
+</ul>
+<p>2.策略评估/模型拟合<br>策略梯度法计算回报的总和 $\sum\,r$;<br>值函数方法拟合 Q(s,a);<br>基于模型的方法则需要估计状态转移概率 p(s’|s,a)。</p>
+<p>3.策略改进<br>策略梯度法对神经网络做梯度步的调整 $\theta\leftarrow\theta+\alpha\nabla J(\theta)$；<br>值函数方法on-policy通常采用 $\epsilon-greedy$，off-policy比如Q-Learning直接取最大值 argmaxQ(s,a);<br>基于模型的方法则需要用梯度方法去优化策略函数。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">算法</th>
+<th style="text-align:center">评估拟合</th>
+<th style="text-align:center">策略改进</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">policy-based</td>
+<td style="text-align:center">$\sum\,r$</td>
+<td style="text-align:center">$\theta\leftarrow\theta+\alpha\nabla J(\theta)$</td>
+</tr>
+<tr>
+<td style="text-align:center">value-based</td>
+<td style="text-align:center">Q(s,a)</td>
+<td style="text-align:center">argmaxQ(s,a)</td>
+</tr>
+<tr>
+<td style="text-align:center">model-based</td>
+<td style="text-align:center">p(s’/s,a)</td>
+<td style="text-align:center">gradient</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2019/01/04/RL-PolicyGradient/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -370,7 +971,7 @@
 <p>从直观上理解，策略梯度会增加高回报路径的概率，减少低回报路径的概率。<br>其中，由于$P(\tau,\theta)=\prod_{t=0}^H P(s_{t+1}|s_t,a_t) \pi(a_t|s_t)$，前半部分P(s;s,a)不含有参数$\theta$可以在求导过程中消掉，所以<br>$$ \nabla_{\theta}log\,P(\tau;\theta) = \sum_{t=0}^H \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) $$</p>
 <h6 id="改进一"><a href="#改进一" class="headerlink" title="改进一"></a>改进一</h6><p>引入基准值b，减小方差<br>$$ \nabla_{\theta} J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^H \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) (R(\tau)-b) $$</p>
 <h6 id="改进二"><a href="#改进二" class="headerlink" title="改进二"></a>改进二</h6><p>对每一条轨迹，梯度都乘以了固定的乘数(R-b)，这实际上是不公平的，比如后发生的动作应该与之前的奖励无关。因此把轨迹的回报(R-b)细分到每个动作的回报($\sum r-b$)，对每个动作$a_t$，只计算t时刻之后的回报:<br>$$ \nabla_{\theta} J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^{H-1} \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) (\sum_{k=t}^{H-1}(r(s_k)-b)) $$</p>
-<h4 id="Off-Policy"><a href="#Off-Policy" class="headerlink" title="Off-Policy"></a>Off-Policy</h4><p>使用采集到的轨迹数据计算梯度并更新参数$\theta$后，策略$\pi_{\theta}$随之改变。重新采集数据需要耗费大量的资源，因而在off-policy策略里，使用两套参数：固定$\theta’$，用$\pi_{\theta’}$采集的数据来更新$\theta$.<br>两套策略对应的数据分布不同，就涉及到重要性采样：<br>$$ E_{x\sim p(x)}f(x) = \int p(x)f(x) \\<br>= \int q(x) \frac{p(x)}{q(x)}f(x) \\<br>= E_{x\sim q(x) \frac{p(x)}{q(x)} f(x) $$</p>
+<h4 id="Off-Policy"><a href="#Off-Policy" class="headerlink" title="Off-Policy"></a>Off-Policy</h4><p>使用采集到的轨迹数据计算梯度并更新参数$\theta$后，策略$\pi_{\theta}$随之改变。重新采集数据需要耗费大量的资源，因而在off-policy策略里，使用两套参数：固定$\theta’$，用$\pi_{\theta’}$采集的数据来更新$\theta$.<br>两套策略对应的数据分布不同，就涉及到重要性采样：<br>$$ E_{x\sim p(x)}f(x) = \int p(x)f(x) \\<br>= \int q(x) \frac{p(x)}{q(x)}f(x) \\<br>= E_{x\sim q(x)} \frac{p(x)}{q(x)} f(x) $$</p>
 <p>虽然期望相等，但是方差并不相同。使得在采样数据不足时，结果可能有较大波动。<br>On-Policy:<br>$$ \nabla_{\theta} J(\theta) = E_{\tau\sim p(\tau;\theta)}[\nabla_{\theta}log\,P(\tau;\theta) R(\tau)]$$<br>Off-Policy:<br>$$ \nabla_{\theta} J(\theta) = E_{\tau\sim p(\tau;\theta’)}[\frac{P(\tau;\theta)}{P(\tau;\theta’)}\nabla_{\theta}log\,P(\tau;\theta) R(\tau)]$$</p>
 
           
@@ -2585,7 +3186,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  44
+                  724
                 </span>
               
 
@@ -2612,7 +3213,40 @@
       
         
           
-            <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train = lgb.Dataset(train_df[columns_to_use],y ,feature_name = <span class="string">"auto"</span>)</span><br><span class="line"></span><br><span class="line">params = &#123;<span class="string">'boosting_type'</span>: <span class="string">'gbdt'</span>, </span><br><span class="line">          <span class="string">'objective'</span>: <span class="string">'regression'</span>, </span><br><span class="line">          <span class="string">'metric'</span>: <span class="string">'rmse'</span>, </span><br><span class="line">          <span class="string">'learning_rate'</span>: <span class="number">0.01</span>, </span><br><span class="line">          <span class="string">'num_leaves'</span>: <span class="number">100</span>, </span><br><span class="line">          <span class="string">'feature_fraction'</span>: <span class="number">0.4</span>, </span><br><span class="line">          <span class="string">'bagging_fraction'</span>: <span class="number">0.6</span>, </span><br><span class="line">          <span class="string">'max_depth'</span>: <span class="number">5</span>, </span><br><span class="line">          <span class="string">'min_child_weight'</span>: <span class="number">10</span>&#125;</span><br><span class="line"></span><br><span class="line">clf = lgb.train(params, train, num_boost_round = <span class="number">400</span>, verbose_eval=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">preds = clf.predict(test_df[columns_to_use])</span><br></pre></td></tr></table></figure>
+            <p>LightGBM全称是Light Gradient Boosting Machine，是一个基于决策树算法的分布式高性能GB框架。</p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><p>和之前的GBM框架相比，主要改进如下：</p>
+<h6 id="Histogram"><a href="#Histogram" class="headerlink" title="Histogram"></a>Histogram</h6><p>现有的GBDT工具基本都是基于预排序(pre-sorted)的算法(如XGBoost)，不能用类似mini batch的方式来训练，需要对数据多次遍历。<br>LightGBM使用的是hitogram算法，将连续的特征值分桶装进离散的箱子(bins)，占用内存更少。</p>
+<h6 id="Leaf-wise-tree-growth"><a href="#Leaf-wise-tree-growth" class="headerlink" title="Leaf_wise tree growth"></a>Leaf_wise tree growth</h6><p>现有工具大多数使用按层生长(level-wise)的决策树生长策略。<br>LightGBM采用了对增益最大的节点深入分解的方法(leaf-wise)，能产生更复杂的树，从而使得精度更高。<br>有时会过拟合，需要通过设置max-depth参数来避免。<br><img src="\img\level_wise.png"><br><img src="\img\leaf_wise.png"></p>
+<h6 id="其他优化"><a href="#其他优化" class="headerlink" title="其他优化"></a>其他优化</h6><ol>
+<li>类别特征支持，不再需要one-hot编码</li>
+<li>cache访问优化</li>
+<li>多线程优化</li>
+<li>稀疏特征优化</li>
+<li>其他</li>
+</ol>
+<h4 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h4><h6 id="核心参数"><a href="#核心参数" class="headerlink" title="核心参数"></a>核心参数</h6><ol>
+<li>boosting_type: 默认是gbdt，其他如rf, dart, doss等</li>
+<li>num_thread: 指定线程的个数</li>
+<li>objective: 任务目标默认regression，其他如binary, multi-class, cross-entropy等</li>
+<li>valid: 验证集</li>
+<li>learning_rate: 学习率，梯度下降的步长</li>
+<li>num_leaves: 一棵树上的叶子数</li>
+<li>device: 默认CPU，可选GPU</li>
+</ol>
+<h6 id="学习控制参数"><a href="#学习控制参数" class="headerlink" title="学习控制参数"></a>学习控制参数</h6><ol>
+<li>feature_fraction: 如果小于1(比如0.8)，将会在每棵树训练之前选取部分(80%)特征；可以加速训练，减少过拟合</li>
+<li>bagging_fraction:</li>
+<li>bagging_freq: 默认0，禁用bagging; 设置k意味着每k次迭代执行bagging</li>
+<li>lambda_l1, lambda_l2: 默认0，表示L1, L2正则化</li>
+</ol>
+<h4 id="代码实例"><a href="#代码实例" class="headerlink" title="代码实例"></a>代码实例</h4><ol>
+<li><p>应用</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train = lgb.Dataset(train_df[columns_to_use],y ,feature_name = <span class="string">"auto"</span>)</span><br><span class="line"></span><br><span class="line">params = &#123;<span class="string">'boosting_type'</span>: <span class="string">'gbdt'</span>, </span><br><span class="line">          <span class="string">'objective'</span>: <span class="string">'regression'</span>, </span><br><span class="line">          <span class="string">'metric'</span>: <span class="string">'rmse'</span>, </span><br><span class="line">          <span class="string">'learning_rate'</span>: <span class="number">0.01</span>, </span><br><span class="line">          <span class="string">'num_leaves'</span>: <span class="number">100</span>, </span><br><span class="line">          <span class="string">'feature_fraction'</span>: <span class="number">0.4</span>, </span><br><span class="line">          <span class="string">'bagging_fraction'</span>: <span class="number">0.6</span>, </span><br><span class="line">          <span class="string">'max_depth'</span>: <span class="number">5</span>, </span><br><span class="line">          <span class="string">'min_child_weight'</span>: <span class="number">10</span>&#125;</span><br><span class="line"></span><br><span class="line">clf = lgb.train(params, train, num_boost_round = <span class="number">400</span>, verbose_eval=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">preds = clf.predict(test_df[columns_to_use])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>GridSearch调参</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> lightgbm <span class="keyword">as</span> lgb</span><br><span class="line"><span class="keyword">from</span> sklearn.grid_search <span class="keyword">import</span> GridSearchCV  <span class="comment"># Perforing grid search</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">train_data = pd.read_csv(<span class="string">'train.csv'</span>)   <span class="comment"># 读取数据</span></span><br><span class="line">y = train_data.pop(<span class="string">'30'</span>).values   <span class="comment"># 用pop方式将训练数据中的标签值y取出来，作为训练目标，这里的‘30’是标签的列名</span></span><br><span class="line">col = train_data.columns   </span><br><span class="line">x = train_data[col].values  <span class="comment"># 剩下的列作为训练数据</span></span><br><span class="line">train_x, valid_x, train_y, valid_y = train_test_split(x, y, test_size=<span class="number">0.333</span>, random_state=<span class="number">0</span>)   <span class="comment"># 分训练集和验证集</span></span><br><span class="line">train = lgb.Dataset(train_x, train_y)</span><br><span class="line">valid = lgb.Dataset(valid_x, valid_y, reference=train)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">parameters = &#123;</span><br><span class="line">              <span class="string">'max_depth'</span>: [<span class="number">15</span>, <span class="number">20</span>, <span class="number">25</span>, <span class="number">30</span>, <span class="number">35</span>],</span><br><span class="line">              <span class="string">'learning_rate'</span>: [<span class="number">0.01</span>, <span class="number">0.02</span>, <span class="number">0.05</span>, <span class="number">0.1</span>, <span class="number">0.15</span>],</span><br><span class="line">              <span class="string">'feature_fraction'</span>: [<span class="number">0.6</span>, <span class="number">0.7</span>, <span class="number">0.8</span>, <span class="number">0.9</span>, <span class="number">0.95</span>],</span><br><span class="line">              <span class="string">'bagging_fraction'</span>: [<span class="number">0.6</span>, <span class="number">0.7</span>, <span class="number">0.8</span>, <span class="number">0.9</span>, <span class="number">0.95</span>],</span><br><span class="line">              <span class="string">'bagging_freq'</span>: [<span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">8</span>],</span><br><span class="line">              <span class="string">'lambda_l1'</span>: [<span class="number">0</span>, <span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.5</span>, <span class="number">0.6</span>],</span><br><span class="line">              <span class="string">'lambda_l2'</span>: [<span class="number">0</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">35</span>, <span class="number">40</span>],</span><br><span class="line">              <span class="string">'cat_smooth'</span>: [<span class="number">1</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">20</span>, <span class="number">35</span>]</span><br><span class="line">&#125;</span><br><span class="line">gbm = lgb.LGBMClassifier(boosting_type=<span class="string">'gbdt'</span>,</span><br><span class="line">                         objective = <span class="string">'binary'</span>,</span><br><span class="line">                         metric = <span class="string">'auc'</span>,</span><br><span class="line">                         verbose = <span class="number">0</span>,</span><br><span class="line">                         learning_rate = <span class="number">0.01</span>,</span><br><span class="line">                         num_leaves = <span class="number">35</span>,</span><br><span class="line">                         feature_fraction=<span class="number">0.8</span>,</span><br><span class="line">                         bagging_fraction= <span class="number">0.9</span>,</span><br><span class="line">                         bagging_freq= <span class="number">8</span>,</span><br><span class="line">                         lambda_l1= <span class="number">0.6</span>,</span><br><span class="line">                         lambda_l2= <span class="number">0</span>)</span><br><span class="line"><span class="comment"># 有了gridsearch我们便不需要fit函数</span></span><br><span class="line">gsearch = GridSearchCV(gbm, param_grid=parameters, scoring=<span class="string">'accuracy'</span>, cv=<span class="number">3</span>)</span><br><span class="line">gsearch.fit(train_x, train_y)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"Best score: %0.3f"</span> % gsearch.best_score_)</span><br><span class="line">print(<span class="string">"Best parameters set:"</span>)</span><br><span class="line">best_parameters = gsearch.best_estimator_.get_params()</span><br><span class="line"><span class="keyword">for</span> param_name <span class="keyword">in</span> sorted(parameters.keys()):</span><br><span class="line">    print(<span class="string">"t%s: %r"</span> % (param_name, best_parameters[param_name]))</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
 
           
         
@@ -2793,596 +3427,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/06/04/ML-AutoEncoder/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/04/ML-AutoEncoder/" itemprop="url">自编码器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-04T14:07:00+08:00">
-                2018-06-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  524
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="单个自编码器"><a href="#单个自编码器" class="headerlink" title="单个自编码器"></a>单个自编码器</h4><p>自编码器可以理解为一个试图去还原其原始输入的系统，如下图所示：<br><img src="./img/auto_encoder_1.jpg"></p>
-<p>自编码器的目的是，让输出$\tilde{x}$尽可能复现输入x。<br>对应神经网络中，输出层的节点数应该和输入层相同。<br><img src="./img/auto_encoder_2.jpg"></p>
-<p>损失函数可以是二次误差或者交叉熵。<br>从数据维度看，有以下两种情况：</p>
-<ul>
-<li>n &gt; p: 隐藏层维度小于输入维度。若损失为二次误差，且变换为线性时，该网络等价于PCA。</li>
-<li>n &lt; p: 隐藏层维度大于输入维，此时便是”稀疏自编码器“</li>
-</ul>
-<h4 id="堆叠自编码器"><a href="#堆叠自编码器" class="headerlink" title="堆叠自编码器"></a>堆叠自编码器</h4><p>单个自编码器的训练结束时，可以将输出层去掉，只保留有用的隐藏层。<br><img src="./img/auto_encoder_3.jpg"></p>
-<p>得到X的特征表达h后，可以将其当做新的输入，再训练一个新的编码器。<br>将多个自编码器串联之后，称为堆叠自编码器(Stacked Auto-Encoder,SAE):<br><img src="./img/auto_encoder_4.jpg"></p>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><ol>
-<li><p>简单自编码器</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Input, Dense</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Model</span><br><span class="line"></span><br><span class="line">encoding_dim = <span class="number">32</span></span><br><span class="line"></span><br><span class="line">input_img = Input(shape=(<span class="number">784</span>,))</span><br><span class="line">encoded = Dense(encoding_dim, activation=<span class="string">'relu'</span>)(input_img)</span><br><span class="line">decoded = Dense(<span class="number">784</span>, activation=<span class="string">'sigmoid'</span>)(encoded)</span><br><span class="line"></span><br><span class="line"><span class="comment"># models</span></span><br><span class="line">autoencoder = Model(input_img, decoded)</span><br><span class="line">encoder = Model(input_img, encoded)</span><br><span class="line"></span><br><span class="line"><span class="comment"># compile</span></span><br><span class="line">autoencoder.compile(optimizer=<span class="string">'adadelta'</span>, loss=<span class="string">'binary_crossentropy'</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>深度自编码器</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">input_img = Input(shape=(<span class="number">784</span>,))</span><br><span class="line">encoded = Dense(<span class="number">128</span>, activation=<span class="string">'relu'</span>)(input_img)</span><br><span class="line">encoded = Dense(<span class="number">64</span>, activaiton=<span class="string">'relu'</span>)(encoded)</span><br><span class="line">encoded = Dense(<span class="number">32</span>, activation=<span class="string">'relu'</span>)(encoded)</span><br><span class="line"></span><br><span class="line">decoded = Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>)(encoded)</span><br><span class="line">decoded = Dense(<span class="number">128</span>, activation=<span class="string">'relu'</span>)(decoded)</span><br><span class="line">decoded = Dense(<span class="number">784</span>, activation=<span class="string">'sigmoid'</span>)(decoded)</span><br><span class="line"></span><br><span class="line">autoencoder = Model(input_img, decoded)</span><br><span class="line">autoencoder.compile(optimizer=<span class="string">'adadelta'</span>, loss=<span class="string">'binary_crossentropy'</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>卷积自编码器</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">input_img = Input(shape=(<span class="number">28</span>,<span class="number">28</span>,<span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">x = Conv2D(<span class="number">16</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>)(input_img)</span><br><span class="line">x = MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>), padding=<span class="string">'same'</span>)(x)</span><br><span class="line">x = Conv2D(<span class="number">8</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>)(x)</span><br><span class="line">x = MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>), padding=<span class="string">'same'</span>)(x)</span><br><span class="line">x = Conv2D(<span class="number">8</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>)(x)</span><br><span class="line">encoded = MaxPooling2D((<span class="number">2</span>,<span class="number">2</span>), padding=<span class="string">'same'</span>)(x)</span><br><span class="line"></span><br><span class="line">x = Conv2D(<span class="number">8</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>)(encoded)</span><br><span class="line">x = UpSampling2D((<span class="number">2</span>,<span class="number">2</span>))(x)</span><br><span class="line">x = Conv2D(<span class="number">8</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, padding=<span class="string">'same'</span>)(x)</span><br><span class="line">x = UpSamping2D((<span class="number">2</span>,<span class="number">2</span>))(x)</span><br><span class="line">x = Conv2D(<span class="number">16</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>)(x)</span><br><span class="line">x= UpSampling((<span class="number">2</span>,<span class="number">2</span>))(x)</span><br><span class="line">decoded = Conv2D(<span class="number">1</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'sigmoid'</span>, padding=<span class="string">'same'</span>)(x)</span><br><span class="line"></span><br><span class="line">autoencoder = Model(input_img, decoded)</span><br><span class="line">autoencoder.compile(optimizer=<span class="string">'adadelta'</span>, loss=<span class="string">'binary_crossentropy'</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Sequence-to-sequence 自编码器</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">inputs = Input(shape=(timesteps, input_dim))</span><br><span class="line">encoded = LSTM(latent_dim)(inputs)</span><br><span class="line"></span><br><span class="line">decoded = RepeatVector(timesteps)(encoded)</span><br><span class="line">decoded = LSTM(input_dim, return_sequences=<span class="keyword">True</span>)(decoded)</span><br><span class="line"></span><br><span class="line">sequence_autoencoder = Model(inputs, decoded)</span><br><span class="line">encoder = Model(inputs, encoded)</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/06/04/DL-DBN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/04/DL-DBN/" itemprop="url">深度信念网络</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-04T11:15:25+08:00">
-                2018-06-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  181
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>深度信念网络(Deep Belief Network)是一个概率生成模型，由多个限制玻尔兹曼机层组成。<br>生成模型建立了观察数据和标签之间的联合分布，对P(OBservation|Label)和P(Label|Observation)都做了评估，而判别模型只评估了后者。<br>一个典型的DBN网络结构如图所示：<br><img src="./img/DBN_1.png"></p>
-<h4 id="训练方法"><a href="#训练方法" class="headerlink" title="训练方法"></a>训练方法</h4><p><img src="./img/DBN_2.png"></p>
-<p>训练时采用逐层无监督学习来训练参数。<br>首先，将输入层和第一个隐藏层当做一个RBM，训练出这个RBM的参数；<br>然后，固定h1的参数，将第二个隐藏层当做RBM，继续训练参数；<br>以此类推，逐层训练参数并固定。<br>具体算法如下：<br><img src="./img/DBN_3.png"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/06/04/ML-RBM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/04/ML-RBM/" itemprop="url">受限玻尔兹曼机</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-04T10:57:21+08:00">
-                2018-06-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  258
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>受限玻尔兹曼机(Resticted Boltzmann Machine, RBM)由两层神经网络构成。<br>第一层是可见层/输入层，第二层是隐藏层。<br>两层之间可以通信，层内不可以通信。<br><img src="./img/RBM_1.jpeg"></p>
-<p>前向传播和神经网络是一样的，将输入乘以权重W，加上偏置项b1，再通过激活单元得到输出。<br>$$ a = f(WX + b) $$</p>
-<p>但是在重建阶段，会以隐藏层的输出作为输入，乘以共享权重W，加上新的偏置项b2，来试图还原可见层的输入X。<br><img src="./img/RBM_2.jpeg"></p>
-<p>这种重建称为生成学习，不同于分类器执行的判别学习。<br>判别学习将输入映射到标签上，在样本数据和标签之间绘制条件概率；<br>生成学习得到的是输入的一种概率分布。</p>
-<p>RBM使用KL散度来度量真实输入和还原输入的分布的差异。<br>RBM的优化算法试图最小化这种差异，使两种概率分布逐渐重合。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/06/04/ML-KLDivergence/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/04/ML-KLDivergence/" itemprop="url">KL散度</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-04T10:01:44+08:00">
-                2018-06-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  479
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>KL散度(Kullback-Leibler Divergence)是一种量化两种概率分布P和Q之间差异的方式，又称作相对熵。</p>
-<p><strong>熵(Entropy)</strong><br>对概率分布P，信息度量单位熵的公式如下：<br>$$ H = -\sum^{N}_{i=1} p(x_i) \cdot log\,p(x_i) $$</p>
-<p>1.上式的Log没有确定底数，可以是2、e或者10.<br>如果以2为底数，则熵值H可以看做是编码信息所需要的最少二进制位个数。<br>但是熵值H并没有给出编码的最优化方式，即如何使用最少的位数编码。<br>2.熵衡量的是信息的不确定性。<br>如果概率分布P只有1个值，$p(x_i)=1$，那么H=0，不确定性为0；<br>如果有8个值得均匀分布，$p(x_i)=\frac{1}{8}$，以2为底数时，H=3</p>
-<p><strong>相对熵</strong><br>如果用概率分布Q来近似概率分布P，那么信息的损失——KL散度定义为：<br>$$ D_{KL}(p \mid\mid q) = \sum_{i=1}^N p(x_i)\cdot(log\, p(x_i) - log\, q(x_i)) = \sum_{i=1}^N p(x_i)\cdot log\frac{ p(x_i)}{q(x_i)} $$</p>
-<p>KL散度度量的是一种分布到另一种分布的熵的损失，但<strong>并不是</strong>距离。<br>KL散度不符合对称性，即 从P到Q 和 从Q到P 所损失的信息是不一样的。</p>
-<p><strong>交叉熵</strong><br>在给定概率分布P时，使用概率分布Q所指定的策略，来消除系统不确定性，所需要付出的努力大小：<br>$$ C = -\sum^{N}_{i=1} p(x_i) \cdot log\,q(x_i) $$</p>
-<p>交叉熵越低，概率分布Q越接近P，所指定的策略就越好。<br>当Q=P时，$q(x_i) = p(x_i)$，交叉熵=信息熵，此时的策略为最优策略，达到最小值下限。<br>在分类算法中，使用交叉熵作为目标函数，使交叉熵尽可能小，就能使得学习到的概率分布尽可能接近真实分布。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3437,7 +3481,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">307</span>
+                  <span class="site-state-item-count">309</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3539,7 +3583,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">116.8k</span>
+    <span title="Site words total count">117.8k</span>
   
 </div>
 
