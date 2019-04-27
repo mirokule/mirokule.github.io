@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="碰撞物体发生碰撞的条件  两个物体都必须有碰撞器(Collider) 至少一个物体有刚体(Rigidbody)  两个物体都不勾选isTrigger，进入OnCollisionEnter两个物体中至少有一个勾选isTrigger，进入OnTriggerEnter，不进入OnCollisionEnter API触发(is Trigger) OnTriggerEnter(Collider collid">
+<meta name="description" content="碰撞物体发生碰撞的条件  两个物体都必须有碰撞器(Collider) 至少一个物体有刚体(Rigidbody)  两个物体都不勾选isTrigger，进入OnCollisionEnter两个物体中至少有一个勾选isTrigger，进入OnTriggerEnter，不进入OnCollisionEnter 静态碰撞体如果GameObject有Collider，没有RigidBody，则默认是静态碰撞体">
 <meta name="keywords" content="Unity">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity-Collision">
 <meta property="og:url" content="http://mirokule.github.io/2016/09/27/Unity-Collision/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="碰撞物体发生碰撞的条件  两个物体都必须有碰撞器(Collider) 至少一个物体有刚体(Rigidbody)  两个物体都不勾选isTrigger，进入OnCollisionEnter两个物体中至少有一个勾选isTrigger，进入OnTriggerEnter，不进入OnCollisionEnter API触发(is Trigger) OnTriggerEnter(Collider collid">
+<meta property="og:description" content="碰撞物体发生碰撞的条件  两个物体都必须有碰撞器(Collider) 至少一个物体有刚体(Rigidbody)  两个物体都不勾选isTrigger，进入OnCollisionEnter两个物体中至少有一个勾选isTrigger，进入OnTriggerEnter，不进入OnCollisionEnter 静态碰撞体如果GameObject有Collider，没有RigidBody，则默认是静态碰撞体">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-29T00:45:17.579Z">
+<meta property="og:updated_time" content="2019-04-27T01:48:34.960Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-Collision">
-<meta name="twitter:description" content="碰撞物体发生碰撞的条件  两个物体都必须有碰撞器(Collider) 至少一个物体有刚体(Rigidbody)  两个物体都不勾选isTrigger，进入OnCollisionEnter两个物体中至少有一个勾选isTrigger，进入OnTriggerEnter，不进入OnCollisionEnter API触发(is Trigger) OnTriggerEnter(Collider collid">
+<meta name="twitter:description" content="碰撞物体发生碰撞的条件  两个物体都必须有碰撞器(Collider) 至少一个物体有刚体(Rigidbody)  两个物体都不勾选isTrigger，进入OnCollisionEnter两个物体中至少有一个勾选isTrigger，进入OnTriggerEnter，不进入OnCollisionEnter 静态碰撞体如果GameObject有Collider，没有RigidBody，则默认是静态碰撞体">
 
 
 
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  116
+                  342
                 </span>
               
 
@@ -355,6 +355,7 @@
 <li>至少一个物体有刚体(Rigidbody)</li>
 </ul>
 <p>两个物体都不勾选isTrigger，进入OnCollisionEnter<br>两个物体中至少有一个勾选isTrigger，进入OnTriggerEnter，不进入OnCollisionEnter</p>
+<h4 id="静态碰撞体"><a href="#静态碰撞体" class="headerlink" title="静态碰撞体"></a>静态碰撞体</h4><p>如果GameObject有Collider，没有RigidBody，则默认是静态碰撞体；如果有RigidBody，则默认是动态碰撞体。<br>Unity为了优化性能，会计算Scene中所有静态碰撞体(static collider)的体积，并保存到缓存中。这样对那些不会移动的物体来说，便可以节约计算资源。如果静态碰撞体发生移动，则这个所有静态碰撞体的缓存会重新计算，反而会消耗计算资源。<br>因此，对那些会经常移动的物体，应该将其设定为动态碰撞体(dynamic collider)，即增加RigidBody组件。<br>增加RigidBody组件后，默认可以受力。勾选”Gravity”可以消除重力影响，勾选”Is Kinematic”可以消除所有外力影响。</p>
 <h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><h4 id="触发-is-Trigger"><a href="#触发-is-Trigger" class="headerlink" title="触发(is Trigger)"></a>触发(is Trigger)</h4><ul>
 <li>OnTriggerEnter(Collider collider)</li>
 <li>OnTriggerExit(Collider collider)</li>
@@ -365,6 +366,7 @@
 <li>OnCollisionExit(Collision collision)</li>
 <li>OnCollisionStay(Collision collision)</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (collision.collider.name == &quot;chest&quot;)</span><br><span class="line">    Debug.Log(&quot;chest is here!&quot;)</span><br></pre></td></tr></table></figure>
 <h4 id="Collision"><a href="#Collision" class="headerlink" title="Collision"></a>Collision</h4><ul>
 <li>collider: the collider we hit</li>
 <li>contacts: contact points</li>
@@ -373,6 +375,15 @@
 <li>relativeVelocity</li>
 <li>rigidbody: the rigidbody we hit. null if the collider has no rigidbody attached.</li>
 <li>transform</li>
+</ul>
+<h4 id="Collider"><a href="#Collider" class="headerlink" title="Collider"></a>Collider</h4><p>是所有colliders的基类，比如BoxCollider, SphereCollider, CapsuleCollider等</p>
+<ul>
+<li>gameObject</li>
+<li>tag</li>
+<li>name</li>
+<li>transform</li>
+<li>hideFlags</li>
+<li>enabled</li>
 </ul>
 
       
@@ -497,7 +508,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">309</span>
+                  <span class="site-state-item-count">315</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -581,7 +592,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#碰撞"><span class="nav-number">1.</span> <span class="nav-text">碰撞</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API"><span class="nav-number"></span> <span class="nav-text">API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#触发-is-Trigger"><span class="nav-number">1.</span> <span class="nav-text">触发(is Trigger)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#碰撞-1"><span class="nav-number">2.</span> <span class="nav-text">碰撞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Collision"><span class="nav-number">3.</span> <span class="nav-text">Collision</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#碰撞"><span class="nav-number">1.</span> <span class="nav-text">碰撞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态碰撞体"><span class="nav-number">2.</span> <span class="nav-text">静态碰撞体</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API"><span class="nav-number"></span> <span class="nav-text">API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#触发-is-Trigger"><span class="nav-number">1.</span> <span class="nav-text">触发(is Trigger)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#碰撞-1"><span class="nav-number">2.</span> <span class="nav-text">碰撞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Collision"><span class="nav-number">3.</span> <span class="nav-text">Collision</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Collider"><span class="nav-number">4.</span> <span class="nav-text">Collider</span></a></li></ol></div>
             
 
           </div>
@@ -615,7 +626,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">117.8k</span>
+    <span title="Site words total count">119.1k</span>
   
 </div>
 

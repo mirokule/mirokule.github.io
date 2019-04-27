@@ -262,6 +262,1021 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/17/DL-CNNCases/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/17/DL-CNNCases/" itemprop="url">CNN实例</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-17T08:15:16+08:00">
+                2018-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,013
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>CNN有多种经典实现：</p>
+<ul>
+<li>LeNet-5：1998</li>
+<li>AlexNet：2012</li>
+<li>VGG：2014</li>
+<li>Inception(GoogleLeNet)：2014</li>
+<li>ResNet：2015</li>
+</ul>
+<h4 id="1-LeNet-5"><a href="#1-LeNet-5" class="headerlink" title="1. LeNet-5"></a>1. LeNet-5</h4><p>LeNet-5是用于手写字体识别的一个经典CNN，论文发表于1998年。<br><img src="/img/LeNet-5.png"><br>LeNet处理32×32像素的灰度图片，即输入尺寸为(32×32×1)。<br>LeNet网络共有7层：</p>
+<ul>
+<li>卷积层C1：过滤器尺寸(5×5×1×6)，输出(28×28×6)</li>
+<li>池化层S1：MaxPooling，尺寸(2×2)，步长2，输出(14×14×6)</li>
+<li>卷积层C2：过滤器尺寸(5×5×6×16)，输出(10×10×16)</li>
+<li>池化层S2：MaxPooling，尺寸(2×2)，步长2，输出(5×5×16)</li>
+<li>全连接层FC1/卷积层C3：使用(5×5×16×120)的过滤器，和输入尺寸相同，相当于全连接。输出节点120个。</li>
+<li>全连接层FC2：输出节点84个，共有参数120×84+84=10164个</li>
+<li>全连接层FC3：输出节点10个，共有参数84×10+10=850个，对应数字分类0~9</li>
+</ul>
+<h4 id="2-AlexNet"><a href="#2-AlexNet" class="headerlink" title="2. AlexNet"></a>2. AlexNet</h4><p>由Alex提出的CNN网络结构获得了imagenet图像分类大赛2012届的冠军，AlexNet由此得名。<br><img src="/img/AlexNet.png"><br>AlexNet可以处理RGB图片，输入尺寸(224×224×3)，预处理后变为(227×227×3)<br>AlexNet由两台GPU服务器完成，共有2个流程，每层数据分为2组。<br>每个流程有8层，5个卷积层和3个全连接层。</p>
+<ul>
+<li>卷积层Conv1：过滤器尺寸(11×11×3×96)，步长4，输出(55×55×96);<br>  使用激励函数ReLU;<br>  MaxPooling尺寸(3×3)，步长2，输出(27×27×96);<br>  归一化处理，尺度(5×5)</li>
+<li>卷积层Conv2：过滤器尺寸(5×5×96×256)，padding=2(SAME)，输出(27×27×256);<br>  使用激励函数ReLU;<br>  MaxPooling尺寸(3×3)，步长2，输出(13×13×256);<br>  归一化处理，尺度(5×5)</li>
+<li>卷积层Conv3：过滤器尺寸(3×3×256×384)，padding=1(SAME)，输出(13×13×384);<br>  使用激励函数ReLU</li>
+<li>卷积层Conv4：过滤器尺寸(3×3×384×384)，padding=1(SAME)，输出(13×13×384);<br>  使用激励函数ReLU</li>
+<li>卷积层Conv5：过滤器尺寸(3×3×384×256)，padding=1(SAME)，输出(13×13×256);<br>  使用激励函数ReLU;<br>  MaxPooling尺寸(3×3)，步长2，输出(6×6×256)</li>
+<li>全连接层FC1：使用4096个(6×6×256)过滤器，每个过滤器输出到一个节点，共4096个节点；<br>  使用激励函数ReLU；<br>  使用DropOut正则化，dropout_ratio=0.5</li>
+<li>全连接层FC2：与FC1类似</li>
+<li>全连接层FC3：1000个节点与4096个输入节点全连接，得到最终输出</li>
+</ul>
+<h4 id="3-VGG"><a href="#3-VGG" class="headerlink" title="3. VGG"></a>3. VGG</h4><p>VGG是由AlexNet发展而来的，有更多的参数，更深的层次。<br><img src="/img/VGG1.png"><br>VGG有多种配置，根据层数的多少有VGG-11，VGG-13，VGG-16，VGG-19等。<br>最常见的是VGG-16，有13个卷积层，3个全连接层。<br><img src="/img/VGG2.png"><br>VGG使用的卷积核都比较小(3×3)，即表中的conv3；还有比较特殊的1×1的卷积核conv1(用于缩减channel)。<br>使用多个较小的卷积层，一方面可以减少参数，另一方面作者认为相当于进行了更多的非线性映射，可以增加网络的拟合能力。<br>所有隐层的激活单元都是ReLu，只有一种使用了局部响应归一化层(Local Response Normalization)，最终输出层是softmax。</p>
+<h4 id="4-Inception"><a href="#4-Inception" class="headerlink" title="4. Inception"></a>4. Inception</h4><p>又称GoogleLeNet，在2014年ImageNet比赛中力压VGG获得冠军。<br>该网络中含有Incpetion结构，将不同尺寸filter的卷积结果堆叠在一起，放在输出的不同chanel里。<br><img src="/img/Inception1.png"><br>GoogleLeNet的成功证明了用更多的卷积、更深的层次能够得到更好的效果(并没有证明用浅层网络不能得到同样的效果)。<br>参数总量虽然不大，计算量非常大。<br><img src="/img/Inception2.png"></p>
+<h4 id="5-ResNet"><a href="#5-ResNet" class="headerlink" title="5. ResNet"></a>5. ResNet</h4><p>梯度消失问题使深层神经网络的训练相当困难。随着网络深度的不断增加，性能会趋于饱和，甚至开始下降。<br>ResNet的基本思想是引入能够跳过一层或多层的”ShortCut Connection”，如下图所示：<br><img src="/img/ResNet1.png"><br>输出有两部分组成：</p>
+<ul>
+<li>Identity Mapping：曲线部分，X</li>
+<li>Residual Mapping：直线部分，F(x)</li>
+</ul>
+<p>ResNet也有多种不同的实现结构，其中ResNet50和ResNet101比较常见。<br><img src="/img/ResNet2.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/16/Keras/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/16/Keras/" itemprop="url">Keras</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-16T14:42:20+08:00">
+                2018-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  434
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Keras是由Python编写的高层神经网络API，后端可选TensorFlow、Theano或者CNTK。</p>
+<p><strong>数据格式</strong><br>由于后端框架对数据格式的定义不同，Keras要面对两种不同格式的数据。<br>Keras默认的数据组织形式在~/.keras/keras.json中规定，可查看该文件的image_data_format一项，也可在代码中通过K.image_data_format()函数返回。<br>以m张32*32像素的RGB图片为例：</p>
+<ul>
+<li>channels_first: (m, 3, 32, 32)将通道维度放在像素维度之前，Theano、Caffe采用</li>
+<li>channels_last: (m, 32, 32, 3)将通道维度放在最后，TensorFlow采用</li>
+</ul>
+<p><strong>模型种类</strong></p>
+<ul>
+<li>序贯模型(Sequential)：单输入单输出，没有跨层连接</li>
+<li>函数式模型(Functional)：支持多输入多输出和任意连接，将Sequential视为一个特例</li>
+</ul>
+<p><strong>典型流程</strong></p>
+<ol>
+<li><p>创建模型<br>和TensorFlow一样，需要先定义计算图。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Activation</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一次性定义</span></span><br><span class="line">model = Sequential([Dense(<span class="number">32</span>, units=<span class="number">7840</span>),</span><br><span class="line">		Activation(<span class="string">'relu'</span>),</span><br><span class="line">		Dense(<span class="number">10</span>),</span><br><span class="line">		Activation(<span class="string">'softmax'</span>)])</span><br><span class="line"><span class="comment"># 逐个加入</span></span><br><span class="line">model.add(Dense(<span class="number">32</span>, input_shape=(<span class="number">784</span>,)))</span><br><span class="line">model.add(Activation(<span class="string">'relu'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译模型<br>训练模型之前，需要通过compile来配置学习过程。compile接收三个参数：</p>
+<ul>
+<li>优化器optimizer: 如rmsprop、adagrad，或一个Optimizer类的对象</li>
+<li>损失函数loss: 如rucategorical_crossentropy、mse</li>
+<li>指标列表metrics: 分类问题一般设置为metrics=[‘accuracy’]</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 多分类问题</span></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'categorical_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"><span class="comment"># 二分类问题</span></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'binary_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line"><span class="comment"># 回归问题</span></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'mse'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义Metrics</span></span><br><span class="line"><span class="keyword">import</span> keras.backend <span class="keyword">as</span> K</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mean_pred</span><span class="params">(y_true, y_pred)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> K.mean(y_pred)</span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'binary_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>, mean_pred])</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>训练模型<br>Keras使用Numpy数组作为输入数据类型。<br>训练模型一般使用fit函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.fit(data, labels, epochs=<span class="number">10</span>, batch_size=<span class="number">32</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>评估/测试</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.evaluate(x=X_test, y=Y_test)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/DL-CNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/14/DL-CNN/" itemprop="url">卷积神经网络</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T14:57:49+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  479
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>卷积神经网络(Convolutional Neural Networks, CNN)多用于图像处理，因为卷积特别适合图像特征提取，降低计算复杂度。</p>
+<h4 id="卷积-Convolution"><a href="#卷积-Convolution" class="headerlink" title="卷积(Convolution)"></a>卷积(Convolution)</h4><p>深度学习里俗称的”卷积“同数学上的”卷积“定义不同。<br>这里的”卷积“运算实际上是互相关(Cross-Correlation)，没有对核进行翻转。而数学定义上的”卷积“要对核翻转。因为大部分图像处理的核都是对称的，没有翻转并不影响最终结果。<br>使用卷积可以对图像进行边缘检测。<br><img src="/img/convolution.gif"></p>
+<ul>
+<li>输入：一张RGB图片对应一个(n, n, 3)矩阵</li>
+<li>核：(f,f,3)矩阵用于卷积</li>
+<li>Padding: 为原始图片添加边缘，防止处理后图片缩小<ul>
+<li>Valid: p = 0，不加边缘</li>
+<li>Same: p = (f-1)/2，使处理前后尺寸相同</li>
+</ul>
+</li>
+<li>Strided: 步长，每次卷积后跨越多少个单位</li>
+</ul>
+<p>卷积后的输出尺寸为 $n_{out} = \left \lfloor \frac{n+2p-f}{s}+1 \right \rfloor$</p>
+<h4 id="池化-Pooling"><a href="#池化-Pooling" class="headerlink" title="池化(Pooling)"></a>池化(Pooling)</h4><p>对不同位置的特征进行聚合统计，获得更低维度的特征。<br><img src="/img/pooling.gif"><br>聚合方式有两种：</p>
+<ul>
+<li>Max Pooling: 取切片区域内最大的元素</li>
+<li>Average Pooling: 取切片区域内的平均值</li>
+</ul>
+<p>输出尺寸 $n_{out} = \left \lfloor \frac{n_{prev} - f}{s} + 1 \right \rfloor $</p>
+<h4 id="卷积神经网络"><a href="#卷积神经网络" class="headerlink" title="卷积神经网络"></a>卷积神经网络</h4><p>将卷积层和池化层放入神经网络中，可以有许多不同的网络结构。<br><img src="/img/cnn.png"></p>
+<p>卷积层前向传播：</p>
+<ul>
+<li>A_prev: (m, $n_{H_{prev}}$, $n_{W_{prev}}$, $n_{C_{prev}}$)</li>
+<li>W: (f, f, $n_{C_{prev}}$, $n_C$) 每层有$n_C$个核</li>
+<li>b: (1, 1, 1, $n_C$)</li>
+<li>Z: (m, $n_H$, $n_W$, $n_C$) </li>
+</ul>
+<p>其中<br>$$ n_H = \lfloor \frac{n_{H_{prev}} - f + 2 \times pad}{stride} \rfloor +1 $$<br>$$ n_W = \lfloor \frac{n_{W_{prev}} - f + 2 \times pad}{stride} \rfloor +1 $$<br>$$ n_C = \text{number of filters used in the convolution}$$</p>
+<p>池化层没有参数：</p>
+<ul>
+<li>A_prev: (m, $n_{H_{prev}}$, $n_{W_{prev}}$, $n_{C_{prev}}$)</li>
+<li>A: (m, $n_H$, $n_W$, $n_C$) </li>
+</ul>
+<p>其中<br>$$ n_H = \lfloor \frac{n_{H_{prev}} - f}{stride} \rfloor +1 $$<br>$$ n_W = \lfloor \frac{n_{W_{prev}} - f}{stride} \rfloor +1 $$<br>$$ n_C = n_{C_{prev}}$$</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/TF-Functions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/14/TF-Functions/" itemprop="url">TensorFlow常用函数</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T14:33:49+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  227
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="数学运算"><a href="#数学运算" class="headerlink" title="数学运算"></a>数学运算</h4><p><strong>标量</strong></p>
+<ul>
+<li>tf.add(a,b): 加法</li>
+<li>tf.multiply(a,b): 乘法</li>
+<li>tf.pow(a,b): 乘方</li>
+<li>tf.maximum(a,b): 返回较大的那个</li>
+</ul>
+<p><strong>矩阵</strong></p>
+<ul>
+<li>tf.ones(shape)</li>
+<li>tf.reduce_mean(): 取平均</li>
+<li>tf.reduce_max(input, axis=None): 返回最大值，缩减一个维度</li>
+<li>tf.argmax(input, axis=None): 最大值的索引</li>
+<li>tf.matmul(W,X): 矩阵乘法</li>
+<li>tf.transpose(X): 矩阵转置</li>
+</ul>
+<p><strong>其他</strong></p>
+<ul>
+<li>tf.sigmoid(x)</li>
+<li>tf.one_hot(labels, depth, axis)</li>
+<li>tf.set_random_seed(1)</li>
+<li>tf.gather(params, indices): 选取指定索引的数据</li>
+<li>tf.boolean_mask(tensor, mask): 适用mask</li>
+</ul>
+<h4 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h4><p><strong>损失函数</strong></p>
+<ul>
+<li>tf.nn.sigmoid_cross_entropy_with_logits(logits=z, labels=y): 二分类Logistic Loss</li>
+<li>tf.nn.softmax_cross_entropy_with_logits(logits=z, lables=y): 多分类Softmax Loss</li>
+</ul>
+<p><strong>激活层</strong></p>
+<ul>
+<li>tf.nn.relu(Z): ReLU层</li>
+<li>tf.nn.conv2d(X,W1,strides=[1,s,s,1],padding=’SAME’]: 卷积层</li>
+<li>tf.nn.max_pool(A, ksize=[1,f,f,1], strides=[1,s,s,1], padding=’SAME’): Max_Pool层</li>
+</ul>
+<p><strong>Contrib</strong></p>
+<ul>
+<li>tf.contrib.layers.flatten(P): 展平P到一维</li>
+<li>tf.contrib.layers.fully_connect(F,num_outputs): 全连接层</li>
+</ul>
+<p><strong>Image</strong></p>
+<ul>
+<li>tf.image.non_max_suppression(boxes, scores, max_output_size, iou_threshold): Non-Max Suppression</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/TF-Optimizer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/14/TF-Optimizer/" itemprop="url">TensorFlow优化器Optimizer</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T10:06:10+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  169
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-tf-train-Optimizer"><a href="#1-tf-train-Optimizer" class="headerlink" title="1. tf.train.Optimizer"></a>1. tf.train.Optimizer</h4><p>优化器类(optimizers)的基类。<br>基本上不会直接使用这个类。</p>
+<h4 id="2-tf-train-GradientDescentOptimizer"><a href="#2-tf-train-GradientDescentOptimizer" class="headerlink" title="2. tf.train.GradientDescentOptimizer"></a>2. tf.train.GradientDescentOptimizer</h4><p>实现梯度下降算法的优化器。</p>
+<p>方法</p>
+<ul>
+<li><strong>init</strong>(learning_rate, use_locking=False, name=’GradientDescent’): 构造函数</li>
+<li>minimize(loss,global_step=None,var_list=None,gate_gradients=GATE_OP,aggregation_method=None,<br>colocate_gradients_with_ops=False,name=None,grad_loss=None): 迭代的一步，loss是目标函数</li>
+<li>compute_gradients(loss,var_list=None,gate_gradients=GATE_OP,aggregation_method=None,<br>colocate_gradients_with_ops=False,grad_loss=None): minimize的第一个步骤</li>
+<li>apply_gradients(grads_and_vars,global_step=None,name=None): minimize的第二个步骤</li>
+<li>get_name()</li>
+</ul>
+<h4 id="3-tf-train-MomentumOptimizer"><a href="#3-tf-train-MomentumOptimizer" class="headerlink" title="3. tf.train.MomentumOptimizer"></a>3. tf.train.MomentumOptimizer</h4><p>实现动量算法的优化器</p>
+<p>方法</p>
+<ul>
+<li><strong>init</strong>(learning_rate, momentum, use_locking=False, name=’Momentum’, use_nesterov=False)</li>
+</ul>
+<h4 id="4-tf-train-AdamOptimizer"><a href="#4-tf-train-AdamOptimizer" class="headerlink" title="4. tf.train.AdamOptimizer"></a>4. tf.train.AdamOptimizer</h4><p>实现Adam算法的优化器</p>
+<p>方法</p>
+<ul>
+<li><strong>init</strong>(learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-08, use_locking=False, name=’Adam’)</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/14/TF-ConstantVariable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/14/TF-ConstantVariable/" itemprop="url">Constant, Variable, Placeholder</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T08:56:40+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  316
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-Constant"><a href="#1-Constant" class="headerlink" title="1. Constant"></a>1. Constant</h4><p>cons = tf.constant(value, dtype=tf.float32, shape=None, name=None, verify_shape=False)</p>
+<p>参数</p>
+<ul>
+<li>value: 初始值，必须是一个张量</li>
+<li>dtype: 默认为value的数据类型</li>
+<li>shape: 默认为value的shape</li>
+<li>name: 常量名</li>
+<li>verify_shape: 是否验证value的shape和指定shape是否相等，不相等时会抛出异常</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = tf.constant(<span class="number">2</span>)</span><br><span class="line">b = tf.constant(<span class="number">13</span>)</span><br><span class="line">add = tf.add(a,b)</span><br><span class="line"></span><br><span class="line">W = tf.constant(np.random.randn(<span class="number">3</span>,<span class="number">4</span>), name=<span class="string">"W"</span>)</span><br><span class="line">b = tf.constant(np.random.randn(<span class="number">3</span>,<span class="number">1</span>), name=<span class="string">"b"</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-PlaceHolder"><a href="#2-PlaceHolder" class="headerlink" title="2. PlaceHolder"></a>2. PlaceHolder</h4><p>placeholder也是一种常量，不同的是在运行时注入数据。<br>pla = tf.placeholder(dtype=tf.float32, shape=(), name=””)</p>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.placeholder(tf.int64, name=<span class="string">"X"</span>)</span><br><span class="line">sess.run(<span class="number">2</span>*x, feed_dict=&#123;x:<span class="number">12</span>&#125;)</span><br><span class="line"></span><br><span class="line">X = tf.placeholder(tf.float32, shape=(n_h, n_w, <span class="keyword">None</span>), name=<span class="string">"X"</span>)</span><br><span class="line">Y = tf.placeholder(tf.float32, shape=(n_y, <span class="keyword">None</span>), name=<span class="string">"X"</span>)</span><br><span class="line">sess.run([optimizer, cost], feed_dict=&#123;X: batch_X, Y: batch_Y&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="3-Variable"><a href="#3-Variable" class="headerlink" title="3. Variable"></a>3. Variable</h4><p>变量Variable使用前需要初始化。<br>TensorFlow中有两个关于variable的构造函数：</p>
+<ul>
+<li>tf.Variable(): 每次都创建新对象；创建时若命名冲突将覆盖原有对象</li>
+<li>tf.get_variable(): 若命名对象存在则返回，否则创建新对象；创建时若命名冲突则报错</li>
+</ul>
+<p>W1 = tf.Variable(initial_value=None, …)<br>W2 = tf.get_variable(name, initializer=None, …)</p>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Variable</span></span><br><span class="line">w = tf.Variable(tf.zeros([<span class="number">3</span>,<span class="number">4</span>]), dtype=tf.float64, name=<span class="string">"W"</span>)</span><br><span class="line">init = tf.global_variables_initializer()</span><br><span class="line">session.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment">## get_variable</span></span><br><span class="line">W1 = tf.get_variable(<span class="string">"W1"</span>, [<span class="number">12</span>,<span class="number">25</span>], initializer = tf.contrib.layers.xavier_initializer(seed=<span class="number">1</span>))</span><br><span class="line">b1 = tf.get_variable(<span class="string">"b1"</span>, [<span class="number">12</span>,<span class="number">1</span>], initializer = tf.zeros_initializer())</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/13/ML-ErrorAnalysis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2559,1073 +3574,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/06/Python-skimage/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/06/Python-skimage/" itemprop="url">Scikit-Image</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-06T10:02:01+08:00">
-                2018-04-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  219
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Scikit-Image是基于Scipy的图像处理包，将图片作为numpy数组处理。</p>
-<h6 id="子模块"><a href="#子模块" class="headerlink" title="子模块"></a>子模块</h6><table>
-<thead>
-<tr>
-<th style="text-align:center">子模块</th>
-<th style="text-align:center">功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">io</td>
-<td style="text-align:center">读写、显示图片</td>
-</tr>
-<tr>
-<td style="text-align:center">data</td>
-<td style="text-align:center">内置样本图片</td>
-</tr>
-<tr>
-<td style="text-align:center">color</td>
-<td style="text-align:center">颜色空间变换</td>
-</tr>
-<tr>
-<td style="text-align:center">filters</td>
-<td style="text-align:center">滤镜如图像增强、边缘检测</td>
-</tr>
-<tr>
-<td style="text-align:center">draw</td>
-<td style="text-align:center">图形绘制如线条、矩形</td>
-</tr>
-<tr>
-<td style="text-align:center">transform</td>
-<td style="text-align:center">几何变换如旋转、拉伸</td>
-</tr>
-<tr>
-<td style="text-align:center">morphology</td>
-<td style="text-align:center">形态学操作如骨架提取</td>
-</tr>
-<tr>
-<td style="text-align:center">exposure</td>
-<td style="text-align:center">强度调整如亮度、直方图均衡</td>
-</tr>
-<tr>
-<td style="text-align:center">feature</td>
-<td style="text-align:center">特征检测与提取</td>
-</tr>
-<tr>
-<td style="text-align:center">measure</td>
-<td style="text-align:center">图像属性测量如相似性、等高线</td>
-</tr>
-<tr>
-<td style="text-align:center">segmentation</td>
-<td style="text-align:center">图像分割</td>
-</tr>
-<tr>
-<td style="text-align:center">restoration</td>
-<td style="text-align:center">图像恢复</td>
-</tr>
-<tr>
-<td style="text-align:center">util</td>
-<td style="text-align:center">通用函数</td>
-</tr>
-</tbody>
-</table>
-<h6 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io, data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取图片</span></span><br><span class="line">img_file1 = io.imread(<span class="string">'./input/111111.png'</span>)</span><br><span class="line">img_file2 = data.chelsea()</span><br><span class="line">io.imshow(img_file2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看图片信息</span></span><br><span class="line">type(img)</span><br><span class="line">img.shape</span><br><span class="line">img.size</span><br><span class="line">img[<span class="number">0</span>][<span class="number">0</span>] <span class="comment">#图像的像素值</span></span><br><span class="line">width = img.size[<span class="number">0</span>]</span><br><span class="line">height = img.size[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 颜色转换</span></span><br><span class="line">img_file3 = skimage.color.rgb2gray(img_file2_ <span class="comment">#彩色转灰度</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 缩放</span></span><br><span class="line">skimage.transform.resize(image, output_shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直方图</span></span><br><span class="line">skimage.exposure.histogram(image, nbins=<span class="number">256</span>)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/05/ML-ROC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/05/ML-ROC/" itemprop="url">ROC曲线</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-05T17:26:20+08:00">
-                2018-04-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  616
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h4><p>ROC全称是“受试者工作特征”(Receiver Operating Characteristic).<br>ROC曲线下方的面积称为AUC(Area Under the Curve)。AUC可用于衡量二分类问题的算法性能。<br>ROC通常位于直线$y=x$上方，故AUC取值介于0.5~1之间，越大说明算法效果越好。<br><img src="/img/roc1.png"><br>绘制ROC曲线需要三个变量：</p>
-<ul>
-<li>TPR = TP/(TP+FN)，所有正例中挑出来了多少，例如有病的诊断率</li>
-<li>FPR = FP/(FP+TN)，所有负例中挑错了多少，例如没病的误判率</li>
-<li>Threashold：改变分类结果的阈值<br><img src="/img/roc2.png"></li>
-</ul>
-<p>在极端情况下，将所有样本都判为正例，那么TPR=FPR=1；<br>将所有样本都判为负例，那么TPR=FPR=0；<br>以0.3的概率随机判为正例，那么TPR=FPR=0.3；<br>这就是图中y=x直线的由来，代表随机胡蒙的ROC曲线。</p>
-<p><strong>绘制</strong></p>
-<ol>
-<li>将样本的预测概率值从高到低排列；</li>
-<li>从图中(0,0)开始，取一个样本，代表此时阈值将该样本预测为正例；<br>若样本实际是正例，则TP+1，TPR增大，向上一步；<br>若样本实际是负例，则FP+1，FPR增大，向右一步。</li>
-<li>遍历所有样本，将得到的点(TPR, FPR)用折线连接即可</li>
-</ol>
-<p><strong>计算AUC</strong><br>$$AUC = \frac{\sum_{positive}rank_i -\frac{M(1+M)}{2}}{M\times N} $$</p>
-<p>正样本数量为M，负样本数量为N，那么正负两两组合的种类是M×N；<br>将样本的score从大到小排列，score最大的样本的rank记为n(n=M+N)，第二大的样本rank记为n-1，依次类推，score最小的样本rank记为1；<br>将所有正样本的rank相加，再减去正样本两两组合的种类M(1+M)/2，得到的就是所有样本中，有多少对正样本的score大于负样本的score</p>
-<h4 id="2-ROC的优势"><a href="#2-ROC的优势" class="headerlink" title="2. ROC的优势"></a>2. ROC的优势</h4><p>ROC曲线比较稳定。<br>当测试集中的正负样本分布变化时，ROC曲线能够保持不变。<br><img src="/img/roc3.png"></p>
-<h4 id="3-roc-curve"><a href="#3-roc-curve" class="headerlink" title="3. roc_curve"></a>3. roc_curve</h4><p>sklearn.metrics.roc_curve(y_true, y_score, pos_label=None, sample_weight=None, drop_intermediate=True)</p>
-<p>参数</p>
-<ul>
-<li>y_true: 样本真实分类的二值数组</li>
-<li>y_score: 样本的预测得分</li>
-<li>pos_label: 正例标签</li>
-<li>sample_weight: 权重</li>
-<li>drop_intermediate: 是否忽略某些无影响的阈值</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>fpr</li>
-<li>tpr</li>
-<li>thresholds</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y = np.array([<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>])</span><br><span class="line">scores = np.array([<span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.35</span>, <span class="number">0.89</span>])</span><br><span class="line">fpr, tpr, thresholds = metrics.roc_curve(y, scores, pos_label=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">fpr <span class="comment">#array([0, 0.5, 0.5, 1])</span></span><br><span class="line">tpr <span class="comment">#array([0.5, 0.5, 1, 1])</span></span><br><span class="line">thresholds <span class="comment">#array([0.89, 0.4, 0.35, 0.1])</span></span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/05/Python-NumPy-RavelFlatten/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/05/Python-NumPy-RavelFlatten/" itemprop="url">NumPy数组降维</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-05T15:05:08+08:00">
-                2018-04-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  327
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>NumPy中可以用于维度缩减的函数有：</p>
-<ul>
-<li>ravel: 1-D,就地生效</li>
-<li>flatten: 1-D,返回副本</li>
-<li>squeeze: 移除shape为1的维度</li>
-<li>reshape: 指定维度</li>
-</ul>
-<h4 id="1-ravel"><a href="#1-ravel" class="headerlink" title="1. ravel()"></a>1. ravel()</h4><p>numpy.ravel(a, order=’C’)<br>将数组降维，返回一维数组；如果没有必要，不会产生原数据的副本，而是<strong>就地生效</strong><br>相当于rashape(-1, order=order)</p>
-<p>参数</p>
-<ul>
-<li>a：输入array</li>
-<li>order: {‘C’, ‘F’, ‘A’, ‘K’}，默认’C’<ul>
-<li>‘C’: C-style，先处理行</li>
-<li>‘F’: Fortran-style，先处理列</li>
-<li>‘A’: Auto，如果a在内存中是Fortran contiguous则’F’，否则’C’</li>
-<li>‘K’: 按内存顺序</li>
-</ul>
-</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>y：1-D ndarray</li>
-</ul>
-<h4 id="2-flatten"><a href="#2-flatten" class="headerlink" title="2. flatten()"></a>2. flatten()</h4><p>numpy.ndarray.flatten(order=’C’)<br>返回数组降维后的<strong>副本</strong></p>
-<p>参数</p>
-<ul>
-<li>order: {‘C’,’F’,’A’,’K’}</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>y: ndarray</li>
-</ul>
-<h4 id="3-squeeze"><a href="#3-squeeze" class="headerlink" title="3. squeeze()"></a>3. squeeze()</h4><p>numpy.squeeze(a, axis=None)<br>移除 single-dimensional entries，即shape中为1的维度。</p>
-<p>参数</p>
-<ul>
-<li>a: 输入array</li>
-<li>axis: 指定要缩减的轴，若该轴的shape大于1，则报错</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>squeezed: ndarray</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = np.array([[[<span class="number">0</span>],[<span class="number">1</span>],[<span class="number">2</span>]]])</span><br><span class="line">x.shape <span class="comment">#(1,3,1)</span></span><br><span class="line">np.squeeze(x).shape <span class="comment">#(3,)</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">0</span>).shape <span class="comment">#(3,1)</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">1</span>).shape <span class="comment">#报错</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">2</span>).shape <span class="comment">#(1,3)</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="4-reshape"><a href="#4-reshape" class="headerlink" title="4. reshape()"></a>4. reshape()</h4><p>numpy.reshape(a, newshape, order=’C’)<br>为数组指定新的shape</p>
-<p>参数</p>
-<ul>
-<li>a: 输入array</li>
-<li>newshape: int表示该维度长度，-1表示自动推断</li>
-<li>order: {‘C’, ‘F’, ‘A’}</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>reshaped_array: ndarray</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = np.arange(<span class="number">6</span>).reshape(<span class="number">3</span>,<span class="number">2</span>)</span><br><span class="line">np.reshape(a, <span class="number">6</span>)</span><br><span class="line">np.reshape(a, (<span class="number">2</span>,<span class="number">3</span>), order=<span class="string">'F'</span>)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/02/ML-Stacking/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/02/ML-Stacking/" itemprop="url">Stacking实现</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T12:40:37+08:00">
-                2018-04-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  473
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Bagging的基模型结果取简单平均，而Stacking使用了另一个学习器，训练得到基模型预测结果的权重。</p>
-<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
-<li>将训练集分为两份：X_train和X_validation</li>
-<li>使用X_train训练若干基模型</li>
-<li>使用训练好的模型预测X_validation</li>
-<li>将基模型预测结果作为高阶模型的输入特征</li>
-</ol>
-<p>前三步是循环迭代的。如果使用KFolds将数据分为5份，每次使用4份作为X_train，使用1份作为X_validation，那么共需要循环5次。<br>假设每次要训练4种不同的模型，那么循环之后共得到5*4=20个训练好的基模型；<br>同一基模型的预测结果作为高阶模型的一个特征，高阶模型共有4个输入特征。<br><img src="/img/stacking1.jpg"></p>
-<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StackingAveragedModels</span><span class="params">(BaseEstimator, RegressorMixin, TransformerMixin)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, base_models, meta_model, n_folds=<span class="number">5</span>)</span>:</span></span><br><span class="line">        self.base_models = base_models</span><br><span class="line">        self.meta_model = meta_model</span><br><span class="line">        self.n_folds = n_folds</span><br><span class="line">   </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X, y)</span>:</span></span><br><span class="line">	<span class="comment"># n个模型n个列表，列表长度=n_folds</span></span><br><span class="line">        self.base_models_ = [list() <span class="keyword">for</span> x <span class="keyword">in</span> self.base_models]</span><br><span class="line">        self.meta_model_ = clone(self.meta_model)</span><br><span class="line">        kfold = KFold(n_splits=self.n_folds, shuffle=<span class="keyword">True</span>, random_state=<span class="number">156</span>)</span><br><span class="line">       </span><br><span class="line">	<span class="comment"># 训练基模型，共n_models * n_folds个 </span></span><br><span class="line">	<span class="comment"># 基模型预测结果=(m_sample, n_models)</span></span><br><span class="line">        out_of_fold_predictions = np.zeros((X.shape[<span class="number">0</span>], len(self.base_models)))</span><br><span class="line">        <span class="keyword">for</span> i, model <span class="keyword">in</span> enumerate(self.base_models):</span><br><span class="line">            <span class="keyword">for</span> train_index, holdout_index <span class="keyword">in</span> kfold.split(X, y):</span><br><span class="line">                instance = clone(model)</span><br><span class="line">                self.base_models_[i].append(instance)</span><br><span class="line">                instance.fit(X.iloc[train_index], y.iloc[train_index])</span><br><span class="line">                y_pred = instance.predict(X.iloc[holdout_index])</span><br><span class="line">                out_of_fold_predictions[holdout_index, i] = y_pred.ravel()</span><br><span class="line">        </span><br><span class="line">	<span class="comment"># 将基模型预测结果作为高阶学习器的输入特征        </span></span><br><span class="line">        self.meta_model_.fit(out_of_fold_predictions, y)</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line">  </span><br><span class="line">	 </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        <span class="comment"># 首先将n_folds个基模型i的预测结果取平均，作为基模型i的预测结果，即高阶模型的输入特征i</span></span><br><span class="line">	<span class="comment"># 再用训练好的高阶模型将基模型按权重组合，得到最终结果</span></span><br><span class="line">	meta_features = np.column_stack([</span><br><span class="line">            np.column_stack([model.predict(X) <span class="keyword">for</span> model <span class="keyword">in</span> base_models]).mean(axis=<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">for</span> base_models <span class="keyword">in</span> self.base_models_ ])</span><br><span class="line">        <span class="keyword">return</span> self.meta_model_.predict(meta_features)</span><br></pre></td></tr></table></figure>
-<h6 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">stacked_models = StackingAverageModels(base_models = (ENet, Gboost, KRR),</span><br><span class="line">					meta_models = lasso)</span><br><span class="line">stacked_models.fit(train.values, y_train)</span><br><span class="line">stacked_pred = stacked_models.predict(test.values)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/02/Python-sklearn-Scale/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/02/Python-sklearn-Scale/" itemprop="url">数据缩放Scale</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T09:48:45+08:00">
-                2018-04-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  769
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>数据集的标准化(Standardization)对sklearn的大部分机器学习算法来说都是一种常规要求(common requirement)。<br>如果单个特征没有或多或少地接近于标准正态分布N(0,1)的高斯分布，那么它可能并不会在项目中表现出很好的性能。<br>例如，许多学习算法中目标函数的基础都是假设所有特征都是零均值，并且具有同一阶数的方差。<br>如果某个特征的方差比其他特征大几个数量级，那么它就会在算法中占据主导位置，导致学习器不能从其他特征学习。</p>
-<h4 id="0-经验"><a href="#0-经验" class="headerlink" title="0.经验"></a>0.经验</h4><ul>
-<li><p>均值为0的输入/输出数据通常对算法友好；<br>将特征缩放到[0,1]通常是一个槽糕的决定；<br>强迫算法输出为[0,1]也是一个槽糕的决定；</p>
-</li>
-<li><p>如果模型中使用了<strong>距离</strong>，则必须将特征缩放到同样尺度(如RBF)；<br>如果特征是线性组合的，则缩放不是必需的(如MLP)，因为通过改变w和b可以得到同样的输出；<br>但合适的缩放确实可以带来一系列好处：使训练更快、避免saturation等</p>
-</li>
-<li><p>两种最有效的缩放：</p>
-<ul>
-<li>均值0，标准差1: StandardScaler</li>
-<li>[-1, 1]: MaxAbsScaler</li>
-</ul>
-</li>
-</ul>
-<h4 id="1-标准化"><a href="#1-标准化" class="headerlink" title="1. 标准化"></a>1. 标准化</h4><p>目标：缩放到均值0，标准差1<br>实际应用中，我们通常忽略特征分布的形状，直接通过减去均值来使特征去中心化，再通过除以标准差来使特征缩放。</p>
-<ul>
-<li>函数scale(X, axis=0, with_mean=True, with_std=True, copy=True): 快捷缩放</li>
-<li>类StandardScaler(copy=True, with_mean=True, with_std=True): 实现Transformer API，可复用，可集成进Pipeline</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line"></span><br><span class="line"><span class="comment"># Scale</span></span><br><span class="line">X_scaled = preprocessing.scale(X)</span><br><span class="line"><span class="comment"># (1, 2, 0) -&gt; (0, 1.22, -1.22)</span></span><br><span class="line"><span class="comment"># (-1,0, 1) -&gt; (-1.22, 0, 1.22)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># StandardScaler</span></span><br><span class="line">scaler = preprocessing.StandardScaler().fit(X)</span><br><span class="line">scaler.transform(X)</span><br></pre></td></tr></table></figure>
-<h4 id="2-缩放至特定范围"><a href="#2-缩放至特定范围" class="headerlink" title="2. 缩放至特定范围"></a>2. 缩放至特定范围</h4><p>目标：缩放到指定的范围(minmax)，通常是[0,1]；或者将绝对值缩放到指定范围(maxabs)，通常是[-1,1]</p>
-<ul>
-<li>函数minmax_scale(X, feature_range=(0,1), axis=0, copy=Ture)</li>
-<li>函数maxabs_scale(X, axis=0, copy=True)</li>
-<li>类MinMaxScaler(feature_range(0,1), copy=True)</li>
-<li>类MaxAbsScaler(copy=True)：没有破坏稀疏性，0依旧是0</li>
-</ul>
-<p>MinMax缩放公式<br>$$ X_{std} = \frac{X - X_{min}(axis=0)}{X_{max}(axis=0) - X_{min}(axis=0)} $$<br>$$ X_{scaled} = X_{std} * (max - min) + min $$</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># MinMax</span></span><br><span class="line">min_max_scaler = preprocessing.MinMaxScaler()</span><br><span class="line">X_train_minmax = min_max_scaler.fit_transform(X_train)</span><br><span class="line"><span class="comment"># (1, 2, 0) -&gt; (0.5, 1, 0)</span></span><br><span class="line"><span class="comment"># (-1,0, 1) -&gt; (0, 0.5, 1)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># MaxAbs</span></span><br><span class="line">max_abs_scaler = preprocessing.MaxAbsScaler()</span><br><span class="line">X_train_maxabs = max_abs_scaler.fit_transform(X_train)</span><br><span class="line"><span class="comment"># (1, 2, 0) -&gt; (0.5, 1, 0)</span></span><br><span class="line"><span class="comment"># (-1,0, 1) -&gt; (-1, 0, 1)</span></span><br></pre></td></tr></table></figure>
-<h4 id="3-稀疏数据缩放"><a href="#3-稀疏数据缩放" class="headerlink" title="3. 稀疏数据缩放"></a>3. 稀疏数据缩放</h4><p>去中心化将使数据平移，破坏稀疏数据的稀疏结构。<br>推荐的处理方式：</p>
-<ul>
-<li>maxabs_scale, MaxAbsScaler()</li>
-<li>scale, StandardScaler()：将with_centerring设置为False</li>
-</ul>
-<h4 id="4-含异常值的数据缩放"><a href="#4-含异常值的数据缩放" class="headerlink" title="4. 含异常值的数据缩放"></a>4. 含异常值的数据缩放</h4><p>当数据中含有较多异常值时，使用整体的均值和标准差缩放并不是一个好的选择。<br>Robust Scale只使用中间部分数据的均值和方差，可以剔除异常值的影响。</p>
-<ul>
-<li>函数robust_scale(X, axis=0, with_centering=True, with_scaling=True, quantile_range=(25.0, 75.0), copy=True)</li>
-<li>类RobustScaler(with_centering=True, with_scaling=True, quantile_range=(25.0,75.0), copy=True)</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/31/Python-sklearn-GridSearchCV/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/31/Python-sklearn-GridSearchCV/" itemprop="url">GridSearchCV</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-31T11:31:17+08:00">
-                2018-03-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  195
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>class sklearn.model_selection.GridSearchCV(estimator, param_grid, scoring=None, fit_params=None, n_jobs=1, iid=True, refit=True, cv=None, verbose=0, pre_dispatch=’2*n_jobs’, error_score=’raise’, return_train_score=’warn’)<br>对指定参数的穷举搜索。</p>
-<p>参数</p>
-<ul>
-<li>estimator: 需要实现sklearn estimator interface</li>
-<li>param_grid: 要调校的参数名称及可选值</li>
-<li>scoring: 评分策略</li>
-<li>fit_params: 废弃</li>
-<li>n_jobs: 并行任务数</li>
-<li>pre_dispatch: 并行过程中分发的任务数？</li>
-<li>iid: identically distributed</li>
-<li>cv: int, cross-validation generator</li>
-<li>refit: 使用得到的最优参数，重新训练模型</li>
-<li>verbose: 输出信息冗余度</li>
-<li>error_score: 错误处理</li>
-<li>return_train_score: 是否返回训练集得分</li>
-</ul>
-<p>属性</p>
-<ul>
-<li>cv_results_</li>
-<li>best_estimator_</li>
-<li>best_score_</li>
-<li>best_params_</li>
-<li>best_index_</li>
-<li>scoree_</li>
-<li>n_splits_</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>decision_function(X)</li>
-<li>fit(X[,y,groups])</li>
-<li>transform(X)</li>
-<li>inverse_transform(Xt)</li>
-<li>predict(X)</li>
-<li>predict_proba(X)</li>
-<li>predict_log_proba(X)</li>
-<li>score(X[,y])</li>
-<li>get_params([deep])</li>
-<li>set_params(**params)</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line">parameters = &#123;<span class="string">'kernel'</span>:(<span class="string">'linear'</span>,<span class="string">'rbf'</span>), <span class="string">'C'</span>:[<span class="number">1</span>,<span class="number">10</span>]&#125;</span><br><span class="line">clf = GridSearchCV(svc, parameters)</span><br><span class="line">clf.fit(iris.data, iris.target)</span><br><span class="line">sorted(clf.cv_results_.keys())</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3680,7 +3628,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">309</span>
+                  <span class="site-state-item-count">315</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3782,7 +3730,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">117.8k</span>
+    <span title="Site words total count">119.1k</span>
   
 </div>
 
