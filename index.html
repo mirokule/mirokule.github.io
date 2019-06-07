@@ -262,6 +262,293 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2019/06/07/RL-PolicyIteration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/07/RL-PolicyIteration/" itemprop="url">Policy Iteration</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-07T14:31:46+08:00">
+                2019-06-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  444
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>动态规划算法的一种，用于求解有限空间、模型已知的问题。<br>算法基于策略，试图从一个随机策略开始一步步改进，直到策略最优。</p>
+<h4 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h4><p>1.分为两步，将v(s)评估和policy改进拆分；<br>2.需要一个预先指定的策略；<br>3.首先根据当前策略评估v(s)，依据Bellman Expectation Equation:<br>$$ v_{\pi}(s) = \sum_a \pi(a|s) \sum_{s’,r} p(s’,r|s,a) [r + \gamma v_{\pi}(s’)] $$</p>
+<p>不断迭代至收敛。例如状态s共可采取4个动作{$a_1, a_2, a_3, a_4$}：<br>均衡策略$\pi_1$选取每个动作a的概率都是0.25，那么$v_{\pi_1} = 0.25 \sum_{i=1}^{4} q(s, a_i)$;<br>确定策略$\pi_2$只选取动作$a_3$，那么$v_{\pi_2} = q(s,a_3)$;</p>
+<p>4.然后根据评估完成的v(s)改进策略policy，使用贪心法：<br>$$ \pi’(s) = \underset{a}{argmax} \, q_{\pi}(s,a) $$</p>
+<p>5.如果策略未发生改变，算法完成；否则回到步骤3.</p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">policy_evaluation</span><span class="params">(env, policy, gamma=<span class="number">1.0</span>, max_iteration=<span class="number">10000</span>, threshold=<span class="number">1e-10</span>)</span>:</span></span><br><span class="line">    value_table = np.zeros(env.observation_space.n)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(max_iteration):</span><br><span class="line">        updated_value_table = np.copy(value_table)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> state <span class="keyword">in</span> range(env.observation_space.n):</span><br><span class="line">            action = policy[state]</span><br><span class="line">            next_rewards = []</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> trans_prob, next_state, reward, _ <span class="keyword">in</span> env.P[state][action]: </span><br><span class="line">                next_state_reward = trans_prob * (reward + gamma * updated_value_table[next_state])</span><br><span class="line">                next_rewards.append(next_state_reward)</span><br><span class="line">                </span><br><span class="line">            Q_action = sum(next_rewards)</span><br><span class="line">            value_table[state] = Q_action</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> np.sum(np.fabs(updated_value_table - value_table)) &lt;= threshold:</span><br><span class="line">            print(<span class="string">"Policy evaluation converged at iteration %d."</span> %(i+<span class="number">1</span>))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> value_table</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">policy_improvement</span><span class="params">(env, value_table, gamma=<span class="number">1.0</span>)</span>:</span></span><br><span class="line">    policy = np.zeros(env.observation_space.n)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> state <span class="keyword">in</span> range(env.observation_space.n):</span><br><span class="line">        Q_values = np.zeros(env.action_space.n)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> action <span class="keyword">in</span> range(env.action_space.n):</span><br><span class="line">            next_rewards = []</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> trans_prob, next_state, reward, _ <span class="keyword">in</span> env.P[state][action]: </span><br><span class="line">                next_state_reward = trans_prob * (reward + gamma * value_table[next_state])</span><br><span class="line">                next_rewards.append(next_state_reward)</span><br><span class="line">                </span><br><span class="line">            Q_values[action] = sum(next_rewards)</span><br><span class="line">        </span><br><span class="line">        policy[state] = np.argmax(Q_values)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> policy</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">policy_iteration</span><span class="params">(env, max_iteration=<span class="number">10000</span>)</span>:</span></span><br><span class="line">    policy = np.random.randint(<span class="number">0</span>, <span class="number">4</span>, size=env.observation_space.n)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(max_iteration):</span><br><span class="line">        value_table = policy_evaluation(env, policy)</span><br><span class="line">        new_policy = policy_improvement(env, value_table)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> np.all(policy == new_policy):</span><br><span class="line">            print(<span class="string">"Policy iteration converged at iteration %d."</span> %(i+<span class="number">1</span>))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            policy = new_policy</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> policy</span><br><span class="line"></span><br><span class="line">optimal_policy = policy_iteration(env)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2019/06/07/RL-ValueIteration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/07/RL-ValueIteration/" itemprop="url">Value Iteration</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-07T14:30:51+08:00">
+                2019-06-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  339
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>动态规划算法的一种，用于求解有限空间、模型p(s’,r|s,a)已知的问题。<br>算法基于值函数，利用了动态规划问题的特点，即全局最优解在任何子问题上也是最优解。</p>
+<h4 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h4><p>1.没有预先指定的策略policy；<br>2.遍历计算所有的q(s,a)，共 count(state) x count(action) 个；<br>3.每轮迭代中，v(s)和q(s,a)都会更新；和policy iteration相比，不需要等待v(s)收敛；<br>4.q(s,a)计算公式：<br>$$ q_{\pi}(s,a) = \sum_{s’,r} p(s’,r|s,a) [r+\gamma v_{\pi}(s’)] $$</p>
+<p>5.v(s)使用Bellman Optimality Equation取最大值，而不是Bellman Expectation：<br>$$ v_{k+1}(s) = \underset{a}{max} \sum_{s’,r}p(s’,r|s,a)[r+\gamma v_{k}(s’)] $$</p>
+<p>这一步对action的选择，实际上生成了策略，并给出了新策略v(s)的评估。</p>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">value_iteration</span><span class="params">(env, gamma=<span class="number">1.0</span>, max_iterations=<span class="number">10000</span>, threshold=<span class="number">1e-10</span>)</span>:</span></span><br><span class="line">    value_table = np.zeros(env.observation_space.n)</span><br><span class="line">    policy = np.zeros(env.observation_space.n)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(max_iterations):</span><br><span class="line">        updated_value_table = np.copy(value_table)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> state <span class="keyword">in</span> range(env.observation_space.n):</span><br><span class="line">            Q_values = np.zeros(env.action_space.n)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> action <span class="keyword">in</span> range(env.action_space.n):    </span><br><span class="line">                next_rewards = []</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">for</span> trans_prob, next_state, reward, _ <span class="keyword">in</span> env.P[state][action]: <span class="comment"># env.P[s][a] -&gt; list</span></span><br><span class="line">                    next_state_reward = trans_prob * (reward + gamma * updated_value_table[next_state])</span><br><span class="line">                    next_rewards.append(next_state_reward)</span><br><span class="line">                    </span><br><span class="line">                Q_values[action] = sum(next_rewards)</span><br><span class="line"></span><br><span class="line">            value_table[state] = np.max(Q_values)</span><br><span class="line">            policy[state] = np.argmax(Q_values)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">if</span> np.sum(np.fabs(updated_value_table - value_table)) &lt;= threshold:</span><br><span class="line">            print(<span class="string">"Value iteration converged at iteration %d."</span> %(i+<span class="number">1</span>))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> policy, value_table</span><br><span class="line"></span><br><span class="line">optimal_policy, optimal_values = value_iteration(env=env, gamma=<span class="number">1.0</span>)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2019/04/27/TF-Reduce/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -611,7 +898,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  128
+                  136
                 </span>
               
 
@@ -639,7 +926,7 @@
         
           
             <p>Tensoflow实例：Logistic Regression</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">learning_rate = <span class="number">0.01</span></span><br><span class="line">training_epochs = <span class="number">25</span></span><br><span class="line">batch_size = <span class="number">100</span></span><br><span class="line">display_step = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>])</span><br><span class="line">y = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</span><br><span class="line"></span><br><span class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>,<span class="number">10</span>]))</span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br><span class="line"></span><br><span class="line">pred = tf.nn.softmax(tf.matmul(x, W) + b)</span><br><span class="line">cost = tf.reduce_mean(-tf.reduce_sum(y*tf.log(pred), reducetion_indices=<span class="number">1</span>))</span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">	sess.run(tf.global_variables_initializer()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> epoch <span class="keyword">in</span> range(training_epochs):</span><br><span class="line">		avg_cost = <span class="number">0</span></span><br><span class="line">		total_batch = int(mnist.train.num_examples/batch_size)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> i <span class="keyword">in</span> range(total_batch):</span><br><span class="line">			batch_xs, batch_ys = mnist.train.next_batch(batch_size)</span><br><span class="line">			_, c = sess.run([optimizer, cost], feed_dict=&#123;x: batch_xs, y: batch_ys&#125;)</span><br><span class="line">			avg_cost += c / total_batch</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (epoch+<span class="number">1</span>) % display_step == <span class="number">0</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"cost="</span>, <span class="string">"&#123;:.9f&#125;"</span>.format(avg_cost)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">print</span> <span class="string">"optimization finished!"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">learning_rate = <span class="number">0.01</span></span><br><span class="line">training_epochs = <span class="number">25</span></span><br><span class="line">batch_size = <span class="number">100</span></span><br><span class="line">display_step = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>])</span><br><span class="line">y = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</span><br><span class="line"></span><br><span class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>,<span class="number">10</span>]))</span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br><span class="line"></span><br><span class="line">pred = tf.nn.sigmoid(tf.matmul(x, W) + b)</span><br><span class="line">cost = tf.reduce_mean(-tf.reduce_sum(y*tf.log(pred), reducetion_indices=<span class="number">1</span>))</span><br><span class="line"><span class="comment"># cost = tf.nn.sigmoid_cross_entropy_with_logits(logits=pred, labels=y)</span></span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">	sess.run(tf.global_variables_initializer()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> epoch <span class="keyword">in</span> range(training_epochs):</span><br><span class="line">		avg_cost = <span class="number">0</span></span><br><span class="line">		total_batch = int(mnist.train.num_examples/batch_size)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> i <span class="keyword">in</span> range(total_batch):</span><br><span class="line">			batch_xs, batch_ys = mnist.train.next_batch(batch_size)</span><br><span class="line">			_, c = sess.run([optimizer, cost], feed_dict=&#123;x: batch_xs, y: batch_ys&#125;)</span><br><span class="line">			avg_cost += c / total_batch</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (epoch+<span class="number">1</span>) % display_step == <span class="number">0</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"cost="</span>, <span class="string">"&#123;:.9f&#125;"</span>.format(avg_cost)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">print</span> <span class="string">"optimization finished!"</span></span><br></pre></td></tr></table></figure>
 
           
         
@@ -2983,357 +3270,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/16/RL-Temporal-Difference/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/16/RL-Temporal-Difference/" itemprop="url">无模型的时序差分方法TD(0)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-16T15:02:58+08:00">
-                2018-11-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1,082
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="1-TD-Prediction"><a href="#1-TD-Prediction" class="headerlink" title="1.TD Prediction"></a>1.TD Prediction</h3><p>时序差分学习(Temporal-Diffrernce Learning)是MC和DP的结合，不要求完整的episode(无需终止状态)。<br>像MC一样Sample，像DP一样bootstrapping. Bootstrapping自举，是指当前状态的值函数计算用到了后继状态的值函数。<br>本文先讨论one-step TD,即TD(0).</p>
-<h4 id="1-1-算法"><a href="#1-1-算法" class="headerlink" title="1.1 算法"></a>1.1 算法</h4><p>输入要评估的策略$\pi$<br>随机初始化V(s)<br>Repeat(对每个episode):<br>&emsp; 初始化S<br>&emsp; Repeat(对episode的每一步):<br>&emsp;&emsp; A ← 策略$\pi$为状态S指定的动作<br>&emsp;&emsp; 执行动作A，观察R,S’<br>&emsp;&emsp; V(s) ← V(s) + $\alpha$[R+$\gamma$V(S’)-V(S)]<br>&emsp;&emsp; S ← S’<br>&emsp; 直到S为终止状态</p>
-<h4 id="1-2-比较"><a href="#1-2-比较" class="headerlink" title="1.2 比较"></a>1.2 比较</h4><p>MC：根据每次的$G_t$来更新$V(S_t)$<br>$$ V(S_t) \leftarrow V(S_t) + \alpha(G_t - V(S_t))$$</p>
-<p>TD(0): 用估计值$R_{t+1} + \gamma V(S_{t+1})$代替$G_t$<br>$$ V(S_t) \leftarrow V(S_t) + \alpha(R_{t+1} + \gamma V(S_{t+1}) - V(S_t)) $$</p>
-<p>TD和MC同样都是通过采样，多次实验(多个episode)来学习。<br>不同的是，TD利用了马尔科夫性质，总是收敛于最可能的马尔科夫解，因而在马尔科夫过程中表现更好。<br>MC没有利用马尔科夫性质，在非马尔科夫过程中表现更好。</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left"></th>
-<th style="text-align:center">Bootstrapping</th>
-<th style="text-align:center">No Bootstrapping</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Sample</td>
-<td style="text-align:center">Temporal Difference</td>
-<td style="text-align:center">Monte Carlo</td>
-</tr>
-<tr>
-<td style="text-align:left">No Sample</td>
-<td style="text-align:center">Dynamic Programming</td>
-<td style="text-align:center">Exhausitive Search</td>
-</tr>
-</tbody>
-</table>
-<h4 id="1-3-误差分析"><a href="#1-3-误差分析" class="headerlink" title="1.3 误差分析"></a>1.3 误差分析</h4><h6 id="Bias"><a href="#Bias" class="headerlink" title="Bias"></a>Bias</h6><p>Return $G_t = R_{t+1}+\gamma R_{t+2}+\cdots +\gamma^{T-1}R_T$ 无偏，因为期望值就是值函数的定义<br>True TD target $R_{t+1} + \gamma v_{\pi}(S_{t+1})$ 无偏，因为$v_{\pi}(S_{t+1})$是真实值，可以推导得到<br>TD target $R_{t+1} + \gamma V(S_{t+1})$ 有偏，因为$V(S_{t+1})$也是估计值</p>
-<h6 id="Variance"><a href="#Variance" class="headerlink" title="Variance"></a>Variance</h6><p>Return $G_t$要等到最终状态出现，经过很多步，因而随机性大，方差很大。<br>TD target的方差比Return小得多，因为只有1步估计，引入的噪声少。</p>
-<p>所以MC高方差，无偏差；TD低方差，有偏差。</p>
-<h3 id="2-TD-Control"><a href="#2-TD-Control" class="headerlink" title="2.TD Control"></a>2.TD Control</h3><h4 id="2-1-On-Policy-Sarsa"><a href="#2-1-On-Policy-Sarsa" class="headerlink" title="2.1 On-Policy: Sarsa"></a>2.1 On-Policy: Sarsa</h4><p>遵循GPI框架，仍然分为两步：</p>
-<ul>
-<li>策略评估：使用动作值函数Q(s,a),因从(S,A)到(S’,A’)而得名</li>
-<li>策略改进：仍然是$\epsilon -greedy$</li>
-</ul>
-<h6 id="Q-s-a-评估算法"><a href="#Q-s-a-评估算法" class="headerlink" title="Q(s,a)评估算法"></a>Q(s,a)评估算法</h6><p>随机初始化Q(s,a)<br>Repeat(对每个episode):<br>&emsp; 初始化S<br>&emsp; 从当前策略($\epsilon -greedy$)中选择S对应的动作A<br>&emsp; Repeat(对episode的每一步):<br>&emsp;&emsp; 执行动作A，观察R,S’<br>&emsp;&emsp; 从<strong>当前策略</strong>中选择S’对应的动作A’<br>&emsp;&emsp; Q(S,A) ← Q(S,A) + $\alpha$[R+$\gamma$Q(S’,A’)-Q(S,A)]<br>&emsp;&emsp; S ← S’; A ← A’;<br>&emsp; 直到S为终止状态</p>
-<h6 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gym</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">"Taxi-v2"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化</span></span><br><span class="line">alpha = <span class="number">0.85</span></span><br><span class="line">gamma = <span class="number">0.90</span></span><br><span class="line">epsilon = <span class="number">0.8</span></span><br><span class="line"></span><br><span class="line">Q=&#123;&#125;</span><br><span class="line"><span class="keyword">for</span> s <span class="keyword">in</span> range(env.observation_space.n):</span><br><span class="line">    <span class="keyword">for</span> a <span class="keyword">in</span> range(env.action_space.n):</span><br><span class="line">        Q[(s,a)] = <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># epsilon-greedy策略</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">epsilon_greedy</span><span class="params">(state, epsilon)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> random.uniform(<span class="number">0</span>,<span class="number">1</span>) &lt; epsilon:</span><br><span class="line">        <span class="keyword">return</span> env.action_space.sample()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> max(list(range(env.action_space.n)), key = <span class="keyword">lambda</span> x: q[(state, x)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 主循环</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4000</span>):</span><br><span class="line">    r = <span class="number">0</span></span><br><span class="line">    state = env.reset()</span><br><span class="line">    </span><br><span class="line">    action = epsilon_greedy(state, epsilon)</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        nextstate, reward, done, _ = env.step(action)</span><br><span class="line">        nextaction = epsilon_greedy(nextstate, epsilon)</span><br><span class="line">        Q[(state, action)] += alpha * (reward + gamma * Q[(nextstate, nextaction)] - Q[(state, action)])</span><br><span class="line">        </span><br><span class="line">        action = nextaction</span><br><span class="line">        state = nextstate</span><br><span class="line">        r += reward</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> done:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">            </span><br><span class="line">env.close()</span><br></pre></td></tr></table></figure>
-<h4 id="2-2-Off-Policy-Q-learning"><a href="#2-2-Off-Policy-Q-learning" class="headerlink" title="2.2 Off-Policy: Q-learning"></a>2.2 Off-Policy: Q-learning</h4><ul>
-<li>策略评估：行动策略采用$\epsilon-greedy$</li>
-<li>策略改进：目标策略采用贪心策略，不使用$\epsilon-greedy$(和SARSA不同)，不需要Importance Sampling(和MC不同)</li>
-</ul>
-<p>类比DP中的Value Iteration，在更新时无视原策略，直接选用最大值：<br>$$ Q(S_t,A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma\,\underset{a}{max}Q(S_{t+1},a) - Q(S_t, A_t)] $$</p>
-<p>注意$\underset{a}{max}Q(S_{t+1}, a)$是下一个状态的Q_table里Q值最大的那个动作。</p>
-<h6 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gym</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">"Taxi-v2"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化</span></span><br><span class="line">alpha = <span class="number">0.4</span></span><br><span class="line">gamma = <span class="number">0.999</span></span><br><span class="line">epsilon = <span class="number">0.017</span></span><br><span class="line"></span><br><span class="line">q = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> s <span class="keyword">in</span> range(env.observation_space.n):</span><br><span class="line">    <span class="keyword">for</span> a <span class="keyword">in</span> range(env.action_space.n):</span><br><span class="line">        q[(s,a)]=<span class="number">0.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 目标策略</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update_q_table</span><span class="params">(pre_state, action, reward, nextstate, alpha, gamma)</span>:</span></span><br><span class="line">    qa = max([ q[(nextstate, a)] <span class="keyword">for</span> a <span class="keyword">in</span> range(env.action_space.n) ])</span><br><span class="line">    q[(prev_state, action)] += alpha * (reward + gamma * qa - q[(prev_state, action)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 行动策略</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">epsilon_greedy_policy</span><span class="params">(state, epsilon)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> random.uniform(<span class="number">0</span>,<span class="number">1</span>) &lt; epsilon:</span><br><span class="line">        <span class="keyword">return</span> env.action_space.sample()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> max(list(range(env.action_space.n)), key = <span class="keyword">lambda</span> x: q[(state, x)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 主循环</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8000</span>): <span class="comment">#episode</span></span><br><span class="line">    r = <span class="number">0</span></span><br><span class="line">    prev_state = env.reset()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        action = epsilon_greedy_policy(prev_state, epsilon)</span><br><span class="line">        nextstate, reward, done, _ = env.step(action)    </span><br><span class="line">        update_q_table(prev_state, action, reward, nextstate, alpha, gamma)</span><br><span class="line">        </span><br><span class="line">        prev_state = nextstate</span><br><span class="line">        r += reward</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> done:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">            </span><br><span class="line">    print(<span class="string">"total reward:"</span>, r)</span><br><span class="line"></span><br><span class="line">env.close()</span><br></pre></td></tr></table></figure>
-<h4 id="2-3-比较"><a href="#2-3-比较" class="headerlink" title="2.3 比较"></a>2.3 比较</h4><p>SARSA和Q-Learning的区别在于更新$Q(S_t, A_t)$时对$Q(S_{t+1},a)$的选择：</p>
-<ul>
-<li>SARSA：仍然是$\epsilon-greedy$</li>
-<li>Q-Learning：最大值$\underset{a}{max}Q(S_{t+1},a)$</li>
-</ul>
-<p>两种方法在采取行动时的策略相同，都是$\epsilon-greedy$.<br><img src="/img/SARSA-Q.png"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/16/RL-MonteCarlo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/16/RL-MonteCarlo/" itemprop="url">无模型的蒙特卡罗方法MC</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-16T14:10:59+08:00">
-                2018-11-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1,009
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>有模型的策略迭代和值迭代方法都可以用广义策略迭代方法(Generalized Policy Iteration, GPI)来描述：首先对当前策略评估，然后利用值函数改进当前策略。<br>但在无模型的强化学习过程中，转移概率矩阵P未知，因而不能使用Bellman方程，必须使用其他方法来做策略评估。<br>可用的定义式：<br>$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid S_t=s] $$<br>$$ q_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid S_t=s, A_t=a] $$</p>
-<p>可用的关系式：<br>$$ v_{\pi}(s) = \sum_{a\in A} \pi(a\mid s) q_{\pi}(s,a) $$</p>
-<h3 id="1-Monte-Carlo-Prediction"><a href="#1-Monte-Carlo-Prediction" class="headerlink" title="1.Monte-Carlo Prediction"></a>1.Monte-Carlo Prediction</h3><p>蒙特卡罗方法直接从经验片段中学习，通过多次实验取平均值，作为回报的期望值，即$v_{\pi}(s)$.<br>只对片段化的MDP有效，即必须有终止状态。<br>计算平均值的方法有两种：</p>
-<ul>
-<li>First-Visit: 只统计每个episode中，首次访问该状态的回报</li>
-<li>Every-Visit: 每次访问该状态的回报。</li>
-</ul>
-<h6 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">计数 N(s)← N(s) + 1</span><br><span class="line">回报 S(s)← S(s) + Gt</span><br><span class="line">均值 V(s) = S(s) / N(s)</span><br></pre></td></tr></table></figure>
-<h3 id="2-Monte-Carlo-Control"><a href="#2-Monte-Carlo-Control" class="headerlink" title="2.Monte-Carlo Control"></a>2.Monte-Carlo Control</h3><p>根据策略的数量，可以分为两种：</p>
-<ul>
-<li>On-policy: 采样和改进的是同一种策略，又称同策略；因为要兼顾探索，故得到的是最优策略的近似解</li>
-<li>Off-policy: 采样和改进的是不同的策略，又称异策略</li>
-</ul>
-<h4 id="2-1-On-policy-Control"><a href="#2-1-On-policy-Control" class="headerlink" title="2.1 On-policy Control"></a>2.1 On-policy Control</h4><p>在策略改进中使用评估算法会有2个问题：</p>
-<ul>
-<li>仅有估计的$v_{\pi}(s)$不足以选出最优策略$q_*$：用实验直接估计q(s,a)</li>
-<li>不能保证动作空间A里的每个动作a都被取到：初始状态选用不同的(s,a)(Exploring Starts, 不够通用)；以一定概率选择其他的动作</li>
-</ul>
-<h6 id="2-1-1-Monte-Carlo-ES-Exploring-Starts"><a href="#2-1-1-Monte-Carlo-ES-Exploring-Starts" class="headerlink" title="2.1.1 Monte Carlo ES(Exploring Starts)"></a>2.1.1 Monte Carlo ES(Exploring Starts)</h6><p>(1)随机选取$S_0, A_0$作为初始状态，需保证S、A空间中的每一对都有可能被选到<br>(2)遵循策略$\pi$，产生一个经验片段episode<br>(3)对片段中的每一对(s,a):<br>&emsp;&emsp; G ← (s,a)第一次出现后的回报<br>&emsp;&emsp; Returns(s,a) ← Returns(s,a) + G<br>&emsp;$emsp; Q(s,a) ← Returns(s,a)取平均值<br>(4)对片段中的每个状态s:<br>&emsp;&emsp; $\pi(s) \leftarrow argmax_a\, Q(s,a)$</p>
-<p>例如原策略是(18,hit)(19,hit)(20,stick)，通过设定初始值，实验中会出现(18,stick)(19,stick)(20,hit)这些本来不会探索到的(s,a)策略。</p>
-<h6 id="2-1-2-epsilon-greedy-policy"><a href="#2-1-2-epsilon-greedy-policy" class="headerlink" title="2.1.2 $\epsilon-greedy policy$"></a>2.1.2 $\epsilon-greedy policy$</h6><p>在初始状态中穷尽(s,a)往往是困难的，因而ES方法的应用范围有限。<br>另一种方法是在策略改进时，以概率$\epsilon$随机选取一个动作，以概率$1-\epsilon$选择贪心动作。<br>如果动作空间共有m个动作，那么策略为：<br>(1)遵循策略$\pi$产生片段episode<br>(2)对片段中的每一对(s,a):<br>&emsp;&emsp; G ← (s,a)第一次出现后的回报<br>&emsp;&emsp; Returns(s,a) ← Returns(s,a) + G<br>&emsp;&emsp; Q(s,a) ← Returns(s,a)取平均值<br>(3)对片段中的每个状态s:<br>$$ \pi (a|s) =<br>\begin{cases}<br>&amp;\epsilon / m + 1 - \epsilon \;\;\; if\, a^* = argmax\,Q(s,a) \\<br>&amp;\epsilon / m  \;\;\; otherwise<br>\end{cases} $$ </p>
-<p>评估和改进的都是$\epsilon$-soft策略。<br>所谓soft策略是指，对任意状态s和动作a，有$\pi(a|s) &gt; 0$ </p>
-<h4 id="2-2-Off-Policy"><a href="#2-2-Off-Policy" class="headerlink" title="2.2 Off-Policy"></a>2.2 Off-Policy</h4><p>On-policy并没有得到最优策略$\pi_*$。因为要兼顾exploration，得到的实际上是近似最优策略。<br>Off-Policy使用两个策略，用于探索、产生数据的称作behavior policy，学习改进的目标称作target policy.</p>
-<h6 id="2-2-1-Importance-Sampling"><a href="#2-2-1-Importance-Sampling" class="headerlink" title="2.2.1 Importance Sampling"></a>2.2.1 Importance Sampling</h6><p>用一种简单分布(采样概率分布)来估计另一种复杂分布(原概率分布)的积分值。采样概率分布与原概率分布越接近，方差越小。<br><img src="/img/ImportanceSampling.png"></p>
-<p>目标策略$\pi$为要估计的原概率分布，行动策略b作为采样概率分布。<br>重要性权重为：<br>$$ \rho_t^T = \prod_{k=t}^{T-1} \frac{\pi(A_k | S_k)}{\mu(A_k | S_k)} $$</p>
-<p>对MC来说，重要性采样的方差太大。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3388,7 +3324,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">315</span>
+                  <span class="site-state-item-count">317</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3490,7 +3426,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">119.1k</span>
+    <span title="Site words total count">119.9k</span>
   
 </div>
 

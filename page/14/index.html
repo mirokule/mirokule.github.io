@@ -262,6 +262,362 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/21/ML-Methods/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/21/ML-Methods/" itemprop="url">机器学习方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-21T16:55:31+08:00">
+                2016-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  408
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Supervised-Learning"><a href="#Supervised-Learning" class="headerlink" title="Supervised Learning"></a>Supervised Learning</h2><h4 id="Linear"><a href="#Linear" class="headerlink" title="Linear"></a>Linear</h4><ul>
+<li>Pros: Easy to interpret results, computationally inexpensive</li>
+<li>Cons: Poorly models nonlinear data</li>
+<li>Works with: Numeric values, Nominal values</li>
+</ul>
+<h4 id="k-Nearest-Neighbors"><a href="#k-Nearest-Neighbors" class="headerlink" title="k-Nearest Neighbors"></a>k-Nearest Neighbors</h4><ul>
+<li>Pros: High accuracy, insensitive to outliers, no assumptions about data(精度高，对异常值不敏感，无假设)</li>
+<li>Cons: Computationally expensive, requires a lot of memory(计算消耗大)</li>
+<li>Works with: Numeric values, nominal values</li>
+</ul>
+<h4 id="Decision-Trees"><a href="#Decision-Trees" class="headerlink" title="Decision Trees"></a>Decision Trees</h4><ul>
+<li>Pros: Computationally cheap to use, easy for humans to understand learned results, missing values OK, can deal with irrelevant features</li>
+<li>Cons: Prone to overfitting(容易过拟合)</li>
+<li>Works with: Numeric values, nominal values</li>
+</ul>
+<h4 id="Naive-Bayes"><a href="#Naive-Bayes" class="headerlink" title="Naive Bayes"></a>Naive Bayes</h4><ul>
+<li>Pros: Works with a small amount of data, handles multiple classes</li>
+<li>Cons: Sensitive to how the input data is prepared</li>
+<li>Works with: Nominal values</li>
+</ul>
+<h4 id="Logistic-Regression"><a href="#Logistic-Regression" class="headerlink" title="Logistic Regression"></a>Logistic Regression</h4><ul>
+<li>Pros: Computationally inexpensive, easy to implement, knowledge representation easy to interpret(计算代价不高，易于实现和解释)</li>
+<li>Cons: Prone to underfitting, may have low accuracy(容易欠拟合，不能保证精度)</li>
+<li>Works with: Numeric values, nomial values</li>
+</ul>
+<p>分类时，多重线性回归：z = w0x0 + w1x1 + w1x2 + … + wnxn，不能保证z ~ [0,1]。<br>故使用 f(z) = 1 / (1 + e^(-z)) ~ (0, 1) 映射至(0,1)<br>if f(z) &gt; 0.5, then -&gt; 1; else -&gt; 0<br>只能分为2类，描述事件发生或不发生。</p>
+<p>How to get w?<br>极大似然估计：选择w，使得L(w|x) = P(X=x)<br>求导数，解方程，使用<strong>Gradient Ascent</strong>(梯度上升)或者<strong>Gradient Descent</strong>(梯度下降)</p>
+<pre><code>Start with all weights set to 1
+Repeat R number of times:
+    Caculate the gradient of the entire dataset
+    Update the weights vector by alpha*gradient
+    Return the weights vector
+</code></pre><h4 id="Support-Vector-Machines"><a href="#Support-Vector-Machines" class="headerlink" title="Support Vector Machines"></a>Support Vector Machines</h4><ul>
+<li>Pros: Low generalization error, computationally inexpensive, easy to interpret results</li>
+<li>Cons: Sensitivie to tuning parameters and kernel choice, natively only handles binary classification</li>
+<li>Works with: Numeric values, nominal values</li>
+</ul>
+<p>The points closest to the separating hyperplane are known as <strong>support vectors</strong>.</p>
+<h4 id="AdaBoost"><a href="#AdaBoost" class="headerlink" title="AdaBoost"></a>AdaBoost</h4><ul>
+<li>Pros: Low generalization error, easy to code, works with most classifiers, no parameters to adjust</li>
+<li>Cons: Sensitive to outliers</li>
+<li>Works with: Numeric values, nominal values</li>
+</ul>
+<h2 id="Unsupervised-Learning"><a href="#Unsupervised-Learning" class="headerlink" title="Unsupervised Learning"></a>Unsupervised Learning</h2><h4 id="k-Means"><a href="#k-Means" class="headerlink" title="k-Means"></a>k-Means</h4><ul>
+<li>Pros: Easy to implement</li>
+<li>Cons: Can converge at local minima, slow on very large datasets</li>
+<li>Works with: Numeric values</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/21/ML-Tips/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/21/ML-Tips/" itemprop="url">机器学习Tips</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-21T14:29:37+08:00">
+                2016-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  395
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="问题分类"><a href="#问题分类" class="headerlink" title="问题分类"></a>问题分类</h4><ul>
+<li>Supervised Learning: Approximation<ul>
+<li>Classification: y ~ {0,1}</li>
+<li>Regression: y ~ [0,1] ~ R</li>
+</ul>
+</li>
+<li>Unsupervised Learning: Description</li>
+<li>Reinforcement Learning</li>
+</ul>
+<h4 id="数据分类"><a href="#数据分类" class="headerlink" title="数据分类"></a>数据分类</h4><p>原始数据可能包含多种不同的类别，每个类别的数据特征不同，比如宝可梦种类、交易数据的个人/商家等。<br>建模前应辨别是否需要将数据分离，针对不同特点的数据分别建模。</p>
+<h4 id="一般步骤"><a href="#一般步骤" class="headerlink" title="一般步骤"></a>一般步骤</h4><ol>
+<li>快速建模，容忍不精确</li>
+<li>画出学习曲线，判断overfitting还是underfitting，是否需要更多的样本量/特征</li>
+<li>引入的特征一般最高到二次，即$x_i^2$；因为我们默认对现实中的问题，平滑的曲线可能更正确(三次以上会有波动)</li>
+<li>误差分析，从错误样本中找出改进方向</li>
+</ol>
+<h4 id="评估"><a href="#评估" class="headerlink" title="评估"></a>评估</h4><ul>
+<li>Precision(准确率，查准率) = $\frac{TP}{TP + FP} = \frac{TP}{预测真}$ 所有预测为真的结果里，有多少是正确的</li>
+<li>Recall(召回率，查全率) = $\frac{TP}{TP + FN} = \frac{TP}{实际真}$ 所有实际为真的样本里，有多少被预测了出来</li>
+<li>F1 Score = $\frac{2PR}{P+R}$ 权衡precision和recall</li>
+</ul>
+<h4 id="Induction-Deduction-Abduction"><a href="#Induction-Deduction-Abduction" class="headerlink" title="Induction, Deduction, Abduction"></a>Induction, Deduction, Abduction</h4><p><strong>Induction</strong> 归纳<br>    Cause -&gt; (Rule) -&gt; Effect, <strong>not</strong> always true</p>
+<p><strong>Deduction</strong>演绎<br>    Cause -&gt; Rule -&gt; (Effect), always true</p>
+<p><strong>Abduction</strong>溯因<br>    (Cause) -&gt; Rule -&gt; Effect, <strong>not</strong> always true</p>
+<p>With effect data, we use <strong>abduction</strong> to find its causes, then try to get a rule by <strong>induction</strong>, and finally deal with new data with <strong>deduction</strong>.</p>
+<h4 id="逻辑"><a href="#逻辑" class="headerlink" title="逻辑"></a>逻辑</h4><ul>
+<li>与(AND):$p\wedge q$，两个都为真{2}</li>
+<li>或(OR):$p\vee q$，至少一个为真{1,2}</li>
+<li>异或(XOR):$p\bigoplus q$，只有一个为真{1}</li>
+<li>或非(NOR = NOT + OR)，两个都为假{0}</li>
+<li>与非(NAND= NOT + AND)，至少一个假{0,1}</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/19/CMMotionManager/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2932,321 +3288,6 @@ scnScene.rootNode.addChildNode(cameraNode)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/02/CABasicAnimation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/11/02/CABasicAnimation/" itemprop="url">CABasicAnimation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-02T09:04:30+08:00">
-                2015-11-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  73
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>CABasicAnimatioin inherts CAAnimation and CAPropertyAnimation.</p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> fly = <span class="type">CABasicAnimation</span>(keyPath: <span class="string">"position.y"</span>)</span><br><span class="line">fly.fromValue = -view.bounds.size.height/<span class="number">2</span></span><br><span class="line">fly.toValue = -view.bounds.size.height/<span class="number">2</span></span><br><span class="line">fly.duration = <span class="number">0.5</span></span><br><span class="line">fly.beginTime = <span class="type">CACurrentMediaTime</span>() + <span class="number">0.3</span></span><br><span class="line">fly.fillMode = kCAFillModeBoth</span><br><span class="line">fly.removeOnCompletion = <span class="literal">false</span></span><br><span class="line">layer.addAnimation(fly, forKey: <span class="string">"FLY"</span>)</span><br><span class="line"></span><br><span class="line">	layer.removeAnimationForKey(<span class="string">"FLY"</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="Property"><a href="#Property" class="headerlink" title="Property"></a>Property</h4><ul>
-<li><strong>fromValue</strong></li>
-<li><strong>toValue</strong></li>
-<li><strong>byValue</strong></li>
-</ul>
-<p>The animation uses a <strong>presentation layer</strong>. The presentation layer is removed once the animation completes and the original layer shows again.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/01/CATransaction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/11/01/CATransaction/" itemprop="url">CATransaction</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-01T10:53:50+08:00">
-                2015-11-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  102
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>CATransaction is the Core Animation mechanism for batching multiple layer-tree operations into atomic updates to the render tree.</p>
-<ul>
-<li><strong>Implicit</strong>: any modification to CALayer without active transactions, automaticlly comitted</li>
-<li><strong>Explicit</strong>: active transactions, need <strong>begin()</strong> and <strong>commit()</strong></li>
-</ul>
-<h4 id="Creatint-and-Committing"><a href="#Creatint-and-Committing" class="headerlink" title="Creatint and Committing"></a>Creatint and Committing</h4><ul>
-<li><strong>begin</strong>: begin a new transaction for the current thread</li>
-<li><strong>commit</strong>: commit all changes made during the current transaction</li>
-<li><strong>flush</strong>: flush any extant <strong>implict</strong> transaction, called automaticlly at the end of current runloop</li>
-</ul>
-<h4 id="Disable-Animation"><a href="#Disable-Animation" class="headerlink" title="Disable Animation"></a>Disable Animation</h4><ul>
-<li><strong>disableActions</strong>: whether actions are suppressed</li>
-<li><strong>setDisableActions</strong></li>
-</ul>
-<h4 id="Duration-and-Timing"><a href="#Duration-and-Timing" class="headerlink" title="Duration and Timing"></a>Duration and Timing</h4><ul>
-<li><strong>animationDuration</strong></li>
-<li><strong>setAnimationDuration</strong></li>
-<li><strong>animationTimingFunction</strong>: returns CAMediaTimingFunction</li>
-<li><strong>setAnimationTimingFunction</strong></li>
-</ul>
-<h4 id="Lock"><a href="#Lock" class="headerlink" title="Lock"></a>Lock</h4><ul>
-<li><strong>lock</strong>: prevent modification from other threads</li>
-<li><strong>unlock</strong></li>
-</ul>
-<h4 id="CAMediaTimingFunction"><a href="#CAMediaTimingFunction" class="headerlink" title="CAMediaTimingFunction"></a>CAMediaTimingFunction</h4><ul>
-<li><strong>kCAMediaTimingFunctionLinear</strong></li>
-<li><strong>kCAMediaTimingFunctionEaseIn</strong></li>
-<li><strong>kCAMediaTimingFunctionEaseOut</strong></li>
-<li><strong>kCAMediaTimingFunctionEaseInEaseOut</strong></li>
-<li><strong>kCAMediaTimingFunctionDefault</strong></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3301,7 +3342,7 @@ scnScene.rootNode.addChildNode(cameraNode)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">315</span>
+                  <span class="site-state-item-count">317</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3403,7 +3444,7 @@ scnScene.rootNode.addChildNode(cameraNode)
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">119.1k</span>
+    <span title="Site words total count">119.9k</span>
   
 </div>
 

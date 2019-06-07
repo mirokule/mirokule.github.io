@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Gate of Babylon">
 <meta property="og:description" content="Tensoflow实例：Logistic Regression learning_rate = 0.01training_epochs = 25batch_size = 100display_step = 1x = tf.placeholder(tf.float32, [None, 784])y = tf.placeholder(tf.float32, [None, 10])W = tf.Vari">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-27T04:13:22.167Z">
+<meta property="og:updated_time" content="2019-04-28T02:28:27.239Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Logistic Regression by TensorFlow">
 <meta name="twitter:description" content="Tensoflow实例：Logistic Regression learning_rate = 0.01training_epochs = 25batch_size = 100display_step = 1x = tf.placeholder(tf.float32, [None, 784])y = tf.placeholder(tf.float32, [None, 10])W = tf.Vari">
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  128
+                  136
                 </span>
               
 
@@ -350,7 +350,7 @@
 
       
         <p>Tensoflow实例：Logistic Regression</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">learning_rate = <span class="number">0.01</span></span><br><span class="line">training_epochs = <span class="number">25</span></span><br><span class="line">batch_size = <span class="number">100</span></span><br><span class="line">display_step = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>])</span><br><span class="line">y = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</span><br><span class="line"></span><br><span class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>,<span class="number">10</span>]))</span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br><span class="line"></span><br><span class="line">pred = tf.nn.softmax(tf.matmul(x, W) + b)</span><br><span class="line">cost = tf.reduce_mean(-tf.reduce_sum(y*tf.log(pred), reducetion_indices=<span class="number">1</span>))</span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">	sess.run(tf.global_variables_initializer()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> epoch <span class="keyword">in</span> range(training_epochs):</span><br><span class="line">		avg_cost = <span class="number">0</span></span><br><span class="line">		total_batch = int(mnist.train.num_examples/batch_size)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> i <span class="keyword">in</span> range(total_batch):</span><br><span class="line">			batch_xs, batch_ys = mnist.train.next_batch(batch_size)</span><br><span class="line">			_, c = sess.run([optimizer, cost], feed_dict=&#123;x: batch_xs, y: batch_ys&#125;)</span><br><span class="line">			avg_cost += c / total_batch</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (epoch+<span class="number">1</span>) % display_step == <span class="number">0</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"cost="</span>, <span class="string">"&#123;:.9f&#125;"</span>.format(avg_cost)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">print</span> <span class="string">"optimization finished!"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">learning_rate = <span class="number">0.01</span></span><br><span class="line">training_epochs = <span class="number">25</span></span><br><span class="line">batch_size = <span class="number">100</span></span><br><span class="line">display_step = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>])</span><br><span class="line">y = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</span><br><span class="line"></span><br><span class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>,<span class="number">10</span>]))</span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br><span class="line"></span><br><span class="line">pred = tf.nn.sigmoid(tf.matmul(x, W) + b)</span><br><span class="line">cost = tf.reduce_mean(-tf.reduce_sum(y*tf.log(pred), reducetion_indices=<span class="number">1</span>))</span><br><span class="line"><span class="comment"># cost = tf.nn.sigmoid_cross_entropy_with_logits(logits=pred, labels=y)</span></span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">	sess.run(tf.global_variables_initializer()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> epoch <span class="keyword">in</span> range(training_epochs):</span><br><span class="line">		avg_cost = <span class="number">0</span></span><br><span class="line">		total_batch = int(mnist.train.num_examples/batch_size)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> i <span class="keyword">in</span> range(total_batch):</span><br><span class="line">			batch_xs, batch_ys = mnist.train.next_batch(batch_size)</span><br><span class="line">			_, c = sess.run([optimizer, cost], feed_dict=&#123;x: batch_xs, y: batch_ys&#125;)</span><br><span class="line">			avg_cost += c / total_batch</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (epoch+<span class="number">1</span>) % display_step == <span class="number">0</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">"cost="</span>, <span class="string">"&#123;:.9f&#125;"</span>.format(avg_cost)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">print</span> <span class="string">"optimization finished!"</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -465,7 +465,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">315</span>
+                  <span class="site-state-item-count">317</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -567,7 +567,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">119.1k</span>
+    <span title="Site words total count">119.9k</span>
   
 </div>
 
