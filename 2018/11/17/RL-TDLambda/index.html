@@ -79,19 +79,24 @@
 
 
 
-<meta name="description" content="TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward. 0.n-step TDTD方法除了之前介绍的1-step TD之外，还有一系列其他方法： Return Gt的原定义：$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T">
+<meta name="description" content="0.n-step TDTD方法除了之前介绍的1-step TD之外，还有一系列其他方法： n-step 的定义：$$ G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^n V_{t+n-1}(S_{t+n}) $$ 迭代公式变为：$$ V_{t+n}(S_t) = V_{t+n-1}(S_t)">
 <meta name="keywords" content="Machine Learning,Reinforcement Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TD($\lambda$)">
 <meta property="og:url" content="http://mirokule.github.io/2018/11/17/RL-TDLambda/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward. 0.n-step TDTD方法除了之前介绍的1-step TD之外，还有一系列其他方法： Return Gt的原定义：$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T">
+<meta property="og:description" content="0.n-step TDTD方法除了之前介绍的1-step TD之外，还有一系列其他方法： n-step 的定义：$$ G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^n V_{t+n-1}(S_{t+n}) $$ 迭代公式变为：$$ V_{t+n}(S_t) = V_{t+n-1}(S_t)">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://mirokule.github.io/img/nstepTD.png">
-<meta property="og:updated_time" content="2018-12-29T07:50:20.320Z">
+<meta property="og:image" content="http://mirokule.github.io/img/n-stepError.png">
+<meta property="og:image" content="http://mirokule.github.io/img/TDWeight.png">
+<meta property="og:image" content="http://mirokule.github.io/img/ForwardView.png">
+<meta property="og:image" content="http://mirokule.github.io/img/EligibilityTrace.png">
+<meta property="og:image" content="http://mirokule.github.io/img/BackwardView.png">
+<meta property="og:updated_time" content="2019-06-29T04:22:24.494Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TD($\lambda$)">
-<meta name="twitter:description" content="TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward. 0.n-step TDTD方法除了之前介绍的1-step TD之外，还有一系列其他方法： Return Gt的原定义：$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T">
+<meta name="twitter:description" content="0.n-step TDTD方法除了之前介绍的1-step TD之外，还有一系列其他方法： n-step 的定义：$$ G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^n V_{t+n-1}(S_{t+n}) $$ 迭代公式变为：$$ V_{t+n}(S_t) = V_{t+n-1}(S_t)">
 <meta name="twitter:image" content="http://mirokule.github.io/img/nstepTD.png">
 
 
@@ -326,7 +331,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  698
+                  846
                 </span>
               
 
@@ -351,25 +356,33 @@
       
 
       
-        <p>TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward.</p>
-<h4 id="0-n-step-TD"><a href="#0-n-step-TD" class="headerlink" title="0.n-step TD"></a>0.n-step TD</h4><p>TD方法除了之前介绍的1-step TD之外，还有一系列其他方法：<br><img src="/img/nstepTD.png"></p>
-<p>Return Gt的原定义：<br>$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T $$</p>
+        <h4 id="0-n-step-TD"><a href="#0-n-step-TD" class="headerlink" title="0.n-step TD"></a>0.n-step TD</h4><p>TD方法除了之前介绍的1-step TD之外，还有一系列其他方法：<br><img src="/img/nstepTD.png"></p>
 <p>n-step 的定义：<br>$$ G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^n V_{t+n-1}(S_{t+n}) $$</p>
 <p>迭代公式变为：<br>$$ V_{t+n}(S_t) = V_{t+n-1}(S_t) + \alpha[G_{t:t+n} - V_{t+n-1}(S_t)] $$</p>
-<h4 id="1-Forward-lambda-return"><a href="#1-Forward-lambda-return" class="headerlink" title="1.Forward: $\lambda$-return"></a>1.Forward: $\lambda$-return</h4><p>$G_t^{\lambda}$ 将所有n-step returns $G_t^{(n)}$加权，使用权重$(1-\lambda)\lambda^{n-1}$<br>信号强度以速率$\lambda$减弱，因子(1-$\lambda$)是为了使等比数列权重的和为1.<br>$$ G_t^{\lambda} = (1-\lambda)\sum_{n-1}^{\infty} \lambda^{n-1} G_t^{(n)} $$</p>
+<p>TD(0)可以看做n=1，MC可以看做n=T-t，是n取值的两种极端情况，往往不如n取中间值的结果。<br><img src="/img/n-stepError.png"></p>
+<h4 id="1-Forward-lambda-return"><a href="#1-Forward-lambda-return" class="headerlink" title="1.Forward: $\lambda$-return"></a>1.Forward: $\lambda$-return</h4><p>$G_t^{\lambda}$ 将所有n-step returns $G_t^{(n)}$加权，使用权重$(1-\lambda)\lambda^{n-1}$<br>信号强度以速率$\lambda$减弱，因子(1-$\lambda$)是为了使等比数列权重的和为1.<br><img src="/img/TDWeight.png"></p>
+<p>$$ G_t^{\lambda} = (1-\lambda)\sum_{n=1}^{\infty} \lambda^{n-1} G_t^{(n)} $$<br>或者写作<br>$$ G_t^{\lambda} = (1-\lambda)\sum_{n=1}^{T-t-1} \lambda^{n-1} G_{t:t+n} + \lambda^{T-t-1} G_t $$</p>
 <p>迭代公式变为：<br>$$ V(S_t) \leftarrow V(S_t) + \alpha(G_t^{\lambda} - V(S_t)) $$</p>
-<p>由于$G_t^{\lambda}$中包含用将来时刻的回报$R_{t+n}$，因而要等到episode结束才能更新，和MC一样是off-line算法。<br>可以想象成一个人坐在当前状态流上，观察将来状态的回报，因而称作前向视角(Forward)。</p>
-<h4 id="2-Backward-TD-lambda"><a href="#2-Backward-TD-lambda" class="headerlink" title="2.Backward: TD($\lambda$)"></a>2.Backward: TD($\lambda$)</h4><p>TD($\lambda$)相比$\lambda$-return算法有3方面的改进：</p>
+<p>由于$G_t^{\lambda}$是对所有$G_t^{(n)}$的加权，包含将来时刻的回报$R_{t+n}$，因而要等到episode结束才能更新，和MC一样是off-line算法。<br>对当前时刻t的更新，用到了未来时刻{t+1,t+2,…,t+n}的结果，因而称作前向视角(Forward)。<br><img src="/img/ForwardView.png"></p>
+<h4 id="2-Backward"><a href="#2-Backward" class="headerlink" title="2.Backward"></a>2.Backward</h4><p>Forward中，当前V(s)的更新用到了许多未来的 $\delta$; 而Backward中，当前的$\delta$作用于许多过去的V(s’)，相当于对过去的V(s’)提供了一个“未来切片”。这个“未来切片”的权重，使用<strong>资格迹</strong>(Eligibility Trace)来衡量。</p>
+<p>假设当前时刻t，过往序列{$s_{t-3},s_{t-2},s_{t-1},s_t$}的权重是{$(\gamma\lambda)^3, (\gamma\lambda)^2, \gamma\lambda, 1$}。在某个episode里，序列采样到了{$s_1,s_3,s_2,s_1$}，那么{$s_1,s_2,s_3$}的权重便是{$(\gamma\lambda)^3+1, \gamma\lambda, (\gamma\lambda)^2$}，将权重的算法抽离出来：</p>
+<p><img src="\img\EligibilityTrace.png"></p>
+<p>资格迹是一种兼顾频率和时间的权重，对每个状态独立计算，状态每出现1次权重加1，时间每前进1格权重按一定比例衰减。用于TD($\lambda$)算法中：</p>
+<ul>
+<li>状态空间的每个s对应一个资格迹</li>
+<li>每次更新时，更新所有的V(s)</li>
+<li>更新量为资格迹乘以TD-error </li>
+</ul>
+<p>每次对所有V(s)更新，就能覆盖到所有过去曾出现的状态；更新量乘以资格迹，就能按时间距离衰减。用当前时刻的TD Error $\delta_t$对过去出现的状态更新，称作后向视角(Backward)。</p>
+<p><img src="\img\BackwardView.png"></p>
+<p>当$\lambda = 0$时，过去全部衰减，$E_t(s)=1(S_t=s)$，更新只考虑当前步，退化为TD(0);<br>当$\lambda = 1$时，只有衰减因子$\gamma$，更新量和every-visit MC相同。</p>
+<p>TD($\lambda$)提供了可实用的Online算法，相比$\lambda$-return有3方面的改进：</p>
 <ul>
 <li>在episode的每一步都会更新，而不用等到结束</li>
 <li>计算过程分布平均，而并非集中在结尾</li>
 <li>适用于连续过程等没有结束的情况</li>
 </ul>
-<p>资格迹$\mathbf{z}$是一个向量，和值函数逼近的参数$\mathbf{w}$等长。<br>$\mathbf{w}$像是长期记忆，记录了整个过程中学到的知识；而$\mathbf{z}$是短期记忆，只记录了前几步的信息，通过影响$\mathbf{w}$的更新来作用于结果。<br>$\mathbf{z}$在episode开始时设置为0，计算方法如下：</p>
-<p>$$\begin{cases}<br>\mathbf{z}_{-1}&amp;\leftarrow 0 \\<br>\mathbf{z}_t&amp;\leftarrow \gamma \lambda \mathbf{z}_{t-1} + \nabla \hat{v}(S_t, \mathbf{w})<br>\end{cases}$$</p>
-<p>其中$\gamma$是折扣因子，而$\lambda$和之前一样是衰减因子。<br>资格迹$\mathbf{z}$记录的是过去$\mathbf{w}$各元素的贡献，所以更新公式变为：<br>$$ \mathbf{w}_{t+1} \leftarrow \mathbf{w}_t + \alpha\delta_t\mathbf{z}_t $$</p>
-<p>其中$\delta_t$是one-step TD error，即$R_{t+1} + \gamma\hat{v}(S_{t+1}, \mathbf{w}_t) + \hat{v}(S_t,\mathbf{w}_t)$.<br>想象一个人坐在当前状态流上，对已经经历过的状态喊话，报告当前状态的回报和TD偏差，所以称作后向视角。</p>
-<p>以Sarsa($\lambda$)为例，$\mathbf{z}$影响的是policy evaluation中$\mathbf{w}$的更新，而在policy improvement中仍然是$\epsilon$-greedy算法。这是一种增量算法，数据按顺序依次进入，每一组数据都会更新参数。<br>而在DQN中，训练数据从数据集里抽样，打破了前后关联性，就用不到资格迹$\mathbf{z}$。</p>
+<p>以Sarsa($\lambda$)为例，每个(s,a)对应一个资格迹E(s,a)，每个step中都要更新所有的Q(s,a)，更新量$\alpha\delta E(s,a)$。因为这是一种增量算法，数据按顺序依次进入，前后数据来自同一过程的关联步骤。<br>而在DQN中，训练数据从数据集里抽样，打破了前后关联性，就不需要资格迹。</p>
 
       
     </div>
@@ -402,8 +415,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/16/RL-Temporal-Difference/" rel="next" title="无模型的时序差分方法TD(0)">
-                <i class="fa fa-chevron-left"></i> 无模型的时序差分方法TD(0)
+              <a href="/2018/11/16/RL-Temporal-Difference/" rel="next" title="Temporal-Difference(0)时序差分方法">
+                <i class="fa fa-chevron-left"></i> Temporal-Difference(0)时序差分方法
               </a>
             
           </div>
@@ -495,7 +508,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">317</span>
+                  <span class="site-state-item-count">320</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -579,7 +592,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#0-n-step-TD"><span class="nav-number">1.</span> <span class="nav-text">0.n-step TD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Forward-lambda-return"><span class="nav-number">2.</span> <span class="nav-text">1.Forward: $\lambda$-return</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Backward-TD-lambda"><span class="nav-number">3.</span> <span class="nav-text">2.Backward: TD($\lambda$)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#0-n-step-TD"><span class="nav-number">1.</span> <span class="nav-text">0.n-step TD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Forward-lambda-return"><span class="nav-number">2.</span> <span class="nav-text">1.Forward: $\lambda$-return</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Backward"><span class="nav-number">3.</span> <span class="nav-text">2.Backward</span></a></li></ol></div>
             
 
           </div>
@@ -613,7 +626,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">119.9k</span>
+    <span title="Site words total count">121.0k</span>
   
 </div>
 

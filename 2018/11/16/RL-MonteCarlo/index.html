@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="有模型的策略迭代和值迭代方法都可以用广义策略迭代方法(Generalized Policy Iteration, GPI)来描述：首先对当前策略评估，然后利用值函数改进当前策略。但在无模型的强化学习过程中，转移概率矩阵P未知，因而不能使用Bellman方程，必须使用其他方法来做策略评估。可用的定义式：$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma">
+<meta name="description" content="有模型的策略迭代和值迭代方法都可以用广义策略迭代方法(Generalized Policy Iteration, GPI)来描述：首先对当前策略评估，然后利用值函数改进当前策略。在无模型的强化学习过程中，转移概率矩阵P未知，因而不能使用Bellman方程。可用的定义式：$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid">
 <meta name="keywords" content="Machine Learning,Reinforcement Learning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="无模型的蒙特卡罗方法MC">
+<meta property="og:title" content="Monte Carlo 蒙特卡罗方法">
 <meta property="og:url" content="http://mirokule.github.io/2018/11/16/RL-MonteCarlo/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="有模型的策略迭代和值迭代方法都可以用广义策略迭代方法(Generalized Policy Iteration, GPI)来描述：首先对当前策略评估，然后利用值函数改进当前策略。但在无模型的强化学习过程中，转移概率矩阵P未知，因而不能使用Bellman方程，必须使用其他方法来做策略评估。可用的定义式：$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma">
+<meta property="og:description" content="有模型的策略迭代和值迭代方法都可以用广义策略迭代方法(Generalized Policy Iteration, GPI)来描述：首先对当前策略评估，然后利用值函数改进当前策略。在无模型的强化学习过程中，转移概率矩阵P未知，因而不能使用Bellman方程。可用的定义式：$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://mirokule.github.io/img/ImportanceSampling.png">
-<meta property="og:updated_time" content="2018-12-23T08:34:09.009Z">
+<meta property="og:updated_time" content="2019-06-10T06:56:27.631Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="无模型的蒙特卡罗方法MC">
-<meta name="twitter:description" content="有模型的策略迭代和值迭代方法都可以用广义策略迭代方法(Generalized Policy Iteration, GPI)来描述：首先对当前策略评估，然后利用值函数改进当前策略。但在无模型的强化学习过程中，转移概率矩阵P未知，因而不能使用Bellman方程，必须使用其他方法来做策略评估。可用的定义式：$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma">
+<meta name="twitter:title" content="Monte Carlo 蒙特卡罗方法">
+<meta name="twitter:description" content="有模型的策略迭代和值迭代方法都可以用广义策略迭代方法(Generalized Policy Iteration, GPI)来描述：首先对当前策略评估，然后利用值函数改进当前策略。在无模型的强化学习过程中，转移概率矩阵P未知，因而不能使用Bellman方程。可用的定义式：$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid">
 <meta name="twitter:image" content="http://mirokule.github.io/img/ImportanceSampling.png">
 
 
@@ -128,7 +128,7 @@
 
 
 
-  <title>无模型的蒙特卡罗方法MC | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Monte Carlo 蒙特卡罗方法 | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -282,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">无模型的蒙特卡罗方法MC</h1>
+          <h1 class="post-title" itemprop="name headline">Monte Carlo 蒙特卡罗方法</h1>
         
 
         <div class="post-meta">
@@ -326,7 +326,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,009
+                  1,100
                 </span>
               
 
@@ -351,14 +351,15 @@
       
 
       
-        <p>有模型的策略迭代和值迭代方法都可以用广义策略迭代方法(Generalized Policy Iteration, GPI)来描述：首先对当前策略评估，然后利用值函数改进当前策略。<br>但在无模型的强化学习过程中，转移概率矩阵P未知，因而不能使用Bellman方程，必须使用其他方法来做策略评估。<br>可用的定义式：<br>$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid S_t=s] $$<br>$$ q_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid S_t=s, A_t=a] $$</p>
+        <p>有模型的策略迭代和值迭代方法都可以用广义策略迭代方法(Generalized Policy Iteration, GPI)来描述：首先对当前策略评估，然后利用值函数改进当前策略。<br>在无模型的强化学习过程中，转移概率矩阵P未知，因而不能使用Bellman方程。<br>可用的定义式：<br>$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid S_t=s] $$<br>$$ q_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid S_t=s, A_t=a] $$</p>
 <p>可用的关系式：<br>$$ v_{\pi}(s) = \sum_{a\in A} \pi(a\mid s) q_{\pi}(s,a) $$</p>
 <h3 id="1-Monte-Carlo-Prediction"><a href="#1-Monte-Carlo-Prediction" class="headerlink" title="1.Monte-Carlo Prediction"></a>1.Monte-Carlo Prediction</h3><p>蒙特卡罗方法直接从经验片段中学习，通过多次实验取平均值，作为回报的期望值，即$v_{\pi}(s)$.<br>只对片段化的MDP有效，即必须有终止状态。<br>计算平均值的方法有两种：</p>
 <ul>
 <li>First-Visit: 只统计每个episode中，首次访问该状态的回报</li>
 <li>Every-Visit: 每次访问该状态的回报。</li>
 </ul>
-<h6 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">计数 N(s)← N(s) + 1</span><br><span class="line">回报 S(s)← S(s) + Gt</span><br><span class="line">均值 V(s) = S(s) / N(s)</span><br></pre></td></tr></table></figure>
+<h6 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h6><p>计数 N(s)← N(s) + 1<br>回报 S(s)← S(s) + Gt<br>均值 V(s) = S(s) / N(s)</p>
+<h6 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_episode</span><span class="params">(policy, env)</span>:</span></span><br><span class="line">    states, actions, rewards = [], [], []</span><br><span class="line">    observation = env.reset()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        states.append(observation)</span><br><span class="line">        </span><br><span class="line">        action = policy(observation)</span><br><span class="line">        observation, reward, done, _ = env.step(action)</span><br><span class="line">        </span><br><span class="line">        actions.append(action)</span><br><span class="line">        rewards.append(reward)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> done:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> states, actions, rewards</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">first_visit_mc_prediction</span><span class="params">(policy, env, n_episodes)</span>:</span></span><br><span class="line">    value_table = defaultdict(float)</span><br><span class="line">    N = defaultdict(int)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(n_episodes):</span><br><span class="line">        states, actions, rewards = generate_episode(policy, env)</span><br><span class="line">        returns = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(len(states)<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            s = states[t]</span><br><span class="line">            r = rewards[t]</span><br><span class="line">            returns += r</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> s <span class="keyword">not</span> <span class="keyword">in</span> states[:t]: <span class="comment"># first-visit state s</span></span><br><span class="line">                N[s] += <span class="number">1</span></span><br><span class="line">                value_table[s] += (returns - value_table[s]) / N[s] <span class="comment"># Incremental</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> value_table</span><br></pre></td></tr></table></figure>
 <h3 id="2-Monte-Carlo-Control"><a href="#2-Monte-Carlo-Control" class="headerlink" title="2.Monte-Carlo Control"></a>2.Monte-Carlo Control</h3><p>根据策略的数量，可以分为两种：</p>
 <ul>
 <li>On-policy: 采样和改进的是同一种策略，又称同策略；因为要兼顾探索，故得到的是最优策略的近似解</li>
@@ -367,11 +368,11 @@
 <h4 id="2-1-On-policy-Control"><a href="#2-1-On-policy-Control" class="headerlink" title="2.1 On-policy Control"></a>2.1 On-policy Control</h4><p>在策略改进中使用评估算法会有2个问题：</p>
 <ul>
 <li>仅有估计的$v_{\pi}(s)$不足以选出最优策略$q_*$：用实验直接估计q(s,a)</li>
-<li>不能保证动作空间A里的每个动作a都被取到：初始状态选用不同的(s,a)(Exploring Starts, 不够通用)；以一定概率选择其他的动作</li>
+<li>不能保证动作空间A里的每个动作a都被取到：<br>1.初始状态选用不同的(s,a)(Exploring Starts, 不够通用)；<br>2.以一定概率选择其他的动作($\epsilon-greedy$)</li>
 </ul>
-<h6 id="2-1-1-Monte-Carlo-ES-Exploring-Starts"><a href="#2-1-1-Monte-Carlo-ES-Exploring-Starts" class="headerlink" title="2.1.1 Monte Carlo ES(Exploring Starts)"></a>2.1.1 Monte Carlo ES(Exploring Starts)</h6><p>(1)随机选取$S_0, A_0$作为初始状态，需保证S、A空间中的每一对都有可能被选到<br>(2)遵循策略$\pi$，产生一个经验片段episode<br>(3)对片段中的每一对(s,a):<br>&emsp;&emsp; G ← (s,a)第一次出现后的回报<br>&emsp;&emsp; Returns(s,a) ← Returns(s,a) + G<br>&emsp;$emsp; Q(s,a) ← Returns(s,a)取平均值<br>(4)对片段中的每个状态s:<br>&emsp;&emsp; $\pi(s) \leftarrow argmax_a\, Q(s,a)$</p>
+<h6 id="2-1-1-Monte-Carlo-ES-Exploring-Starts"><a href="#2-1-1-Monte-Carlo-ES-Exploring-Starts" class="headerlink" title="2.1.1 Monte Carlo ES(Exploring Starts)"></a>2.1.1 Monte Carlo ES(Exploring Starts)</h6><p>(1)随机选取$S_0, A_0$作为初始状态，需保证S、A空间中的每一对都有可能被选到<br>(2)遵循策略$\pi$，产生一个经验片段episode<br>(3)对片段中的每一对(s,a):<br>&emsp;&emsp; G ← (s,a)第一次出现后的回报<br>&emsp;&emsp; Returns(s,a) ← Returns(s,a) + G<br>&emsp;&emsp; Q(s,a) ← Returns(s,a)取平均值<br>(4)对片段中的每个状态s:<br>&emsp;&emsp; $\pi(s) \leftarrow argmax_a\, Q(s,a)$</p>
 <p>例如原策略是(18,hit)(19,hit)(20,stick)，通过设定初始值，实验中会出现(18,stick)(19,stick)(20,hit)这些本来不会探索到的(s,a)策略。</p>
-<h6 id="2-1-2-epsilon-greedy-policy"><a href="#2-1-2-epsilon-greedy-policy" class="headerlink" title="2.1.2 $\epsilon-greedy policy$"></a>2.1.2 $\epsilon-greedy policy$</h6><p>在初始状态中穷尽(s,a)往往是困难的，因而ES方法的应用范围有限。<br>另一种方法是在策略改进时，以概率$\epsilon$随机选取一个动作，以概率$1-\epsilon$选择贪心动作。<br>如果动作空间共有m个动作，那么策略为：<br>(1)遵循策略$\pi$产生片段episode<br>(2)对片段中的每一对(s,a):<br>&emsp;&emsp; G ← (s,a)第一次出现后的回报<br>&emsp;&emsp; Returns(s,a) ← Returns(s,a) + G<br>&emsp;&emsp; Q(s,a) ← Returns(s,a)取平均值<br>(3)对片段中的每个状态s:<br>$$ \pi (a|s) =<br>\begin{cases}<br>&amp;\epsilon / m + 1 - \epsilon \;\;\; if\, a^* = argmax\,Q(s,a) \\<br>&amp;\epsilon / m  \;\;\; otherwise<br>\end{cases} $$ </p>
+<h6 id="2-1-2-epsilon-greedy"><a href="#2-1-2-epsilon-greedy" class="headerlink" title="2.1.2 $\epsilon-greedy$"></a>2.1.2 $\epsilon-greedy$</h6><p>在初始状态中穷尽(s,a)往往是困难的，因而ES方法的应用范围有限。<br>另一种方法是在策略改进时，以概率$\epsilon$随机选取一个动作，以概率$1-\epsilon$选择贪心动作。<br>如果动作空间共有m个动作，那么策略为：<br>(1)遵循策略$\pi$产生片段episode<br>(2)对片段中的每一对(s,a):<br>&emsp;&emsp; G ← (s,a)第一次出现后的回报<br>&emsp;&emsp; Returns(s,a) ← Returns(s,a) + G<br>&emsp;&emsp; Q(s,a) ← Returns(s,a)取平均值<br>(3)对片段中的每个状态s:<br>$$ \pi (a|s) =<br>\begin{cases}<br>&amp;\epsilon / m + 1 - \epsilon \;\;\; if\, a^* = argmax\,Q(s,a) \\<br>&amp;\epsilon / m  \;\;\; otherwise<br>\end{cases} $$ </p>
 <p>评估和改进的都是$\epsilon$-soft策略。<br>所谓soft策略是指，对任意状态s和动作a，有$\pi(a|s) &gt; 0$ </p>
 <h4 id="2-2-Off-Policy"><a href="#2-2-Off-Policy" class="headerlink" title="2.2 Off-Policy"></a>2.2 Off-Policy</h4><p>On-policy并没有得到最优策略$\pi_*$。因为要兼顾exploration，得到的实际上是近似最优策略。<br>Off-Policy使用两个策略，用于探索、产生数据的称作behavior policy，学习改进的目标称作target policy.</p>
 <h6 id="2-2-1-Importance-Sampling"><a href="#2-2-1-Importance-Sampling" class="headerlink" title="2.2.1 Importance Sampling"></a>2.2.1 Importance Sampling</h6><p>用一种简单分布(采样概率分布)来估计另一种复杂分布(原概率分布)的积分值。采样概率分布与原概率分布越接近，方差越小。<br><img src="/img/ImportanceSampling.png"></p>
@@ -409,8 +410,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/16/RL-DynamicProgramming/" rel="next" title="有模型的动态规划算法DP">
-                <i class="fa fa-chevron-left"></i> 有模型的动态规划算法DP
+              <a href="/2018/11/16/RL-DynamicProgramming/" rel="next" title="Dynamic Programming 动态规划算法">
+                <i class="fa fa-chevron-left"></i> Dynamic Programming 动态规划算法
               </a>
             
           </div>
@@ -419,8 +420,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/11/16/RL-Temporal-Difference/" rel="prev" title="无模型的时序差分方法TD(0)">
-                无模型的时序差分方法TD(0) <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/16/RL-Temporal-Difference/" rel="prev" title="Temporal-Difference(0)时序差分方法">
+                Temporal-Difference(0)时序差分方法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -502,7 +503,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">317</span>
+                  <span class="site-state-item-count">320</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -586,7 +587,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Monte-Carlo-Prediction"><span class="nav-number">1.</span> <span class="nav-text">1.Monte-Carlo Prediction</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#算法"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">算法</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Monte-Carlo-Control"><span class="nav-number">2.</span> <span class="nav-text">2.Monte-Carlo Control</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-On-policy-Control"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 On-policy Control</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-1-Monte-Carlo-ES-Exploring-Starts"><span class="nav-number">2.1.0.1.</span> <span class="nav-text">2.1.1 Monte Carlo ES(Exploring Starts)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-2-epsilon-greedy-policy"><span class="nav-number">2.1.0.2.</span> <span class="nav-text">2.1.2 $\epsilon-greedy policy$</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-Off-Policy"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Off-Policy</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-1-Importance-Sampling"><span class="nav-number">2.2.0.1.</span> <span class="nav-text">2.2.1 Importance Sampling</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Monte-Carlo-Prediction"><span class="nav-number">1.</span> <span class="nav-text">1.Monte-Carlo Prediction</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#算法"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#实现"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">实现</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Monte-Carlo-Control"><span class="nav-number">2.</span> <span class="nav-text">2.Monte-Carlo Control</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-On-policy-Control"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 On-policy Control</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-1-Monte-Carlo-ES-Exploring-Starts"><span class="nav-number">2.1.0.1.</span> <span class="nav-text">2.1.1 Monte Carlo ES(Exploring Starts)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-1-2-epsilon-greedy"><span class="nav-number">2.1.0.2.</span> <span class="nav-text">2.1.2 $\epsilon-greedy$</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-Off-Policy"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Off-Policy</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-1-Importance-Sampling"><span class="nav-number">2.2.0.1.</span> <span class="nav-text">2.2.1 Importance Sampling</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -620,7 +621,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">119.9k</span>
+    <span title="Site words total count">121.0k</span>
   
 </div>
 

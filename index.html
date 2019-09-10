@@ -262,6 +262,444 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2019/09/10/Unity-ScriptableObject/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/10/Unity-ScriptableObject/" itemprop="url">Scriptable Object</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-10T16:07:30+08:00">
+                2019-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  371
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Scriptable Object用于存储数据。<br>首先声明一个存储数据结构的基类，然后在每个实例中存储不同的数据。可以将数据与代码逻辑分离。<br>另外如果你有存储很多固定数据的prefab，每次实例化这个prefab都会在内存中单独存储一份数据的拷贝。而将数据从prefab中剥离出来，存储到scriptable object中，就不会再每次实例化prefab时占用额外的存储空间。</p>
+<h6 id="1-声明基类"><a href="#1-声明基类" class="headerlink" title="1.声明基类"></a>1.声明基类</h6><p>基类需要继承ScripableObject类，并且创捷一个菜单，用于生成实例。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">[<span class="meta">CreateAssetMenu(fileName = <span class="meta-string">"Data"</span>, menuName = <span class="meta-string">"ScriptableObjects/SpawnManagerScriptableObject"</span>, order = 1)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SpawnManagerScriptableObject</span> : <span class="title">ScriptableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> prefabName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> numberOfPrefabsToCreate;</span><br><span class="line">    <span class="keyword">public</span> Vector3[] spawnPoints;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中fileName是默认的文件名，menuName是创建实例的目录路径。</p>
+<h6 id="2-创建实例"><a href="#2-创建实例" class="headerlink" title="2.创建实例"></a>2.创建实例</h6><p>以上文为例，通过 <strong>Assets &gt; Create &gt; ScriptableObjects &gt; SpawnManagerScriptableObject</strong> 来创建实例。<br>实例中的数据可在Inspector中编辑。</p>
+<h6 id="3-使用数据"><a href="#3-使用数据" class="headerlink" title="3.使用数据"></a>3.使用数据</h6><p>本例中scriptable object存储了prefab的配置信息，在实例化pfefab时调用。</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Spawner</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// The Prefab GameObject to instantiate.</span></span><br><span class="line">    <span class="keyword">public</span> GameObject entityToSpawn;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// An instance of the ScriptableObject defined above.</span></span><br><span class="line">    <span class="keyword">public</span> SpawnManagerScriptableObject spawnManagerValues;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> instanceNumber = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        SpawnEntities();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">SpawnEntities</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> currentSpawnPointIndex = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; spawnManagerValues.numberOfPrefabsToCreate; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// Creates an instance of the prefab at the current spawn point.</span></span><br><span class="line">            GameObject currentEntity = Instantiate(entityToSpawn, spawnManagerValues.spawnPoints[currentSpawnPointIndex], Quaternion.identity);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Sets the name of the instantiated entity to be the string defined in the ScriptableObject and then appends it with a unique number. </span></span><br><span class="line">            currentEntity.name = spawnManagerValues.prefabName + instanceNumber;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Moves to the next spawn point index. If it goes out of range, it wraps back to the start.</span></span><br><span class="line">            currentSpawnPointIndex = (currentSpawnPointIndex + <span class="number">1</span>) % spawnManagerValues.spawnPoints.Length;</span><br><span class="line"></span><br><span class="line">            instanceNumber++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2019/09/09/Unity-Attributes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/09/Unity-Attributes/" itemprop="url">Unity中的Attributes</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-09T16:57:26+08:00">
+                2019-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  85
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Inspector相关"><a href="#Inspector相关" class="headerlink" title="Inspector相关"></a>Inspector相关</h4><p>1.[PropertyAttribute]: 基类</p>
+<p>2.[SerializeField]: 强制在Inspector中显示private变量<br>3.[HideInInspector]: 强制在Inspector中隐藏public变量</p>
+<p>4.[TextAreaAttribute]: 在Inspector中为变量生成文本框</p>
+<h4 id="Menu相关"><a href="#Menu相关" class="headerlink" title="Menu相关"></a>Menu相关</h4><p>1.[CreateAssetMenuAttribute]: 在Create菜单中新增一个类别 </p>
+<ul>
+<li>menuName:该类的显示名称</li>
+<li>fileName:生成实例的默认文件名</li>
+</ul>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">[<span class="meta">TextArea(10,12)</span>][SerializeField] <span class="keyword">string</span> storyText;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2019/07/06/TF20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/06/TF20/" itemprop="url">TensorFlow 2.0</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-06T09:52:19+08:00">
+                2019-07-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  355
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>使用Eager Execution：动态计算tensor值，不再预先生成静态图和sess.run，用tape记录gradient</li>
+<li>集成Keras</li>
+<li>tf.contib 被移除</li>
+<li>兼容模块(tensorflow.compat.v1)，包含完整的TensorFlow 1.x API</li>
+</ul>
+<h6 id="Beginners-Version"><a href="#Beginners-Version" class="headerlink" title="Beginners Version"></a>Beginners Version</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model = tf.keras.models.Sequential([</span><br><span class="line">	tf.keras.layers.Flatten(input_shape=(<span class="number">28</span>,<span class="number">28</span>)),</span><br><span class="line">	tf.keras.layers.Dense(<span class="number">128</span>, activation=<span class="string">'relu'</span>),</span><br><span class="line">	tf.keras.layers.Dropout(<span class="number">0.2</span>),</span><br><span class="line">	tf.keras.layers.Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line">model.compile(optimizer=<span class="string">'adam'</span>, loss=<span class="string">'sparse_categorical_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line">model.fit(x_train, y_train, epochs=<span class="number">5</span>)</span><br><span class="line">model.evaluate(x_test, y_test)</span><br></pre></td></tr></table></figure>
+<h6 id="Expert-Version"><a href="#Expert-Version" class="headerlink" title="Expert Version"></a>Expert Version</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> Model, layers</span><br><span class="line"></span><br><span class="line">train_ds = tf.data.Dataset.from_tensor_slices((x_train, y_train)).shuffle(<span class="number">1000</span>).batch(<span class="number">32</span>)</span><br><span class="line">test_ds = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Model</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyModel</span><span class="params">(Model)</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">		super(MyModel, self).__init__()</span><br><span class="line">		self.conv1 = layers.Conv2D(<span class="number">32</span>, <span class="number">3</span>, activation=<span class="string">'relu'</span>)</span><br><span class="line">		self.maxpool1 = layers.MaxPool2D(<span class="number">2</span>, strides=<span class="number">2</span>)</span><br><span class="line">		self.conv2 = layers.Conv2D(<span class="number">64</span>, kernel_size=<span class="number">3</span>, activation=tf.nn.relu)</span><br><span class="line">		self.maxpool2 = layers.MaxPool2D(<span class="number">2</span>, strides=<span class="number">2</span>)		</span><br><span class="line">		self.flatten = Flatten()</span><br><span class="line">		self.fc1 = layers.Dense(<span class="number">128</span>, activation=<span class="string">'relu'</span>)</span><br><span class="line">		self.dropout = layers.Dropout(rate=<span class="number">0.5</span>)</span><br><span class="line">		self.out = layers.Dense(num_class)</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, x)</span>:</span></span><br><span class="line">		x = self.conv1(x)</span><br><span class="line">		x = self.maxpool1(x)</span><br><span class="line">		x = self.conv2(x)</span><br><span class="line">		x = self.maxpool2(x)</span><br><span class="line">		x = self.flatten(x)</span><br><span class="line">		x = self.fc1(x)</span><br><span class="line">		x = self.dropout(x)</span><br><span class="line">		x = self.out(x)</span><br><span class="line">		<span class="keyword">return</span> self.d2(x)</span><br><span class="line"></span><br><span class="line">model = MyModel()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Loss and Metrics</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cross_entropy_loss</span><span class="params">(x,y)</span>:</span></span><br><span class="line">	y = tf.cast(y, tf.int64)</span><br><span class="line">	loss = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=x)</span><br><span class="line">	<span class="keyword">return</span> tf.reduce_mean(loss)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">accuracy</span><span class="params">(y_pred, y_true)</span>:</span></span><br><span class="line">	correct_prediction = tf.equal(tf.argmax(y_pred,<span class="number">1</span>), tf.cast(y_true, tf.int64))</span><br><span class="line">	<span class="keyword">return</span> tf.reduce_mean(tf.cast(correct_prediction, tf.float32), axis=<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># loss_object = tf.keras.losses.SparseCategoricalCrossentropy()</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Optimizer</span></span><br><span class="line">optimizer = tf.keras.optimizers.Adam()</span><br><span class="line"><span class="comment"># Optimization</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_optimization</span><span class="params">(images, labels)</span>:</span></span><br><span class="line">	<span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">		predictions = model(images)</span><br><span class="line">		loss = cross_entropy_loss((labels, predictions)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># Compute Gradients</span></span><br><span class="line">	gradients = tape.gradient(loss, model.trainable_variables)</span><br><span class="line">	<span class="comment"># Update W and b follwing gradients</span></span><br><span class="line">	optimizer.apply_gradients(zip(gradients, model.trainable_variables)) </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Run</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">	<span class="keyword">for</span> images, labels <span class="keyword">in</span> train_ds:</span><br><span class="line">		run_optimization(images, labels)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2019/06/07/RL-PolicyIteration/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1896,7 +2334,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  361
+                  369
                 </span>
               
 
@@ -1930,8 +2368,8 @@
 <li>on-policy: 策略每次更改后都要重新生成样本，即训练数据必须由当前策略产生</li>
 <li>off-policy: 训练数据可以由其他策略产生，在不重新采样的情况下改变当前策略</li>
 </ul>
-<p>2.策略评估/模型拟合<br>策略梯度法计算回报的总和 $\sum\,r$;<br>值函数方法拟合 Q(s,a);<br>基于模型的方法则需要估计状态转移概率 p(s’|s,a)。</p>
-<p>3.策略改进<br>策略梯度法对神经网络做梯度步的调整 $\theta\leftarrow\theta+\alpha\nabla J(\theta)$；<br>值函数方法on-policy通常采用 $\epsilon-greedy$，off-policy比如Q-Learning直接取最大值 argmaxQ(s,a);<br>基于模型的方法则需要用梯度方法去优化策略函数。</p>
+<p>2.策略评估/模型拟合<br>策略梯度法计算回报的总和 $\sum\,r$，简单;<br>值函数方法拟合 Q(s,a)，复杂;<br>基于模型的方法则需要估计状态转移概率 p(s’|s,a)。</p>
+<p>3.策略改进<br>策略梯度法对神经网络做梯度步的调整 $\theta\leftarrow\theta+\alpha\nabla J(\theta)$，复杂；<br>值函数方法on-policy通常采用 $\epsilon-greedy$，off-policy比如Q-Learning直接取最大值 argmaxQ(s,a)，简单;<br>基于模型的方法则需要用梯度方法去优化策略函数。</p>
 <table>
 <thead>
 <tr>
@@ -2025,7 +2463,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/04/RL-PolicyGradient/" itemprop="url">策略梯度方法</a></h1>
+                <a class="post-title-link" href="/2019/01/04/RL-PolicyGradient/" itemprop="url">策略梯度方法Policy Gradient</a></h1>
         
 
         <div class="post-meta">
@@ -2069,7 +2507,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  826
+                  838
                 </span>
               
 
@@ -2112,8 +2550,8 @@
 <p>参数$\theta$的梯度就可以写成：<br>$$ \nabla_{\theta} J(\theta) = \sum_{\tau} \nabla_{\theta}P(\tau;\theta) R(\tau) \\<br>= \sum_{\tau} P(\tau;\theta) \frac{\nabla_{\theta}P(\tau;\theta) R(\tau)}{P(\tau;\theta)} \\<br>= \sum_{\tau} P(\tau;\theta) \nabla_{\theta}log\,P(\tau;\theta)R(\tau) \\<br>= E[\nabla_{\theta}log\,P(\tau;\theta) R(\tau)]$$</p>
 <p>最终策略梯度变成了一个期望，就可以用经验平均来估算。即用当前策略$\pi_{\theta}$采样m条轨迹后，用m条轨迹的平均来逼近策略梯度：<br>$$ \nabla_{\theta} J(\theta) = \frac{1}{m} \sum_{i=1}^m \nabla_{\theta} log\,P(\tau;\theta) R(\tau) $$</p>
 <p>从直观上理解，策略梯度会增加高回报路径的概率，减少低回报路径的概率。<br>其中，由于$P(\tau,\theta)=\prod_{t=0}^H P(s_{t+1}|s_t,a_t) \pi(a_t|s_t)$，前半部分P(s;s,a)不含有参数$\theta$可以在求导过程中消掉，所以<br>$$ \nabla_{\theta}log\,P(\tau;\theta) = \sum_{t=0}^H \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) $$</p>
-<h6 id="改进一"><a href="#改进一" class="headerlink" title="改进一"></a>改进一</h6><p>引入基准值b，减小方差<br>$$ \nabla_{\theta} J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^H \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) (R(\tau)-b) $$</p>
-<h6 id="改进二"><a href="#改进二" class="headerlink" title="改进二"></a>改进二</h6><p>对每一条轨迹，梯度都乘以了固定的乘数(R-b)，这实际上是不公平的，比如后发生的动作应该与之前的奖励无关。因此把轨迹的回报(R-b)细分到每个动作的回报($\sum r-b$)，对每个动作$a_t$，只计算t时刻之后的回报:<br>$$ \nabla_{\theta} J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^{H-1} \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) (\sum_{k=t}^{H-1}(r(s_k)-b)) $$</p>
+<h6 id="改进一-基准线baseline"><a href="#改进一-基准线baseline" class="headerlink" title="改进一: 基准线baseline"></a>改进一: 基准线baseline</h6><p>引入基准值b，减小方差<br>$$ \nabla_{\theta} J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^H \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) (R(\tau)-b) $$</p>
+<h6 id="改进二-因果关系casuality"><a href="#改进二-因果关系casuality" class="headerlink" title="改进二: 因果关系casuality"></a>改进二: 因果关系casuality</h6><p>对每一条轨迹，梯度都乘以了固定的乘数(R-b)，这实际上是不公平的，比如后发生的动作应该与之前的奖励无关。因此把轨迹的回报(R-b)细分到每个动作的回报($\sum r-b$)，对每个动作$a_t$，只计算t时刻之后的回报(reward to go):<br>$$ \nabla_{\theta} J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^{H-1} \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) (\sum_{k=t}^{H-1}(r(s_k)-b)) $$</p>
 <h4 id="Off-Policy"><a href="#Off-Policy" class="headerlink" title="Off-Policy"></a>Off-Policy</h4><p>使用采集到的轨迹数据计算梯度并更新参数$\theta$后，策略$\pi_{\theta}$随之改变。重新采集数据需要耗费大量的资源，因而在off-policy策略里，使用两套参数：固定$\theta’$，用$\pi_{\theta’}$采集的数据来更新$\theta$.<br>两套策略对应的数据分布不同，就涉及到重要性采样：<br>$$ E_{x\sim p(x)}f(x) = \int p(x)f(x) \\<br>= \int q(x) \frac{p(x)}{q(x)}f(x) \\<br>= E_{x\sim q(x)} \frac{p(x)}{q(x)} f(x) $$</p>
 <p>虽然期望相等，但是方差并不相同。使得在采样数据不足时，结果可能有较大波动。<br>On-Policy:<br>$$ \nabla_{\theta} J(\theta) = E_{\tau\sim p(\tau;\theta)}[\nabla_{\theta}log\,P(\tau;\theta) R(\tau)]$$<br>Off-Policy:<br>$$ \nabla_{\theta} J(\theta) = E_{\tau\sim p(\tau;\theta’)}[\frac{P(\tau;\theta)}{P(\tau;\theta’)}\nabla_{\theta}log\,P(\tau;\theta) R(\tau)]$$</p>
 
@@ -2385,7 +2823,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  604
+                  752
                 </span>
               
 
@@ -2412,29 +2850,34 @@
       
         
           
-            <p>当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。<br>此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s作为函数的输入，s对应的值v作为函数的输出。<br>值函数的内核有不同的选择：</p>
+            <p>当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。<br>此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s(或者(s,a))作为输入，值函数v或q作为输出。</p>
+<p>值函数的内核有不同的选择：</p>
 <ul>
 <li>线性：线性函数，$\hat{v}=\theta^Ts$</li>
 <li>非线性：神经网络</li>
 </ul>
-<h4 id="监督学习描述"><a href="#监督学习描述" class="headerlink" title="监督学习描述"></a>监督学习描述</h4><p>之前的方法中，每轮更新的是当前状态的$V_{\pi}(s)$或者$Q(s,a)$；现在我们将其转化为监督学习问题，要从数据中学习的是$\theta$，而更新$\theta$会使得所有状态的$\hat{v}(s,\theta)$改变。<br>训练的目标函数为：<br>$$ \underset{\theta}{argmin}(q(s,a)-\hat{q}(s,a,\theta))^2$$</p>
+<h3 id="1-增量方法-Incremental-Methods"><a href="#1-增量方法-Incremental-Methods" class="headerlink" title="1.增量方法 Incremental Methods"></a>1.增量方法 Incremental Methods</h3><h4 id="1-1-监督学习描述"><a href="#1-1-监督学习描述" class="headerlink" title="1.1 监督学习描述"></a>1.1 监督学习描述</h4><p>用监督学习方法来描述问题，要从数据中学习的是$\theta$，而更新$\theta$会使得所有状态的$\hat{v}(s,\theta)$改变。<br>训练的目标函数为：<br>$$ \underset{\theta}{argmin}(q(s,a)-\hat{q}(s,a,\theta))^2$$</p>
+<p>参数的随机梯度更新为：<br>$$ \theta_{t+1} = \theta_t + \alpha[U_t - \hat{v}(S_t,\theta_t)]\nabla\hat{v}(S_t,\theta_t)$$</p>
 <p>训练数据可以写作$(S_t,U_t)$，其中$U_t$是：</p>
 <ul>
 <li>MC: $G_t$</li>
-<li>TD(0): $r+\gamma V(s’,a’)$</li>
-<li>TD($\lambda$): $G_t^{\lambda}$</li>
+<li>TD(0): $R+\gamma \hat{v}(s’,a’)$</li>
+<li>TD($\lambda$): $G_t^{\lambda}$(forward)</li>
 </ul>
-<p>故参数的随机梯度更新为：<br>$$ \theta_{t+1} = \theta_t + \alpha[U_t - \hat{v}(S_t,\theta_t)]\nabla\hat{v}(S_t,\theta_t)$$</p>
 <p>对于TD(0)方法，目标函数中也包含参数$\theta$，但在求梯度时忽略$\theta$对目标函数$U_t$的影响。这种方法不是完全的梯度法，因此也称为半梯度法。</p>
-<h4 id="收敛性"><a href="#收敛性" class="headerlink" title="收敛性"></a>收敛性</h4><p>训练神经网络时，对数据的假设是<strong>独立同分布</strong>。<br>而强化学习过程采集到的数据是<strong>关联</strong>的，用于训练神经网络并不稳定，因而神经网络往往是不收敛的。</p>
-<h4 id="基函数"><a href="#基函数" class="headerlink" title="基函数"></a>基函数</h4><p>进一步地，在线性逼近中，值函数可以写作：<br>$$ \hat{v}(s,\theta) = \theta^T\phi(s) $$</p>
+<h4 id="1-2-基函数"><a href="#1-2-基函数" class="headerlink" title="1.2 基函数"></a>1.2 基函数</h4><p>在线性逼近中，值函数可以写作：<br>$$ \hat{v}(s,\theta) = \theta^T\phi(s) $$</p>
 <p>其中$\phi(s)$是状态s的特征函数，也称为基函数。<br>常见的基函数包括：</p>
 <ul>
 <li>多项式基函数：$s_1, s_2, s_1s_2, s_1^2, s_2^3,\cdots$</li>
 <li>傅里叶基函数：$cos(i\pi s)$</li>
 <li>径向基函数：$exp(-\frac{\left | s-c_i \right |^2}{2\sigma_i^2})$</li>
 </ul>
-<h4 id="批量更新"><a href="#批量更新" class="headerlink" title="批量更新"></a>批量更新</h4><p>前面讨论的都是根据单条数据来更新，虽然计算简单，但样本数据利用率不高。<br>批量更新的方法是将单条数据保留形成数据集，对每个数据集找到最好的拟合函数。<br>可以使用线性最小二乘法逼近：<br>$$ LS(\theta) = \sum_{t=1}^T(v_t^{\pi} - \hat{v}_t^{\pi}(s_t,\theta))^2 $$<br>此时线性模型的参数更新量为：<br>$$ \Delta\theta = \alpha\sum_{t=1}^T[v_t^{\pi} - \theta^T\phi(s_t)]\phi(s_t) $$</p>
+<h4 id="1-3-收敛性"><a href="#1-3-收敛性" class="headerlink" title="1.3 收敛性"></a>1.3 收敛性</h4><p>训练神经网络时，对数据的假设是<strong>独立同分布</strong>。<br>而强化学习过程采集到的数据是<strong>关联</strong>的，用于训练神经网络并不稳定，因而神经网络往往是不收敛的。</p>
+<h3 id="2-批量方法-Batch-Methods"><a href="#2-批量方法-Batch-Methods" class="headerlink" title="2.批量方法 Batch Methods"></a>2.批量方法 Batch Methods</h3><p>增量方法是根据单条数据来更新，虽然计算简单，但样本数据利用率不高。<br>批量更新的方法是将单条数据保留形成数据集，对每个数据集找到最好的拟合函数。<br>打破了增量方法中的数据关联性，因而收敛效果更好。</p>
+<h4 id="2-1-最小二乘法"><a href="#2-1-最小二乘法" class="headerlink" title="2.1 最小二乘法"></a>2.1 最小二乘法</h4><p>使用最小二乘法使拟合函数逼近：<br>$$ LS(w) = \sum_{t=1}^T(v_t^{\pi} - \hat{v}(s_t,w))^2 $$<br>此时线性模型的参数更新量为：<br>$$ \Delta w = \alpha [v^{\pi} - \hat{v}(s, w)] \nabla_w \hat{v}(s,w) $$</p>
+<p>特别地，线性最小二乘法有矩阵解，时间复杂度$O(N^3)$；作为对比，增量方法的复杂度$O(N^2)$.</p>
+<h4 id="2-2-Deep-Q-Networks"><a href="#2-2-Deep-Q-Networks" class="headerlink" title="2.2 Deep Q-Networks"></a>2.2 Deep Q-Networks</h4><p>步骤：<br>(1)根据$\epsilon-greedy$策略采取动作$a_t$<br>(2)将($s_t, a_t, r_{t+1}, s_{t+1}$)存储于数据集D<br>(3)从数据集D中随机抽样一批数据(s,a,r,s’)<br>(4)固定参数$w^-$，计算网络输出Q(s’,a’;$w^-$)<br>(5)目标函数MSE更新网络</p>
+<p>$$ L_i(w_i) = E_{s,a,r,s’~D_i} [(r+ \gamma \underset{a’}{max}\,Q(s’,a’;w_i^-) - Q(s,a;w_i))^2] $$</p>
 
           
         
@@ -2803,473 +3246,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/12/08/RL-Gym/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/08/RL-Gym/" itemprop="url">Gym</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T15:23:23+08:00">
-                2018-12-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  548
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>OpenAI Gym由两部分组成：</p>
-<ul>
-<li>Gym开源库：测试问题集合（environments)，有共享的接口，允许用户设计通用算法</li>
-<li>OpenAI Gym服务： 一个站点和API，允许用户对他们训练的算法进行性能比较</li>
-</ul>
-<h4 id="一般用法"><a href="#一般用法" class="headerlink" title="一般用法"></a>一般用法</h4><p>Gym包括几个系列的仿真环境：</p>
-<ol>
-<li>Classic control, Toy text：小规模任务，用于入门</li>
-<li>Algorithmic：让Agent学习编程中的某些经典算法问题</li>
-<li>Atari：雅达利游戏</li>
-<li>2D and 3D robots: 机器人控制等</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gym</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">'CartPole-v0'</span>)</span><br><span class="line">env.reset()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    env.render()</span><br><span class="line">    env.step(env.action_space.sample()) <span class="comment"># take a random action</span></span><br></pre></td></tr></table></figure>
-<p>gym.make()通过id调用环境；<br>reset()初始化环境变量，重置结束标志；<br>render()将环境变量绘制到屏幕上，非必须，只是为了观察方便；<br>step()采取一步动作，返回动作后的状态、回报等。</p>
-<h6 id="step-函数"><a href="#step-函数" class="headerlink" title="step()函数"></a>step()函数</h6><p>step函数有四个返回值：</p>
-<ol>
-<li>observation (object)：对环境的观测值的组合</li>
-<li>reward (float)：上一步动作的回报</li>
-<li>done (boolean)：episode是否已结束，可由reset重置</li>
-<li>info (dict)：调试信息，但不能用于agent学习过程</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">action = env.action_space.sample()</span><br><span class="line">observation, reward, done, info = env.step(action)</span><br></pre></td></tr></table></figure>
-<h4 id="自定义问题"><a href="#自定义问题" class="headerlink" title="自定义问题"></a>自定义问题</h4><p>除了内置的环境，也可以自定义问题环境。<br>需要实现step(), reset(), render()函数等。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#定义状态空间S</span></span><br><span class="line">self.states=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义动作空间A</span></span><br><span class="line">self.actions=[<span class="string">'n'</span>,<span class="string">'e'</span>,<span class="string">'s'</span>,<span class="string">'w'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义回报函数R</span></span><br><span class="line">self.rewards = dict()</span><br><span class="line">self.rewards[<span class="string">'1_s'</span>] = <span class="number">1.0</span></span><br><span class="line">self.rewards[<span class="string">'3_n'</span>] = <span class="number">-1.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#定义状态转移矩阵T</span></span><br><span class="line">self.t = dict()</span><br><span class="line">self.t[<span class="string">'2_w'</span>] = <span class="number">1</span></span><br><span class="line">self.t[<span class="string">'2_e'</span>] = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#实现step()函数,注意输入输出</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_step</span><span class="params">(self, action)</span>:</span></span><br><span class="line">    <span class="comment">#系统当前状态</span></span><br><span class="line">    state = self.state</span><br><span class="line"></span><br><span class="line">    <span class="comment">#判断系统当前状态是否为终止状态</span></span><br><span class="line">    <span class="keyword">if</span> state <span class="keyword">in</span> self.terminate_states:</span><br><span class="line">        <span class="keyword">return</span> state, <span class="number">0</span>, <span class="keyword">True</span>, &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#将状态和动作组成字典的键值</span></span><br><span class="line">    key = <span class="string">"%d_%s"</span>%(state, action) </span><br><span class="line"></span><br><span class="line">    <span class="comment">#状态转移</span></span><br><span class="line">    <span class="keyword">if</span> key <span class="keyword">in</span> self.t:</span><br><span class="line">        next_state = self.t[key]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        next_state = state</span><br><span class="line">    self.state = next_state</span><br><span class="line"></span><br><span class="line">    <span class="comment">#判断是否终止</span></span><br><span class="line">    is_terminal = <span class="keyword">False</span></span><br><span class="line">    <span class="keyword">if</span> next_state <span class="keyword">in</span> self.terminate_states:</span><br><span class="line">        is_terminal = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#判断回报</span></span><br><span class="line">    <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> self.rewards:</span><br><span class="line">        r = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        r = self.rewards[key]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> next_state, r,is_terminal,&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#实现绘图函数render()</span></span><br><span class="line"><span class="comment">#略</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#实现重置函数reset()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_reset</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.state = self.states[int(random.random() * len(self.states))]</span><br><span class="line">    <span class="keyword">return</span> self.state</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/21/RL-ImportanceSampling/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/21/RL-ImportanceSampling/" itemprop="url">重要性采样</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-21T15:52:59+08:00">
-                2018-11-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  545
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="数学期望"><a href="#数学期望" class="headerlink" title="数学期望"></a>数学期望</h4><h6 id="离散型"><a href="#离散型" class="headerlink" title="离散型"></a>离散型</h6><p>$$ E(x) = \sum_{k=1}^{\infty} x_k p_k $$</p>
-<h6 id="连续型"><a href="#连续型" class="headerlink" title="连续型"></a>连续型</h6><p>$$ E(x) = \int_{-\infty}^{\infty} xf(x) dx $$</p>
-<h4 id="蒙特卡洛积分"><a href="#蒙特卡洛积分" class="headerlink" title="蒙特卡洛积分"></a>蒙特卡洛积分</h4><p>假设有某个函数f(x)，无法直接求出积分<br>$$ \int_{a}^{b} f(x) dx $$</p>
-<p>这个函数在[a,b]上的积分，实际上是函数曲线和x轴围成的区域的面积，记做A。<br>那么在y轴上，必然存在一个位置h，使得h、a、b围成的长方形的面积也等于A。而这个h，就是函数f(x)在作用域[a,b]上的平均值。<br>所以问题转化为如何在[a,b]上求出f(x)的平均值。<br><img src="\img\mc1.jpeg"></p>
-<p>蒙特卡洛方法是，在[a,b]内取大量的随机值$x_i$，计算$f(x_i)$，然后将所有的$f(x_i)$取平均值，作为h的估计值。<br>在实际应用中，只能取到有限的值，因而误差是不可避免的。因而如何使用更少的样本数量，得到误差更小的h值，也是改进的方向之一。<br>用一个公式来概括蒙特卡洛积分：<br>$$ \int_{a}^{b} f(x)dx \approx \frac{b-a}{N} \sum_{i=1}^{N} f(x_i)$$</p>
-<h4 id="重要性采样"><a href="#重要性采样" class="headerlink" title="重要性采样"></a>重要性采样</h4><p>蒙特卡洛积分是在[a,b]上均匀采样，但对于非均匀分布的函数f(x)来说，函数值大的地方对平均值的影响更大，因而我们希望能在函数值大的地方多采集一些数据。<br>例如下图f(x)是高斯分布，两边的值对积分的贡献少，黄色的采样点就可以少一些。<br><img src="/img/mc2.jpeg"></p>
-<p>因而引入概率密度函数$p(x_i)$，作为采样点对最终积分的重要度权重。<br>p(x)有一个重要的特性：<br>$$ \int_{-\infty}^{\infty} p(x)dx = 1 $$<br>于是我们得到新的积分函数：<br>$$ \int_a^b f(x)dx \approx \frac{1}{N} \sum_{i=0}{N} \frac{f(x_i)}{p(x_i)}$$</p>
-<p><img src="/img/ImportanceSampling.png"></p>
-<p>原分布密度P(s)，采样器密度Q(x)，权重<br>$$ w_r = \frac{P^{*}(x^{(r)})}{Q^{*}(x^{(r)})} $$</p>
-<p>Q(x)中x的值低于P(x)的地方，权重将大于1，得到更多的表示；<br>Q(x)中x的值高于P(x)的地方，权重将小于1，降低表示强度。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/17/RL-TDLambda/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/17/RL-TDLambda/" itemprop="url">TD($\lambda$)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-17T09:26:28+08:00">
-                2018-11-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  698
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>TD($\lambda$)中的$\lambda$使用了资格迹(Eligibility Trace)，来考虑过去价值对当前价值的影响，即Backward.</p>
-<h4 id="0-n-step-TD"><a href="#0-n-step-TD" class="headerlink" title="0.n-step TD"></a>0.n-step TD</h4><p>TD方法除了之前介绍的1-step TD之外，还有一系列其他方法：<br><img src="/img/nstepTD.png"></p>
-<p>Return Gt的原定义：<br>$$ G_t = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{T-t-1} R_T $$</p>
-<p>n-step 的定义：<br>$$ G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^n V_{t+n-1}(S_{t+n}) $$</p>
-<p>迭代公式变为：<br>$$ V_{t+n}(S_t) = V_{t+n-1}(S_t) + \alpha[G_{t:t+n} - V_{t+n-1}(S_t)] $$</p>
-<h4 id="1-Forward-lambda-return"><a href="#1-Forward-lambda-return" class="headerlink" title="1.Forward: $\lambda$-return"></a>1.Forward: $\lambda$-return</h4><p>$G_t^{\lambda}$ 将所有n-step returns $G_t^{(n)}$加权，使用权重$(1-\lambda)\lambda^{n-1}$<br>信号强度以速率$\lambda$减弱，因子(1-$\lambda$)是为了使等比数列权重的和为1.<br>$$ G_t^{\lambda} = (1-\lambda)\sum_{n-1}^{\infty} \lambda^{n-1} G_t^{(n)} $$</p>
-<p>迭代公式变为：<br>$$ V(S_t) \leftarrow V(S_t) + \alpha(G_t^{\lambda} - V(S_t)) $$</p>
-<p>由于$G_t^{\lambda}$中包含用将来时刻的回报$R_{t+n}$，因而要等到episode结束才能更新，和MC一样是off-line算法。<br>可以想象成一个人坐在当前状态流上，观察将来状态的回报，因而称作前向视角(Forward)。</p>
-<h4 id="2-Backward-TD-lambda"><a href="#2-Backward-TD-lambda" class="headerlink" title="2.Backward: TD($\lambda$)"></a>2.Backward: TD($\lambda$)</h4><p>TD($\lambda$)相比$\lambda$-return算法有3方面的改进：</p>
-<ul>
-<li>在episode的每一步都会更新，而不用等到结束</li>
-<li>计算过程分布平均，而并非集中在结尾</li>
-<li>适用于连续过程等没有结束的情况</li>
-</ul>
-<p>资格迹$\mathbf{z}$是一个向量，和值函数逼近的参数$\mathbf{w}$等长。<br>$\mathbf{w}$像是长期记忆，记录了整个过程中学到的知识；而$\mathbf{z}$是短期记忆，只记录了前几步的信息，通过影响$\mathbf{w}$的更新来作用于结果。<br>$\mathbf{z}$在episode开始时设置为0，计算方法如下：</p>
-<p>$$\begin{cases}<br>\mathbf{z}_{-1}&amp;\leftarrow 0 \\<br>\mathbf{z}_t&amp;\leftarrow \gamma \lambda \mathbf{z}_{t-1} + \nabla \hat{v}(S_t, \mathbf{w})<br>\end{cases}$$</p>
-<p>其中$\gamma$是折扣因子，而$\lambda$和之前一样是衰减因子。<br>资格迹$\mathbf{z}$记录的是过去$\mathbf{w}$各元素的贡献，所以更新公式变为：<br>$$ \mathbf{w}_{t+1} \leftarrow \mathbf{w}_t + \alpha\delta_t\mathbf{z}_t $$</p>
-<p>其中$\delta_t$是one-step TD error，即$R_{t+1} + \gamma\hat{v}(S_{t+1}, \mathbf{w}_t) + \hat{v}(S_t,\mathbf{w}_t)$.<br>想象一个人坐在当前状态流上，对已经经历过的状态喊话，报告当前状态的回报和TD偏差，所以称作后向视角。</p>
-<p>以Sarsa($\lambda$)为例，$\mathbf{z}$影响的是policy evaluation中$\mathbf{w}$的更新，而在policy improvement中仍然是$\epsilon$-greedy算法。这是一种增量算法，数据按顺序依次进入，每一组数据都会更新参数。<br>而在DQN中，训练数据从数据集里抽样，打破了前后关联性，就用不到资格迹$\mathbf{z}$。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3324,7 +3300,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">317</span>
+                  <span class="site-state-item-count">320</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3426,7 +3402,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">119.9k</span>
+    <span title="Site words total count">121.0k</span>
   
 </div>
 

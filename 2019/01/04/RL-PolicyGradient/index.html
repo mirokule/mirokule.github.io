@@ -82,14 +82,14 @@
 <meta name="description" content="当状态空间或动作空间的维度很高，或者连续时，不容易估算值函数$\hat{Q}(s,a)$。此时可以使用基于策略(policy-based)的搜索方法。策略搜索是将策略参数化，使用线性或非线性(神经网络)函数来表示策略，寻找最优的参数$\theta$来使得回报的期望最大。 优点：  收敛性更好 高维或连续动作空间里更有效 可以学到随机策略  缺点  容易收敛到局部最优解 评估策略时通常低效且高方差">
 <meta name="keywords" content="Machine Learning,Reinforcement Learning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="策略梯度方法">
+<meta property="og:title" content="策略梯度方法Policy Gradient">
 <meta property="og:url" content="http://mirokule.github.io/2019/01/04/RL-PolicyGradient/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
 <meta property="og:description" content="当状态空间或动作空间的维度很高，或者连续时，不容易估算值函数$\hat{Q}(s,a)$。此时可以使用基于策略(policy-based)的搜索方法。策略搜索是将策略参数化，使用线性或非线性(神经网络)函数来表示策略，寻找最优的参数$\theta$来使得回报的期望最大。 优点：  收敛性更好 高维或连续动作空间里更有效 可以学到随机策略  缺点  容易收敛到局部最优解 评估策略时通常低效且高方差">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-14T08:07:01.384Z">
+<meta property="og:updated_time" content="2019-09-06T07:39:05.047Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="策略梯度方法">
+<meta name="twitter:title" content="策略梯度方法Policy Gradient">
 <meta name="twitter:description" content="当状态空间或动作空间的维度很高，或者连续时，不容易估算值函数$\hat{Q}(s,a)$。此时可以使用基于策略(policy-based)的搜索方法。策略搜索是将策略参数化，使用线性或非线性(神经网络)函数来表示策略，寻找最优的参数$\theta$来使得回报的期望最大。 优点：  收敛性更好 高维或连续动作空间里更有效 可以学到随机策略  缺点  容易收敛到局部最优解 评估策略时通常低效且高方差">
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>策略梯度方法 | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>策略梯度方法Policy Gradient | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">策略梯度方法</h1>
+          <h1 class="post-title" itemprop="name headline">策略梯度方法Policy Gradient</h1>
         
 
         <div class="post-meta">
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  826
+                  838
                 </span>
               
 
@@ -365,8 +365,8 @@
 <p>参数$\theta$的梯度就可以写成：<br>$$ \nabla_{\theta} J(\theta) = \sum_{\tau} \nabla_{\theta}P(\tau;\theta) R(\tau) \\<br>= \sum_{\tau} P(\tau;\theta) \frac{\nabla_{\theta}P(\tau;\theta) R(\tau)}{P(\tau;\theta)} \\<br>= \sum_{\tau} P(\tau;\theta) \nabla_{\theta}log\,P(\tau;\theta)R(\tau) \\<br>= E[\nabla_{\theta}log\,P(\tau;\theta) R(\tau)]$$</p>
 <p>最终策略梯度变成了一个期望，就可以用经验平均来估算。即用当前策略$\pi_{\theta}$采样m条轨迹后，用m条轨迹的平均来逼近策略梯度：<br>$$ \nabla_{\theta} J(\theta) = \frac{1}{m} \sum_{i=1}^m \nabla_{\theta} log\,P(\tau;\theta) R(\tau) $$</p>
 <p>从直观上理解，策略梯度会增加高回报路径的概率，减少低回报路径的概率。<br>其中，由于$P(\tau,\theta)=\prod_{t=0}^H P(s_{t+1}|s_t,a_t) \pi(a_t|s_t)$，前半部分P(s;s,a)不含有参数$\theta$可以在求导过程中消掉，所以<br>$$ \nabla_{\theta}log\,P(\tau;\theta) = \sum_{t=0}^H \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) $$</p>
-<h6 id="改进一"><a href="#改进一" class="headerlink" title="改进一"></a>改进一</h6><p>引入基准值b，减小方差<br>$$ \nabla_{\theta} J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^H \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) (R(\tau)-b) $$</p>
-<h6 id="改进二"><a href="#改进二" class="headerlink" title="改进二"></a>改进二</h6><p>对每一条轨迹，梯度都乘以了固定的乘数(R-b)，这实际上是不公平的，比如后发生的动作应该与之前的奖励无关。因此把轨迹的回报(R-b)细分到每个动作的回报($\sum r-b$)，对每个动作$a_t$，只计算t时刻之后的回报:<br>$$ \nabla_{\theta} J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^{H-1} \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) (\sum_{k=t}^{H-1}(r(s_k)-b)) $$</p>
+<h6 id="改进一-基准线baseline"><a href="#改进一-基准线baseline" class="headerlink" title="改进一: 基准线baseline"></a>改进一: 基准线baseline</h6><p>引入基准值b，减小方差<br>$$ \nabla_{\theta} J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^H \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) (R(\tau)-b) $$</p>
+<h6 id="改进二-因果关系casuality"><a href="#改进二-因果关系casuality" class="headerlink" title="改进二: 因果关系casuality"></a>改进二: 因果关系casuality</h6><p>对每一条轨迹，梯度都乘以了固定的乘数(R-b)，这实际上是不公平的，比如后发生的动作应该与之前的奖励无关。因此把轨迹的回报(R-b)细分到每个动作的回报($\sum r-b$)，对每个动作$a_t$，只计算t时刻之后的回报(reward to go):<br>$$ \nabla_{\theta} J(\theta) = \frac{1}{m} \sum_{i=1}^m \sum_{t=0}^{H-1} \nabla_{\theta}log\,\pi_{\theta}(a_t|s_t) (\sum_{k=t}^{H-1}(r(s_k)-b)) $$</p>
 <h4 id="Off-Policy"><a href="#Off-Policy" class="headerlink" title="Off-Policy"></a>Off-Policy</h4><p>使用采集到的轨迹数据计算梯度并更新参数$\theta$后，策略$\pi_{\theta}$随之改变。重新采集数据需要耗费大量的资源，因而在off-policy策略里，使用两套参数：固定$\theta’$，用$\pi_{\theta’}$采集的数据来更新$\theta$.<br>两套策略对应的数据分布不同，就涉及到重要性采样：<br>$$ E_{x\sim p(x)}f(x) = \int p(x)f(x) \\<br>= \int q(x) \frac{p(x)}{q(x)}f(x) \\<br>= E_{x\sim q(x)} \frac{p(x)}{q(x)} f(x) $$</p>
 <p>虽然期望相等，但是方差并不相同。使得在采样数据不足时，结果可能有较大波动。<br>On-Policy:<br>$$ \nabla_{\theta} J(\theta) = E_{\tau\sim p(\tau;\theta)}[\nabla_{\theta}log\,P(\tau;\theta) R(\tau)]$$<br>Off-Policy:<br>$$ \nabla_{\theta} J(\theta) = E_{\tau\sim p(\tau;\theta’)}[\frac{P(\tau;\theta)}{P(\tau;\theta’)}\nabla_{\theta}log\,P(\tau;\theta) R(\tau)]$$</p>
 
@@ -494,7 +494,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">317</span>
+                  <span class="site-state-item-count">320</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -578,7 +578,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#策略梯度"><span class="nav-number">1.</span> <span class="nav-text">策略梯度</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#改进一"><span class="nav-number">1.0.1.</span> <span class="nav-text">改进一</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#改进二"><span class="nav-number">1.0.2.</span> <span class="nav-text">改进二</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Off-Policy"><span class="nav-number">2.</span> <span class="nav-text">Off-Policy</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#策略梯度"><span class="nav-number">1.</span> <span class="nav-text">策略梯度</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#改进一-基准线baseline"><span class="nav-number">1.0.1.</span> <span class="nav-text">改进一: 基准线baseline</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#改进二-因果关系casuality"><span class="nav-number">1.0.2.</span> <span class="nav-text">改进二: 因果关系casuality</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Off-Policy"><span class="nav-number">2.</span> <span class="nav-text">Off-Policy</span></a></li></ol></div>
             
 
           </div>
@@ -612,7 +612,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">119.9k</span>
+    <span title="Site words total count">121.0k</span>
   
 </div>
 

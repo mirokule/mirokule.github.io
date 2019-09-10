@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s作为函数的输入，s对应的值v作为函数的输出。值函数的内核有不同的选择：  线性：线性函数，$\hat{v}=\theta^Ts$ 非线性：神经网络  监督学习描述之前的方法中，每轮更新的是当前状态的$V_{\pi}(s)$">
+<meta name="description" content="当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s(或者(s,a))作为输入，值函数v或q作为输出。 值函数的内核有不同的选择：  线性：线性函数，$\hat{v}=\theta^Ts$ 非线性：神经网络  1.增量方法 Incremental Methods1.1 监督">
 <meta name="keywords" content="Machine Learning,Reinforcement Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="值函数逼近">
 <meta property="og:url" content="http://mirokule.github.io/2018/12/28/RL-Approximation/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s作为函数的输入，s对应的值v作为函数的输出。值函数的内核有不同的选择：  线性：线性函数，$\hat{v}=\theta^Ts$ 非线性：神经网络  监督学习描述之前的方法中，每轮更新的是当前状态的$V_{\pi}(s)$">
+<meta property="og:description" content="当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s(或者(s,a))作为输入，值函数v或q作为输出。 值函数的内核有不同的选择：  线性：线性函数，$\hat{v}=\theta^Ts$ 非线性：神经网络  1.增量方法 Incremental Methods1.1 监督">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-28T03:37:40.763Z">
+<meta property="og:updated_time" content="2019-06-30T01:34:14.418Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="值函数逼近">
-<meta name="twitter:description" content="当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s作为函数的输入，s对应的值v作为函数的输出。值函数的内核有不同的选择：  线性：线性函数，$\hat{v}=\theta^Ts$ 非线性：神经网络  监督学习描述之前的方法中，每轮更新的是当前状态的$V_{\pi}(s)$">
+<meta name="twitter:description" content="当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s(或者(s,a))作为输入，值函数v或q作为输出。 值函数的内核有不同的选择：  线性：线性函数，$\hat{v}=\theta^Ts$ 非线性：神经网络  1.增量方法 Incremental Methods1.1 监督">
 
 
 
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  604
+                  752
                 </span>
               
 
@@ -349,29 +349,34 @@
       
 
       
-        <p>当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。<br>此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s作为函数的输入，s对应的值v作为函数的输出。<br>值函数的内核有不同的选择：</p>
+        <p>当状态空间的维数很大，或者为连续空间时，值函数无法用一张表格来表示，不能单独计算出每个值。<br>此时用函数逼近的方法来表示值函数，写作$\hat{v}(s,\theta)$。即把状态s(或者(s,a))作为输入，值函数v或q作为输出。</p>
+<p>值函数的内核有不同的选择：</p>
 <ul>
 <li>线性：线性函数，$\hat{v}=\theta^Ts$</li>
 <li>非线性：神经网络</li>
 </ul>
-<h4 id="监督学习描述"><a href="#监督学习描述" class="headerlink" title="监督学习描述"></a>监督学习描述</h4><p>之前的方法中，每轮更新的是当前状态的$V_{\pi}(s)$或者$Q(s,a)$；现在我们将其转化为监督学习问题，要从数据中学习的是$\theta$，而更新$\theta$会使得所有状态的$\hat{v}(s,\theta)$改变。<br>训练的目标函数为：<br>$$ \underset{\theta}{argmin}(q(s,a)-\hat{q}(s,a,\theta))^2$$</p>
+<h3 id="1-增量方法-Incremental-Methods"><a href="#1-增量方法-Incremental-Methods" class="headerlink" title="1.增量方法 Incremental Methods"></a>1.增量方法 Incremental Methods</h3><h4 id="1-1-监督学习描述"><a href="#1-1-监督学习描述" class="headerlink" title="1.1 监督学习描述"></a>1.1 监督学习描述</h4><p>用监督学习方法来描述问题，要从数据中学习的是$\theta$，而更新$\theta$会使得所有状态的$\hat{v}(s,\theta)$改变。<br>训练的目标函数为：<br>$$ \underset{\theta}{argmin}(q(s,a)-\hat{q}(s,a,\theta))^2$$</p>
+<p>参数的随机梯度更新为：<br>$$ \theta_{t+1} = \theta_t + \alpha[U_t - \hat{v}(S_t,\theta_t)]\nabla\hat{v}(S_t,\theta_t)$$</p>
 <p>训练数据可以写作$(S_t,U_t)$，其中$U_t$是：</p>
 <ul>
 <li>MC: $G_t$</li>
-<li>TD(0): $r+\gamma V(s’,a’)$</li>
-<li>TD($\lambda$): $G_t^{\lambda}$</li>
+<li>TD(0): $R+\gamma \hat{v}(s’,a’)$</li>
+<li>TD($\lambda$): $G_t^{\lambda}$(forward)</li>
 </ul>
-<p>故参数的随机梯度更新为：<br>$$ \theta_{t+1} = \theta_t + \alpha[U_t - \hat{v}(S_t,\theta_t)]\nabla\hat{v}(S_t,\theta_t)$$</p>
 <p>对于TD(0)方法，目标函数中也包含参数$\theta$，但在求梯度时忽略$\theta$对目标函数$U_t$的影响。这种方法不是完全的梯度法，因此也称为半梯度法。</p>
-<h4 id="收敛性"><a href="#收敛性" class="headerlink" title="收敛性"></a>收敛性</h4><p>训练神经网络时，对数据的假设是<strong>独立同分布</strong>。<br>而强化学习过程采集到的数据是<strong>关联</strong>的，用于训练神经网络并不稳定，因而神经网络往往是不收敛的。</p>
-<h4 id="基函数"><a href="#基函数" class="headerlink" title="基函数"></a>基函数</h4><p>进一步地，在线性逼近中，值函数可以写作：<br>$$ \hat{v}(s,\theta) = \theta^T\phi(s) $$</p>
+<h4 id="1-2-基函数"><a href="#1-2-基函数" class="headerlink" title="1.2 基函数"></a>1.2 基函数</h4><p>在线性逼近中，值函数可以写作：<br>$$ \hat{v}(s,\theta) = \theta^T\phi(s) $$</p>
 <p>其中$\phi(s)$是状态s的特征函数，也称为基函数。<br>常见的基函数包括：</p>
 <ul>
 <li>多项式基函数：$s_1, s_2, s_1s_2, s_1^2, s_2^3,\cdots$</li>
 <li>傅里叶基函数：$cos(i\pi s)$</li>
 <li>径向基函数：$exp(-\frac{\left | s-c_i \right |^2}{2\sigma_i^2})$</li>
 </ul>
-<h4 id="批量更新"><a href="#批量更新" class="headerlink" title="批量更新"></a>批量更新</h4><p>前面讨论的都是根据单条数据来更新，虽然计算简单，但样本数据利用率不高。<br>批量更新的方法是将单条数据保留形成数据集，对每个数据集找到最好的拟合函数。<br>可以使用线性最小二乘法逼近：<br>$$ LS(\theta) = \sum_{t=1}^T(v_t^{\pi} - \hat{v}_t^{\pi}(s_t,\theta))^2 $$<br>此时线性模型的参数更新量为：<br>$$ \Delta\theta = \alpha\sum_{t=1}^T[v_t^{\pi} - \theta^T\phi(s_t)]\phi(s_t) $$</p>
+<h4 id="1-3-收敛性"><a href="#1-3-收敛性" class="headerlink" title="1.3 收敛性"></a>1.3 收敛性</h4><p>训练神经网络时，对数据的假设是<strong>独立同分布</strong>。<br>而强化学习过程采集到的数据是<strong>关联</strong>的，用于训练神经网络并不稳定，因而神经网络往往是不收敛的。</p>
+<h3 id="2-批量方法-Batch-Methods"><a href="#2-批量方法-Batch-Methods" class="headerlink" title="2.批量方法 Batch Methods"></a>2.批量方法 Batch Methods</h3><p>增量方法是根据单条数据来更新，虽然计算简单，但样本数据利用率不高。<br>批量更新的方法是将单条数据保留形成数据集，对每个数据集找到最好的拟合函数。<br>打破了增量方法中的数据关联性，因而收敛效果更好。</p>
+<h4 id="2-1-最小二乘法"><a href="#2-1-最小二乘法" class="headerlink" title="2.1 最小二乘法"></a>2.1 最小二乘法</h4><p>使用最小二乘法使拟合函数逼近：<br>$$ LS(w) = \sum_{t=1}^T(v_t^{\pi} - \hat{v}(s_t,w))^2 $$<br>此时线性模型的参数更新量为：<br>$$ \Delta w = \alpha [v^{\pi} - \hat{v}(s, w)] \nabla_w \hat{v}(s,w) $$</p>
+<p>特别地，线性最小二乘法有矩阵解，时间复杂度$O(N^3)$；作为对比，增量方法的复杂度$O(N^2)$.</p>
+<h4 id="2-2-Deep-Q-Networks"><a href="#2-2-Deep-Q-Networks" class="headerlink" title="2.2 Deep Q-Networks"></a>2.2 Deep Q-Networks</h4><p>步骤：<br>(1)根据$\epsilon-greedy$策略采取动作$a_t$<br>(2)将($s_t, a_t, r_{t+1}, s_{t+1}$)存储于数据集D<br>(3)从数据集D中随机抽样一批数据(s,a,r,s’)<br>(4)固定参数$w^-$，计算网络输出Q(s’,a’;$w^-$)<br>(5)目标函数MSE更新网络</p>
+<p>$$ L_i(w_i) = E_{s,a,r,s’~D_i} [(r+ \gamma \underset{a’}{max}\,Q(s’,a’;w_i^-) - Q(s,a;w_i))^2] $$</p>
 
       
     </div>
@@ -497,7 +502,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">317</span>
+                  <span class="site-state-item-count">320</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -581,7 +586,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#监督学习描述"><span class="nav-number">1.</span> <span class="nav-text">监督学习描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#收敛性"><span class="nav-number">2.</span> <span class="nav-text">收敛性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基函数"><span class="nav-number">3.</span> <span class="nav-text">基函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#批量更新"><span class="nav-number">4.</span> <span class="nav-text">批量更新</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-增量方法-Incremental-Methods"><span class="nav-number">1.</span> <span class="nav-text">1.增量方法 Incremental Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-监督学习描述"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 监督学习描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-基函数"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 基函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-收敛性"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 收敛性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-批量方法-Batch-Methods"><span class="nav-number">2.</span> <span class="nav-text">2.批量方法 Batch Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-最小二乘法"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 最小二乘法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-Deep-Q-Networks"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Deep Q-Networks</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -615,7 +620,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">119.9k</span>
+    <span title="Site words total count">121.0k</span>
   
 </div>
 

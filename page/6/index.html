@@ -262,6 +262,490 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-ActivationFunction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/10/DL-ActivationFunction/" itemprop="url">激活函数(Activation Function)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T07:27:43+08:00">
+                2018-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  444
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>激活函数用于在学习器中引入非线性因素。<br>$$ Y = Activation(\Sigma(weight \ast input) + bias) $$<br>不引入非线性因素的神经网络，本质上仍是一个线性回归模型。</p>
+<p>激活函数主要有以下几种：</p>
+<ul>
+<li>sigmoid: 适合分类器</li>
+<li>tanh: sigmoid改进版</li>
+<li>ReLU: 大多数情况下适用，只能在隐藏层中使用</li>
+<li>Leaky ReLU: 避免死神经元</li>
+</ul>
+<p><strong>选择经验</strong><br>选择激活函数时，可以先从<strong>ReLU</strong>开始。<br>如果ReLU没有提供最优结果，再尝试其他激活函数。</p>
+<h4 id="1-sigmoid"><a href="#1-sigmoid" class="headerlink" title="1. sigmoid"></a>1. sigmoid</h4><p>曾将广泛使用的激活函数，由于自身缺陷，目前已很少使用。</p>
+<ul>
+<li>当输入远离原点时，梯度太小；多层神经网络中，太小的各层梯度叠加后会消失，使学习速度缓慢</li>
+<li>输出不以0为中心</li>
+<li>要进行指数运算</li>
+</ul>
+<p><img src="/img/sigmoid.png"><br>$$ sigmoid(x) = \frac{1}{1+e^{-x}} $$<br>目前仅在将值分类到特定类别时使用，比如最终输出$y\in(0,1)$的网络中的最后一层。</p>
+<h4 id="2-tanh"><a href="#2-tanh" class="headerlink" title="2. tanh"></a>2. tanh</h4><p>tanh是sigmoid的一个放大版本，梯度比sigmoid更陡。<br>tanh解决了所有值符号相同的问题，输出区间(-1,1)，为0为中心。<br><img src="/img/tanh.png"></p>
+<p>$$ tanh(x) = 2\ast sigmoid(2x) - 1 $$<br>$$ tanh(x) = \frac{2}{1+e^{-2x}} - 1 $$</p>
+<h4 id="3-ReLU"><a href="#3-ReLU" class="headerlink" title="3. ReLU"></a>3. ReLU</h4><p>ReLU是使用最广泛的激活函数。<br>最大的优点在于不会同时激活所有的神经元，这种稀疏性使其变得高效且易于计算。<br><img src="/img/relu.png"></p>
+<p>$$ ReLU(x) = max(0, x) $$</p>
+<h4 id="4-Leaky-ReLU-PReLU"><a href="#4-Leaky-ReLU-PReLU" class="headerlink" title="4. Leaky ReLU / PReLU"></a>4. Leaky ReLU / PReLU</h4><p>在ReLU中，当x小于0时梯度为0，使得该区域的神经元死亡。<br>为了解决这个问题，用斜线代替水平线，去除零梯度。<br><img src="/img/prelu.png"></p>
+<p>$$ PReLU(x) = ax\; for \; x &lt; 0 $$<br>$$ PReLU(x) = x\; for \; x \geq 0 $$</p>
+<p>这里a是一个很小的值，比如0.01.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/10/DL-GradientChecking/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/10/DL-GradientChecking/" itemprop="url">梯度检验(GradientChecking)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T06:52:46+08:00">
+                2018-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  419
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>反向传播算法中，梯度的推导公式容易产生错误。此时需要从定义出发，检验梯度的计算式是否正确。</p>
+<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>根据导数的数学定义：<br>$$ \frac{dJ}{d\theta} = \lim_{\epsilon\rightarrow 0}\frac{J(\theta+\epsilon)-J(\theta-\epsilon)}{2\epsilon} $$<br>可以推导出梯度检验的公式：<br>$$ g(\theta) \approx \frac{}{}\frac{J(\theta+\epsilon)-J(\theta-\epsilon)}{2\epsilon} $$</p>
+<p>在实际应用中，通常将$\epsilon$设为一个很小的常量，比如在$10^{-4}$；<br>通过将后向传播算出的梯度值与梯度检验算出的梯度值比较，可以验证后向传播中的计算式是否有误。<br>$$ difference = \frac {\mid\mid grad - gradapprox \mid\mid_2}{\mid\mid grad \mid\mid_2 + \mid\mid gradapprox \mid\mid_2} $$</p>
+<h4 id="神经网络的梯度检验"><a href="#神经网络的梯度检验" class="headerlink" title="神经网络的梯度检验"></a>神经网络的梯度检验</h4><p>在神经网络中，需要验证梯度的参数W、b是矩阵而非标量，此时可将矩阵映射为一维向量，然后对向量中的每个元素循环计算。<br><img src="/img/dlGradientCheck.png"><br><img src="/img/dlModel.png"></p>
+<h6 id="计算过程"><a href="#计算过程" class="headerlink" title="计算过程"></a>计算过程</h6><ul>
+<li><code>J_plus[i]</code>:<ol>
+<li>Set $\theta^{+}$ to <code>np.copy(parameters_values)</code></li>
+<li>Set $\theta^{+}_i$ to $\theta^{+}_i + \varepsilon$</li>
+<li>Calculate $J^{+}_i$ using to <code>forward_propagation_n(x, y, vector_to_dictionary(</code>$\theta^{+}$ <code>))</code>.     </li>
+</ol>
+</li>
+<li><code>J_minus[i]</code>: do the same thing with $\theta^{-}$</li>
+<li>$gradapprox[i] = \frac{J^{+}_i - J^{-}_i}{2 \varepsilon}$</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_parameters):</span><br><span class="line">    <span class="comment"># Compute J_plus[i]. Inputs: "parameters_values, epsilon". Output = "J_plus[i]".</span></span><br><span class="line">    thetaplus = np.copy(parameters_values)                                      </span><br><span class="line">    thetaplus[i][<span class="number">0</span>] = parameters_values[i][<span class="number">0</span>] + epsilon                                </span><br><span class="line">    J_plus[i], _ = forward_propagation_n(X, Y, vector_to_dictionary(thetaplus))                               </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute J_minus[i]. Inputs: "parameters_values, epsilon". Output = "J_minus[i]".</span></span><br><span class="line">    thetaminus = np.copy(parameters_values)                                 </span><br><span class="line">    thetaminus[i][<span class="number">0</span>] = parameters_values[i][<span class="number">0</span>] - epsilon                           </span><br><span class="line">    J_minus[i], _ = forward_propagation_n(X, Y, vector_to_dictionary(thetaminus))                                </span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute gradapprox[i]</span></span><br><span class="line">    gradapprox[i] = (J_plus[i] - J_minus[i]) / (<span class="number">2</span> * epsilon)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Compare gradapprox to backward propagation gradients by computing difference.</span></span><br><span class="line">numerator = np.linalg.norm(grad - gradapprox)                                           </span><br><span class="line">denominator = np.linalg.norm(grad) + np.linalg.norm(gradapprox)                                         </span><br><span class="line">difference = numerator / denominator</span><br></pre></td></tr></table></figure>
+<h6 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h6><p>Gradient Checking计算过程较慢，当验证公式无误后应关闭，不参加常规的训练过程。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/08/DL-Model/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/08/DL-Model/" itemprop="url">深度学习算法流程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-08T15:19:41+08:00">
+                2018-04-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  275
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>狭义的深度学习是指有很多隐藏层，每层有很多节点的神经网络。</p>
+<h4 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h4><p><img src="/img/deepLearning.png"></p>
+<ol>
+<li>初始化参数$W,b$<ul>
+<li>$W^{[l]}.shape = (n^{[l]}, n^{[l-1]})$</li>
+<li>$b^{[l]}.shape = (n^{[1]}, 1))$</li>
+</ul>
+</li>
+<li>前向传播：从前向后逐层计算$A^{[l]}$，缓存各层中间结果$W^{[l]},b^{[l]},Z^{[l]}$<ul>
+<li>$Z^{[l]} = W^{[l]}A^{[l-1]} + b^{[l]}$</li>
+<li>$A^{[l]} = g(Z^{[l]})$</li>
+</ul>
+</li>
+<li>计算损失函数：<br>$$cost(A^{[L]}, Y) = -\frac{1}{m}\sum_{i=1}^{m}(y^{(i)}log(a^{[L]i}) + (1-y^{i})log(1-a^{[L]i}))$$</li>
+<li>后向传播：从后向前逐层计算偏导数$dA^{[l]}, dZ^{[l]}, dW^{[l]}, db^{[l]}$<ul>
+<li>$dZ^{[l]} = dA^{[l]}\ast g’(Z^{[l]})$</li>
+<li>$dW^{[l]} = \frac{1}{m}dZ^{[l]}A^{[l-1]T}$</li>
+<li>$db^{[l]} = \frac{1}{m}\sigma_{i=1}^{m}dZ^{[l]i}$</li>
+<li>$dA^{[l-1]} = W^{[l]T}dZ^{[l]}$</li>
+</ul>
+</li>
+<li><p>更新参数：</p>
+<ul>
+<li>$W^{[l]}=W^{[l]}-\alpha\,dW^{[l]}$</li>
+<li>$b^{[l]}=b^{[l]}-\alpha\,db^{[l]}$</li>
+</ul>
+</li>
+<li><p>重复2-5，直到$cost(A^{[L]}, Y)$不再减少或满足要求</p>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 主循环</span></span><br><span class="line">parameters = initialize_parameters_deep(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="comment"># Forward propagation: [LINEAR -&gt; RELU]*(L-1) -&gt; LINEAR -&gt; SIGMOID.</span></span><br><span class="line">    AL, caches = L_model_forward(X, parameters)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute cost.</span></span><br><span class="line">    cost = compute_cost(AL, Y)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Backward propagation.</span></span><br><span class="line">    grads = L_model_backward(AL, Y, caches)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># Update parameters.</span></span><br><span class="line">    parameters = update_parameters(parameters, grads, learning_rate)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/07/Python-NumPy-Multiply/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3212,490 +3696,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/26/Python-sklearn-Split/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/26/Python-sklearn-Split/" itemprop="url">交叉验证Split划分</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-26T11:26:06+08:00">
-                2018-03-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  446
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1-KFold"><a href="#1-KFold" class="headerlink" title="1.KFold"></a>1.KFold</h4><p>class sklearn.model_selection.KFold(n_splits=3, shuffle=False, random_state=None)<br>将所有数据划成k份，使用k-1份训练，保留1份用于验证。<br>通常建议使用5份或10份；当k=n时，等同于Leave One Out。</p>
-<p>参数</p>
-<ul>
-<li>n_splits: number of folds，最小2</li>
-<li>shuffle: 划分前是否Shuffle</li>
-<li>random_state: 当shuffle==True时使用的种子</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>get_n_splits(X=None, y=None, groups=None): number of splits</li>
-<li>split(X, y=None, groups=None): generate indices to split data into training and test set</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> KFold</span><br><span class="line"></span><br><span class="line">kf = KFold(n_splits=<span class="number">2</span>)</span><br><span class="line">kf.split(data)</span><br><span class="line">kf.get_n_splits(data)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环</span></span><br><span class="line"><span class="keyword">for</span> train_index, test_index <span class="keyword">in</span> kf.split(X):</span><br><span class="line">	print(<span class="string">"Train:"</span>, train_index, <span class="string">"Test:"</span>, test_index)</span><br><span class="line"><span class="comment"># TRAIN:[2 3], TEST:[0,1]</span></span><br><span class="line"><span class="comment"># TRAIN:[0 1], TEST:[2,3]</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="2-Repeated-KFold"><a href="#2-Repeated-KFold" class="headerlink" title="2.Repeated KFold"></a>2.Repeated KFold</h4><p>class sklearn.model_selection.RepeatedKFold(n_splits=5, n_repeats=10, random_state=None)<br>将KFold重复n次，每次可以生成不同的划分。</p>
-<p>参数</p>
-<ul>
-<li>n_splits: number of folds</li>
-<li>n_repeats: number of times repeated</li>
-<li>random_state</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>get_n_splits(X=None, y=None, groups=None)</li>
-<li>split(X, y=None, groups=None)</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> RepeatedKFold</span><br><span class="line">rkf = RepeatedKFold(n_splits=<span class="number">2</span>, n_repeats=<span class="number">2</span>, random_state=<span class="number">12313</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="3-ShuffleSplit"><a href="#3-ShuffleSplit" class="headerlink" title="3.ShuffleSplit"></a>3.ShuffleSplit</h4><p>class sklearn.model_selection.ShuffleSplit(n_splits=10, test_size=’default’, train_size=None, random_state=None)<br>可以分别指定splits和test_size，样本shuffle后再划分。<br>和KFold相比，重复次数和划分方式实现了解耦。</p>
-<p>参数</p>
-<ul>
-<li>n_splits: number of re-shuffling &amp; splitting </li>
-<li>test_size: 如果train_size没有指定，则默认0.1</li>
-<li>train_size: (0.0~1.0)，或者用整数表示的样本数</li>
-<li>random_state:</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>get_n_splits(X=None, y=None, groups=None)</li>
-<li>split(X, y=None, groups=None)</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> ShuffleSplit</span><br><span class="line">ss = ShuffleSplit(n_splits=<span class="number">3</span>, test_size=<span class="number">0.25</span>, random_state=<span class="number">0</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="4-Leave-One-Out-LOO"><a href="#4-Leave-One-Out-LOO" class="headerlink" title="4.Leave One Out(LOO)"></a>4.Leave One Out(LOO)</h4><p>每次使用n-1个样本训练模型，用剩余的1个样本验证。<br>每次训练出的模型差别不大，测试结果的波动较大。<br>通常不如划分为5份或10份。</p>
-<h4 id="5-Leave-P-Out-LPO"><a href="#5-Leave-P-Out-LPO" class="headerlink" title="5.Leave P Out(LPO)"></a>5.Leave P Out(LPO)</h4><p>每次保留p个样本用于验证，使用n-p个样本训练。<br>与LOO和KFold的区别在于，p&gt;1时测试集可能是<strong>重复</strong>的。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/25/Python-NumPy-Random/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/25/Python-NumPy-Random/" itemprop="url">Numpy.random.rand</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T11:24:54+08:00">
-                2018-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  265
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="numpy-random-rand"><a href="#numpy-random-rand" class="headerlink" title="numpy.random.rand()"></a>numpy.random.rand()</h4><p>生成<strong>[0,1)</strong>之间的随机浮点数或N维浮点数组<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.rand() <span class="comment">#float, 1个[0,1)之间的浮点数</span></span><br><span class="line">np.random.rand(<span class="number">4</span>) <span class="comment">#ndarray, 长度为4的一维数组</span></span><br><span class="line">np.random.rand(<span class="number">2</span>,<span class="number">3</span>) <span class="comment">#ndarray, 2*3的二维数组</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="numpy-random-randn"><a href="#numpy-random-randn" class="headerlink" title="numpy.random.randn()"></a>numpy.random.randn()</h4><p>生成<strong>正态分布</strong>的随机浮点数或N维浮点数组<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.randn() <span class="comment">#1个随机数</span></span><br><span class="line">np.random.randn(<span class="number">5</span>) <span class="comment">#长度为5的一维数组</span></span><br><span class="line">np.random.randn(<span class="number">2</span>,<span class="number">3</span>) <span class="comment">#2*3的二维数组</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="numpy-random-standard-normal-size-None"><a href="#numpy-random-standard-normal-size-None" class="headerlink" title="numpy.random.standard_normal(size=None)"></a>numpy.random.standard_normal(size=None)</h4><p>生成<strong>标准正态分布</strong>的随机浮点数或N维浮点数组<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.standard_normal(<span class="number">2</span>)</span><br><span class="line">np.random.standard_normal((<span class="number">2</span>,<span class="number">3</span>))</span><br><span class="line">np.random.standard_normal([<span class="number">2</span>,<span class="number">3</span>])</span><br></pre></td></tr></table></figure></p>
-<h4 id="numpy-random-randint-low-high-None-size-None-dtype-’l’"><a href="#numpy-random-randint-low-high-None-size-None-dtype-’l’" class="headerlink" title="numpy.random.randint(low, high=None, size=None, dtype=’l’)"></a>numpy.random.randint(low, high=None, size=None, dtype=’l’)</h4><p>若high不为None，取[low, high)之间随机整数；<br>若high为None，取[0,low)之间随机整数。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.random.randint(<span class="number">2</span>) <span class="comment">#1个[0,2)之间的随机整数</span></span><br><span class="line">np.random.randint(<span class="number">2</span>, size=<span class="number">5</span>) <span class="comment">#长度为5的随机数组，取值范围[0,2)</span></span><br><span class="line">np.random.randint(<span class="number">2</span>,<span class="number">6</span>) <span class="comment">#1个[2,6)之间的随机整数</span></span><br><span class="line">np.random.randint(<span class="number">2</span>,<span class="number">6</span>,(<span class="number">2</span>,<span class="number">3</span>)) <span class="comment">#2*3的二维数组，取值范围[2,6)</span></span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/25/Python-pandas-Type/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/25/Python-pandas-Type/" itemprop="url">pandas类型转换</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-25T11:01:42+08:00">
-                2018-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  97
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="dtypes"><a href="#dtypes" class="headerlink" title="dtypes"></a>dtypes</h4><p>pandas主要使用的数据类型包括：</p>
-<ul>
-<li>float</li>
-<li>int</li>
-<li>bool</li>
-<li>datetime</li>
-<li>timedelta</li>
-<li>category</li>
-<li>object</li>
-</ul>
-<h4 id="AsType"><a href="#AsType" class="headerlink" title="AsType"></a>AsType</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">DataFrame.astype(dtype, copy=<span class="keyword">True</span>, errors=<span class="string">'raise'</span>, **kwargs)</span><br><span class="line">Series.astype(dtype, copy=<span class="keyword">True</span>, errors=<span class="string">'raise'</span>, **kwargs)</span><br></pre></td></tr></table></figure>
-<p>参数</p>
-<ul>
-<li>dtype: 单个类型(numpy.dtype, Python type)或以字典表示的多个类型</li>
-<li>copy: 默认True，返回拷贝</li>
-<li>errors: {‘raise’, ‘ignore’}</li>
-<li>raise_on_error: 废弃</li>
-<li>kwargs: keyword参数</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>casted:</li>
-</ul>
-<h4 id="其他转换方法"><a href="#其他转换方法" class="headerlink" title="其他转换方法"></a>其他转换方法</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pandas.to_numeric(arg, error=<span class="string">'raise'</span>, downcast=<span class="keyword">None</span>)</span><br><span class="line">pandas.to_datetime()</span><br><span class="line">pandas.to_timedelta()</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3750,7 +3750,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">317</span>
+                  <span class="site-state-item-count">320</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3852,7 +3852,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">119.9k</span>
+    <span title="Site words total count">121.0k</span>
   
 </div>
 

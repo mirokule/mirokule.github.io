@@ -262,6 +262,481 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/12/08/RL-Gym/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/08/RL-Gym/" itemprop="url">Gym</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-08T15:23:23+08:00">
+                2018-12-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  548
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>OpenAI Gym由两部分组成：</p>
+<ul>
+<li>Gym开源库：测试问题集合（environments)，有共享的接口，允许用户设计通用算法</li>
+<li>OpenAI Gym服务： 一个站点和API，允许用户对他们训练的算法进行性能比较</li>
+</ul>
+<h4 id="一般用法"><a href="#一般用法" class="headerlink" title="一般用法"></a>一般用法</h4><p>Gym包括几个系列的仿真环境：</p>
+<ol>
+<li>Classic control, Toy text：小规模任务，用于入门</li>
+<li>Algorithmic：让Agent学习编程中的某些经典算法问题</li>
+<li>Atari：雅达利游戏</li>
+<li>2D and 3D robots: 机器人控制等</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gym</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">'CartPole-v0'</span>)</span><br><span class="line">env.reset()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    env.render()</span><br><span class="line">    env.step(env.action_space.sample()) <span class="comment"># take a random action</span></span><br></pre></td></tr></table></figure>
+<p>gym.make()通过id调用环境；<br>reset()初始化环境变量，重置结束标志；<br>render()将环境变量绘制到屏幕上，非必须，只是为了观察方便；<br>step()采取一步动作，返回动作后的状态、回报等。</p>
+<h6 id="step-函数"><a href="#step-函数" class="headerlink" title="step()函数"></a>step()函数</h6><p>step函数有四个返回值：</p>
+<ol>
+<li>observation (object)：对环境的观测值的组合</li>
+<li>reward (float)：上一步动作的回报</li>
+<li>done (boolean)：episode是否已结束，可由reset重置</li>
+<li>info (dict)：调试信息，但不能用于agent学习过程</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">action = env.action_space.sample()</span><br><span class="line">observation, reward, done, info = env.step(action)</span><br></pre></td></tr></table></figure>
+<h4 id="自定义问题"><a href="#自定义问题" class="headerlink" title="自定义问题"></a>自定义问题</h4><p>除了内置的环境，也可以自定义问题环境。<br>需要实现step(), reset(), render()函数等。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#定义状态空间S</span></span><br><span class="line">self.states=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义动作空间A</span></span><br><span class="line">self.actions=[<span class="string">'n'</span>,<span class="string">'e'</span>,<span class="string">'s'</span>,<span class="string">'w'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义回报函数R</span></span><br><span class="line">self.rewards = dict()</span><br><span class="line">self.rewards[<span class="string">'1_s'</span>] = <span class="number">1.0</span></span><br><span class="line">self.rewards[<span class="string">'3_n'</span>] = <span class="number">-1.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#定义状态转移矩阵T</span></span><br><span class="line">self.t = dict()</span><br><span class="line">self.t[<span class="string">'2_w'</span>] = <span class="number">1</span></span><br><span class="line">self.t[<span class="string">'2_e'</span>] = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#实现step()函数,注意输入输出</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_step</span><span class="params">(self, action)</span>:</span></span><br><span class="line">    <span class="comment">#系统当前状态</span></span><br><span class="line">    state = self.state</span><br><span class="line"></span><br><span class="line">    <span class="comment">#判断系统当前状态是否为终止状态</span></span><br><span class="line">    <span class="keyword">if</span> state <span class="keyword">in</span> self.terminate_states:</span><br><span class="line">        <span class="keyword">return</span> state, <span class="number">0</span>, <span class="keyword">True</span>, &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#将状态和动作组成字典的键值</span></span><br><span class="line">    key = <span class="string">"%d_%s"</span>%(state, action) </span><br><span class="line"></span><br><span class="line">    <span class="comment">#状态转移</span></span><br><span class="line">    <span class="keyword">if</span> key <span class="keyword">in</span> self.t:</span><br><span class="line">        next_state = self.t[key]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        next_state = state</span><br><span class="line">    self.state = next_state</span><br><span class="line"></span><br><span class="line">    <span class="comment">#判断是否终止</span></span><br><span class="line">    is_terminal = <span class="keyword">False</span></span><br><span class="line">    <span class="keyword">if</span> next_state <span class="keyword">in</span> self.terminate_states:</span><br><span class="line">        is_terminal = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#判断回报</span></span><br><span class="line">    <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> self.rewards:</span><br><span class="line">        r = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        r = self.rewards[key]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> next_state, r,is_terminal,&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#实现绘图函数render()</span></span><br><span class="line"><span class="comment">#略</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#实现重置函数reset()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_reset</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.state = self.states[int(random.random() * len(self.states))]</span><br><span class="line">    <span class="keyword">return</span> self.state</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/21/RL-ImportanceSampling/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/21/RL-ImportanceSampling/" itemprop="url">重要性采样</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-21T15:52:59+08:00">
+                2018-11-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  545
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="数学期望"><a href="#数学期望" class="headerlink" title="数学期望"></a>数学期望</h4><h6 id="离散型"><a href="#离散型" class="headerlink" title="离散型"></a>离散型</h6><p>$$ E(x) = \sum_{k=1}^{\infty} x_k p_k $$</p>
+<h6 id="连续型"><a href="#连续型" class="headerlink" title="连续型"></a>连续型</h6><p>$$ E(x) = \int_{-\infty}^{\infty} xf(x) dx $$</p>
+<h4 id="蒙特卡洛积分"><a href="#蒙特卡洛积分" class="headerlink" title="蒙特卡洛积分"></a>蒙特卡洛积分</h4><p>假设有某个函数f(x)，无法直接求出积分<br>$$ \int_{a}^{b} f(x) dx $$</p>
+<p>这个函数在[a,b]上的积分，实际上是函数曲线和x轴围成的区域的面积，记做A。<br>那么在y轴上，必然存在一个位置h，使得h、a、b围成的长方形的面积也等于A。而这个h，就是函数f(x)在作用域[a,b]上的平均值。<br>所以问题转化为如何在[a,b]上求出f(x)的平均值。<br><img src="\img\mc1.jpeg"></p>
+<p>蒙特卡洛方法是，在[a,b]内取大量的随机值$x_i$，计算$f(x_i)$，然后将所有的$f(x_i)$取平均值，作为h的估计值。<br>在实际应用中，只能取到有限的值，因而误差是不可避免的。因而如何使用更少的样本数量，得到误差更小的h值，也是改进的方向之一。<br>用一个公式来概括蒙特卡洛积分：<br>$$ \int_{a}^{b} f(x)dx \approx \frac{b-a}{N} \sum_{i=1}^{N} f(x_i)$$</p>
+<h4 id="重要性采样"><a href="#重要性采样" class="headerlink" title="重要性采样"></a>重要性采样</h4><p>蒙特卡洛积分是在[a,b]上均匀采样，但对于非均匀分布的函数f(x)来说，函数值大的地方对平均值的影响更大，因而我们希望能在函数值大的地方多采集一些数据。<br>例如下图f(x)是高斯分布，两边的值对积分的贡献少，黄色的采样点就可以少一些。<br><img src="/img/mc2.jpeg"></p>
+<p>因而引入概率密度函数$p(x_i)$，作为采样点对最终积分的重要度权重。<br>p(x)有一个重要的特性：<br>$$ \int_{-\infty}^{\infty} p(x)dx = 1 $$<br>于是我们得到新的积分函数：<br>$$ \int_a^b f(x)dx \approx \frac{1}{N} \sum_{i=0}{N} \frac{f(x_i)}{p(x_i)}$$</p>
+<p><img src="/img/ImportanceSampling.png"></p>
+<p>原分布密度P(s)，采样器密度Q(x)，权重<br>$$ w_r = \frac{P^{*}(x^{(r)})}{Q^{*}(x^{(r)})} $$</p>
+<p>Q(x)中x的值低于P(x)的地方，权重将大于1，得到更多的表示；<br>Q(x)中x的值高于P(x)的地方，权重将小于1，降低表示强度。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/17/RL-TDLambda/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/17/RL-TDLambda/" itemprop="url">TD($\lambda$)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-17T09:26:28+08:00">
+                2018-11-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  846
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="0-n-step-TD"><a href="#0-n-step-TD" class="headerlink" title="0.n-step TD"></a>0.n-step TD</h4><p>TD方法除了之前介绍的1-step TD之外，还有一系列其他方法：<br><img src="/img/nstepTD.png"></p>
+<p>n-step 的定义：<br>$$ G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^n V_{t+n-1}(S_{t+n}) $$</p>
+<p>迭代公式变为：<br>$$ V_{t+n}(S_t) = V_{t+n-1}(S_t) + \alpha[G_{t:t+n} - V_{t+n-1}(S_t)] $$</p>
+<p>TD(0)可以看做n=1，MC可以看做n=T-t，是n取值的两种极端情况，往往不如n取中间值的结果。<br><img src="/img/n-stepError.png"></p>
+<h4 id="1-Forward-lambda-return"><a href="#1-Forward-lambda-return" class="headerlink" title="1.Forward: $\lambda$-return"></a>1.Forward: $\lambda$-return</h4><p>$G_t^{\lambda}$ 将所有n-step returns $G_t^{(n)}$加权，使用权重$(1-\lambda)\lambda^{n-1}$<br>信号强度以速率$\lambda$减弱，因子(1-$\lambda$)是为了使等比数列权重的和为1.<br><img src="/img/TDWeight.png"></p>
+<p>$$ G_t^{\lambda} = (1-\lambda)\sum_{n=1}^{\infty} \lambda^{n-1} G_t^{(n)} $$<br>或者写作<br>$$ G_t^{\lambda} = (1-\lambda)\sum_{n=1}^{T-t-1} \lambda^{n-1} G_{t:t+n} + \lambda^{T-t-1} G_t $$</p>
+<p>迭代公式变为：<br>$$ V(S_t) \leftarrow V(S_t) + \alpha(G_t^{\lambda} - V(S_t)) $$</p>
+<p>由于$G_t^{\lambda}$是对所有$G_t^{(n)}$的加权，包含将来时刻的回报$R_{t+n}$，因而要等到episode结束才能更新，和MC一样是off-line算法。<br>对当前时刻t的更新，用到了未来时刻{t+1,t+2,…,t+n}的结果，因而称作前向视角(Forward)。<br><img src="/img/ForwardView.png"></p>
+<h4 id="2-Backward"><a href="#2-Backward" class="headerlink" title="2.Backward"></a>2.Backward</h4><p>Forward中，当前V(s)的更新用到了许多未来的 $\delta$; 而Backward中，当前的$\delta$作用于许多过去的V(s’)，相当于对过去的V(s’)提供了一个“未来切片”。这个“未来切片”的权重，使用<strong>资格迹</strong>(Eligibility Trace)来衡量。</p>
+<p>假设当前时刻t，过往序列{$s_{t-3},s_{t-2},s_{t-1},s_t$}的权重是{$(\gamma\lambda)^3, (\gamma\lambda)^2, \gamma\lambda, 1$}。在某个episode里，序列采样到了{$s_1,s_3,s_2,s_1$}，那么{$s_1,s_2,s_3$}的权重便是{$(\gamma\lambda)^3+1, \gamma\lambda, (\gamma\lambda)^2$}，将权重的算法抽离出来：</p>
+<p><img src="\img\EligibilityTrace.png"></p>
+<p>资格迹是一种兼顾频率和时间的权重，对每个状态独立计算，状态每出现1次权重加1，时间每前进1格权重按一定比例衰减。用于TD($\lambda$)算法中：</p>
+<ul>
+<li>状态空间的每个s对应一个资格迹</li>
+<li>每次更新时，更新所有的V(s)</li>
+<li>更新量为资格迹乘以TD-error </li>
+</ul>
+<p>每次对所有V(s)更新，就能覆盖到所有过去曾出现的状态；更新量乘以资格迹，就能按时间距离衰减。用当前时刻的TD Error $\delta_t$对过去出现的状态更新，称作后向视角(Backward)。</p>
+<p><img src="\img\BackwardView.png"></p>
+<p>当$\lambda = 0$时，过去全部衰减，$E_t(s)=1(S_t=s)$，更新只考虑当前步，退化为TD(0);<br>当$\lambda = 1$时，只有衰减因子$\gamma$，更新量和every-visit MC相同。</p>
+<p>TD($\lambda$)提供了可实用的Online算法，相比$\lambda$-return有3方面的改进：</p>
+<ul>
+<li>在episode的每一步都会更新，而不用等到结束</li>
+<li>计算过程分布平均，而并非集中在结尾</li>
+<li>适用于连续过程等没有结束的情况</li>
+</ul>
+<p>以Sarsa($\lambda$)为例，每个(s,a)对应一个资格迹E(s,a)，每个step中都要更新所有的Q(s,a)，更新量$\alpha\delta E(s,a)$。因为这是一种增量算法，数据按顺序依次进入，前后数据来自同一过程的关联步骤。<br>而在DQN中，训练数据从数据集里抽样，打破了前后关联性，就不需要资格迹。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/11/16/RL-Temporal-Difference/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -281,7 +756,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/16/RL-Temporal-Difference/" itemprop="url">无模型的时序差分方法TD(0)</a></h1>
+                <a class="post-title-link" href="/2018/11/16/RL-Temporal-Difference/" itemprop="url">Temporal-Difference(0)时序差分方法</a></h1>
         
 
         <div class="post-meta">
@@ -325,7 +800,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,082
+                  967
                 </span>
               
 
@@ -352,8 +827,8 @@
       
         
           
-            <h3 id="1-TD-Prediction"><a href="#1-TD-Prediction" class="headerlink" title="1.TD Prediction"></a>1.TD Prediction</h3><p>时序差分学习(Temporal-Diffrernce Learning)是MC和DP的结合，不要求完整的episode(无需终止状态)。<br>像MC一样Sample，像DP一样bootstrapping. Bootstrapping自举，是指当前状态的值函数计算用到了后继状态的值函数。<br>本文先讨论one-step TD,即TD(0).</p>
-<h4 id="1-1-算法"><a href="#1-1-算法" class="headerlink" title="1.1 算法"></a>1.1 算法</h4><p>输入要评估的策略$\pi$<br>随机初始化V(s)<br>Repeat(对每个episode):<br>&emsp; 初始化S<br>&emsp; Repeat(对episode的每一步):<br>&emsp;&emsp; A ← 策略$\pi$为状态S指定的动作<br>&emsp;&emsp; 执行动作A，观察R,S’<br>&emsp;&emsp; V(s) ← V(s) + $\alpha$[R+$\gamma$V(S’)-V(S)]<br>&emsp;&emsp; S ← S’<br>&emsp; 直到S为终止状态</p>
+            <p>时序差分学习(Temporal-Difference Learning)是MC和DP的结合，不要求完整的episode(无需终止状态)。<br>像MC一样Sample，像DP一样bootstrapping. Bootstrapping自举，是指当前状态的值函数计算用到了后继状态的值函数。<br>本文先讨论one-step TD,即TD(0).</p>
+<h3 id="1-TD-Prediction"><a href="#1-TD-Prediction" class="headerlink" title="1.TD Prediction"></a>1.TD Prediction</h3><h4 id="1-1-算法"><a href="#1-1-算法" class="headerlink" title="1.1 算法"></a>1.1 算法</h4><p>输入要评估的策略$\pi$<br>随机初始化V(s)<br>Repeat(对每个episode):<br>&emsp; 初始化S<br>&emsp; Repeat(对episode的每一步):<br>&emsp;&emsp; A ← 策略$\pi$为状态S指定的动作<br>&emsp;&emsp; 执行动作A，观察R,S’<br>&emsp;&emsp; V(s) ← V(s) + $\alpha$[R+$\gamma$V(S’)-V(S)]<br>&emsp;&emsp; S ← S’<br>&emsp; 直到S为终止状态</p>
 <h4 id="1-2-比较"><a href="#1-2-比较" class="headerlink" title="1.2 比较"></a>1.2 比较</h4><p>MC：根据每次的$G_t$来更新$V(S_t)$<br>$$ V(S_t) \leftarrow V(S_t) + \alpha(G_t - V(S_t))$$</p>
 <p>TD(0): 用估计值$R_{t+1} + \gamma V(S_{t+1})$代替$G_t$<br>$$ V(S_t) \leftarrow V(S_t) + \alpha(R_{t+1} + \gamma V(S_{t+1}) - V(S_t)) $$</p>
 <p>TD和MC同样都是通过采样，多次实验(多个episode)来学习。<br>不同的是，TD利用了马尔科夫性质，总是收敛于最可能的马尔科夫解，因而在马尔科夫过程中表现更好。<br>MC没有利用马尔科夫性质，在非马尔科夫过程中表现更好。</p>
@@ -386,19 +861,20 @@
 <li>策略评估：使用动作值函数Q(s,a),因从(S,A)到(S’,A’)而得名</li>
 <li>策略改进：仍然是$\epsilon -greedy$</li>
 </ul>
-<h6 id="Q-s-a-评估算法"><a href="#Q-s-a-评估算法" class="headerlink" title="Q(s,a)评估算法"></a>Q(s,a)评估算法</h6><p>随机初始化Q(s,a)<br>Repeat(对每个episode):<br>&emsp; 初始化S<br>&emsp; 从当前策略($\epsilon -greedy$)中选择S对应的动作A<br>&emsp; Repeat(对episode的每一步):<br>&emsp;&emsp; 执行动作A，观察R,S’<br>&emsp;&emsp; 从<strong>当前策略</strong>中选择S’对应的动作A’<br>&emsp;&emsp; Q(S,A) ← Q(S,A) + $\alpha$[R+$\gamma$Q(S’,A’)-Q(S,A)]<br>&emsp;&emsp; S ← S’; A ← A’;<br>&emsp; 直到S为终止状态</p>
-<h6 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gym</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">"Taxi-v2"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化</span></span><br><span class="line">alpha = <span class="number">0.85</span></span><br><span class="line">gamma = <span class="number">0.90</span></span><br><span class="line">epsilon = <span class="number">0.8</span></span><br><span class="line"></span><br><span class="line">Q=&#123;&#125;</span><br><span class="line"><span class="keyword">for</span> s <span class="keyword">in</span> range(env.observation_space.n):</span><br><span class="line">    <span class="keyword">for</span> a <span class="keyword">in</span> range(env.action_space.n):</span><br><span class="line">        Q[(s,a)] = <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># epsilon-greedy策略</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">epsilon_greedy</span><span class="params">(state, epsilon)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> random.uniform(<span class="number">0</span>,<span class="number">1</span>) &lt; epsilon:</span><br><span class="line">        <span class="keyword">return</span> env.action_space.sample()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> max(list(range(env.action_space.n)), key = <span class="keyword">lambda</span> x: q[(state, x)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 主循环</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4000</span>):</span><br><span class="line">    r = <span class="number">0</span></span><br><span class="line">    state = env.reset()</span><br><span class="line">    </span><br><span class="line">    action = epsilon_greedy(state, epsilon)</span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        nextstate, reward, done, _ = env.step(action)</span><br><span class="line">        nextaction = epsilon_greedy(nextstate, epsilon)</span><br><span class="line">        Q[(state, action)] += alpha * (reward + gamma * Q[(nextstate, nextaction)] - Q[(state, action)])</span><br><span class="line">        </span><br><span class="line">        action = nextaction</span><br><span class="line">        state = nextstate</span><br><span class="line">        r += reward</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> done:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">            </span><br><span class="line">env.close()</span><br></pre></td></tr></table></figure>
+<p>$$ Q(S_t,A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma\,Q(S_{t+1},a) - Q(S_t, A_t)] $$</p>
+<h6 id="Q-s-a-评估"><a href="#Q-s-a-评估" class="headerlink" title="Q(s,a)评估"></a>Q(s,a)评估</h6><p>随机初始化Q(s,a)<br>Repeat(对每个episode):<br>&emsp; 初始化S<br>&emsp; 从当前策略($\epsilon -greedy$)中选择S对应的动作A<br>&emsp; Repeat(对episode的每一步):<br>&emsp;&emsp; 执行动作A，观察R,S’<br>&emsp;&emsp; 从<strong>当前策略</strong>中选择S’对应的动作A’<br>&emsp;&emsp; Q(S,A) ← Q(S,A) + $\alpha$[R+$\gamma$Q(S’,A’)-Q(S,A)]<br>&emsp;&emsp; S ← S’; A ← A’;<br>&emsp; 直到S为终止状态</p>
+<h6 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(episodes):</span><br><span class="line">    state = env.reset()</span><br><span class="line">    action = epsilon_greedy_policy(state, epsilon)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        state_next, reward, done, _ = env.step(action)</span><br><span class="line">        action_next = epsilon_greedy_policy(state_next, epsilon)</span><br><span class="line">        </span><br><span class="line">        Q[state][action] += alpha*(reward + gamma*Q[state_next][action_next] - Q[state][action])</span><br><span class="line">        </span><br><span class="line">        state = state_next</span><br><span class="line">        action = action_next</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> done:</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 <h4 id="2-2-Off-Policy-Q-learning"><a href="#2-2-Off-Policy-Q-learning" class="headerlink" title="2.2 Off-Policy: Q-learning"></a>2.2 Off-Policy: Q-learning</h4><ul>
 <li>策略评估：行动策略采用$\epsilon-greedy$</li>
 <li>策略改进：目标策略采用贪心策略，不使用$\epsilon-greedy$(和SARSA不同)，不需要Importance Sampling(和MC不同)</li>
 </ul>
-<p>类比DP中的Value Iteration，在更新时无视原策略，直接选用最大值：<br>$$ Q(S_t,A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma\,\underset{a}{max}Q(S_{t+1},a) - Q(S_t, A_t)] $$</p>
+<p>类比DP中的Value Iteration，在更新时无视原策略，直接选用最大值，相当于默认使用贪心策略：<br>$$ Q(S_t,A_t) \leftarrow Q(S_t, A_t) + \alpha[R_{t+1} + \gamma\,\underset{a}{max}Q(S_{t+1},a) - Q(S_t, A_t)] $$</p>
 <p>注意$\underset{a}{max}Q(S_{t+1}, a)$是下一个状态的Q_table里Q值最大的那个动作。</p>
-<h6 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gym</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">env = gym.make(<span class="string">"Taxi-v2"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化</span></span><br><span class="line">alpha = <span class="number">0.4</span></span><br><span class="line">gamma = <span class="number">0.999</span></span><br><span class="line">epsilon = <span class="number">0.017</span></span><br><span class="line"></span><br><span class="line">q = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> s <span class="keyword">in</span> range(env.observation_space.n):</span><br><span class="line">    <span class="keyword">for</span> a <span class="keyword">in</span> range(env.action_space.n):</span><br><span class="line">        q[(s,a)]=<span class="number">0.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 目标策略</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update_q_table</span><span class="params">(pre_state, action, reward, nextstate, alpha, gamma)</span>:</span></span><br><span class="line">    qa = max([ q[(nextstate, a)] <span class="keyword">for</span> a <span class="keyword">in</span> range(env.action_space.n) ])</span><br><span class="line">    q[(prev_state, action)] += alpha * (reward + gamma * qa - q[(prev_state, action)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 行动策略</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">epsilon_greedy_policy</span><span class="params">(state, epsilon)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> random.uniform(<span class="number">0</span>,<span class="number">1</span>) &lt; epsilon:</span><br><span class="line">        <span class="keyword">return</span> env.action_space.sample()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> max(list(range(env.action_space.n)), key = <span class="keyword">lambda</span> x: q[(state, x)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 主循环</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8000</span>): <span class="comment">#episode</span></span><br><span class="line">    r = <span class="number">0</span></span><br><span class="line">    prev_state = env.reset()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        action = epsilon_greedy_policy(prev_state, epsilon)</span><br><span class="line">        nextstate, reward, done, _ = env.step(action)    </span><br><span class="line">        update_q_table(prev_state, action, reward, nextstate, alpha, gamma)</span><br><span class="line">        </span><br><span class="line">        prev_state = nextstate</span><br><span class="line">        r += reward</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> done:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">            </span><br><span class="line">    print(<span class="string">"total reward:"</span>, r)</span><br><span class="line"></span><br><span class="line">env.close()</span><br></pre></td></tr></table></figure>
+<h6 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(episodes):</span><br><span class="line">    state = env.reset()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        action = epsilon_greedy_policy(state, epsilon)</span><br><span class="line">        state_next, reward, done, _ = env.step(action)</span><br><span class="line">        </span><br><span class="line">        q_max = max([ Q[state_next][a] <span class="keyword">for</span> a <span class="keyword">in</span> range(env.action_space.n) ])</span><br><span class="line">        Q[state][action] += alpha * (reward + gamma * q_max - Q[state][action])</span><br><span class="line">        </span><br><span class="line">        state = state_next</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> done:</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 <h4 id="2-3-比较"><a href="#2-3-比较" class="headerlink" title="2.3 比较"></a>2.3 比较</h4><p>SARSA和Q-Learning的区别在于更新$Q(S_t, A_t)$时对$Q(S_{t+1},a)$的选择：</p>
 <ul>
-<li>SARSA：仍然是$\epsilon-greedy$</li>
-<li>Q-Learning：最大值$\underset{a}{max}Q(S_{t+1},a)$</li>
+<li>SARSA：根据$\epsilon-greedy$策略选出的动作$Q(S_{t+1},a)$，会受到其他Q值较小的动作a影响</li>
+<li>Q-Learning：Q值最大的动作$\underset{a}{max}Q(S_{t+1},a)$，不会受到其他Q值较小的动作a影响</li>
 </ul>
 <p>两种方法在采取行动时的策略相同，都是$\epsilon-greedy$.<br><img src="/img/SARSA-Q.png"></p>
 
@@ -468,7 +944,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/16/RL-MonteCarlo/" itemprop="url">无模型的蒙特卡罗方法MC</a></h1>
+                <a class="post-title-link" href="/2018/11/16/RL-MonteCarlo/" itemprop="url">Monte Carlo 蒙特卡罗方法</a></h1>
         
 
         <div class="post-meta">
@@ -512,7 +988,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,009
+                  1,100
                 </span>
               
 
@@ -539,14 +1015,15 @@
       
         
           
-            <p>有模型的策略迭代和值迭代方法都可以用广义策略迭代方法(Generalized Policy Iteration, GPI)来描述：首先对当前策略评估，然后利用值函数改进当前策略。<br>但在无模型的强化学习过程中，转移概率矩阵P未知，因而不能使用Bellman方程，必须使用其他方法来做策略评估。<br>可用的定义式：<br>$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid S_t=s] $$<br>$$ q_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid S_t=s, A_t=a] $$</p>
+            <p>有模型的策略迭代和值迭代方法都可以用广义策略迭代方法(Generalized Policy Iteration, GPI)来描述：首先对当前策略评估，然后利用值函数改进当前策略。<br>在无模型的强化学习过程中，转移概率矩阵P未知，因而不能使用Bellman方程。<br>可用的定义式：<br>$$ v_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid S_t=s] $$<br>$$ q_{\pi}(s) = E_{\pi}[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}\mid S_t=s, A_t=a] $$</p>
 <p>可用的关系式：<br>$$ v_{\pi}(s) = \sum_{a\in A} \pi(a\mid s) q_{\pi}(s,a) $$</p>
 <h3 id="1-Monte-Carlo-Prediction"><a href="#1-Monte-Carlo-Prediction" class="headerlink" title="1.Monte-Carlo Prediction"></a>1.Monte-Carlo Prediction</h3><p>蒙特卡罗方法直接从经验片段中学习，通过多次实验取平均值，作为回报的期望值，即$v_{\pi}(s)$.<br>只对片段化的MDP有效，即必须有终止状态。<br>计算平均值的方法有两种：</p>
 <ul>
 <li>First-Visit: 只统计每个episode中，首次访问该状态的回报</li>
 <li>Every-Visit: 每次访问该状态的回报。</li>
 </ul>
-<h6 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">计数 N(s)← N(s) + 1</span><br><span class="line">回报 S(s)← S(s) + Gt</span><br><span class="line">均值 V(s) = S(s) / N(s)</span><br></pre></td></tr></table></figure>
+<h6 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h6><p>计数 N(s)← N(s) + 1<br>回报 S(s)← S(s) + Gt<br>均值 V(s) = S(s) / N(s)</p>
+<h6 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_episode</span><span class="params">(policy, env)</span>:</span></span><br><span class="line">    states, actions, rewards = [], [], []</span><br><span class="line">    observation = env.reset()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        states.append(observation)</span><br><span class="line">        </span><br><span class="line">        action = policy(observation)</span><br><span class="line">        observation, reward, done, _ = env.step(action)</span><br><span class="line">        </span><br><span class="line">        actions.append(action)</span><br><span class="line">        rewards.append(reward)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> done:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">            </span><br><span class="line">    <span class="keyword">return</span> states, actions, rewards</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">first_visit_mc_prediction</span><span class="params">(policy, env, n_episodes)</span>:</span></span><br><span class="line">    value_table = defaultdict(float)</span><br><span class="line">    N = defaultdict(int)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(n_episodes):</span><br><span class="line">        states, actions, rewards = generate_episode(policy, env)</span><br><span class="line">        returns = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(len(states)<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">            s = states[t]</span><br><span class="line">            r = rewards[t]</span><br><span class="line">            returns += r</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> s <span class="keyword">not</span> <span class="keyword">in</span> states[:t]: <span class="comment"># first-visit state s</span></span><br><span class="line">                N[s] += <span class="number">1</span></span><br><span class="line">                value_table[s] += (returns - value_table[s]) / N[s] <span class="comment"># Incremental</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> value_table</span><br></pre></td></tr></table></figure>
 <h3 id="2-Monte-Carlo-Control"><a href="#2-Monte-Carlo-Control" class="headerlink" title="2.Monte-Carlo Control"></a>2.Monte-Carlo Control</h3><p>根据策略的数量，可以分为两种：</p>
 <ul>
 <li>On-policy: 采样和改进的是同一种策略，又称同策略；因为要兼顾探索，故得到的是最优策略的近似解</li>
@@ -555,11 +1032,11 @@
 <h4 id="2-1-On-policy-Control"><a href="#2-1-On-policy-Control" class="headerlink" title="2.1 On-policy Control"></a>2.1 On-policy Control</h4><p>在策略改进中使用评估算法会有2个问题：</p>
 <ul>
 <li>仅有估计的$v_{\pi}(s)$不足以选出最优策略$q_*$：用实验直接估计q(s,a)</li>
-<li>不能保证动作空间A里的每个动作a都被取到：初始状态选用不同的(s,a)(Exploring Starts, 不够通用)；以一定概率选择其他的动作</li>
+<li>不能保证动作空间A里的每个动作a都被取到：<br>1.初始状态选用不同的(s,a)(Exploring Starts, 不够通用)；<br>2.以一定概率选择其他的动作($\epsilon-greedy$)</li>
 </ul>
-<h6 id="2-1-1-Monte-Carlo-ES-Exploring-Starts"><a href="#2-1-1-Monte-Carlo-ES-Exploring-Starts" class="headerlink" title="2.1.1 Monte Carlo ES(Exploring Starts)"></a>2.1.1 Monte Carlo ES(Exploring Starts)</h6><p>(1)随机选取$S_0, A_0$作为初始状态，需保证S、A空间中的每一对都有可能被选到<br>(2)遵循策略$\pi$，产生一个经验片段episode<br>(3)对片段中的每一对(s,a):<br>&emsp;&emsp; G ← (s,a)第一次出现后的回报<br>&emsp;&emsp; Returns(s,a) ← Returns(s,a) + G<br>&emsp;$emsp; Q(s,a) ← Returns(s,a)取平均值<br>(4)对片段中的每个状态s:<br>&emsp;&emsp; $\pi(s) \leftarrow argmax_a\, Q(s,a)$</p>
+<h6 id="2-1-1-Monte-Carlo-ES-Exploring-Starts"><a href="#2-1-1-Monte-Carlo-ES-Exploring-Starts" class="headerlink" title="2.1.1 Monte Carlo ES(Exploring Starts)"></a>2.1.1 Monte Carlo ES(Exploring Starts)</h6><p>(1)随机选取$S_0, A_0$作为初始状态，需保证S、A空间中的每一对都有可能被选到<br>(2)遵循策略$\pi$，产生一个经验片段episode<br>(3)对片段中的每一对(s,a):<br>&emsp;&emsp; G ← (s,a)第一次出现后的回报<br>&emsp;&emsp; Returns(s,a) ← Returns(s,a) + G<br>&emsp;&emsp; Q(s,a) ← Returns(s,a)取平均值<br>(4)对片段中的每个状态s:<br>&emsp;&emsp; $\pi(s) \leftarrow argmax_a\, Q(s,a)$</p>
 <p>例如原策略是(18,hit)(19,hit)(20,stick)，通过设定初始值，实验中会出现(18,stick)(19,stick)(20,hit)这些本来不会探索到的(s,a)策略。</p>
-<h6 id="2-1-2-epsilon-greedy-policy"><a href="#2-1-2-epsilon-greedy-policy" class="headerlink" title="2.1.2 $\epsilon-greedy policy$"></a>2.1.2 $\epsilon-greedy policy$</h6><p>在初始状态中穷尽(s,a)往往是困难的，因而ES方法的应用范围有限。<br>另一种方法是在策略改进时，以概率$\epsilon$随机选取一个动作，以概率$1-\epsilon$选择贪心动作。<br>如果动作空间共有m个动作，那么策略为：<br>(1)遵循策略$\pi$产生片段episode<br>(2)对片段中的每一对(s,a):<br>&emsp;&emsp; G ← (s,a)第一次出现后的回报<br>&emsp;&emsp; Returns(s,a) ← Returns(s,a) + G<br>&emsp;&emsp; Q(s,a) ← Returns(s,a)取平均值<br>(3)对片段中的每个状态s:<br>$$ \pi (a|s) =<br>\begin{cases}<br>&amp;\epsilon / m + 1 - \epsilon \;\;\; if\, a^* = argmax\,Q(s,a) \\<br>&amp;\epsilon / m  \;\;\; otherwise<br>\end{cases} $$ </p>
+<h6 id="2-1-2-epsilon-greedy"><a href="#2-1-2-epsilon-greedy" class="headerlink" title="2.1.2 $\epsilon-greedy$"></a>2.1.2 $\epsilon-greedy$</h6><p>在初始状态中穷尽(s,a)往往是困难的，因而ES方法的应用范围有限。<br>另一种方法是在策略改进时，以概率$\epsilon$随机选取一个动作，以概率$1-\epsilon$选择贪心动作。<br>如果动作空间共有m个动作，那么策略为：<br>(1)遵循策略$\pi$产生片段episode<br>(2)对片段中的每一对(s,a):<br>&emsp;&emsp; G ← (s,a)第一次出现后的回报<br>&emsp;&emsp; Returns(s,a) ← Returns(s,a) + G<br>&emsp;&emsp; Q(s,a) ← Returns(s,a)取平均值<br>(3)对片段中的每个状态s:<br>$$ \pi (a|s) =<br>\begin{cases}<br>&amp;\epsilon / m + 1 - \epsilon \;\;\; if\, a^* = argmax\,Q(s,a) \\<br>&amp;\epsilon / m  \;\;\; otherwise<br>\end{cases} $$ </p>
 <p>评估和改进的都是$\epsilon$-soft策略。<br>所谓soft策略是指，对任意状态s和动作a，有$\pi(a|s) &gt; 0$ </p>
 <h4 id="2-2-Off-Policy"><a href="#2-2-Off-Policy" class="headerlink" title="2.2 Off-Policy"></a>2.2 Off-Policy</h4><p>On-policy并没有得到最优策略$\pi_*$。因为要兼顾exploration，得到的实际上是近似最优策略。<br>Off-Policy使用两个策略，用于探索、产生数据的称作behavior policy，学习改进的目标称作target policy.</p>
 <h6 id="2-2-1-Importance-Sampling"><a href="#2-2-1-Importance-Sampling" class="headerlink" title="2.2.1 Importance Sampling"></a>2.2.1 Importance Sampling</h6><p>用一种简单分布(采样概率分布)来估计另一种复杂分布(原概率分布)的积分值。采样概率分布与原概率分布越接近，方差越小。<br><img src="/img/ImportanceSampling.png"></p>
@@ -632,7 +1109,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/16/RL-DynamicProgramming/" itemprop="url">有模型的动态规划算法DP</a></h1>
+                <a class="post-title-link" href="/2018/11/16/RL-DynamicProgramming/" itemprop="url">Dynamic Programming 动态规划算法</a></h1>
         
 
         <div class="post-meta">
@@ -3043,544 +3520,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/19/ML-ImbalancedClasses/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/19/ML-ImbalancedClasses/" itemprop="url">Imbalanced Classes</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-19T09:11:05+08:00">
-                2018-05-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  347
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>不平衡的数据集是指不同类别的样本数差距过大。<br>例如二分类问题中90个负样本，10个正样本。使用Accuracy会得到虚假的高准确率。</p>
-<h4 id="应对方案"><a href="#应对方案" class="headerlink" title="应对方案"></a>应对方案</h4><h6 id="1-收集更多数据"><a href="#1-收集更多数据" class="headerlink" title="1. 收集更多数据"></a>1. 收集更多数据</h6><p>数据分布可能改变，另外收集更多的小类别样本对后续重采样也有帮助。</p>
-<h6 id="2-更换Metric指标"><a href="#2-更换Metric指标" class="headerlink" title="2. 更换Metric指标"></a>2. 更换Metric指标</h6><p>推荐使用：</p>
-<ul>
-<li>Confusion Matrix</li>
-<li>Precision</li>
-<li>Recall</li>
-<li>F1 Score</li>
-</ul>
-<p>或者</p>
-<ul>
-<li>Kappa</li>
-<li>ROC Curve</li>
-</ul>
-<h6 id="3-重采样"><a href="#3-重采样" class="headerlink" title="3. 重采样"></a>3. 重采样</h6><p>对现有数据集重采样的方法有二：</p>
-<ul>
-<li>over-sampling: 向小类别样本集中添加样本的拷贝</li>
-<li>under-sampling: 从大类别样本集中删除样本</li>
-</ul>
-<h6 id="4-合成样本"><a href="#4-合成样本" class="headerlink" title="4. 合成样本"></a>4. 合成样本</h6><p>生成实际上并不存在的新样本，最常用的方法是SMOTE：Synthetic Minority Over-sampling Technique</p>
-<h6 id="5-使用不同的学习器"><a href="#5-使用不同的学习器" class="headerlink" title="5. 使用不同的学习器"></a>5. 使用不同的学习器</h6><p>Tree-Based Model通常也能在不平衡数据集上表现良好。</p>
-<h6 id="6-增加惩罚项"><a href="#6-增加惩罚项" class="headerlink" title="6. 增加惩罚项"></a>6. 增加惩罚项</h6><p>提高小类别样本分类错误时的cost，使分类器更注重这些样本。</p>
-<h6 id="7-另一种数据洞察"><a href="#7-另一种数据洞察" class="headerlink" title="7. 另一种数据洞察"></a>7. 另一种数据洞察</h6><p>将小类别样本分类问题当做另一种学习任务来处理：</p>
-<ul>
-<li>异常检测(Anomaly Detection): 将小类别样本当做异常点，使用异常检测的算法来识别</li>
-<li>变化检测(Change Detection): 类似于寻找用户行为的变化</li>
-</ul>
-<h6 id="8-创造性"><a href="#8-创造性" class="headerlink" title="8. 创造性"></a>8. 创造性</h6><p>将问题分解为较小的子问题集</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/18/Python-pandas-SetOptions/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/18/Python-pandas-SetOptions/" itemprop="url">pandas.set_option</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-18T10:06:42+08:00">
-                2018-05-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  178
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>pandas.set_option(pat, value)<br>为pandas的设置选项指定新值，可用选项包括：</p>
-<ul>
-<li>compute.[use_bottleneck, use_numexpr]</li>
-<li>display.[chop_threshold, colheader_justify, column_space, date_dayfirst, date_yearfirst, encoding, expand_frame_repr, float_format]</li>
-<li>display.html.[border, table_schema, use_mathjax]</li>
-<li>display.[large_repr]</li>
-<li>display.latex.[escape, longtable, multicolumn, multicolumn_format, multirow, repr]</li>
-<li>display.[max_categories, max_columns, max_colwidth, max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage, multi_sparse, notebook_repr_html, pprint_nest_depth, precision, show_dimensions]</li>
-<li>display.unicode.[ambiguous_as_wide, east_asian_width]</li>
-<li>display.[width]</li>
-<li>html.[border]</li>
-<li>io.excel.xls.[writer]</li>
-<li>io.excel.xlsm.[writer]</li>
-<li>io.excel.xlsx.[writer]</li>
-<li>io.hdf.[default_format, dropna_table]</li>
-<li>io.parquet.[engine]</li>
-<li>mode.[chained_assignment, sim_interactive, use_inf_as_na, use_inf_as_null]</li>
-<li>plotting.matplotlib.[register_converters]</li>
-</ul>
-<p>常用选项</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">名称</th>
-<th style="text-align:left">类型</th>
-<th style="text-align:left">含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">display.chop_threshold</td>
-<td style="text-align:left">None or float</td>
-<td style="text-align:left">小于阈值的float将显示为0</td>
-</tr>
-<tr>
-<td style="text-align:left">display.max_columns</td>
-<td style="text-align:left">int</td>
-<td style="text-align:left">最大列数，大于该值的将被显示为省略号</td>
-</tr>
-<tr>
-<td style="text-align:left">display.max_colwidth</td>
-<td style="text-align:left">int</td>
-<td style="text-align:left">列宽度</td>
-</tr>
-<tr>
-<td style="text-align:left">display.width</td>
-<td style="text-align:left">int</td>
-<td style="text-align:left">横向显示宽度</td>
-</tr>
-<tr>
-<td style="text-align:left">display.precisioin</td>
-<td style="text-align:left">int</td>
-<td style="text-align:left">小数点后位数</td>
-</tr>
-<tr>
-<td style="text-align:left">display.date_dayfirst</td>
-<td style="text-align:left">False</td>
-<td style="text-align:left">日期格式 19/05/2018</td>
-</tr>
-<tr>
-<td style="text-align:left">display.date_yearfist</td>
-<td style="text-align:left">False</td>
-<td style="text-align:left">日期格式 2018/05/19</td>
-</tr>
-<tr>
-<td style="text-align:left">display.encoding</td>
-<td style="text-align:left">UTF-8</td>
-<td style="text-align:left">字符集</td>
-</tr>
-</tbody>
-</table>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/18/Python-pandas-ReadCSV/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/18/Python-pandas-ReadCSV/" itemprop="url">pandas.read_csv</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-18T07:52:15+08:00">
-                2018-05-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  286
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pandas.read_csv(filepath_or_buffer, sep=<span class="string">', '</span>, delimiter=<span class="keyword">None</span>, </span><br><span class="line">	header=<span class="string">'infer'</span>, names=<span class="keyword">None</span>, index_col=<span class="keyword">None</span>, usecols=<span class="keyword">None</span>, </span><br><span class="line">	squeeze=<span class="keyword">False</span>, prefix=<span class="keyword">None</span>, mangle_dupe_cols=<span class="keyword">True</span>, dtype=<span class="keyword">None</span>, </span><br><span class="line">	engine=<span class="keyword">None</span>, converters=<span class="keyword">None</span>, true_values=<span class="keyword">None</span>, false_values=<span class="keyword">None</span>, </span><br><span class="line">	skipinitialspace=<span class="keyword">False</span>, skiprows=<span class="keyword">None</span>, nrows=<span class="keyword">None</span>, na_values=<span class="keyword">None</span>, </span><br><span class="line">	keep_default_na=<span class="keyword">True</span>, na_filter=<span class="keyword">True</span>, verbose=<span class="keyword">False</span>, skip_blank_lines=<span class="keyword">True</span>, </span><br><span class="line">	parse_dates=<span class="keyword">False</span>, infer_datetime_format=<span class="keyword">False</span>, keep_date_col=<span class="keyword">False</span>, </span><br><span class="line">	date_parser=<span class="keyword">None</span>, dayfirst=<span class="keyword">False</span>, iterator=<span class="keyword">False</span>, chunksize=<span class="keyword">None</span>, </span><br><span class="line">	compression=<span class="string">'infer'</span>, thousands=<span class="keyword">None</span>, decimal=<span class="string">b'.'</span>, lineterminator=<span class="keyword">None</span>, </span><br><span class="line">	quotechar=<span class="string">'"'</span>, quoting=<span class="number">0</span>, escapechar=<span class="keyword">None</span>, comment=<span class="keyword">None</span>, encoding=<span class="keyword">None</span>, </span><br><span class="line">	dialect=<span class="keyword">None</span>, tupleize_cols=<span class="keyword">None</span>, error_bad_lines=<span class="keyword">True</span>, warn_bad_lines=<span class="keyword">True</span>, </span><br><span class="line">	skipfooter=<span class="number">0</span>, doublequote=<span class="keyword">True</span>, delim_whitespace=<span class="keyword">False</span>, low_memory=<span class="keyword">True</span>, </span><br><span class="line">	memory_map=<span class="keyword">False</span>, float_precision=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>参数</p>
-<ul>
-<li>filepath_or_buffer: 文件路径</li>
-<li>sep: 分隔符，默认’,’，正则’\r\t’</li>
-<li>delimiter: sep的别名</li>
-<li>header: 指定行数作为列名，header=0则从第一行推断</li>
-<li>names: 外部传递的列名，对应header=None</li>
-<li>squeeze: 如果文件只包含一列，则返回一个Series</li>
-<li>prefix: 没有列标题时，给列标题添加前缀</li>
-<li>dtype: 每列数据的数据类型</li>
-<li>nrows: 需要读取的行数</li>
-<li>thousands: 千分位分隔符</li>
-<li>decimal: 小数点</li>
-<li>encoding: 字符集编码类型</li>
-</ul>
-<p><strong>分块读取大文件</strong></p>
-<ol>
-<li><p>通过参数chunksize指定文件分块大小，返回可迭代的对象TextFileReader</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">reader = pd.read_csv(<span class="string">'tmp.csv'</span>, sep=<span class="string">'|'</span>, chunksize=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> chunk <span class="keyword">in</span> reader:</span><br><span class="line">	print(chunk)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>指定iterator=True也可以返回一个TextFileReader</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">reader = pd.read_csv(<span class="string">'tmp.csv'</span>, iterator=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">chunk = reader.get_chunk(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">print</span> chunk</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3635,7 +3574,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">317</span>
+                  <span class="site-state-item-count">320</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3737,7 +3676,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">119.9k</span>
+    <span title="Site words total count">121.0k</span>
   
 </div>
 
