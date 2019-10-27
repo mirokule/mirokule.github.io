@@ -79,16 +79,16 @@
 
 
 
-<meta name="description" content="非著名失业家">
+<meta name="description" content="万人迷">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Gate of Babylon">
 <meta property="og:url" content="http://mirokule.github.io/page/17/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="非著名失业家">
+<meta property="og:description" content="万人迷">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gate of Babylon">
-<meta name="twitter:description" content="非著名失业家">
+<meta name="twitter:description" content="万人迷">
 
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/07/Algorithm-DataStructure/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/08/03/CDMigration/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -281,7 +281,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/12/07/Algorithm-DataStructure/" itemprop="url">Algorithm-DataStructure</a></h1>
+                <a class="post-title-link" href="/2015/08/03/CDMigration/" itemprop="url">CoreData-Migration</a></h1>
         
 
         <div class="post-meta">
@@ -293,8 +293,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-07T11:17:23+08:00">
-                2016-12-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-03T21:15:47+08:00">
+                2015-08-03
               </time>
             
 
@@ -325,7 +325,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,170
+                  76
                 </span>
               
 
@@ -351,16 +351,308 @@
 
       
         
-          <h4 id="数据的逻辑结构"><a href="#数据的逻辑结构" class="headerlink" title="数据的逻辑结构"></a>数据的逻辑结构</h4><p>指反映数据元素之间的逻辑关系的数据结构，其中的逻辑关系是指数据元素之间的前后件关系，而与他们在计算机中的存储位置无关。<br>逻辑结构包括：</p>
-<ul>
-<li><strong>集合</strong><br>数据结构中的元素之间除了“同属一个集合” 的相互关系外，别无其他关系；</li>
-<li><strong>线性结构</strong><br>数据结构中的元素存在一对一的相互关系；</li>
-<li><strong>树形结构</strong><br>数据结构中的元素存在一对多的相互关系；</li>
-<li><strong>图形结构</strong><br>数据结构中的元素存在多对多的相互关系。</li>
-</ul>
+          
+            <h2 id="Model-Change"><a href="#Model-Change" class="headerlink" title="Model Change"></a>Model Change</h2><ol>
+<li>From “Editor” select “Add model version”</li>
+<li>In xcdatamodeld, change current version to new version(green ticked)</li>
+<li>Make attribute change in both xcdatamodel and swift class</li>
+</ol>
+<h2 id="Migration"><a href="#Migration" class="headerlink" title="Migration"></a>Migration</h2><h4 id="Light-Migration"><a href="#Light-Migration" class="headerlink" title="Light Migration"></a>Light Migration</h4><ol>
+<li>add new variable</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> options = [<span class="type">NSMigratePersistentStoresAutomaticallyOption</span>: <span class="literal">true</span>, <span class="type">NSInferMappingModelAutomaticallyOption</span>: <span class="literal">true</span>]</span><br></pre></td></tr></table></figure>
+<ol>
+<li>change persistentStoreCoordinator to</li>
+</ol>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> persistentStoreCoordinator: <span class="type">NSPersistentStoreCoordinator</span>? = &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> coordinator!.addPersistentStoreWithType(<span class="type">NSSQLiteStoreType</span>, configuration: <span class="literal">nil</span>, <span class="type">URL</span>: url, options: options, error: &amp;error) == <span class="literal">nil</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>For simple changes(to list), core data will do the migration automaticly.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/08/03/NSDatePicker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/03/NSDatePicker/" itemprop="url">NSDatePicker</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-03T21:07:46+08:00">
+                2015-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  35
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Set-up-datepicker-for-input-keyboard"><a href="#Set-up-datepicker-for-input-keyboard" class="headerlink" title="Set up datepicker for input keyboard"></a>Set up datepicker for input keyboard</h2><h4 id="change-keybord-to-datepicker"><a href="#change-keybord-to-datepicker" class="headerlink" title="change keybord to datepicker"></a>change keybord to datepicker</h4><pre><code>textfield.inputView = NSDatePicker()
+textfield.inputAccessoryView = UIToolBar(...)
+</code></pre><h4 id="get-datepicker-value-change-event"><a href="#get-datepicker-value-change-event" class="headerlink" title="get datepicker value change event"></a>get datepicker value change event</h4><pre><code>myDatePicker.addTarget(self, action: Selector(&quot;datepickerValueChanged&quot;), forControlEvents: UIControlEvents.ValueChanged)
+
+func datepickerValueChanged() {
+    newValue = myDatePicker.date
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/08/01/Swift-LocalNotifications/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/01/Swift-LocalNotifications/" itemprop="url">Local Notification</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-01T14:38:32+08:00">
+                2015-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  312
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Check-whether-notification-is-allowed"><a href="#Check-whether-notification-is-allowed" class="headerlink" title="Check whether notification is allowed"></a>Check whether notification is allowed</h2><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">userNotificationForbidden</span><span class="params">()</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="type">UIApplication</span>.sharedApplication().currentUserNotificationSettings().types == <span class="type">UIUserNotificationType</span>.<span class="type">None</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Values of UIUserNotificationType including: <strong>None</strong>, <strong>Alert</strong>, <strong>Badge</strong>, <strong>Sound</strong>.</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/12/07/Algorithm-DataStructure/#more" rel="contents">
+            <a class="btn" href="/2015/08/01/Swift-LocalNotifications/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -411,7 +703,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/04/DP-Basic/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/08/01/AD-AdMob/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -430,7 +722,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/12/04/DP-Basic/" itemprop="url">Design Patterns</a></h1>
+                <a class="post-title-link" href="/2015/08/01/AD-AdMob/" itemprop="url">AdMob Tips</a></h1>
         
 
         <div class="post-meta">
@@ -442,8 +734,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-04T11:28:59+08:00">
-                2016-12-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-01T14:13:36+08:00">
+                2015-08-01
               </time>
             
 
@@ -474,7 +766,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  317
+                  50
                 </span>
               
 
@@ -501,1232 +793,14 @@
       
         
           
-            <p>设计模式是经过长时间的试验和错误总结出来的，软件开发过程中面临的一般问题的解决方案。<br>可以分为几个大类。</p>
-<h4 id="创建型模式-Creational-Patterns"><a href="#创建型模式-Creational-Patterns" class="headerlink" title="创建型模式 Creational Patterns"></a>创建型模式 Creational Patterns</h4><ul>
-<li>工厂模式 Factory Pattern</li>
-<li>抽象工厂模式 Abstract Factory Pattern</li>
-<li>单例模式 Singleton Pattern</li>
-<li>建造者模式 Builder Pattern</li>
-<li>原型模式 Prototype Pattern</li>
-</ul>
-<h4 id="结构型模式-Structural-Patterns"><a href="#结构型模式-Structural-Patterns" class="headerlink" title="结构型模式 Structural Patterns"></a>结构型模式 Structural Patterns</h4><ul>
-<li>适配器模式 Adapter Pattern</li>
-<li>桥接模式 Bridge Pattern</li>
-<li>过滤器\准则模式 Fliter\Criteria Pattern</li>
-<li>组合模式 Composite Pattern</li>
-<li>装饰器模式 Decorator Pattern</li>
-<li>外观模式 Facade Pattern</li>
-<li>享元模式 Flyweight Pattern</li>
-<li>代理模式 Proxy Pattern </li>
-</ul>
-<h4 id="行为型模式-Behavioral-Patterns"><a href="#行为型模式-Behavioral-Patterns" class="headerlink" title="行为型模式 Behavioral Patterns"></a>行为型模式 Behavioral Patterns</h4><ul>
-<li>责任链模式 Chain of Responsibility Pattern</li>
-<li>命令模式 Command Pattern</li>
-<li>解释器模式 Interpreter Pattern</li>
-<li>迭代器模式 Iterator Pattern</li>
-<li>中介者模式 Mediator Pattern</li>
-<li>备忘录模式 Memento Pattern</li>
-<li>观察者模式 Observer Pattern</li>
-<li>状态模式 State Pattern</li>
-<li>空对象模式 Null Object Pattern</li>
-<li>策略模式 Strategy Pattern</li>
-<li>模板模式 Template Pattern</li>
-<li>访问者模式 Visitor Pattern</li>
-</ul>
-<h4 id="J2EE设计模式"><a href="#J2EE设计模式" class="headerlink" title="J2EE设计模式"></a>J2EE设计模式</h4><ul>
-<li>MVC模式 MVC Pattern</li>
-<li>业务代表模式 Business Delegate Pattern</li>
-<li>组合实体模式 Composite Entity Pattern</li>
-<li>数据访问对象模式 Data Access Object Pattern</li>
-<li>前端控制器模式 Front Controller Pattern</li>
-<li>拦截过滤模式 Intercepting Filter Pattern</li>
-<li>服务定位模式 Service Locator Pattern</li>
-<li>传输对象模式 Transfer Object Pattern</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/02/Unity-Audio/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/02/Unity-Audio/" itemprop="url">Unity-Audio</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-02T11:10:50+08:00">
-                2016-12-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  185
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="导入设置"><a href="#导入设置" class="headerlink" title="导入设置"></a>导入设置</h4><ul>
-<li>Force to Mono:强制变为单声道</li>
-<li>Load in Background:加载时在后台处理，不会造成卡顿等，用于大文件。</li>
-<li><p>Preload Audio Data:预加载会消耗内存，但可以避免播放时等待。</p>
-</li>
-<li><p>Load Type:运行时加载音频的方法。<strong>Decompress on load</strong>加载后就解压缩，避免运行时的性能开销，将使用更多内存，用于小文件;<strong>Compressed in memory</strong>加载后仍然保持压缩，仅在播放时解压缩，用于大文件。<strong>Streaming</strong>从磁盘流式加载，而不是完全加载到内存，用于大型背景音乐等。</p>
-</li>
-<li>Compression Format: 音频存储的数据格式。<strong>Vorbits</strong>压缩格式，用于大文件；<strong>PCM</strong>原始格式，用于小文件。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/30/Unity-Lambda/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/30/Unity-Lambda/" itemprop="url">Unity-Lambda</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T16:11:59+08:00">
-                2016-11-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  156
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Lambda是没有函数名的函数，又称匿名函数；通常临时创建在其他函数中。<br>和closure闭包很像。<br>格式为 () =&gt; {}</p>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetWebImage</span>(<span class="params">Action&lt;Texture2D&gt; callbackFunc</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (_webImage == <span class="literal">null</span>) &#123;</span><br><span class="line">		StartCoroutine(_network.DownloadImage( </span><br><span class="line">			(Texture2d image) =&gt; &#123;</span><br><span class="line">				_webImage = image;</span><br><span class="line">				callbackFunc(_webImage);</span><br><span class="line">			&#125;</span><br><span class="line">		));</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		callbackFunc(_webImage);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>本段代码的目的是缓存图片。在前端显示和底层网络数据获取的回调之间，将图片保存下来。<br>network.DownloadImage(Action<texture2d> func)需要传入回调函数，在这里创建了Lambda函数作为参数传入。<br>Lambda函数接受图片作为输入参数，在本地保存后，再调用前端的回调函数显示图片。</texture2d></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/30/Unity-XML/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/30/Unity-XML/" itemprop="url">Unity-XML</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T15:44:35+08:00">
-                2016-11-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  37
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Mono包含xml的解析器。</p>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Xml</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnXMLDataLoaded</span>(<span class="params"><span class="keyword">string</span> data</span>) </span>&#123;</span><br><span class="line">	XmlDocument doc = <span class="keyword">new</span> XmlDocument ();</span><br><span class="line">	doc.LoadXml (data);</span><br><span class="line"></span><br><span class="line">	XmlNode root = doc.DocumentElement;</span><br><span class="line">	XmlNode node = root.SelectSingleNode (<span class="string">"clouds"</span>);</span><br><span class="line">	<span class="keyword">string</span> <span class="keyword">value</span> = node.Attributes [<span class="string">"value"</span>].Value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/30/C#-Delegation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/30/C#-Delegation/" itemprop="url">C#-Delegation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T15:19:14+08:00">
-                2016-11-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  205
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="委托的类型"><a href="#委托的类型" class="headerlink" title="委托的类型"></a>委托的类型</h5><h6 id="1-Delegate"><a href="#1-Delegate" class="headerlink" title="1.Delegate"></a>1.Delegate</h6><p>Delegate至少0个参数，至多32个参数，可以无返回值，也可以指定返回值类型。<br>例：public delegate int MethodtDelegate(int x, int y);表示有两个参数，并返回int型。</p>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">int</span> <span class="title">MyDelegateMethod</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> MyDelegateMethod method;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>) </span>&#123;</span><br><span class="line">	method = <span class="keyword">new</span> MyDelegateMethod(Add);</span><br><span class="line">	Console.WriteLine(method(<span class="number">10</span>, <span class="number">12</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">Add</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h6 id="2-Predicate"><a href="#2-Predicate" class="headerlink" title="2.Predicate"></a>2.Predicate</h6><p>Predicate有且只有一个参数，返回值固定为bool</p>
-<h6 id="3-Action"><a href="#3-Action" class="headerlink" title="3.Action"></a>3.Action</h6><p>Action是无返回值的泛型委托。<br>Action可以有参数，Action<int, string=""> 表示有传入参数int, string。<br>例：public void Test<t> (Action<t> action, T p)</t></t></int,></p>
-<h6 id="4-Func"><a href="#4-Func" class="headerlink" title="4.Func"></a>4.Func</h6><p>Func是有返回值的泛型委托。<br>Func<int> 表示无参，有返回值int的委托。<br>Func<object, string,="" int=""> 表示传入参数为object,string，返回值为int的委托。<br>    public int Test<t1, t2="">(Func<t1,t2,int> func, T1 a, T2 b) {<br>        return func(a, b);<br>    }</t1,t2,int></t1,></object,></int></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/30/Unity-WWW/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/30/Unity-WWW/" itemprop="url">Unity-WWW</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T15:05:35+08:00">
-                2016-11-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  269
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>WWW is a small utility module for retrieving the contents of URLs.</p>
-<ul>
-<li>使用WWW下载文字和图片比较简单，但下载其他类型的资源会比较复杂。<br>可以使用AssetBundles机制来下载任何类型的资源。</li>
-<li><p>下载图片要做缓存，这是一个重要优化</p>
-</li>
-<li><p>url    The URL of this WWW request (Read Only).</p>
-</li>
-<li>error    Returns an error message if there was an error during the download (Read Only).</li>
-<li>bytes    Returns the contents of the fetched web page as a byte array (Read Only).</li>
-<li>text    Returns the contents of the fetched web page as a string (Read Only).</li>
-<li>texture    Returns a Texture2D generated from the downloaded data (Read Only).</li>
-<li>movie    Returns a MovieTexture generated from the downloaded data (Read Only).</li>
-<li>audioClip    Returns a AudioClip generated from the downloaded data (Read Only).</li>
-<li>isDone    Is the download already finished? (Read Only)</li>
-<li>progress    How far has the download progressed (Read Only).</li>
-</ul>
-<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1:"></a>Example 1:</h4><figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ExampleClass</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">string</span> url = <span class="string">"http://images.earthcam.com/ec_metros/ourcams/fridays.jpg"</span>;</span><br><span class="line">	<span class="function">IEnumerator <span class="title">Start</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		WWW www = <span class="keyword">new</span> WWW(url);</span><br><span class="line">		<span class="keyword">yield</span> <span class="keyword">return</span> www;</span><br><span class="line">		Renderer renderer = GetComponent&lt;Renderer&gt;();</span><br><span class="line">		renderer.material.mainTexture = www.texture;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2"></a>Example 2</h4><figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> IEnumerator <span class="title">CallAPI</span>(<span class="params"><span class="keyword">string</span> url, Action&lt;<span class="keyword">string</span>&gt; callback</span>) </span>&#123;</span><br><span class="line">	WWW www = <span class="keyword">new</span> WWW (url);</span><br><span class="line">	<span class="keyword">yield</span> <span class="keyword">return</span> WWW;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!IsResponseValid (www))</span><br><span class="line">		<span class="keyword">yield</span> <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	callback (www.text);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">IsResponseValid</span>(<span class="params">WWW www</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (www.error != <span class="literal">null</span>) &#123;</span><br><span class="line">		Debug.Log (<span class="string">"bad connenction"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">string</span>.IsNullOrEmpty (www.text)) &#123;</span><br><span class="line">		Debug.Log (<span class="string">"bad data"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/29/Unity-SkyboxBlended/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/29/Unity-SkyboxBlended/" itemprop="url">Unity-SkyboxBlended</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-29T17:00:22+08:00">
-                2016-11-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  354
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="天气可变的天空盒"><a href="#天气可变的天空盒" class="headerlink" title="天气可变的天空盒"></a>天气可变的天空盒</h4><ul>
-<li>目标：实现两套skybox逐渐过渡的效果，由代码控制过渡过程</li>
-<li>方法：自定义Shader，使用2套共12张图片构建skybox材质。<br>Shader脚本参见<a href="http://wiki.unity3d.com/index.php?title=SkyboxBlended" target="_blank" rel="noopener">http://wiki.unity3d.com/index.php?title=SkyboxBlended</a></li>
-<li><strong>注意</strong>：程序对从Project视图关联的资源的修改是永久的，即skybox材质参数的修改不会因程序结束而重置。<br>脚本和Lighting选项卡引用了相同的skybox材质，参数修改即时生效。</li>
-</ul>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">[<span class="meta">SerializeField</span>] <span class="keyword">private</span> Material sky;</span><br><span class="line">[<span class="meta">SerializeField</span>] <span class="keyword">private</span> Light sun;</span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">SetWeather</span>(<span class="params"><span class="keyword">float</span> <span class="keyword">value</span></span>) </span>&#123;</span><br><span class="line">   	sky.SetFloat (<span class="string">"_Blend"</span>, <span class="keyword">value</span>);</span><br><span class="line">       sun.intensity = _fullIntensity * <span class="keyword">value</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/11/29/Unity-SkyboxBlended/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/29/Unity-InventoryManager/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/29/Unity-InventoryManager/" itemprop="url">Unity-InventoryManager</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-29T15:24:21+08:00">
-                2016-11-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  346
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>数据管理的MVC模式，统一使用场景中的Manager访问数据。<br>Manager是挂载在GameObject下的管理器，管理sub-Managers的启动、读写等。<br>sub-Managers继承接口，分别管理游戏中的不同部分如角色、物品等。</p>
-<h4 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h4><figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">   <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IGameManager</span> &#123;</span><br><span class="line">ManagerStatus status &#123; <span class="keyword">get</span>;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Startup</span> (<span class="params"></span>)</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/11/29/Unity-InventoryManager/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/29/Unity-Component/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/29/Unity-Component/" itemprop="url">Unity-Component</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-29T10:48:16+08:00">
-                2016-11-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  189
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Component is base class for everything attached to GameObjects.</p>
-<h4 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h4><ul>
-<li>gameObject: The game object which the component is attached to. Always not null.</li>
-<li>tag</li>
-<li>transform: The transform attached to gameObject.</li>
-</ul>
-<h4 id="Public-Functions"><a href="#Public-Functions" class="headerlink" title="Public Functions"></a>Public Functions</h4><ul>
-<li>CompareTag    Is this game object tagged with tag ?</li>
-</ul>
-<h6 id="GetComponent"><a href="#GetComponent" class="headerlink" title="GetComponent"></a>GetComponent</h6><ul>
-<li>GetComponent    Returns the component of Type type if the game object has one attached, null if it doesn’t.</li>
-<li>GetComponentInChildren    Returns the component of Type type in the GameObject or any of its children using depth first search.</li>
-<li>GetComponentInParent    Returns the component of Type type in the GameObject or any of its parents.</li>
-<li>GetComponents    Returns all components of Type type in the GameObject.</li>
-<li>GetComponentsInChildren    Returns all components of Type type in the GameObject or any of its children.</li>
-<li>GetComponentsInParent    Returns all components of Type type in the GameObject or any of its parents.</li>
-</ul>
-<h6 id="Message"><a href="#Message" class="headerlink" title="Message"></a>Message</h6><ul>
-<li>BroadcastMessage    Calls the method named methodName on every MonoBehaviour in this game object or any of its children.</li>
-<li>SendMessage    Calls the method named methodName on every MonoBehaviour in this game object.</li>
-<li>SendMessageUpwards    Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.</li>
-</ul>
-<p><strong>SendMessageOptions</strong></p>
-<ul>
-<li>RequireReceiver</li>
-<li>DontRequireReceiver</li>
-</ul>
+            <ol>
+<li>Import GoogleMobileAds.framework into the project</li>
+<li>Import GADHelper.swift into the project</li>
+<li>Change uuid of ads</li>
+<li>For Banner, set up position in “relayoutBannerViews()”</li>
+<li>For InsertPage, request ADs at beginning and present the AD at proper time</li>
+</ol>
+<p>Specially,<br>Use request.testDevices = [kGADSimulatorID, “<em>**</em>“] to get test ADs </p>
 
           
         
@@ -1766,7 +840,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span>
   </nav>
 
 
@@ -1806,7 +880,7 @@
                 alt="Miles" />
             
               <p class="site-author-name" itemprop="name">Miles</p>
-              <p class="site-description motion-element" itemprop="description">非著名失业家</p>
+              <p class="site-description motion-element" itemprop="description">万人迷</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -1816,7 +890,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">277</span>
+                  <span class="site-state-item-count">324</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1829,7 +903,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1904,7 +978,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -1918,7 +992,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">100.2k</span>
+    <span title="Site words total count">123.1k</span>
   
 </div>
 

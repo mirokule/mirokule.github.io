@@ -262,6 +262,653 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-Flyweight/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/13/DP-Flyweight/" itemprop="url">DesignPattern-FlyweightPattern</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T13:18:18+08:00">
+                2016-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  631
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>享元模式：使用共享以高效地支持大量的细粒度对象。<br>FlyWeight，顾名思义，使对象轻量化。<br>享元模式的特点是，复用内存中已存在的对象，降低系统创建对象实例的性能消耗。</p>
+<p>享元模式将对象数据分为两种类型。</p>
+<ul>
+<li>the intrinsic state: 不属于单一实例对象并且能够被所有对象共享的数据</li>
+<li>the extrinsic state: 对每个实例都唯一的外部状态</li>
+</ul>
+<p>例如场景中有许多树，为了减少发送给GPU的数据量，我们希望只发送一次tree model，再将每棵树实例的特有数据——位置、颜色、缩放比例等推送到GPU。</p>
+<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
+<li><p><strong>意图</strong>：运用共享技术有效地支持大量细粒度的对象。</p>
+</li>
+<li><p><strong>主要解决</strong>：在有大量对象时，有可能会造成内存溢出，我们把其中共同的部分抽象出来，如果有相同的业务请求，直接返回在内存中已有的对象，避免重新创建。</p>
+</li>
+<li><p><strong>何时使用</strong>：<br>1、系统中有大量对象。<br>2、这些对象消耗大量内存。<br>3、这些对象的状态大部分可以外部化。<br>4、这些对象可以按照内蕴状态分为很多组，当把外蕴对象从对象中剔除出来时，每一组对象都可以用一个对象来代替。<br>5、系统不依赖于这些对象身份，这些对象是不可分辨的。 </p>
+</li>
+<li><p><strong>如何解决</strong>：用唯一标识码判断，如果在内存中有，则返回这个唯一标识码所标识的对象。</p>
+</li>
+<li><p><strong>关键代码</strong>：用 HashMap 存储这些对象。</p>
+</li>
+<li><p><strong>应用实例</strong>：<br>1、JAVA 中的 String，如果有则返回，如果没有则创建一个字符串保存在字符串缓存池里面。<br>2、数据库的数据池。 </p>
+</li>
+<li><p><strong>优点</strong>：大大减少对象的创建，降低系统的内存，使效率提高。</p>
+</li>
+<li><p><strong>缺点</strong>：提高了系统的负责度，需要分离出外部状态和内部状态，而且外部状态具有固有化的性质，不应该随着内部状态的变化而变化，否则会造成系统的混乱。</p>
+</li>
+<li><p><strong>使用场景</strong>：<br>1、系统有大量相似对象。<br>2、需要缓冲池的场景。 </p>
+</li>
+<li><p><strong>注意事项</strong>：<br>1、注意划分外部状态和内部状态，否则可能会引起线程安全问题。<br>2、这些类必须有一个工厂对象加以控制。 </p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-Order/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/13/DP-Order/" itemprop="url">DesignPattern-OrderPattern</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T13:04:35+08:00">
+                2016-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  884
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><strong>命令模式</strong>：将请求(request)封装成对象，以便使用不同的请求、日志、队列将客户端参数化。命令模式也支持请求的撤销和恢复。<br>命令就是面向对象化的回调(Commands are an object-oriented replacement for callbacks.)<br>命令模式和闭包类似，是对函数式编程的一种替代。</p>
+<p>可以实现按键、命令、执行角色之间的解耦；<br>可以方便地支持撤销、重做等；<br>支持多次撤销，可以通过维护命令列表实现。</p>
+<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
+<li><p><strong>意图</strong>：将一个请求封装成一个对象，从而使您可以用不同的请求对客户进行参数化。</p>
+</li>
+<li><p><strong>主要解决</strong>：在软件系统中，行为请求者与行为实现者通常是一种紧耦合的关系，但某些场合，比如需要对行为进行记录、撤销或重做、事务等处理时，这种无法抵御变化的紧耦合的设计就不太合适。</p>
+</li>
+<li><p><strong>何时使用</strong>：在某些场合，比如要对行为进行”记录、撤销/重做、事务”等处理，这种无法抵御变化的紧耦合是不合适的。在这种情况下，如何将”行为请求者”与”行为实现者”解耦？将一组行为抽象为对象，可以实现二者之间的松耦合。</p>
+</li>
+<li><p><strong>如何解决</strong>：通过调用者调用接受者执行命令，顺序：调用者→接受者→命令。</p>
+</li>
+<li><p><strong>关键代码</strong>：定义三个角色：<br>1、received 真正的命令执行对象<br>2、Command<br>3、invoker 使用命令对象的入口</p>
+</li>
+<li><p><strong>优点</strong>：<br>1、降低了系统耦合度。<br>2、新的命令可以很容易添加到系统中去。 </p>
+</li>
+<li><p><strong>缺点</strong>：<br>使用命令模式可能会导致某些系统有过多的具体命令类。</p>
+</li>
+<li><p><strong>使用场景</strong>：认为是命令的地方都可以使用命令模式，比如：<br>1、GUI 中每一个按钮都是一条命令。<br>2、模拟 CMD。 </p>
+</li>
+<li><p><strong>注意事项</strong>：系统需要支持命令的撤销(Undo)操作和恢复(Redo)操作，也可以考虑使用命令模式，见命令模式的扩展。</p>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/12/13/DP-Order/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-Factory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/13/DP-Factory/" itemprop="url">DesignPattern-FactoryPattern</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T09:50:38+08:00">
+                2016-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  932
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>工厂模式中，在创建对象时不会对client暴露创建逻辑，并且是通过使用一个共同的接口来指向新创建的对象。</p>
+<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
+<li><p><strong>意图</strong>：定义一个创建对象的接口，让其子类自己决定实例化哪一个工厂类，工厂模式使其创建过程延迟到子类进行。</p>
+</li>
+<li><p><strong>主要解决</strong>：主要解决接口选择的问题。</p>
+</li>
+<li><p><strong>何时使用</strong>：我们明确地计划不同条件下创建不同实例时。</p>
+</li>
+<li><p><strong>如何解决</strong>：让其子类实现工厂接口，返回的也是一个抽象的产品。</p>
+</li>
+<li><p><strong>关键代码</strong>：创建过程在其子类执行。</p>
+</li>
+<li><p><strong>应用实例</strong>：<br>1、您需要一辆汽车，可以直接从工厂里面提货，而不用去管这辆汽车是怎么做出来的，以及这个汽车里面的具体实现。<br>2、Hibernate 换数据库只需换方言和驱动就可以。 </p>
+</li>
+<li><p><strong>优点</strong>：<br>1、一个调用者想创建一个对象，只要知道其名称就可以了。<br>2、扩展性高，如果想增加一个产品，只要扩展一个工厂类就可以。<br>3、屏蔽产品的具体实现，调用者只关心产品的接口。 </p>
+</li>
+<li><p><strong>缺点</strong>：<br>每次增加一个产品时，都需要增加一个具体类和对象实现工厂，使得系统中类的个数成倍增加，在一定程度上增加了系统的复杂度，同时也增加了系统具体类的依赖。</p>
+</li>
+<li><p><strong>使用场景</strong>：<br>1、日志记录器：记录可能记录到本地硬盘、系统事件、远程服务器等，用户可以选择记录日志到什么地方。<br>2、数据库访问，当用户不知道最后系统采用哪一类数据库，以及数据库可能有变化时。<br>3、设计一个连接服务器的框架，需要三个协议，”POP3”、”IMAP”、”HTTP”，可以把这三个作为产品类，共同实现一个接口。 </p>
+</li>
+<li><p><strong>注意事项</strong>：<br>作为一种创建类模式，在任何需要生成复杂对象的地方，都可以使用工厂方法模式。<br>有一点需要注意的地方就是复杂对象适合使用工厂模式，而简单对象，特别是只需要通过 new 就可以完成创建的对象，无需使用工厂模式。如果使用工厂模式，就需要引入一个工厂类，会增加系统的复杂度。</p>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/12/13/DP-Factory/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/07/Algorithm-Sort/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/12/07/Algorithm-Sort/" itemprop="url">Algorithm-Sort</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-07T11:28:13+08:00">
+                2016-12-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,120
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><ul>
+<li><p><strong>内存占用</strong><br>In-place Sort（不占用额外内存或占用常数的内存）：插入排序、选择排序、冒泡排序、堆排序、快速排序。<br>Out-place Sort：归并排序、计数排序、基数排序、桶排序。</p>
+</li>
+<li><p><strong>稳定性</strong><br>Stable Sort：插入排序、冒泡排序、归并排序、计数排序、基数排序、桶排序。<br>Unstable Sort：选择排序(5 8 5 2 9)、快速排序、堆排序。</p>
+</li>
+<li><p><strong>复杂度</strong><br>O(n2)：插入排序、选择排序、冒泡排序<br>nlogN：快速排序、归并排序、堆排序</p>
+</li>
+</ul>
+<hr>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/12/07/Algorithm-Sort/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/07/Algorithm-RankList/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1135,7 +1782,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  185
+                  347
                 </span>
               
 
@@ -1162,14 +1809,50 @@
       
         
           
-            <h4 id="导入设置"><a href="#导入设置" class="headerlink" title="导入设置"></a>导入设置</h4><ul>
+            <p>音频系统组成：</p>
+<ul>
+<li>Audio Source: 发出声音组件，音源</li>
+<li>Audio Listener: 接收声音组件，根据和音源的距离远近，会有声音强度的变化；一般在Camera上</li>
+<li>Audio Clip: 声音文件，支持mp3、ogg、wav等</li>
+</ul>
+<h4 id="AudioSource"><a href="#AudioSource" class="headerlink" title="AudioSource"></a>AudioSource</h4><h6 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h6><ul>
+<li>clip</li>
+<li>isPlaying</li>
+<li>loop</li>
+<li>mute</li>
+<li>volume: 音量</li>
+</ul>
+<h6 id="Static-Methods"><a href="#Static-Methods" class="headerlink" title="Static Methods"></a>Static Methods</h6><ul>
+<li>PlayClipAtPoint: 在指定位置播放声音，不需要附加到GameObject上；可用于销毁物体后的声音</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">AudioSource.PlayClipAtPoint(breakSound, Camera.main.transform.position);</span><br></pre></td></tr></table></figure>
+<h6 id="Public-Methods"><a href="#Public-Methods" class="headerlink" title="Public Methods"></a>Public Methods</h6><ul>
+<li>Pause()</li>
+<li>UnPause()</li>
+<li>Stop()</li>
+<li>Play()</li>
+<li>PlayOneShot(): 把音频文件播放完毕，在多个音频并发时不会相互覆盖 </li>
+<li>PlayDelayed(): 延迟若干时间后播放</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">AudioSource myAS;</span><br><span class="line"></span><br><span class="line">myAS = GetCompoent&lt;AudioSource&gt;();</span><br><span class="line"></span><br><span class="line">myAS.Play();</span><br><span class="line">myAS.Stop()</span><br><span class="line">myAS.PlayOneShoot();</span><br></pre></td></tr></table></figure>
+<h4 id="音频文件导入设置"><a href="#音频文件导入设置" class="headerlink" title="音频文件导入设置"></a>音频文件导入设置</h4><ul>
 <li>Force to Mono:强制变为单声道</li>
 <li>Load in Background:加载时在后台处理，不会造成卡顿等，用于大文件。</li>
 <li><p>Preload Audio Data:预加载会消耗内存，但可以避免播放时等待。</p>
 </li>
-<li><p>Load Type:运行时加载音频的方法。<strong>Decompress on load</strong>加载后就解压缩，避免运行时的性能开销，将使用更多内存，用于小文件;<strong>Compressed in memory</strong>加载后仍然保持压缩，仅在播放时解压缩，用于大文件。<strong>Streaming</strong>从磁盘流式加载，而不是完全加载到内存，用于大型背景音乐等。</p>
+<li><p>Load Type:运行时加载音频的方法。</p>
+<ul>
+<li><strong>Decompress on load</strong>加载后就解压缩，避免运行时的性能开销，将使用更多内存，用于小文件;</li>
+<li><strong>Compressed in memory</strong>加载后仍然保持压缩，仅在播放时解压缩，用于大文件；</li>
+<li><strong>Streaming</strong>从磁盘流式加载，而不是完全加载到内存，用于大型背景音乐等。</li>
+</ul>
 </li>
-<li>Compression Format: 音频存储的数据格式。<strong>Vorbits</strong>压缩格式，用于大文件；<strong>PCM</strong>原始格式，用于小文件。</li>
+<li><p>Compression Format: 音频存储的数据格式。</p>
+<ul>
+<li><strong>Vorbits</strong>压缩格式，用于大文件；</li>
+<li><strong>PCM</strong>原始格式，用于小文件。</li>
+</ul>
+</li>
 </ul>
 
           
@@ -2719,615 +3402,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/27/Unity-Messanger/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/27/Unity-Messanger/" itemprop="url">Unity-Messanger</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-27T15:24:22+08:00">
-                2016-11-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  120
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="全局广播"><a href="#全局广播" class="headerlink" title="全局广播"></a>全局广播</h4><p>用于UI与游戏通信等</p>
-<ol>
-<li><p>import Messenger.cs</p>
-</li>
-<li><p>set up GameEvent</p>
-</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">GameEvent</span> &#123;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> ENEMY_HIT = <span class="string">"ENEMY_HIT"</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> SPEED_CHANGED = <span class="string">"SPEED_CHANGED"</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>add listener</li>
-</ol>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	Messenger&lt;<span class="keyword">float</span>&gt;.AddListener (GameEvent.SPEED_CHANGED, OnSpeedChanged);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Destroy</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	Messenger&lt;<span class="keyword">float</span>&gt;.RemoveListener (GameEvent.SPEED_CHANGED, OnSpeedChanged);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnSpeedChanged</span>(<span class="params"><span class="keyword">float</span> <span class="keyword">value</span></span>) </span>&#123;</span><br><span class="line">	speed = baseSpeed * <span class="keyword">value</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li><p>broadcast message</p>
-<p> Messenger<float>.Broadcast (GameEvent.SPEED_CHANGED, speed);</float></p>
-</li>
-</ol>
-<h4 id="点对点"><a href="#点对点" class="headerlink" title="点对点"></a>点对点</h4><ol>
-<li>脚本定义接到通知后的操作方法，operateFunction()</li>
-<li>将脚本添加到目标物体objectA</li>
-<li>取得objectA的组件引用，例如colliderA</li>
-<li>使用colliderA.SendMessage(“operateFunction”, options)</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/27/Unity-EventSystem/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/27/Unity-EventSystem/" itemprop="url">Unity-EventSystem</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-27T10:51:48+08:00">
-                2016-11-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  160
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>EventSystem组件主要负责处理输入、射线投射以及发送事件。一个场景中只能有一个EventSystem组件，并且需要BaseInputModule类型组件的协助才能工作。</p>
-<h4 id="Static-Variables"><a href="#Static-Variables" class="headerlink" title="Static Variables"></a>Static Variables</h4><ul>
-<li>current    Return the current EventSystem.</li>
-</ul>
-<h4 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h4><ul>
-<li>alreadySelecting    Returns true if the EventSystem is already in a SetSelectedGameObject.</li>
-<li>currentInputModule    The currently active BaseInputModule.</li>
-<li>currentSelectedGameObject    The GameObject currently considered active by the EventSystem.</li>
-<li>firstSelectedGameObject    The GameObject that was selected first.</li>
-<li>pixelDragThreshold    The soft area for dragging in pixels.</li>
-<li>sendNavigationEvents    Should the EventSystem allow navigation events (move / submit / cancel).</li>
-</ul>
-<h4 id="Public-Functions"><a href="#Public-Functions" class="headerlink" title="Public Functions"></a>Public Functions</h4><ul>
-<li>IsPointerOverGameObject    Is the pointer with the given id over an EventSystem object?</li>
-<li>RaycastAll    Raycast into the scene using all configured BaseRaycasters.</li>
-<li>SetSelectedGameObject    Set the object as selected. Will send an OnDeselect the the old selected object and OnSelect to the new selected object.</li>
-<li>UpdateModules    Recalculate the internal list of BaseInputModules.</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/27/Unity-Anchors/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/27/Unity-Anchors/" itemprop="url">Unity-Anchors</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-27T10:27:03+08:00">
-                2016-11-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  149
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Anchors"><a href="#Anchors" class="headerlink" title="Anchors"></a>Anchors</h4><p>定义UI元素的位置和大小。<br>所有UI对象都有锚点(anchor)，锚点组成一个矩形，坐标归一化，代表“在父对象中的相对位置”。<br>UI元素的位置(x, y, z)表示为，“到锚点的相对距离”。<br>当父元素的大小改变时，锚点的位置改变，子元素的大小随之改变，从而实现等比例缩放。</p>
-<h4 id="Pivot"><a href="#Pivot" class="headerlink" title="Pivot"></a>Pivot</h4><p>定义UI元素的变换中心。<br>以0~1的数字表示，代表在UI元素中的位置百分比。<br>当实现旋转、缩放时，将以pivot点为轴。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/23/Unity-SphereCast/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/23/Unity-SphereCast/" itemprop="url">Unity-SphereCast</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-23T17:43:32+08:00">
-                2016-11-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  227
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Casts a sphere along a ray and returns detailed information on what was hit.</p>
-<p>This is useful when a Raycast does not give enough precision, because you want to find out if an object of a specific size, such as a character, will be able to move somewhere without colliding with anything on the way. Think of the sphere cast like a thick raycast. In this case the ray is specified by a start vector and a direction.</p>
-<p>Returns true when the sphere intersects any collider.</p>
-<ul>
-<li>public static bool SphereCast(Vector3 origin, float radius, Vector3 direction, out RaycastHit hitInfo, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
-<li>public static bool SphereCast(Ray ray, float radius, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
-<li>public static bool SphereCast(Ray ray, float radius, out RaycastHit hitInfo, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
-</ul>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (_alive) &#123;</span><br><span class="line">		transform.Translate (<span class="number">0</span>, <span class="number">0</span>, speed * Time.deltaTime);</span><br><span class="line"></span><br><span class="line">		Ray ray = <span class="keyword">new</span> Ray (transform.position, transform.forward);</span><br><span class="line">		RaycastHit hit;</span><br><span class="line">		<span class="keyword">if</span> (Physics.SphereCast (ray, <span class="number">0.75</span>f, <span class="keyword">out</span> hit)) &#123;</span><br><span class="line">			GameObject hitObject = hit.transform.gameObject;</span><br><span class="line">			<span class="keyword">if</span> (hitObject.GetComponent&lt;PlayerCharacter&gt; ()) &#123;</span><br><span class="line">				<span class="keyword">if</span> (_fireball == <span class="literal">null</span>) &#123;</span><br><span class="line">					_fireball = Instantiate (fireballPrefab) <span class="keyword">as</span> GameObject;</span><br><span class="line">					_fireball.transform.position = transform.TransformPoint (Vector3.forward * <span class="number">1.5</span>f);</span><br><span class="line">					_fireball.transform.rotation = transform.rotation;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (hit.distance &lt; obstacleRange) &#123;</span><br><span class="line">				<span class="keyword">float</span> angle = Random.Range (<span class="number">-100</span>, <span class="number">100</span>);</span><br><span class="line">				transform.Rotate (<span class="number">0</span>, angle, <span class="number">0</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3377,7 +3456,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">320</span>
+                  <span class="site-state-item-count">324</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3390,7 +3469,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3479,7 +3558,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">121.0k</span>
+    <span title="Site words total count">123.1k</span>
   
 </div>
 

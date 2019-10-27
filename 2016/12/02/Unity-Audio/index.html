@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="导入设置 Force to Mono:强制变为单声道 Load in Background:加载时在后台处理，不会造成卡顿等，用于大文件。 Preload Audio Data:预加载会消耗内存，但可以避免播放时等待。  Load Type:运行时加载音频的方法。Decompress on load加载后就解压缩，避免运行时的性能开销，将使用更多内存，用于小文件;Compressed in mem">
+<meta name="description" content="音频系统组成：  Audio Source: 发出声音组件，音源 Audio Listener: 接收声音组件，根据和音源的距离远近，会有声音强度的变化；一般在Camera上 Audio Clip: 声音文件，支持mp3、ogg、wav等  AudioSourceProperties clip isPlaying loop mute volume: 音量  Static Methods PlayC">
 <meta name="keywords" content="Unity">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity-Audio">
 <meta property="og:url" content="http://mirokule.github.io/2016/12/02/Unity-Audio/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="导入设置 Force to Mono:强制变为单声道 Load in Background:加载时在后台处理，不会造成卡顿等，用于大文件。 Preload Audio Data:预加载会消耗内存，但可以避免播放时等待。  Load Type:运行时加载音频的方法。Decompress on load加载后就解压缩，避免运行时的性能开销，将使用更多内存，用于小文件;Compressed in mem">
+<meta property="og:description" content="音频系统组成：  Audio Source: 发出声音组件，音源 Audio Listener: 接收声音组件，根据和音源的距离远近，会有声音强度的变化；一般在Camera上 Audio Clip: 声音文件，支持mp3、ogg、wav等  AudioSourceProperties clip isPlaying loop mute volume: 音量  Static Methods PlayC">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-29T00:45:17.593Z">
+<meta property="og:updated_time" content="2019-09-13T08:46:03.113Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-Audio">
-<meta name="twitter:description" content="导入设置 Force to Mono:强制变为单声道 Load in Background:加载时在后台处理，不会造成卡顿等，用于大文件。 Preload Audio Data:预加载会消耗内存，但可以避免播放时等待。  Load Type:运行时加载音频的方法。Decompress on load加载后就解压缩，避免运行时的性能开销，将使用更多内存，用于小文件;Compressed in mem">
+<meta name="twitter:description" content="音频系统组成：  Audio Source: 发出声音组件，音源 Audio Listener: 接收声音组件，根据和音源的距离远近，会有声音强度的变化；一般在Camera上 Audio Clip: 声音文件，支持mp3、ogg、wav等  AudioSourceProperties clip isPlaying loop mute volume: 音量  Static Methods PlayC">
 
 
 
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  185
+                  347
                 </span>
               
 
@@ -349,14 +349,50 @@
       
 
       
-        <h4 id="导入设置"><a href="#导入设置" class="headerlink" title="导入设置"></a>导入设置</h4><ul>
+        <p>音频系统组成：</p>
+<ul>
+<li>Audio Source: 发出声音组件，音源</li>
+<li>Audio Listener: 接收声音组件，根据和音源的距离远近，会有声音强度的变化；一般在Camera上</li>
+<li>Audio Clip: 声音文件，支持mp3、ogg、wav等</li>
+</ul>
+<h4 id="AudioSource"><a href="#AudioSource" class="headerlink" title="AudioSource"></a>AudioSource</h4><h6 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h6><ul>
+<li>clip</li>
+<li>isPlaying</li>
+<li>loop</li>
+<li>mute</li>
+<li>volume: 音量</li>
+</ul>
+<h6 id="Static-Methods"><a href="#Static-Methods" class="headerlink" title="Static Methods"></a>Static Methods</h6><ul>
+<li>PlayClipAtPoint: 在指定位置播放声音，不需要附加到GameObject上；可用于销毁物体后的声音</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">AudioSource.PlayClipAtPoint(breakSound, Camera.main.transform.position);</span><br></pre></td></tr></table></figure>
+<h6 id="Public-Methods"><a href="#Public-Methods" class="headerlink" title="Public Methods"></a>Public Methods</h6><ul>
+<li>Pause()</li>
+<li>UnPause()</li>
+<li>Stop()</li>
+<li>Play()</li>
+<li>PlayOneShot(): 把音频文件播放完毕，在多个音频并发时不会相互覆盖 </li>
+<li>PlayDelayed(): 延迟若干时间后播放</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">AudioSource myAS;</span><br><span class="line"></span><br><span class="line">myAS = GetCompoent&lt;AudioSource&gt;();</span><br><span class="line"></span><br><span class="line">myAS.Play();</span><br><span class="line">myAS.Stop()</span><br><span class="line">myAS.PlayOneShoot();</span><br></pre></td></tr></table></figure>
+<h4 id="音频文件导入设置"><a href="#音频文件导入设置" class="headerlink" title="音频文件导入设置"></a>音频文件导入设置</h4><ul>
 <li>Force to Mono:强制变为单声道</li>
 <li>Load in Background:加载时在后台处理，不会造成卡顿等，用于大文件。</li>
 <li><p>Preload Audio Data:预加载会消耗内存，但可以避免播放时等待。</p>
 </li>
-<li><p>Load Type:运行时加载音频的方法。<strong>Decompress on load</strong>加载后就解压缩，避免运行时的性能开销，将使用更多内存，用于小文件;<strong>Compressed in memory</strong>加载后仍然保持压缩，仅在播放时解压缩，用于大文件。<strong>Streaming</strong>从磁盘流式加载，而不是完全加载到内存，用于大型背景音乐等。</p>
+<li><p>Load Type:运行时加载音频的方法。</p>
+<ul>
+<li><strong>Decompress on load</strong>加载后就解压缩，避免运行时的性能开销，将使用更多内存，用于小文件;</li>
+<li><strong>Compressed in memory</strong>加载后仍然保持压缩，仅在播放时解压缩，用于大文件；</li>
+<li><strong>Streaming</strong>从磁盘流式加载，而不是完全加载到内存，用于大型背景音乐等。</li>
+</ul>
 </li>
-<li>Compression Format: 音频存储的数据格式。<strong>Vorbits</strong>压缩格式，用于大文件；<strong>PCM</strong>原始格式，用于小文件。</li>
+<li><p>Compression Format: 音频存储的数据格式。</p>
+<ul>
+<li><strong>Vorbits</strong>压缩格式，用于大文件；</li>
+<li><strong>PCM</strong>原始格式，用于小文件。</li>
+</ul>
+</li>
 </ul>
 
       
@@ -481,7 +517,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">320</span>
+                  <span class="site-state-item-count">324</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -494,7 +530,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -565,7 +601,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#导入设置"><span class="nav-number">1.</span> <span class="nav-text">导入设置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#AudioSource"><span class="nav-number">1.</span> <span class="nav-text">AudioSource</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Properties"><span class="nav-number">1.0.1.</span> <span class="nav-text">Properties</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Static-Methods"><span class="nav-number">1.0.2.</span> <span class="nav-text">Static Methods</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Public-Methods"><span class="nav-number">1.0.3.</span> <span class="nav-text">Public Methods</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#音频文件导入设置"><span class="nav-number">2.</span> <span class="nav-text">音频文件导入设置</span></a></li></ol></div>
             
 
           </div>
@@ -599,7 +635,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">121.0k</span>
+    <span title="Site words total count">123.1k</span>
   
 </div>
 

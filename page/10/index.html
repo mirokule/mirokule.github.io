@@ -262,6 +262,596 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/28/ML-KNN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/28/ML-KNN/" itemprop="url">k近邻</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T14:03:55+08:00">
+                2017-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  334
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>kNN(k Nearest Neighbour)寻找与待分类样本在特征空间中距离最近的K个已标记样本作为参考。</p>
+<h4 id="Iris花朵分类"><a href="#Iris花朵分类" class="headerlink" title="Iris花朵分类"></a>Iris花朵分类</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入数据</span></span><br><span class="line">iris = load_iris()</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化</span></span><br><span class="line">ss = StandardScaler()</span><br><span class="line">X_train = ss.fit_transform(X_train)</span><br><span class="line">X_test = ss.transform(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型并预测</span></span><br><span class="line">knc = KNeighborsClassifier()</span><br><span class="line">knc.fit(X_train, y_train)</span><br><span class="line">y_predict = knc.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">knc.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, y_predict, target_names=iris.target_names)</span><br></pre></td></tr></table></figure>
+<p>k近邻算法没有参数训练过程，属于无参数模型(Nonparametric Model)中非常简单的一种。<br>也就是说，并没有使用学习算法分析训练数据，而只是根据样本的分布直接作出分类决策。<br>由于需要对内存中的样本逐一计算距离，具有平方级的计算复杂度，内存消耗大。</p>
+<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><p>使用样本周围k个最近的训练样本的目标数值，得出预测值。<br>可以使用普通的算术平均算法，也可以考虑距离的差异进行加权平均。</p>
+<h4 id="预测房价"><a href="#预测房价" class="headerlink" title="预测房价"></a>预测房价</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbours <span class="keyword">import</span> KNeighborsRegressor</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用算术平均</span></span><br><span class="line">uni_knr = KNeighborsRegressor(weights=<span class="string">'uniform'</span>)</span><br><span class="line">uni_knr.fit(X_train, y_train)</span><br><span class="line">uni_knr_y_predict = uni_knr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用距离加权</span></span><br><span class="line">dis_knr = KNeighborsRegressor(weights=<span class="string">'distance'</span>)</span><br><span class="line">dis_knr.fit(X_train, y_train)</span><br><span class="line">dis_knr_y_predict = dis_knr.predict(X_test_)</span><br></pre></td></tr></table></figure>
+<p>与KNN分类一样，属于无参数模型。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/27/ML-NaiveBayes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/27/ML-NaiveBayes/" itemprop="url">朴素贝叶斯分类器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T14:33:15+08:00">
+                2017-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  496
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>朴素贝叶斯(Naive Bayes)分类器基于贝叶斯理论，不再有线性关系假设。</p>
+<p>$$P(y|\textbf{x}) = \frac{P(\textbf{x}|y)P(y)}{P(\textbf{x})}$$</p>
+<p>其中 $P(\textbf{x})$ 和 $P(y)$ 分别是特征值（单词）和类别（新闻分类）的先验概率，为固定值。<br>分类的依据取决于 $P(\textbf{x}|y)$.<br>因而引入基本<strong>数学假设</strong>：各个维度上的特征被分类的条件概率之间是相互独立的，即</p>
+<p>$$ P(\textbf{x}|y) = P(x_{1},x_{2},\cdot \cdot \cdot x_{n}|y) = P(x_{1}|y)P(x_{2}|y) \cdot \cdot \cdot P(x_{n}|y) $$</p>
+<p>问题转化为统计各个类别（新闻分类）里特征值（单词）的出现频率，即 $P(x_{i}|y)$<br>该方法由这个特征独立的假设而被称为”Naive”。</p>
+<p>朴素贝叶斯模型有着广泛的实际应用场景，特别是在文本分类的任务里，如互联网新闻分类、垃圾邮件筛选等。<br>在文本分类中，特征是文字而不是数字，不适合使用线性分类模型。</p>
+<h4 id="新闻分类"><a href="#新闻分类" class="headerlink" title="新闻分类"></a>新闻分类</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.dataset <span class="keyword">import</span> fetch_20newsgroups</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer</span><br><span class="line"><span class="keyword">from</span> sklearn.naive_bayes <span class="keyword">import</span> MultinomialNB</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用新闻样例数据</span></span><br><span class="line">news = fetch_20newsgroups(subset=<span class="string">'all'</span>)</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(news.data, news.target, test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 特征抽取，文本特征向量化</span></span><br><span class="line">vec = CountVectorizer()</span><br><span class="line">X_train = vec.fit_transfrom(X_train)</span><br><span class="line">X_test = vec.transform(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型并用于预测</span></span><br><span class="line">mnb = MultinomialNB()</span><br><span class="line">mnb.fit(X_train, y_train)</span><br><span class="line">y_predict = mnb.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">mnb.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, y_predict, target_names=news.target_names)</span><br></pre></td></tr></table></figure>
+<p>由于朴素贝叶斯较强的特征条件独立假设，使模型需要估计的参数规模从幂指数级向线性量级减少，极大地节约了内存消耗和计算时间。<br>同时，这种假设限制了将特征之间的关联考量在内，因而在特征关联性较强的分类任务里性能不佳。<br>朴素贝叶斯模型广泛应用于海量互联网文本分类任务。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/27/ML-SVM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/27/ML-SVM/" itemprop="url">支持向量机</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T14:08:11+08:00">
+                2017-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  780
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>支持向量机分类器(Support Vector Classifier)，根据训练样本的分布，搜索所有可能的线性分类器中最佳的那个。<br>最佳是指分类直线离样本点的距离最远，具有最大的安全边界。<br>Logistic Regression分类中考虑了所有样本点对参数的影响，获得的不一定是最佳分类直线。</p>
+<h4 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h4><p>$$min_{\theta}C\sum_{i=1}^m\left[y^{(i)}cost_1(\theta^Tx^{(i)})+(1-y^{(i)})cost_0(\theta^Tx^{(i)})\right]+\frac{1}{2}\sum_{j=1}^n\theta_j^2$$<br>其中$C=\frac{1}{\lambda}$, Cost(z)的函数图像如下：<br><img src="\img\svmCost.png"></p>
+<p>$\theta^Tx$可看做向量$\vec(\theta)$与向量$\vec(x)$的内积，等于$\vec(p)\cdot\left|\left|\theta\right|\right|$。<br>理想情况下，样本能完全分开使得$cost(z)=1$，代价函数缩减为$min_{\theta}\frac{1}{2}\sum_{j=1}^n\theta_j^2$；<br>为使$\left|\left|\theta\right|\right|$尽可能小，应使得$\vec(p)$尽可能大，$\vec(p)$是$\vec(x)$在$\vec(\theta)$方向上的投影，$\vec(\theta)$垂直于分类直线$\theta^Tx$.</p>
+<h4 id="Kernel核函数"><a href="#Kernel核函数" class="headerlink" title="Kernel核函数"></a>Kernel核函数</h4><p>核函数可以将低维空间数据映射到高维空间，常与SVM配合使用，因为可以采用某些数值计算的优化方法，极大降低计算复杂度。核函数与其他分类模型如Logistic Regression的配合并不好，计算开销大。</p>
+<p>常用的核函数包括线性核函数、多项式核函数、高斯核函数等。其中高斯核函数最常用，可以将数据映射到无穷维，也叫做径向基函数(Radial Basis Function, RBF).构建核函数时，需要满足Mercer定理。</p>
+<p>高斯核函数：$f=similarity(x,l^{(1)}) = exp(-\frac{\left|\left|x-l^{(1)}\right|\right|^2}{2\sigma^2})$</p>
+<h4 id="识别手写数字"><a href="#识别手写数字" class="headerlink" title="识别手写数字"></a>识别手写数字</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_digits</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocession <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> LinearSVC</span><br><span class="line"></span><br><span class="line"><span class="comment"># 准备数据，使用sklearn提供的手写数字，无需清洗</span></span><br><span class="line">digits = load_digits()</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(digits.data, digits.target, test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化</span></span><br><span class="line">ss = StandardScalar()</span><br><span class="line">X_train = ss.fit_transform(X_train)</span><br><span class="line">X_test = ss.transform(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型并预测</span></span><br><span class="line">lsvc = LinearSVC()</span><br><span class="line">lsvc.fit(X_train, y_train)</span><br><span class="line">y_predict = lsvc.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">lsvc.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, y_predict, target_names=digits.target_names.astype(str))</span><br></pre></td></tr></table></figure>
+<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><p>SVR回归，假设f(x)和y之间最多能容忍e的误差，当且仅当f(x)与y之间的差别的绝对值大于e时，才计算损失。<br>相当于以f(x)高维平面为中心，构建一个宽度为2e的间隔带。如果样本在此间隔带内，则认为是正确的。<br>回归的目的就是找到这样一个平面，使尽可能多的样本点落在间隔带内。<br>容忍误差e的目的是防止过拟合。</p>
+<h4 id="预测房价"><a href="#预测房价" class="headerlink" title="预测房价"></a>预测房价</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVR</span><br><span class="line"></span><br><span class="line"><span class="comment"># 线性核函数</span></span><br><span class="line">linear_svr = SVR(kernel=<span class="string">'linear'</span>)</span><br><span class="line">linear_svr.fit(X_train, y_train)</span><br><span class="line">linear_svr_y_predict = linear_svr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 多项式核函数</span></span><br><span class="line">poly_svr = SVR(kernel=<span class="string">'poly'</span>)</span><br><span class="line">poly_svr.fit(X_train, y_train)</span><br><span class="line">poly_svr_y_predict = poly_svr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 径向基核函数</span></span><br><span class="line">rbf_svr = SVR(kernel=<span class="string">'rbf'</span>)</span><br><span class="line">rbf_svr.fit(X_train, y_train)</span><br><span class="line">rbf_svr_y_predict = rbf_svr.predict(X_test)</span><br></pre></td></tr></table></figure>
+<p>核函数可以将原有特征映射到更高维度的空间，在高维空间里实现线性可分。<br>使用不同核函数的模型，性能有非常大的差异。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/27/ML-Logistic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/27/ML-Logistic/" itemprop="url">Logistic Regression</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T13:25:07+08:00">
+                2017-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  599
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>将线性回归函数f映射到(0,1)，得到经典的线性分类器Logistic Regression。<br>虽然名字叫做“回归”，但实际上是一种分类模型。</p>
+<p>$$h_{w,b}(x)=g(f(w,x,b))=\frac{1}{1+e^{-f}}=\frac{1}{1+e^{-(w^{T}x+b)}}$$</p>
+<p><img src="/img/logistic.jpg" alt="Logistic" align="middle">  </p>
+<p>线性分类器是最基本和最常用的分类模型。<br>受限于数据特征和分类目标之间的线性假设。</p>
+<h4 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h4><p><img src="/img/cross_entropy.png"></p>
+<p>Logistic Regression不能使用和线性回归同样的代价函数，因为Logistic使原代价函数蜿蜒，产生多个局部最小值，不能使用GDA求得最小值。<br>故引入新的代价函数：<br>$$ J(\theta) = \frac{1}{m}\sum_{i=1}^{m}Cost(h_{\theta}(x^{(i)}),y^{(i)}) $$<br>$$ Cost(h_{\theta}(x),y) = -log(h_{\theta}(x))  \;\;\;\;\; if \;\; y = 1 $$<br>$$ Cost(h_{\theta}(x),y) = -log(1-h_{\theta}(x)) \;\;\;\;\; if \;\;  y = 0 $$</p>
+<p><img src="/img/logisticY1.png" width="250"><img src="/img/logisticY0.png" width="250"></p>
+<p>将Cost的分段函数合并，代价函数J可以写作：<br>$$ J(\theta) = -\frac{1}{m} \sum_{i=1}^{m}[y^{(i)} log(h_{\theta}(x^{(i)})) + (1-y^{(i)})log(1-h_{\theta}(x^{(i)}))] $$<br>向量形式：<br>$$ J(\theta) = \frac{1}{m}\cdot (-y^T log(h) - (1-y)^T log(1-h)) $$</p>
+<p>Gradient Descent迭代求解：<br>$$ \theta_j := \theta_j - \frac{\alpha}{m} \sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})x_j^{(i)} $$<br>向量形式：<br>$$ \theta := \theta - \frac{\alpha}{m} X^T(g(X\theta - \vec{y})) $$</p>
+<p>除此之外也有其他的最优化方法。不需要指定$\alpha$，求解速度更快，但是也更复杂。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/12/27/ML-Logistic/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/09/RegularExpression/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2738,658 +3328,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-Flyweight/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/13/DP-Flyweight/" itemprop="url">DesignPattern-FlyweightPattern</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T13:18:18+08:00">
-                2016-12-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  631
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>享元模式：使用共享以高效地支持大量的细粒度对象。<br>FlyWeight，顾名思义，使对象轻量化。<br>享元模式的特点是，复用内存中已存在的对象，降低系统创建对象实例的性能消耗。</p>
-<p>享元模式将对象数据分为两种类型。</p>
-<ul>
-<li>the intrinsic state: 不属于单一实例对象并且能够被所有对象共享的数据</li>
-<li>the extrinsic state: 对每个实例都唯一的外部状态</li>
-</ul>
-<p>例如场景中有许多树，为了减少发送给GPU的数据量，我们希望只发送一次tree model，再将每棵树实例的特有数据——位置、颜色、缩放比例等推送到GPU。</p>
-<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
-<li><p><strong>意图</strong>：运用共享技术有效地支持大量细粒度的对象。</p>
-</li>
-<li><p><strong>主要解决</strong>：在有大量对象时，有可能会造成内存溢出，我们把其中共同的部分抽象出来，如果有相同的业务请求，直接返回在内存中已有的对象，避免重新创建。</p>
-</li>
-<li><p><strong>何时使用</strong>：<br>1、系统中有大量对象。<br>2、这些对象消耗大量内存。<br>3、这些对象的状态大部分可以外部化。<br>4、这些对象可以按照内蕴状态分为很多组，当把外蕴对象从对象中剔除出来时，每一组对象都可以用一个对象来代替。<br>5、系统不依赖于这些对象身份，这些对象是不可分辨的。 </p>
-</li>
-<li><p><strong>如何解决</strong>：用唯一标识码判断，如果在内存中有，则返回这个唯一标识码所标识的对象。</p>
-</li>
-<li><p><strong>关键代码</strong>：用 HashMap 存储这些对象。</p>
-</li>
-<li><p><strong>应用实例</strong>：<br>1、JAVA 中的 String，如果有则返回，如果没有则创建一个字符串保存在字符串缓存池里面。<br>2、数据库的数据池。 </p>
-</li>
-<li><p><strong>优点</strong>：大大减少对象的创建，降低系统的内存，使效率提高。</p>
-</li>
-<li><p><strong>缺点</strong>：提高了系统的负责度，需要分离出外部状态和内部状态，而且外部状态具有固有化的性质，不应该随着内部状态的变化而变化，否则会造成系统的混乱。</p>
-</li>
-<li><p><strong>使用场景</strong>：<br>1、系统有大量相似对象。<br>2、需要缓冲池的场景。 </p>
-</li>
-<li><p><strong>注意事项</strong>：<br>1、注意划分外部状态和内部状态，否则可能会引起线程安全问题。<br>2、这些类必须有一个工厂对象加以控制。 </p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-Order/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/13/DP-Order/" itemprop="url">DesignPattern-OrderPattern</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T13:04:35+08:00">
-                2016-12-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  884
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p><strong>命令模式</strong>：将请求(request)封装成对象，以便使用不同的请求、日志、队列将客户端参数化。命令模式也支持请求的撤销和恢复。<br>命令就是面向对象化的回调(Commands are an object-oriented replacement for callbacks.)<br>命令模式和闭包类似，是对函数式编程的一种替代。</p>
-<p>可以实现按键、命令、执行角色之间的解耦；<br>可以方便地支持撤销、重做等；<br>支持多次撤销，可以通过维护命令列表实现。</p>
-<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
-<li><p><strong>意图</strong>：将一个请求封装成一个对象，从而使您可以用不同的请求对客户进行参数化。</p>
-</li>
-<li><p><strong>主要解决</strong>：在软件系统中，行为请求者与行为实现者通常是一种紧耦合的关系，但某些场合，比如需要对行为进行记录、撤销或重做、事务等处理时，这种无法抵御变化的紧耦合的设计就不太合适。</p>
-</li>
-<li><p><strong>何时使用</strong>：在某些场合，比如要对行为进行”记录、撤销/重做、事务”等处理，这种无法抵御变化的紧耦合是不合适的。在这种情况下，如何将”行为请求者”与”行为实现者”解耦？将一组行为抽象为对象，可以实现二者之间的松耦合。</p>
-</li>
-<li><p><strong>如何解决</strong>：通过调用者调用接受者执行命令，顺序：调用者→接受者→命令。</p>
-</li>
-<li><p><strong>关键代码</strong>：定义三个角色：<br>1、received 真正的命令执行对象<br>2、Command<br>3、invoker 使用命令对象的入口</p>
-</li>
-<li><p><strong>优点</strong>：<br>1、降低了系统耦合度。<br>2、新的命令可以很容易添加到系统中去。 </p>
-</li>
-<li><p><strong>缺点</strong>：<br>使用命令模式可能会导致某些系统有过多的具体命令类。</p>
-</li>
-<li><p><strong>使用场景</strong>：认为是命令的地方都可以使用命令模式，比如：<br>1、GUI 中每一个按钮都是一条命令。<br>2、模拟 CMD。 </p>
-</li>
-<li><p><strong>注意事项</strong>：系统需要支持命令的撤销(Undo)操作和恢复(Redo)操作，也可以考虑使用命令模式，见命令模式的扩展。</p>
-</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/13/DP-Order/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-Factory/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/13/DP-Factory/" itemprop="url">DesignPattern-FactoryPattern</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T09:50:38+08:00">
-                2016-12-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  932
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>工厂模式中，在创建对象时不会对client暴露创建逻辑，并且是通过使用一个共同的接口来指向新创建的对象。</p>
-<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
-<li><p><strong>意图</strong>：定义一个创建对象的接口，让其子类自己决定实例化哪一个工厂类，工厂模式使其创建过程延迟到子类进行。</p>
-</li>
-<li><p><strong>主要解决</strong>：主要解决接口选择的问题。</p>
-</li>
-<li><p><strong>何时使用</strong>：我们明确地计划不同条件下创建不同实例时。</p>
-</li>
-<li><p><strong>如何解决</strong>：让其子类实现工厂接口，返回的也是一个抽象的产品。</p>
-</li>
-<li><p><strong>关键代码</strong>：创建过程在其子类执行。</p>
-</li>
-<li><p><strong>应用实例</strong>：<br>1、您需要一辆汽车，可以直接从工厂里面提货，而不用去管这辆汽车是怎么做出来的，以及这个汽车里面的具体实现。<br>2、Hibernate 换数据库只需换方言和驱动就可以。 </p>
-</li>
-<li><p><strong>优点</strong>：<br>1、一个调用者想创建一个对象，只要知道其名称就可以了。<br>2、扩展性高，如果想增加一个产品，只要扩展一个工厂类就可以。<br>3、屏蔽产品的具体实现，调用者只关心产品的接口。 </p>
-</li>
-<li><p><strong>缺点</strong>：<br>每次增加一个产品时，都需要增加一个具体类和对象实现工厂，使得系统中类的个数成倍增加，在一定程度上增加了系统的复杂度，同时也增加了系统具体类的依赖。</p>
-</li>
-<li><p><strong>使用场景</strong>：<br>1、日志记录器：记录可能记录到本地硬盘、系统事件、远程服务器等，用户可以选择记录日志到什么地方。<br>2、数据库访问，当用户不知道最后系统采用哪一类数据库，以及数据库可能有变化时。<br>3、设计一个连接服务器的框架，需要三个协议，”POP3”、”IMAP”、”HTTP”，可以把这三个作为产品类，共同实现一个接口。 </p>
-</li>
-<li><p><strong>注意事项</strong>：<br>作为一种创建类模式，在任何需要生成复杂对象的地方，都可以使用工厂方法模式。<br>有一点需要注意的地方就是复杂对象适合使用工厂模式，而简单对象，特别是只需要通过 new 就可以完成创建的对象，无需使用工厂模式。如果使用工厂模式，就需要引入一个工厂类，会增加系统的复杂度。</p>
-</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/13/DP-Factory/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/07/Algorithm-Sort/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/07/Algorithm-Sort/" itemprop="url">Algorithm-Sort</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-07T11:28:13+08:00">
-                2016-12-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1,120
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><ul>
-<li><p><strong>内存占用</strong><br>In-place Sort（不占用额外内存或占用常数的内存）：插入排序、选择排序、冒泡排序、堆排序、快速排序。<br>Out-place Sort：归并排序、计数排序、基数排序、桶排序。</p>
-</li>
-<li><p><strong>稳定性</strong><br>Stable Sort：插入排序、冒泡排序、归并排序、计数排序、基数排序、桶排序。<br>Unstable Sort：选择排序(5 8 5 2 9)、快速排序、堆排序。</p>
-</li>
-<li><p><strong>复杂度</strong><br>O(n2)：插入排序、选择排序、冒泡排序<br>nlogN：快速排序、归并排序、堆排序</p>
-</li>
-</ul>
-<hr>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/07/Algorithm-Sort/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3439,7 +3382,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">320</span>
+                  <span class="site-state-item-count">324</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3452,7 +3395,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3541,7 +3484,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">121.0k</span>
+    <span title="Site words total count">123.1k</span>
   
 </div>
 

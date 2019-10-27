@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Scene management at run-time. Variables sceneCount    The total number of currently loaded scenes. sceneCountInBuildSettings    Number of scenes in Build Settings.  FunctionsGet GetActiveScene    Gets">
+<meta name="description" content="SceneManager在程序运行时管理Scene的活动，实现读取、加载、查找等功能。 Properties sceneCount    The total number of currently loaded scenes. sceneCountInBuildSettings    Number of scenes in Build Settings.  MethodsGet GetActive">
 <meta name="keywords" content="Unity">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity-SceneManager">
 <meta property="og:url" content="http://mirokule.github.io/2016/10/05/Unity-SceneManager/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="Scene management at run-time. Variables sceneCount    The total number of currently loaded scenes. sceneCountInBuildSettings    Number of scenes in Build Settings.  FunctionsGet GetActiveScene    Gets">
+<meta property="og:description" content="SceneManager在程序运行时管理Scene的活动，实现读取、加载、查找等功能。 Properties sceneCount    The total number of currently loaded scenes. sceneCountInBuildSettings    Number of scenes in Build Settings.  MethodsGet GetActive">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-29T00:45:17.609Z">
+<meta property="og:updated_time" content="2019-09-11T09:07:13.066Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-SceneManager">
-<meta name="twitter:description" content="Scene management at run-time. Variables sceneCount    The total number of currently loaded scenes. sceneCountInBuildSettings    Number of scenes in Build Settings.  FunctionsGet GetActiveScene    Gets">
+<meta name="twitter:description" content="SceneManager在程序运行时管理Scene的活动，实现读取、加载、查找等功能。 Properties sceneCount    The total number of currently loaded scenes. sceneCountInBuildSettings    Number of scenes in Build Settings.  MethodsGet GetActive">
 
 
 
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  173
+                  268
                 </span>
               
 
@@ -349,24 +349,43 @@
       
 
       
-        <p>Scene management at run-time.</p>
-<h4 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h4><ul>
+        <h3 id="SceneManager"><a href="#SceneManager" class="headerlink" title="SceneManager"></a>SceneManager</h3><p>在程序运行时管理Scene的活动，实现读取、加载、查找等功能。</p>
+<h4 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h4><ul>
 <li>sceneCount    The total number of currently loaded scenes.</li>
 <li>sceneCountInBuildSettings    Number of scenes in Build Settings.</li>
 </ul>
-<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><h6 id="Get"><a href="#Get" class="headerlink" title="Get"></a>Get</h6><ul>
-<li>GetActiveScene    Gets the currently active scene.</li>
-<li>GetSceneAt    Get the scene at index in the SceneManager’s list of added scenes.</li>
-<li>GetSceneByBuildIndex    Get a scene struct from a build index.</li>
-<li>GetSceneByName    Searches through the scenes added to the SceneManager for a scene with the given name.</li>
-<li>GetSceneByPath    Searches all scenes added to the SceneManager for a scene that has the given asset path.<h6 id="Load"><a href="#Load" class="headerlink" title="Load"></a>Load</h6></li>
-<li>LoadScene    Loads the scene by its name or index in Build Settings.</li>
-<li>LoadSceneAsync    Loads the scene asynchronously in the background.</li>
-<li>UnloadSceneAsync    Destroyes all GameObjects associated with the given scene and removes the scene from the SceneManager.<h6 id="Create"><a href="#Create" class="headerlink" title="Create"></a>Create</h6></li>
-<li>CreateScene    Create an empty new scene at runtime with the given name.</li>
-<li>SetActiveScene    Set the scene to be active.</li>
-<li>MergeScenes    This will merge the source scene into the destinationScene.</li>
-<li>MoveGameObjectToScene    Move a GameObject from its current scene to a new Scene. <h6 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h6>  // restart current scene<br>  SceneManager.LoadScene (SceneManager.GetActiveScene ().name);</li>
+<h4 id="Methods"><a href="#Methods" class="headerlink" title="Methods"></a>Methods</h4><h6 id="Get"><a href="#Get" class="headerlink" title="Get"></a>Get</h6><ul>
+<li>GetActiveScene()    Gets the currently active scene.</li>
+<li>GetSceneAt()            Get the scene at index in the SceneManager’s list of added scenes.</li>
+<li>GetSceneByBuildIndex()    Get a scene struct from a build index.</li>
+<li>GetSceneByName()    Searches through the scenes added to the SceneManager for a scene with the given name.</li>
+<li>GetSceneByPath()    Searches all scenes added to the SceneManager for a scene that has the given asset path.</li>
+</ul>
+<h6 id="Load"><a href="#Load" class="headerlink" title="Load"></a>Load</h6><ul>
+<li>LoadScene()    Loads the scene by its name or index in Build Settings.</li>
+<li>LoadSceneAsync()    Loads the scene asynchronously in the background.</li>
+<li>UnloadSceneAsync()    Destroyes all GameObjects associated with the given scene and removes the scene from the SceneManager.</li>
+</ul>
+<h6 id="Create"><a href="#Create" class="headerlink" title="Create"></a>Create</h6><ul>
+<li>CreateScene()        Create an empty new scene at runtime with the given name.</li>
+<li>SetActiveScene()    Set the scene to be active.</li>
+<li>MergeScenes()        This will merge the source scene into the destinationScene.</li>
+<li>MoveGameObjectToScene()    Move a GameObject from its current scene to a new Scene. </li>
+</ul>
+<h6 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h6><pre><code>// restart current scene
+SceneManager.LoadScene (SceneManager.GetActiveScene().name);
+</code></pre><h3 id="Scene"><a href="#Scene" class="headerlink" title="Scene"></a>Scene</h3><p>Scene可以通过buildIndex和name来查找获得。<br>BuildIndex是Int类型，可以通过+1/-1在相邻两个Scene之间往返；Name唯一确定。</p>
+<h4 id="Properties-1"><a href="#Properties-1" class="headerlink" title="Properties"></a>Properties</h4><ul>
+<li>buildIndex: Return the index of the Scene in the Build Settings</li>
+<li>name: Return the name of the Scene</li>
+<li>isDirty: Return true if the Scene is modified.</li>
+<li>isLoaded: Return true if the Scene is loaded</li>
+<li>path</li>
+<li>rootCount</li>
+</ul>
+<h4 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h4><ul>
+<li>GetRootGameObjects()</li>
+<li>IsValid()</li>
 </ul>
 
       
@@ -491,7 +510,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">320</span>
+                  <span class="site-state-item-count">324</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -504,7 +523,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -575,7 +594,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Variables"><span class="nav-number">1.</span> <span class="nav-text">Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Functions"><span class="nav-number">2.</span> <span class="nav-text">Functions</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Get"><span class="nav-number">2.0.1.</span> <span class="nav-text">Get</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Load"><span class="nav-number">2.0.2.</span> <span class="nav-text">Load</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Create"><span class="nav-number">2.0.3.</span> <span class="nav-text">Create</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Example"><span class="nav-number">2.0.4.</span> <span class="nav-text">Example</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SceneManager"><span class="nav-number">1.</span> <span class="nav-text">SceneManager</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Properties"><span class="nav-number">1.1.</span> <span class="nav-text">Properties</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Methods"><span class="nav-number">1.2.</span> <span class="nav-text">Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Get"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">Get</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Load"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">Load</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Create"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">Create</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Example"><span class="nav-number">1.2.0.4.</span> <span class="nav-text">Example</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scene"><span class="nav-number">2.</span> <span class="nav-text">Scene</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Properties-1"><span class="nav-number">2.1.</span> <span class="nav-text">Properties</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Method"><span class="nav-number">2.2.</span> <span class="nav-text">Method</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -609,7 +628,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">121.0k</span>
+    <span title="Site words total count">123.1k</span>
   
 </div>
 
