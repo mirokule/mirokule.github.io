@@ -262,6 +262,1179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/01/SCN-Force-Torque/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/01/SCN-Force-Torque/" itemprop="url">SceneKit Force and Torque</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T15:57:29+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  70
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Force"><a href="#Force" class="headerlink" title="Force"></a>Force</h4><p>Can affect linear and angular momentum.</p>
+<pre><code>    let force = SCNVector3(x: randomX, y: randomY, z: 0)
+    let position = SCNVector3(x: 0.05, y: 0.05, z: 0.05)
+geometryNode.physicsBody?.applyForce(force, atPosition: position, impulse: true)
+</code></pre><h4 id="Torque"><a href="#Torque" class="headerlink" title="Torque"></a>Torque</h4><p>Only affects angular momentum.</p>
+<pre><code>let torque = SCNVector4(x: 0.1, y: 0.1, z: 0.1, w: 1.0)
+</code></pre><p>The w-componet determines the rotation angle, that is, the magnitude of the torque.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/01/SCN-GeometryNode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/01/SCN-GeometryNode/" itemprop="url">SceneKit Geometry Node</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T15:35:35+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  51
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>3D primitives in SceneKit: cone, torus, capsule, tube, pyramid, box, sphere, cylinder.</p>
+<pre><code>var geometry: SCNGeometry = SCNSphere(radius: 1.0)
+
+let geometryNode = SCNNode(geometry: geometry)
+geometryNode.physicsBody = SCNPhysicsBody(type: .Dynamic, shape: nil)
+
+scnScene.rootNode.addChildNode(geometryNode)
+</code></pre><p>If shape of physicsBody is nil, Scene Kit will generate shape according to boundings of geometry.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/01/SCNCamera/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/01/SCNCamera/" itemprop="url">SCNCamera</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T15:32:56+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  40
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Set up a camera with SCNCamera, attach it to a SCNNode, and then add to the rootNode of the scene.</p>
+<pre><code>func setupCamera() {
+    cameraNode = SCNNode()
+    cameraNode.camera = SCNCamera()
+    cameraNode.position = SCNVector3(x: 0, y: 2, z: 10)
+
+    scnScene.rootNode.addChildNode(cameraNode)
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/05/01/SCNView/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/05/01/SCNView/" itemprop="url">SCNView and SCNScene</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T15:27:39+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  59
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="SCNView"><a href="#SCNView" class="headerlink" title="SCNView"></a>SCNView</h4><p>Consider SCNView something like skView. SCNView contains SCNScene and can display various information.</p>
+<pre><code>scnView.showsStatistics = true
+scnView.allowsCameraControl = true
+scnView.autoenablesDefaultLighting = true
+
+scnView.scene = scnScene
+</code></pre><h4 id="SCNScene"><a href="#SCNScene" class="headerlink" title="SCNScene"></a>SCNScene</h4><p>SCNScene is something like skScene. SCNScene has a rootNode which should be parent node of other nodes in the scene.</p>
+<pre><code>scnScene.background.contents = &quot;GeometryFighter.scnassets/Textures/Background_Diffuse.png&quot;
+scnScene.rootNode.addChildNode(cameraNode)
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/01/22/CAEmitterLayer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/01/22/CAEmitterLayer/" itemprop="url">CAEmitterLayer</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-22T10:25:42+08:00">
+                2016-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  194
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>CAEmitterLayer is similar to SKEmitterNode, but lack of “NumOfParticles” property.</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> frameRect = <span class="type">CGRect</span>(x: <span class="number">0.0</span>, y: <span class="number">0.0</span>, width: view.bounds.width, height: view.bounds.height)</span><br><span class="line">    emitterLayer.frame = frameRect</span><br><span class="line">    emitterLayer.borderColor = <span class="type">UIColor</span>.redColor().<span class="type">CGColor</span></span><br><span class="line">    emitterLayer.borderWidth = <span class="number">3</span></span><br><span class="line">    </span><br><span class="line">    setupEmitter()</span><br><span class="line">    setupEmitterCell()</span><br><span class="line">    </span><br><span class="line">    view.layer.addSublayer(emitterLayer)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setupEmitter</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">//Shape: Point, Line, Rectangle, Cuboid, Circle, Sphere</span></span><br><span class="line">    emitterLayer.emitterShape = kCAEmitterLayerPoint</span><br><span class="line">    </span><br><span class="line">    emitterLayer.emitterPosition = containerView.center</span><br><span class="line">    emitterLayer.emitterZPosition = <span class="number">0.0</span></span><br><span class="line">    </span><br><span class="line">    emitterLayer.emitterSize = <span class="type">CGSize</span>(width: <span class="number">10</span>, height: <span class="number">10</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setupEmitterCell</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">let</span> emitterCell = <span class="type">CAEmitterCell</span>()</span><br><span class="line">    emitterCell.contents = <span class="type">UIImage</span>(named: <span class="string">"star"</span>)?.<span class="type">CGImage</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//birth</span></span><br><span class="line">    emitterCell.birthRate = <span class="number">200</span></span><br><span class="line">    emitterCell.lifetime = <span class="number">3.5</span></span><br><span class="line">    emitterCell.lifetimeRange = <span class="number">2.0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//scale</span></span><br><span class="line">    emitterCell.scale = <span class="number">0.2</span></span><br><span class="line">    emitterCell.scaleRange = <span class="number">0</span></span><br><span class="line">    emitterCell.scaleSpeed = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//color</span></span><br><span class="line">    emitterCell.color = <span class="type">UIColor</span>(red: <span class="number">0.9</span>, green: <span class="number">1.0</span>, blue: <span class="number">1.0</span>, alpha: <span class="number">1.0</span>).<span class="type">CGColor</span></span><br><span class="line">    emitterCell.redRange = <span class="number">0.3</span></span><br><span class="line">    emitterCell.blueRange = <span class="number">0.3</span></span><br><span class="line">    emitterCell.greenRange = <span class="number">0.3</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//transparent</span></span><br><span class="line">    emitterCell.alphaRange = <span class="number">0.75</span></span><br><span class="line">    emitterCell.alphaSpeed = <span class="number">0.3</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//angle</span></span><br><span class="line">    emitterCell.emissionLongitude = -<span class="number">3.14</span> / <span class="number">4</span></span><br><span class="line">    emitterCell.emissionLatitude = <span class="number">0</span></span><br><span class="line">    emitterCell.emissionRange = <span class="number">3.14</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//speed</span></span><br><span class="line">    emitterCell.velocity = <span class="number">20.0</span></span><br><span class="line">    emitterCell.velocityRange = <span class="number">200.0</span></span><br><span class="line">    emitterCell.spin = <span class="number">3.14</span> / <span class="number">4</span></span><br><span class="line">    emitterCell.spinRange = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//acceleration</span></span><br><span class="line">    emitterCell.yAcceleration = <span class="number">0.0</span></span><br><span class="line">    emitterCell.xAcceleration = <span class="number">0.0</span></span><br><span class="line">    emitterCell.zAcceleration = <span class="number">10.0</span></span><br><span class="line"></span><br><span class="line">    emitterLayer.emitterCells = [emitterCell]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/12/25/NSCalendar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/12/25/NSCalendar/" itemprop="url">NSCalendar</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-25T09:09:03+08:00">
+                2015-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  19
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Judging-Date"><a href="#Judging-Date" class="headerlink" title="Judging Date"></a>Judging Date</h2><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">let</span> calendar = <span class="type">NSCalendar</span>.currentCalendar()</span><br><span class="line"><span class="keyword">if</span> calendar.isDateInYesterday(<span class="type">Date1</span>) &#123;</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">"yesterday"</span>)</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> calendar.isDateInToday(<span class="type">Date1</span>) &#123;</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">"today"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/18/UI-Color/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/11/18/UI-Color/" itemprop="url">Color</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-18T11:16:59+08:00">
+                2015-11-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  137
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Elements-of-color"><a href="#Elements-of-color" class="headerlink" title="Elements of color"></a>Elements of color</h4><ol>
+<li>HSB，对应眼睛感知 </li>
+</ol>
+<ul>
+<li><strong>Hue</strong>: 色调、色相，光的波长</li>
+<li><strong>Saturation</strong>: 饱和度，鲜艳度</li>
+<li><strong>Brightness</strong>: 明度、亮度，明暗</li>
+</ul>
+<ol>
+<li>RGB，光的三原色，加色混合，叠加为白</li>
+</ol>
+<ul>
+<li><strong>Red</strong>: 红</li>
+<li><strong>Green</strong>: 绿</li>
+<li><strong>Blue</strong>: 蓝</li>
+</ul>
+<p>取值：0~255</p>
+<ol>
+<li>CMY，色(颜料)的三原色，减色混合，叠加为黑</li>
+</ol>
+<ul>
+<li><strong>Cyan</strong>: 青 = 蓝+绿</li>
+<li><strong>Magenta</strong>: 品红 = 蓝+红</li>
+<li><strong>Yellow</strong>: 黄 = 红+绿</li>
+</ul>
+<p>取值： 0~100%</p>
+<p>由于印刷工艺颜色不纯，引入黑色，代码K(与Blue区分)，组成CMYK<br>CMYK与RGB色域不完全相同，有些颜色可显示不可印刷</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/10/SK-Particle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/11/10/SK-Particle/" itemprop="url">Particle System</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-10T11:26:03+08:00">
+                2015-11-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  265
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="SKEmitterNode"><a href="#SKEmitterNode" class="headerlink" title="SKEmitterNode"></a>SKEmitterNode</h2><p>SKEmitterNode can be generated from code or sks files.</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">let</span> particleLayerNode = <span class="type">SKNode</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> engineEmitter = <span class="type">SKEmitterNode</span>(filename: <span class="string">"engine.sks"</span>)</span><br><span class="line">engineEmitter.targetNode = particleLayerNode <span class="comment">// the target node which renders the emitter's particles</span></span><br><span class="line">engineEmitter.resetSimulation() <span class="comment">// remove all existing particles and restarts the simulation</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> colorSequency = <span class="type">SKKeyframeSequency</span>(capacity: <span class="number">20</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>...<span class="built_in">count</span> &#123;</span><br><span class="line">    colorSequency.addKeyframeValue(<span class="type">SKColor</span>.whiteColor(), time:...)</span><br><span class="line">&#125;</span><br><span class="line">emitterNode.particleColorSequency = colorSequence</span><br><span class="line"></span><br><span class="line">emitterNode.particleAction = <span class="type">SKAction</span>...</span><br><span class="line"></span><br><span class="line">emitterNode.advanceSimulationTime(<span class="type">NSTimeInterval</span>(lifetime)) <span class="comment">// advance the emitter particle simulation</span></span><br></pre></td></tr></table></figure>
+<p>Target Node: The initial properties of new particles are based on the emitter, but in future frames, the particles are treated as children of the target node.</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/11/10/SK-Particle/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/11/05/SKLabelNode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2104,1230 +3277,6 @@ self.view?.presentScene(myScene, transition: reveal)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/10/25/SK-Performance/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/25/SK-Performance/" itemprop="url">SpriteKit Performance</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-25T09:38:41+08:00">
-                2015-10-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  87
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="SKSpriteNode-from-image"><a href="#SKSpriteNode-from-image" class="headerlink" title="SKSpriteNode from image"></a>SKSpriteNode from image</h4><p>Images are gathered in document named  **.atlas. It’s said that when you use</p>
-<pre><code>let sprite = SKSpriteNode(imageNamed: ***)
-</code></pre><p>xocde will automaticlly load texture from its prepared atlas.</p>
-<p>But in XCode 7 and iOS 9, this seems to be broken. When creating several spritenode in a loop, it’s probably some of them are failed and the image will never show. Therefore, we have to specify the process by code:</p>
-<pre><code>let atlas = SKTextureAtlas(named: &quot;altasName&quot;)
-let texture = atlas.textureNamed(&quot;imageName&quot;)
-let sprite = SKSpriteNode(texture: texture)
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/10/20/UIActivityViewController/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/20/UIActivityViewController/" itemprop="url">UIActivityViewController</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-20T11:23:26+08:00">
-                2015-10-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  190
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="UIActivityViewController"><a href="#UIActivityViewController" class="headerlink" title="UIActivityViewController"></a>UIActivityViewController</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">       <span class="keyword">let</span> image = <span class="type">UIImage</span>(named: <span class="string">"shareImage"</span>)</span><br><span class="line">       <span class="keyword">let</span> text = summaryTextview.text</span><br><span class="line">       <span class="keyword">let</span> url = <span class="type">NSURL</span>(string: <span class="string">"https://itunes.apple.com/app/id1113232645"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> activityViewController = <span class="type">UIActivityViewController</span>(activityItems: [image!, text, url!], applicationActivities: <span class="literal">nil</span>)</span><br><span class="line">       activityViewController.excludedActivityTypes = [<span class="type">UIActivityTypeAddToReadingList</span>, <span class="type">UIActivityTypeMessage</span>, <span class="type">UIActivityTypeMail</span>, <span class="type">UIActivityTypePrint</span>]</span><br><span class="line">       activityViewController.completionWithItemsHandler = &#123; activityType, completed, <span class="number">_</span> , error -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">           <span class="keyword">if</span> error == <span class="literal">nil</span> &amp;&amp; completed == <span class="literal">true</span> &#123;</span><br><span class="line">               <span class="keyword">if</span> activityType == <span class="type">UIActivityTypePostToFacebook</span> || activityType == <span class="type">UIActivityTypePostToTwitter</span> || activityType == <span class="type">UIActivityTypePostToWeibo</span> || activityType == <span class="type">UIActivityTypePostToFlickr</span> || activityType == <span class="type">UIActivityTypePostToTencentWeibo</span> || activityType == <span class="type">UIActivityTypePostToVimeo</span> &#123;</span><br><span class="line">                   <span class="keyword">if</span> <span class="keyword">self</span>.isFirstShareToday() &#123;</span><br><span class="line">                       <span class="built_in">print</span>(<span class="string">"share succeed, adding coins"</span>)</span><br><span class="line">                       <span class="type">DataLoader</span>.<span class="type">SharedInstance</span>().addCoins(<span class="number">10</span>)</span><br><span class="line">                       <span class="type">NSUserDefaults</span>.standardUserDefaults().setObject(<span class="type">NSDate</span>(), forKey: <span class="type">Constants</span>.<span class="type">UserShareGiftDateKeyName</span>)</span><br><span class="line">                       <span class="keyword">self</span>.shareTextLabel.text = <span class="type">NSLocalizedString</span>(<span class="string">"+ 10 coins"</span>, comment: <span class="string">"share result"</span>)</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       activityViewController.popoverPresentationController?.sourceView = continueView</span><br><span class="line">       activityViewController.popoverPresentationController?.sourceRect = continueView.bounds</span><br><span class="line">       </span><br><span class="line">       <span class="keyword">self</span>.presentViewController(activityViewController, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/10/20/UIActivityViewController/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/10/19/UI-PresentationControllers/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/19/UI-PresentationControllers/" itemprop="url">Presentation Controllers</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-19T14:44:28+08:00">
-                2015-10-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  126
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Instantiate-View-Controller"><a href="#Instantiate-View-Controller" class="headerlink" title="Instantiate View Controller"></a>Instantiate View Controller</h4><p>If the view controller is made by code, use </p>
-<pre><code>let popoverViewController = PopOverViewController(...)
-</code></pre><p>If the view controller is made in storyboard, use </p>
-<pre><code>let popoverViewController = storyboard?.instantiateViewControllerWithIdentifier(&quot;scoreView&quot;) as! PopUpViewController
-</code></pre><h4 id="UIModalPresentationStyle"><a href="#UIModalPresentationStyle" class="headerlink" title="UIModalPresentationStyle"></a>UIModalPresentationStyle</h4><ul>
-<li><p><strong>.Popover</strong> present as a modal view controller on the compact-width screens, but as a popover on regular-width screens</p>
-</li>
-<li><p><strong>.OverFullScreen</strong> displays the presented view over the full screen, let underlying views show through</p>
-</li>
-<li><p><strong>.OverCurrentContext</strong> displays the presented view only over the parent view controller’s content, let underlying views show through</p>
-</li>
-</ul>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> popContentView = <span class="keyword">self</span>.storyboard?.instantiateViewControllerWithIdentifier(<span class="string">"StoreView"</span>) <span class="keyword">as</span>! <span class="type">StoreViewController</span></span><br><span class="line">       popContentView.modalPresentationStyle = <span class="type">UIModalPresentationStyle</span>.<span class="type">OverFullScreen</span></span><br><span class="line">       popContentView.storeDelegate = <span class="keyword">self</span></span><br><span class="line">       </span><br><span class="line">       <span class="keyword">self</span>.presentViewController(popContentView, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="UIModalTransitionStyle"><a href="#UIModalTransitionStyle" class="headerlink" title="UIModalTransitionStyle"></a>UIModalTransitionStyle</h4><ul>
-<li><strong>.CoverVertical</strong></li>
-<li><strong>.FlipHorizontal</strong></li>
-<li><strong>.CrossDissolve</strong></li>
-<li><strong>.PartialCurl</strong></li>
-</ul>
-<h4 id="Custom-Presentations"><a href="#Custom-Presentations" class="headerlink" title="Custom Presentations"></a>Custom Presentations</h4><p>Complete 3 files: <strong>Presentation Controller</strong>, <strong>AnimatedTransitioning</strong>, <strong>TransitionDelegate</strong> to custom presentation views and animations.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/10/18/NSNumberFormatter/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/18/NSNumberFormatter/" itemprop="url">NSNumberFormatter</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-18T18:34:05+08:00">
-                2015-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  45
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>When converting number to string, using NSNumberFormatter to specify the style of string.</p>
-<pre><code>let formatter = NSNumberFormatter()
-formatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
-formatter.stringFromNumber(num)
-</code></pre><p>NSNumberFormatterStyle includes:</p>
-<ul>
-<li>case NoStyle</li>
-<li>case DecimalStyle</li>
-<li>case CurrencyStyle</li>
-<li>case PercentStyle</li>
-<li>case ScientificStyle</li>
-<li>case SpellOutStyle</li>
-<li>case OrdinalStyle</li>
-<li>case CurrencyISOCodeStyle</li>
-<li>case CurrencyPluralStyle</li>
-<li>case CurrencyAccountingStyle</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/10/18/SKAction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/18/SKAction/" itemprop="url">SKAction</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-18T13:42:22+08:00">
-                2015-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  77
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Important"><a href="#Important" class="headerlink" title="Important"></a>Important</h4><p>SKNode will continue running SKAction after being set position, so use</p>
-<pre><code>SKNode.removeAllActions()
-</code></pre><p>to avoid unexpected moves.</p>
-<h4 id="Some-Action"><a href="#Some-Action" class="headerlink" title="Some Action"></a>Some Action</h4><ul>
-<li><strong>Move</strong></li>
-<li><strong>Rotatae</strong></li>
-<li><strong>Scale</strong></li>
-<li><p><strong>reSize</strong></p>
-</li>
-<li><p><strong>setColor</strong></p>
-</li>
-<li><strong>setTexture</strong></li>
-<li><p><strong>animateWithTexture</strong></p>
-</li>
-<li><p><strong>hide</strong></p>
-</li>
-<li><strong>fadein/out</strong></li>
-<li><p><strong>removeFromParent</strong></p>
-</li>
-<li><p><strong>group</strong></p>
-</li>
-<li><strong>sequence</strong></li>
-<li><strong>repeat</strong></li>
-<li><strong>reverseAction</strong></li>
-<li><p><strong>waitForDuration</strong></p>
-</li>
-<li><p><strong>runAction:onChildWithName</strong></p>
-</li>
-<li><strong>runBlock</strong></li>
-<li><strong>customActionWithDuration</strong></li>
-<li><p><strong>actionNamed</strong></p>
-</li>
-<li><p><strong>playSound</strong></p>
-</li>
-</ul>
-<h4 id="SKActionTimingMode"><a href="#SKActionTimingMode" class="headerlink" title="SKActionTimingMode"></a>SKActionTimingMode</h4><ul>
-<li><strong>Linear</strong>: animation occurs evenly over its duration</li>
-<li><strong>EaseIn</strong>: begin slowly and then speed up</li>
-<li><strong>EaseOut</strong>: begin quickly and then slow as it completes</li>
-<li><strong>EaseInEaseOut</strong>: begins slowly, accelerates through middle, then slows again before completing</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/10/13/SK-AnchorPoints/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/13/SK-AnchorPoints/" itemprop="url">SpriteKit-Anchor Point and Position</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-13T15:29:47+08:00">
-                2015-10-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  80
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Position"><a href="#Position" class="headerlink" title="Position"></a>Position</h4><p>A node’s position is its location in <strong>parent</strong> coordinate system.</p>
-<h4 id="Anchor-Point"><a href="#Anchor-Point" class="headerlink" title="Anchor Point"></a>Anchor Point</h4><p>??A <strong>skscene</strong>‘s anchorPoint property determins the origin point in the scene.</p>
-<p>A <strong>sprite</strong> node’s anchorPoint property determines which point in the frame is positioned at the sprite’s position.</p>
-<p><img src="/img/unit_coord_2x.png" alt="Anchor Point"></p>
-<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><ol>
-<li><p>Point = (80, 80), anchorPoint = (0.5, 0.5): the sprite puts its center on (80,80)</p>
-</li>
-<li><p>Point = (80, 80), anchorPoint = (0, 1): the sprite puts its left-top point on (80,80)</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/10/09/UIViewAutoresizing/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/09/UIViewAutoresizing/" itemprop="url">UIViewAutoResizing</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-09T15:42:21+08:00">
-                2015-10-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  81
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>UIViewAutoResizing is used to identify how the view resize to comply the bounds of different parent view. </p>
-<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">UIViewAutoresizing</span> : <span class="title">OptionSetType</span> </span>&#123;</span><br><span class="line">   	    	<span class="keyword">init</span>(rawValue rawValue: <span class="type">UInt</span>)</span><br><span class="line">   		<span class="keyword">static</span> <span class="keyword">var</span> <span class="type">None</span>: <span class="type">UIViewAutoresizing</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">   		<span class="keyword">static</span> <span class="keyword">var</span> <span class="type">FlexibleLeftMargin</span>: <span class="type">UIViewAutoresizing</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">   		<span class="keyword">static</span> <span class="keyword">var</span> <span class="type">FlexibleWidth</span>: <span class="type">UIViewAutoresizing</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">   		<span class="keyword">static</span> <span class="keyword">var</span> <span class="type">FlexibleRightMargin</span>: <span class="type">UIViewAutoresizing</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">   		<span class="keyword">static</span> <span class="keyword">var</span> <span class="type">FlexibleTopMargin</span>: <span class="type">UIViewAutoresizing</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">   		<span class="keyword">static</span> <span class="keyword">var</span> <span class="type">FlexibleHeight</span>: <span class="type">UIViewAutoresizing</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">   		<span class="keyword">static</span> <span class="keyword">var</span> <span class="type">FlexibleBottomMargin</span>: <span class="type">UIViewAutoresizing</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>NOTE</strong>: Bit mask syntax</p>
-<p>In swift 2.0, “|” can no longer be as </p>
-<pre><code>mask = .Left | .Right | .Height
-//USE
-mask = [.Left, .Right, .Height]
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2015/10/09/NSString-Standard-Attributes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/09/NSString-Standard-Attributes/" itemprop="url">NSString Standard Attributes</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-09T10:42:35+08:00">
-                2015-10-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  49
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Attribute-Identifier-Value-Class-Default-Value"><a href="#Attribute-Identifier-Value-Class-Default-Value" class="headerlink" title="Attribute Identifier:  Value Class, Default Value"></a>Attribute Identifier:  Value Class, Default Value</h4><ul>
-<li><strong>NSAttachmentAttributeName</strong>:  NSTextAttachment, none</li>
-<li><strong>NSBackgroundColorAttributeName</strong>:  NSColor, none</li>
-<li><strong>NSBaselineOffsetAttributeName</strong>:  NSNumber(float), 0.0</li>
-<li><strong>NSFontAttributeName</strong>:  NSFont, Helvetica 12-point</li>
-<li><strong>NSForegroundColorAttributeName</strong>:  NSColor, black</li>
-<li><strong>NSKernAttributeName</strong>:  NSNumber(float), 0.0</li>
-<li><strong>NSLigatureAttributeName</strong>:  NSNumber(int), 1</li>
-<li><strong>NSLinkAttributeName</strong>:  id, none(no link)</li>
-<li><strong>NSParagraphStyleAttributeName</strong>:  NSParagraphStyle</li>
-<li><strong>NSSuperscriptAttributeName</strong>:  NSNumber(int), 0</li>
-<li><strong>NSUnderlineStyleAttributeName</strong>:  NSNumber(int), none</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3382,7 +3331,7 @@ mask = [.Left, .Right, .Height]
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">324</span>
+                  <span class="site-state-item-count">332</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3395,7 +3344,7 @@ mask = [.Left, .Right, .Height]
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3484,7 +3433,7 @@ mask = [.Left, .Right, .Height]
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">123.1k</span>
+    <span title="Site words total count">124.5k</span>
   
 </div>
 

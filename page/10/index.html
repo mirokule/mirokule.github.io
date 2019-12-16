@@ -262,6 +262,1244 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/02/ML-PCA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/02/ML-PCA/" itemprop="url">主成分分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T09:56:13+08:00">
+                2018-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  423
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>主成分分析(Principal Component Analysis)是经典的特征降维技术。<br>寻找k个向量张成的超平面，使原始数据投影到超平面的误差最小。<br>PCA可以用于</p>
+<ul>
+<li>减少存储数据的内存消耗</li>
+<li>加快模型训练速度</li>
+<li>去除噪声</li>
+<li>高维数据可视化(k=2，3)</li>
+</ul>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>将数据从原来的坐标系转换到新的坐标系。<br>首先，以数据方差最大的方向作为第一条坐标轴的方向，因为最大的方差给出了最重要的数据分布信息。<br>然后，选择与第一个坐标轴正交，且方差次大的方向作为第二个坐标轴，以此类推。<br>越往后的坐标轴方向，数据的方差越小，几乎为0，可以舍弃。</p>
+<p>PCA是一种线性变换，用更少的m个特征取代了原来的n个特征，这些新特征是原特征的线性组合。</p>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
+<li>数据标准化</li>
+<li>计算协方差矩阵covariance matrix<br>$$ \sigma = \frac{1}{m}\sum_{i=1}^{n}(x^{(i)})(x^{(i)})^T $$</li>
+<li>计算 $[U,S,V] = svd(Sigma)$<br>其中前k个向量$U(:,1:K)=U_{reduce}$是映射矩阵，$z=U_{reduce}\ast x$;<br>若要还原x，$x_{approx}=U_{reduce}\ast z$；</li>
+</ol>
+<p><strong>选择k</strong><br>一般要求映射过程保留99%的方差<br>$$ \frac{\frac{1}{m}\sum_{i=1}^m\left|\left|x^{(i)}-x_{approx}^{(i)}\right|\right|^2}{\frac{1}{m}\sum_{i=1}^m\left|left|x^{(i)}\right|\right|^2} \leq 0.01(1%)<br>S是一个n*n矩阵，主元位置$S_{ii}$即代表数据方差，选择$k$使得<br>$$ \frac{\sum_{i=1}^kS_{ii}}{\sum_{i=1}^nS_{ii}} \geq 0.99$$</p>
+<p>使用sklearn:<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line"></span><br><span class="line">estimater = PCA(n_components = <span class="number">2</span>)</span><br><span class="line">X_pca = estimator.fit_transform(X_digits)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/02/ML-Kmeans/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/02/ML-Kmeans/" itemprop="url">K均值聚类</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T09:27:32+08:00">
+                2018-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  400
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>无监督学习的主流应用之一，最经典易用的聚类模型。</p>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><p>1.随机选取K个聚类空间中的点作为初始中心；<br>2.根据每个数据的特征向量，从K个聚类中心中选取距离最近的一个，把该数据标记为从属该聚类中心；<br>3.根据标记后的簇，重新计算每个簇的中心；<br>4.重复2、3直到聚类中心不再变化。</p>
+<p>$$ J = \frac{1}{m}\sum_{i=1}^m\left|\left|x^{(i)}-\mu_{c^{i}}\right|\right|^2$$</p>
+<p><strong>缺陷</strong></p>
+<ul>
+<li>容易收敛到局部最优解：通过多次执行算法，选择性能更好(J最小)的初始中心点</li>
+<li>需要预先设定簇的数量：通过观察簇内距离与簇数量的关系图，选择肘部拐点</li>
+</ul>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">kmeans = KMeans(n_clusters=<span class="number">10</span>)</span><br><span class="line">kmeans.fit(X_train)</span><br><span class="line">y_pred = kmeans.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能评估</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line">metrics.adjusted_rand_score(y_test, y_pred)</span><br></pre></td></tr></table></figure>
+<p><strong>肘部观察法</strong><br>寻找拐点，确定类的数量k，不一定有用。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"><span class="keyword">from</span> scipy.spatial.distance <span class="keyword">import</span> cdist</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成数据，使用均匀分布函数随机三个簇</span></span><br><span class="line">cluster1 = np.random.uniform(<span class="number">0.5</span>, <span class="number">1.5</span>, (<span class="number">2</span>,<span class="number">10</span>))</span><br><span class="line">cluster2 = np.random.uniform(<span class="number">5.5</span>, <span class="number">6.5</span>, (<span class="number">2</span>,<span class="number">10</span>))</span><br><span class="line">cluster3 = np.random.uniform(<span class="number">3.0</span>, <span class="number">4.0</span>, (<span class="number">2</span>,<span class="number">10</span>))</span><br><span class="line">X = np.hstack((cluster1, cluster2, cluster3)).T</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试9种不同聚类中心数量</span></span><br><span class="line">K = range(<span class="number">1</span>,<span class="number">10</span>)</span><br><span class="line">meandistortioins = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> K:</span><br><span class="line">	kmeans = KMeans(n_clusters = k)</span><br><span class="line">	kmeans.fit(X)</span><br><span class="line">	meandistortions.append(sum(np.min(cdist(X, kmeans.cluster_centers_, <span class="string">'euclidean'</span>), axis=<span class="number">1</span>))/X.shape[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘图</span></span><br><span class="line">plt.plot(K, meanditortions, <span class="string">'bx-'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'k'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Average Dispersion'</span>)</span><br><span class="line">plt.title(<span class="string">'Selecting k with Elbow Method'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/01/Calculus-Derivatives/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/01/Calculus-Derivatives/" itemprop="url">导数和微分</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-01T16:25:29+08:00">
+                2018-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  781
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="DEFINITIONS"><a href="#DEFINITIONS" class="headerlink" title="DEFINITIONS"></a>DEFINITIONS</h2><h4 id="Slope-Tangent-Line-and-Derivative"><a href="#Slope-Tangent-Line-and-Derivative" class="headerlink" title="Slope, Tangent Line and Derivative"></a>Slope, Tangent Line and Derivative</h4><p>The <strong>slope of the curve</strong> $y = f(x)$ at the point $P(x_{0}, f(x_{0}))$ is the number</p>
+<p>$$ m = \lim_{h\rightarrow 0} \frac{f(x_{0} + h)-f(x_{0})}{h} $$</p>
+<p>provided the limit exists.</p>
+<p>The <strong>tangent line</strong> to the curve at P is the line through P with this slope.</p>
+<p>The <strong>derivative</strong> of the function $f(x)$ with respect to the variable x is the function $f’$ whose value at x is</p>
+<p>$$ f’(x) = \lim_{h\rightarrow 0 } \frac{f(x+h) - f(x)}{h} $$</p>
+<p>provided the limit exists.</p>
+<p>The process of calculating a derivative is called <strong>differentiation</strong>.</p>
+<p>求导数的过程叫做<strong>微分</strong>。</p>
+<p>导数存在的条件是表达式的左极限等于右极限，即函数的左导数等于右导数。</p>
+<h4 id="Alternative-Formula-for-the-Derivative"><a href="#Alternative-Formula-for-the-Derivative" class="headerlink" title="Alternative Formula for the Derivative"></a>Alternative Formula for the Derivative</h4><p>$$ f’(x) = \lim_{z\rightarrow x} \frac{f(z)-f(x)}{z-x} $$</p>
+<h4 id="Critical-Point"><a href="#Critical-Point" class="headerlink" title="Critical Point"></a>Critical Point</h4><p>An interior point of the domain of a function $f$ where $f’$ is zero or undefined is a <strong>critical point</strong> of $f$.</p>
+<h4 id="Concave-Up-Concave-Down"><a href="#Concave-Up-Concave-Down" class="headerlink" title="Concave Up, Concave Down"></a>Concave Up, Concave Down</h4><p>The graph of a differentiable function $y=f(x)$ is</p>
+<p><strong>concave up</strong> on an open interval if $f’$ is increasing, $f’’ &gt; 0$</p>
+<p><strong>concave down</strong> on an open interval if $f’$ is decreasing, $f’’ &lt; 0$</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/01/Calculus-Derivatives/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/01/Calculus-Continuity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/01/Calculus-Continuity/" itemprop="url">连续</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-01T15:50:06+08:00">
+                2018-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  185
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Continuous-at-a-Point"><a href="#Continuous-at-a-Point" class="headerlink" title="Continuous at a Point"></a>Continuous at a Point</h4><p><strong>Interior point</strong>: A function $y = f(x)$ is <strong>continuous at an interior point c</strong> of its domain if</p>
+<p>$$ \lim_{x\rightarrow c} f(x) = f(c) $$</p>
+<p><strong>Endpoint</strong>: A function $y = f(x)$ is <strong>continuous at a left endpoint a</strong> or is <strong>continuous at a right endpoint b</strong> of its domain if</p>
+<p>$$ \lim_{x\rightarrow a^{+}} f(x) = f(a) \, or \, \lim_{x\rightarrow b^{-}} f(x) = f(b) $$</p>
+<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="Intermediate-Value-Property-介值定理"><a href="#Intermediate-Value-Property-介值定理" class="headerlink" title="Intermediate Value Property(介值定理)"></a>Intermediate Value Property(介值定理)</h4><p>A function $y = f(x)$ that is continuous on a closed interval $[a,b]$ takes on every value between $f(a)$ and $f(b)$. In other words, if $y_{0}$ is any value between $f(a)$ and $f(b)$, the $y_{0} = f(c)$ for some c in $[a,b]$.</p>
+<p>若$f(x)$在$[a,b]$上连续，对$(f(a), f(b))$中的任意y，存在c，使得$f(c) = y$.</p>
+<p>若$f(x)$在区间内连续且有正负值，且方程$f(x) = 0$在区间内必有解。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/30/Calculus-Limit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/30/Calculus-Limit/" itemprop="url">极限</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-30T09:57:51+08:00">
+                2017-12-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  534
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Limit-of-a-Function"><a href="#Limit-of-a-Function" class="headerlink" title="Limit of a Function"></a>Limit of a Function</h4><p>Let $f(x)$ be defined on an open interval about $x_{0}$, except possibly at $x_{0}$ itself. We say that the <strong>limit of $f(x)$ as $x$ approaches $x_{0}$ is the number $L$ </strong>, and write</p>
+<p>$$ \lim_{x\rightarrow x_{0}} f(x) = L $$</p>
+<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $\delta &gt; 0$ such that for all x,</p>
+<p>$$ 0 &lt; \left | x - x_{0} \right | &lt; \delta \Rightarrow \left | f(x) - L \right | &lt; \epsilon $$</p>
+<p>对任意小的正数 $\epsilon$，都可以找到一个区间，在这个区间内 $\left | f(x) - L \right | &lt; \epsilon $</p>
+<p>由定义可以证明加法律、乘法律等运算规则。</p>
+<h4 id="One-Sided-Limits"><a href="#One-Sided-Limits" class="headerlink" title="One-Sided Limits"></a>One-Sided Limits</h4><p>1.We say that $f(x)$ has <strong>right-hand limit $L$ at $x_{0}$</strong>, and write</p>
+<p>$$ \lim_{x\rightarrow x_{0}^{+}} f(x) = L $$</p>
+<p>if for every number $\epsilon &gt; 0$ there exists a corresponding number $\delta &gt; 0$ such that for all x</p>
+<p>$$ x_{0} &lt; x &lt; x_{0} + \delta \Rightarrow \left | f(x) - L \right | &lt; \epsilon $$</p>
+<p>2.We say that $f(x)$ has <strong>left-hand limit $L$ at $x_{0}$</strong>, and write</p>
+<p>$$ \lim_{x\rightarrow x_{0}^{-}} f(x) = L $$</p>
+<p>if for every number $\epsilon &gt; 0$ there exists a corresponding number $\delta &gt; 0$ such that for all x</p>
+<p>$$ x_{0} - \delta &lt; x &lt; x_{0}   \Rightarrow   \left | f(x) - L \right | &lt; \epsilon $$</p>
+<p>3.当左右极限相等时，在该点有函数极限。</p>
+<p>A function $f(x)$ has a limit as $x$ approaches $c$ if and only if it has left-hand and right-hand limits there and these one-sided limits are equal:</p>
+<p>$$ \lim_{x\rightarrow c} f(x) = L \Leftrightarrow \lim_{x\rightarrow c^{-}} f(x) = L \; and \; \lim{x\rightarrow c^{+}} f(x) = L $$</p>
+<h4 id="Limit-as-x-approaches-∞-or-∞"><a href="#Limit-as-x-approaches-∞-or-∞" class="headerlink" title="Limit as x approaches ∞ or -∞"></a>Limit as x approaches ∞ or -∞</h4><ol>
+<li>We say that $f(x)$ has the <strong>limit $L$ as $x$ approaches infinity</strong> and write</li>
+</ol>
+<p>$$ \lim_{x\rightarrow ∞} f(x) = L $$</p>
+<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $M$ such that for all $x$</p>
+<p>$$ x &gt; M \Rightarrow \left |f(x) - L \right | &lt; \epsilon $$</p>
+<p>对任意小的正数$\epsilon$，都可以找到区间$(M, ∞)$，在这个区间内 $\left |f(x) - L \right | &lt; \epsilon$</p>
+<ol>
+<li>We say that $f(x)$ has the <strong>limit $L$ as $x$ approaches minus infinity</strong> and write</li>
+</ol>
+<p>$$ \lim_{x\rightarrow -∞} f(x) = L $$</p>
+<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $N$ such that for all $x$</p>
+<p>$$ x &lt; N \Rightarrow \left |f(x) - L \right | &lt; \epsilon $$</p>
+<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Sandwich-Theorem-夹逼定理"><a href="#The-Sandwich-Theorem-夹逼定理" class="headerlink" title="The Sandwich Theorem(夹逼定理)"></a>The Sandwich Theorem(夹逼定理)</h4><p>Suppose that $g(x)\leqslant f(x)\leqslant h(x)$ for all $x$ in some open interval containing $c$, except possibly at $x = c$ itself. Suppose also that</p>
+<p>$$\lim_{x\rightarrow c} g(x) = \lim_{x\rightarrow c} h(x) = L$$</p>
+<p>Then $\lim_{x\rightarrow c} f(x) = L$</p>
+<h4 id="函数-frac-sin-theta-theta"><a href="#函数-frac-sin-theta-theta" class="headerlink" title="函数$\frac{sin\theta}{\theta}$"></a>函数$\frac{sin\theta}{\theta}$</h4><p>$$ \lim_{\theta\rightarrow 0}\frac{sin\theta}{\theta} = 1    (\theta \, in \, radians) $$</p>
+<p>因为 $ cos\theta &lt; \frac{sin\theta}{\theta} &lt; 1$，由夹逼定理可证。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/29/ML-LinearRegression/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/29/ML-LinearRegression/" itemprop="url">线性回归</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T10:19:17+08:00">
+                2017-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  237
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Boston房价预测"><a href="#Boston房价预测" class="headerlink" title="Boston房价预测"></a>Boston房价预测</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_boston</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> SGDRegressor</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> r2_score, mean_square_error, mean_absolute_error</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入数据</span></span><br><span class="line">boston = load_boston()</span><br><span class="line">X = boston.data</span><br><span class="line">y = boston.target</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=<span class="number">33</span>, test_size=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化，由于y不再是0和1，也需要标准化</span></span><br><span class="line">ss_X = StandardScaler()</span><br><span class="line">ss_y = StandardScaler()</span><br><span class="line">X_train = ss_X.fit_transform(X_train)</span><br><span class="line">X_test = ss_X.transform(X_test)</span><br><span class="line">y_train = ss_y.fit_transform(y_train)</span><br><span class="line">y_test = ss_y.transform(y_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析法训练参数</span></span><br><span class="line">lr = LinearRegression()</span><br><span class="line">lr.fit(X_train, y_train)</span><br><span class="line">lr_y_predict = lr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度下降法训练参数</span></span><br><span class="line">sgdr = SGDRegressor()</span><br><span class="line">sgdr.fit(X_train, y_train)</span><br><span class="line">sgdr_y_predict = sgdr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">lr.score(X_test, y_test)</span><br><span class="line">r2_score(y_test, lr_y_predict)</span><br><span class="line">mean_square_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(lr_y_predict))</span><br><span class="line">mean_absolute_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(lr_y_predict))</span><br></pre></td></tr></table></figure>
+<p>随机梯度下降法训练出的模型，预测精度不如解析法(Normal Equation?)训练出的模型。<br>但是计算量小，消耗时间少。<br>根据Scikit-learn官网的建议，在数据规模超过10万时，推荐使用随机梯度法估计参数模型。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/29/ML-ModelAssemble/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/29/ML-ModelAssemble/" itemprop="url">模型集成</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T09:40:42+08:00">
+                2017-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  450
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>模型集成是通过使用多个模型，获得比单独模型更好的预测效果。<br>在Kaggle比赛中，排名靠前的解决方案里几乎都能看到模型集成的方法。<br>模型集成会带来额外的计算资源消耗，虽然对竞赛不成问题，但应用在线上生产环境时要慎重。</p>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>集成方法有两种：</p>
+<ul>
+<li>并行：多个模型同步进行，通过投票的方式得出最终的分类决策。例如随机森林，同时搭建多棵决策树，每棵决策树随机选取特征作为节点。</li>
+<li>串行：按照一定次序搭建多个模型，模型间存在依赖关系。每一个后续模型的加入都需要对现有模型的性能提升有贡献。例如梯度提升决策树(Gradient Tree Boosting)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 随机森林模型</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line">rfc = RandomForestClassifier()</span><br><span class="line">rfc.fit(X_train, y_train)</span><br><span class="line">rfc_y_pred = rfc.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度提升决策树</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingClassifier</span><br><span class="line">gbc = GradientBoostingClassfier()</span><br><span class="line">gbc.fit(X_train, y_train)</span><br><span class="line">gbc_y_pred = gbc.predict(X_test)</span><br></pre></td></tr></table></figure>
+<p>随机森林分类模型一般作为基线系统(Baseline System)，用于和其他模型的性能比较。<br>集成模型训练参数需要更多的时间，往往也有更好的性能和稳定性。</p>
+<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><p>与分类集成的思路相同。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 随机森林</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor</span><br><span class="line">rfr = RandomForestRegressor()</span><br><span class="line">rfr.fit(X_train, y_train)</span><br><span class="line">rfr_y_predict = rfr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 极端森林</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> ExtraTreesRegressor</span><br><span class="line">etr = ExtraTreesRegressor()</span><br><span class="line">etr.fit(X_train, y_train)</span><br><span class="line">etr_y_predict = etr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度提升</span></span><br><span class="line"><span class="comment"># **性能最佳**</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingRegressor</span><br><span class="line">gbr = GradientBoostingRegressor()</span><br><span class="line">gbr.fit(X_train, y_train)</span><br><span class="line">gbr_y_predict = gbr.predict(X_test)</span><br></pre></td></tr></table></figure>
+<p>极端随机森林(Extremely Randomized Trees)在构建每棵树的分裂节点时，先随机收集一部分特征，然后利用信息熵和基尼不纯性等指标挑选最佳的节点特征。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/28/ML-DecisioinTree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/28/ML-DecisioinTree/" itemprop="url">决策树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T14:22:31+08:00">
+                2017-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  606
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>决策树实际上是将空间用超平面进行划分的一种方法。<br><img src="/img/DecisionTree.png"></p>
+<h6 id="决策树算法三要素"><a href="#决策树算法三要素" class="headerlink" title="决策树算法三要素"></a>决策树算法三要素</h6><ul>
+<li>特征选择：信息增益，信息增益率，基尼指数等</li>
+<li>决策树生成：</li>
+<li>决策树剪枝</li>
+</ul>
+<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><h4 id="1-ID3"><a href="#1-ID3" class="headerlink" title="1. ID3"></a>1. ID3</h4><p>使用信息增益选择特征，递归地构建决策树。<br>从根节点开始，对节点计算所有可能的特征的信息增益，选择信息增益最大的特征作为节点的特征，由该特征的不同取值建立子节点；再对子节点递归调用以上方法，构建决策树。直到所有特征的信息增益均很小或没有特征可以选择为止。</p>
+<h6 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h6><ul>
+<li>偏向于选择分支比较多的特征，即取值多的特征</li>
+<li>不能处理连续特征</li>
+</ul>
+<h4 id="2-C4-5"><a href="#2-C4-5" class="headerlink" title="2. C4.5"></a>2. C4.5</h4><p>相对ID3有以下几个改进：</p>
+<ul>
+<li>使用信息增益率选择特征</li>
+<li>在决策树的构造过程中对树剪枝</li>
+<li>能够处理非离散数据</li>
+<li>能够处理不完整数据</li>
+</ul>
+<h4 id="3-CART"><a href="#3-CART" class="headerlink" title="3. CART"></a>3. CART</h4><p>使用Gini指数选择特征。<br>计算每个子集的的不纯度，选取其中最小的作为树的分支。<br>是二叉树。</p>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><h4 id="1-分类"><a href="#1-分类" class="headerlink" title="1. 分类"></a>1. 分类</h4><p>使用不同特征组合搭建多层决策树，非线性模型。<br>考虑特征节点的选取顺序时，常用的度量方式包括信息熵(Information Gain)和基尼不纯性(Gini Impurity)。<br>决策树的推断逻辑非常直观，具有清晰的可解释性。<br>在使用时，无需将数据标准化。<br>决策树属于有参数模型，需要花费时间用于训练数据。</p>
+<h6 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"></span><br><span class="line">dtc = DecisionTreeClassifier()</span><br><span class="line">dtc.fit(X_train, y_train)</span><br><span class="line">y_predict = dtc.predict(X_test)</span><br></pre></td></tr></table></figure>
+<h4 id="2-回归"><a href="#2-回归" class="headerlink" title="2. 回归"></a>2. 回归</h4><p>回归树叶节点的数据类型不是离散型，而是连续型。<br>严格地讲，回归树不能称为“回归算法”，因为返回的是若干训练数据的均值，而不是连续值。</p>
+<h6 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeRegressor</span><br><span class="line"></span><br><span class="line">dtr = DecisionTreeRegressor()</span><br><span class="line">dtr.fit(X_train, y_train)</span><br><span class="line">dtr_y_predict = dtr.predict(X_test)</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>可以解决非线性问题</li>
+<li>不要求特征标准化</li>
+<li>决策过程直观，结果易解释</li>
+</ul>
+<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>容易过拟合</li>
+<li>稳定性差，数据的细微改变可能引起树结构的较大改变</li>
+<li>依托训练数据构建最佳的树模型是NP难问题，在有限时间内无法找到最优解</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/28/ML-KNN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2095,1239 +3333,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/17/DP-Template/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/17/DP-Template/" itemprop="url">DesignPattern-TemplatePattern</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-17T11:03:43+08:00">
-                2016-12-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  731
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>模板模式<br>基类定义了通用的模板/框架，子类实现其中的细节。<br>一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。<br>这种类型的设计模式属于行为型模式。</p>
-<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><ul>
-<li><p><strong>意图</strong><br>定义一个操作中的算法的骨架，而将一些步骤延迟到子类中。<br>模板方法使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。</p>
-</li>
-<li><p><strong>主要解决</strong><br>一些方法通用，却在每一个子类都重新写了这一方法。</p>
-</li>
-<li><p><strong>何时使用</strong><br>有一些通用的方法。</p>
-</li>
-<li><p><strong>如何解决</strong><br>将这些通用算法抽象出来。</p>
-</li>
-<li><p><strong>关键代码</strong><br>在抽象类实现，其他步骤在子类实现。</p>
-</li>
-<li><p><strong>应用实例</strong><br>1、在造房子的时候，地基、走线、水管都一样，只有在建筑的后期才有加壁橱加栅栏等差异。<br>2、西游记里面菩萨定好的 81 难，这就是一个顶层的逻辑骨架。<br>3、Spirng 中对 Hibernate 的支持，将一些已经定好的方法封装起来，比如开启事务、获取 Session、关闭 Session 等，程序员不重复写那些已经规范好的代码，直接丢一个实体就可以保存。 </p>
-</li>
-<li><p><strong>优点</strong><br>1、封装不变部分，扩展可变部分。<br>2、提取公共代码，便于维护。<br>3、行为由父类控制，子类实现。 </p>
-</li>
-<li><p><strong>缺点</strong><br>每一个不同的实现都需要一个子类来实现，导致类的个数增加，使得系统更加庞大。</p>
-</li>
-<li><p><strong>使用场景</strong><br>1、有多个子类共有的方法，且逻辑相同。<br>2、重要的、复杂的方法，可以考虑作为模板方法。</p>
-</li>
-<li><p><strong>注意事项</strong><br>为防止恶意操作，一般模板方法都加上 final 关键词(Java)。</p>
-</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/17/DP-Template/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/17/DP-Interpreter/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/17/DP-Interpreter/" itemprop="url">DesignPattern-InterpreterPattern</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-17T10:59:26+08:00">
-                2016-12-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  563
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>解释器模式<br>给定一个语言，定义它的文法表示，并定义一个解释器，这个解释器使用该标识来解释语言中的句子。</p>
-<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><ul>
-<li><p><strong>主要解决</strong><br>对于一些固定文法构建一个解释句子的解释器。</p>
-</li>
-<li><p><strong>何时使用</strong><br>如果一种特定类型的问题发生的频率足够高，那么可能就值得将该问题的各个实例表述为一个简单语言中的句子。<br>这样就可以构建一个解释器，该解释器通过解释这些句子来解决该问题。</p>
-</li>
-<li><p><strong>如何解决</strong><br>构件语法树，定义终结符与非终结符。</p>
-</li>
-<li><p><strong>关键代码</strong><br>构件环境类，包含解释器之外的一些全局信息，一般是 HashMap。</p>
-</li>
-<li><p><strong>应用实例</strong><br>编译器、运算表达式计算。</p>
-</li>
-<li><p><strong>优点</strong><br>1、可扩展性比较好，灵活。<br>2、增加了新的解释表达式的方式。<br>3、易于实现简单文法。</p>
-</li>
-<li><p><strong>缺点</strong><br>1、可利用场景比较少。<br>2、对于复杂的文法比较难维护。<br>3、解释器模式会引起类膨胀。<br>4、解释器模式采用递归调用方法。</p>
-</li>
-<li><p><strong>使用场景</strong><br>1、可以将一个需要解释执行的语言中的句子表示为一个抽象语法树。<br>2、一些重复出现的问题可以用一种简单的语言来进行表达。<br>3、一个简单语法需要解释的场景。</p>
-</li>
-<li><p><strong>注意事项</strong><br>可利用场景比较少。</p>
-</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/17/DP-Interpreter/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/16/AI-BehaviorModels/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/16/AI-BehaviorModels/" itemprop="url">AI-BehaviorModel</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-16T17:42:34+08:00">
-                2016-12-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  389
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="有限状态机-Finite-State-Machine"><a href="#有限状态机-Finite-State-Machine" class="headerlink" title="有限状态机(Finite-State Machine)"></a>有限状态机(Finite-State Machine)</h4><p>最常见的行为模型。<br>缺点是当状态变多后维护困难。</p>
-<h4 id="分层状态机-Hierarchical-Finite-State-Machine"><a href="#分层状态机-Hierarchical-Finite-State-Machine" class="headerlink" title="分层状态机(Hierarchical Finite-State Machine)"></a>分层状态机(Hierarchical Finite-State Machine)</h4><p>将状态层次化，把几个小状态归并到一个高层状态里。<br>定义高层状态之间、内部小状态之间的跳转，可以减少跳转的数量。</p>
-<h4 id="行为树-Behavior-Trees"><a href="#行为树-Behavior-Trees" class="headerlink" title="行为树(Behavior Trees)"></a>行为树(Behavior Trees)</h4><p>树状的行为选择，有控制节点和行为节点(Action Node)，根据前提(Precondition)选择当前执行的行为。<br>控制节点可能会选择(Selector)、序列(Sequence)、并行(Parallel)地执行行为节点。<br>特性：可视化的逻辑决策、可复用的控制节点、逻辑和实现的低耦合等。</p>
-<h4 id="效用系统-Utility-Systems"><a href="#效用系统-Utility-Systems" class="headerlink" title="效用系统(Utility Systems)"></a>效用系统(Utility Systems)</h4><p>不再根据单一条件做判断，而是根据权重来对许多需要考虑的事情做出最优选择。<br>比如Sims模拟人生的AI，结合当前环境和自身状态来做出行动的选择。</p>
-<h4 id="目标导向型计划-Goal-Oriented-Action-Planners"><a href="#目标导向型计划-Goal-Oriented-Action-Planners" class="headerlink" title="目标导向型计划(Goal-Oriented Action Planners)"></a>目标导向型计划(Goal-Oriented Action Planners)</h4><p>AI拥有目标，计划系统反向搜索，找出能满足当前目标的行动序列，然后顺序执行。<br>比如目标是消灭敌人，AI动作序列可能是寻找武器库、装备武器、射击。</p>
-<h4 id="分层任务网络-Hierarchical-Task-Networks"><a href="#分层任务网络-Hierarchical-Task-Networks" class="headerlink" title="分层任务网络(Hierarchical Task Networks)"></a>分层任务网络(Hierarchical Task Networks)</h4><p>拥有目标，但是前向链式搜索，从当前状态一直堆到目标状态，直至问题解决。<br>从最高级的任务不断分解成更小的任务，当分解到原子任务时添加到计划内执行。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/16/AI-Boids/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/16/AI-Boids/" itemprop="url">AI-Boids</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-16T17:06:12+08:00">
-                2016-12-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  860
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>群组行为是指多个对象组队同时行进的情况。比如飞翔的鸟群、游动的鱼群等。<br>我们创建一个群组的领导，再为其他群成员设置一定的规则，整个群组就可以自行组队。</p>
-<h4 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h4><ul>
-<li><strong>分离(Seperation)</strong>：群组中的每个个体都与其他个体保持一定的距离</li>
-<li><strong>队列(Alignment)</strong>：群组以相同速度，向相同方向移动</li>
-<li><strong>凝聚(Cohesion)</strong>：与群组中心保持最小距离</li>
-</ul>
-<h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h4><ul>
-<li>头鸟: 单个controller</li>
-<li>成员: controller的多个子对象</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/16/AI-Boids/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/16/Unity-FSM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/16/Unity-FSM/" itemprop="url">Unity-FSM</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-16T16:28:55+08:00">
-                2016-12-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  901
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>使用了Unity的有限状态机框架。<br><a href="http://wiki.unity3d.com/index.php/Finite_State_Machine" target="_blank" rel="noopener">http://wiki.unity3d.com/index.php/Finite_State_Machine</a></p>
-<h4 id="框架"><a href="#框架" class="headerlink" title="框架"></a>框架</h4><ul>
-<li><strong>状态机FSMSystem</strong><ul>
-<li>states: 所有状态列表</li>
-<li>current: 当前状态</li>
-<li>AddState() / DeleteState(): 维护状态列表</li>
-<li>PerformTransition(): 状态转换</li>
-</ul>
-</li>
-<li><strong>状态FSMState</strong><ul>
-<li>stateID: id</li>
-<li>map: 当前状态可用的转换表</li>
-<li>AddTransition() / DeleteTransion(): 维护转换表</li>
-<li>GetOutputState(): 转换后的状态ID</li>
-<li>DoBeforeEntering() / DoBeforeLeaving(): 转换前动作</li>
-<li>Reason() / Act(): 状态内动作</li>
-</ul>
-</li>
-<li><strong>StateID</strong>: 状态编号枚举</li>
-<li><strong>Transition</strong>: 转换枚举</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/16/Unity-FSM/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/Unity-EditorMenu/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/13/Unity-EditorMenu/" itemprop="url">Unity-EditorMenu</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T16:40:16+08:00">
-                2016-12-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  309
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Add a top level menu item to toggle VR supported on and off.<br>This is an editor script which modifies how the Unity editor actually works.</p>
-<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;		<span class="comment">//Enables the use of editor modifying code</span></span><br><span class="line"><span class="keyword">using</span> UnityEngine.VR;	<span class="comment">//Enables us to check VR settings</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VREditorToggle</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">string</span> ONNAME = <span class="string">"VR/Enable VR"</span>;		<span class="comment">//The name of our Enable menu item</span></span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">string</span> OFFNAME = <span class="string">"VR/Disable VR"</span>;		<span class="comment">//The name of our Disable menu item</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//This method creates the Enable menu item. When the menu item is clicked, the code</span></span><br><span class="line">	<span class="comment">//inside this method executes</span></span><br><span class="line">	[<span class="meta">MenuItem(ONNAME)</span>]</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">EnableVR</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//Turn VR Supported on</span></span><br><span class="line">		PlayerSettings.virtualRealitySupported = <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//This method "validates" the Enable menu item. It is used by the editor to format</span></span><br><span class="line">	<span class="comment">//the menu item for us</span></span><br><span class="line">	[<span class="meta">MenuItem(ONNAME, true)</span>]</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">EnableValidate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//If VR Supported is enabled, add a checkmark next to this menu item</span></span><br><span class="line">		Menu.SetChecked (ONNAME, PlayerSettings.virtualRealitySupported);</span><br><span class="line">		<span class="comment">//Return the opposite of whether or not VR is supported. Thus, if VR Supported is enabled,</span></span><br><span class="line">		<span class="comment">//this returns "false". The result is that if VR Support is enabled, this menu item is grayed-out</span></span><br><span class="line">		<span class="comment">//and cannot be selected again</span></span><br><span class="line">		<span class="keyword">return</span> !PlayerSettings.virtualRealitySupported;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//This method creates the Disable menu item. When the menu item is clicked, the code</span></span><br><span class="line">	<span class="comment">//inside this method executes</span></span><br><span class="line">	[<span class="meta">MenuItem(OFFNAME)</span>]</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DisableVR</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//Turn VR Supported off</span></span><br><span class="line">		PlayerSettings.virtualRealitySupported = <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//This method "validates" the Disable menu item. It is used by the editor to format</span></span><br><span class="line">	<span class="comment">//the menu item for us</span></span><br><span class="line">	[<span class="meta">MenuItem(OFFNAME, true)</span>]</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">DisableValidate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="comment">//If VR Supported is disabled, add a checkmark next to this menu item</span></span><br><span class="line">		Menu.SetChecked (OFFNAME, !PlayerSettings.virtualRealitySupported);</span><br><span class="line">		<span class="comment">//Return the opposite of whether or not VR is supported. Thus, if VR Supported is disabled,</span></span><br><span class="line">		<span class="comment">//this returns "true". The result is that if VR Support is disabled, this menu item is grayed-out</span></span><br><span class="line">		<span class="comment">//and cannot be selected again</span></span><br><span class="line">		<span class="keyword">return</span> PlayerSettings.virtualRealitySupported;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-DoubleBuffer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/13/DP-DoubleBuffer/" itemprop="url">DesignPattern-DoubleBufferPattern</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T13:24:31+08:00">
-                2016-12-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  619
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>双缓冲模式解决的核心问题是状态同时进行修改和访问的冲突。<br>通过设置2片缓冲区，将缓冲内容的读和写分离。<br>常见于图形显示，其中渲染代码写入缓存，显卡读取缓存。</p>
-<p><strong>演员的例子</strong><br>加入双缓冲后，无论演员的顺序如何变，同一帧里的状态不会发生改变；每一帧只有1次巴掌传递。<br>单缓冲时，在缓冲区首位写入的状态，会随着读取不断向后传递，每帧有多个巴掌；在缓冲区末位写入的状态，每帧只有1个巴掌。<br>目的是将读写分离，本帧内写的新状态不会在本帧内读取，使每帧读取的状态稳定可控。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/13/DP-DoubleBuffer/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/13/DP-Observer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/13/DP-Observer/" itemprop="url">DesignPattern-ObserverPattern</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-13T13:20:53+08:00">
-                2016-12-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  651
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在对象间定义一种一对多的依赖关系，以便当某对象的状态改变时，与它存在依赖关系的所有对象都能收到通知并自动进行更新。<br>C#将观察者模式集成在了语言层面(event关键字)。</p>
-<p>例如实现成就系统，如果在碰撞处理的代码中加入解锁成就的判断会带来耦合。<br>可以只发送相应的通知，而不关心谁会收到通知的消息以及如何解锁成就。<br>观察者模式非常适合于一些不相关的模块之间的通信，不适合于单个紧凑的模块内部的通信。</p>
-<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><ul>
-<li><p><strong>主要解决</strong>：一个对象状态改变给其他对象通知的问题，而且要考虑到易用和低耦合，保证高度的协作。</p>
-</li>
-<li><p><strong>何时使用</strong>：一个对象（目标对象）的状态发生改变，所有的依赖对象（观察者对象）都将得到通知，进行广播通知。</p>
-</li>
-<li><p><strong>关键代码</strong>：在抽象类里有一个 ArrayList 存放观察者们。</p>
-</li>
-<li><p><strong>应用实例</strong>：<br>1、拍卖的时候，拍卖师观察最高标价，然后通知给其他竞价者竞价。 </p>
-</li>
-<li><p><strong>优点</strong>：<br>1、观察者和被观察者是抽象耦合的。<br>2、建立一套触发机制。 </p>
-</li>
-<li><p><strong>缺点</strong>：<br>1、如果一个被观察者对象有很多的直接和间接的观察者的话，将所有的观察者都通知到会花费很多时间。<br>2、如果在观察者和观察目标之间有循环依赖的话，观察目标会触发它们之间进行循环调用，可能导致系统崩溃。<br>3、观察者模式没有相应的机制让观察者知道所观察的目标对象是怎么发生变化的，而仅仅只是知道观察目标发生了变化。 </p>
-</li>
-<li><p><strong>使用场景</strong>：<br>1、有多个子类共有的方法，且逻辑相同。<br>2、重要的、复杂的方法，可以考虑作为模板方法。</p>
-</li>
-<li><p><strong>注意事项</strong>：<br>1、J避免循环引用。<br>2、如果顺序执行，某一观察者错误会导致系统卡壳，一般采用异步方式。<br>3、如果一个观察者没有及时注销自己，被观察对象的观察者列表会越来越长，带来失效观察者问题。</p>
-</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/13/DP-Observer/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3382,7 +3387,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">324</span>
+                  <span class="site-state-item-count">332</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3395,7 +3400,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3484,7 +3489,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">123.1k</span>
+    <span title="Site words total count">124.5k</span>
   
 </div>
 

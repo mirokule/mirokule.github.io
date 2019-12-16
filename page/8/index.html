@@ -262,6 +262,1417 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/20/Python-pandas-Outliers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/20/Python-pandas-Outliers/" itemprop="url">Python-pandas-Outliers</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T12:02:34+08:00">
+                2018-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  43
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="检测异常值"><a href="#检测异常值" class="headerlink" title="检测异常值"></a>检测异常值</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">col = data[<span class="number">3</span>]</span><br><span class="line">col[np.abs(col) &gt; <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">data[(np.abs(data)&gt;<span class="number">3</span>).any(<span class="number">1</span>)]</span><br><span class="line">data[np.abs(data) &gt; <span class="number">3</span>] = np.sign(data) * <span class="number">3</span> <span class="comment">#np.sign返回1或者-1</span></span><br><span class="line"></span><br><span class="line">data[(data[<span class="string">'A'</span>]&gt;<span class="number">40000</span>)&amp;(data[<span class="string">'B'</span>]&lt;<span class="number">30000</span>)]</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/20/Python-pandas-Duplicate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/20/Python-pandas-Duplicate/" itemprop="url">pandas重复数据处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T12:01:06+08:00">
+                2018-03-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  73
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="移除重复数据"><a href="#移除重复数据" class="headerlink" title="移除重复数据"></a>移除重复数据</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 判断重复</span></span><br><span class="line">data.duplicated()<span class="comment">#返回布尔型Series，表示各行是否重复</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 移除重复</span></span><br><span class="line">data.drop_duplicates()<span class="comment">#返回移除了重复行的DataFrame，保留第一个</span></span><br><span class="line">data.drop_duplicates([<span class="string">'k1'</span>])<span class="comment">#只根据k1列过滤</span></span><br><span class="line">data.drop_duplicates([<span class="string">'k1'</span>,<span class="string">'k2'</span>], take_last=<span class="keyword">True</span>) <span class="comment">#保留重复值的最后一个</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/17/Python-sklearn-Scoring/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/17/Python-sklearn-Scoring/" itemprop="url">sklearn模型评分策略</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-17T11:10:07+08:00">
+                2018-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  357
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>模型的评分策略API共有3种：</p>
+<ul>
+<li>模型的score方法</li>
+<li>CrossValidation的Scoing参数：内置的scoring策略，由metrics实现</li>
+<li>Metric函数：底层评价函数的实现，可以基于metric构建新的评分策略</li>
+</ul>
+<h4 id="Scoring参数"><a href="#Scoring参数" class="headerlink" title="Scoring参数"></a>Scoring参数</h4><h6 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h6><table>
+<thead>
+<tr>
+<th style="text-align:left">Scoring</th>
+<th style="text-align:left">Function</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">‘accuracy’</td>
+<td style="text-align:left">metrics.accuracy_score</td>
+<td style="text-align:left">准确度</td>
+</tr>
+<tr>
+<td style="text-align:left">‘precision’</td>
+<td style="text-align:left">metrics.precisioin_score</td>
+<td style="text-align:left">精确度P=tp/(tp+fp)</td>
+</tr>
+<tr>
+<td style="text-align:left">‘recall’</td>
+<td style="text-align:left">metrics.recall_score</td>
+<td style="text-align:left">召回率R=tp/(tp+fn)</td>
+</tr>
+<tr>
+<td style="text-align:left">‘f1’</td>
+<td style="text-align:left">metrics.f1_score</td>
+<td style="text-align:left">二分类f1=2PR/(P+R)</td>
+</tr>
+<tr>
+<td style="text-align:left">‘f1_micro’</td>
+<td style="text-align:left">metrics.f1_score</td>
+<td style="text-align:left">多分类整体计算的f1</td>
+</tr>
+<tr>
+<td style="text-align:left">‘f1_macro’</td>
+<td style="text-align:left">metrics.f1_score</td>
+<td style="text-align:left">多分类按标签计算后取平均的f1</td>
+</tr>
+<tr>
+<td style="text-align:left">‘f1_weighted’</td>
+<td style="text-align:left">metrics.f1_score</td>
+<td style="text-align:left">多分类按标签计算后加权平均的f1</td>
+</tr>
+<tr>
+<td style="text-align:left">‘f1_samples’</td>
+<td style="text-align:left">metrics.f1_score</td>
+<td style="text-align:left">多分类按样本计算后取平均的f1</td>
+</tr>
+<tr>
+<td style="text-align:left">‘average_precision’</td>
+<td style="text-align:left">metrics.average_precision_score</td>
+<td style="text-align:left">$AP=\Sigma_n(R_n-R_{n-1})P_n$</td>
+</tr>
+<tr>
+<td style="text-align:left">‘neg_log_loss’</td>
+<td style="text-align:left">metrics.log_loss</td>
+<td style="text-align:left">logistic loss</td>
+</tr>
+<tr>
+<td style="text-align:left">‘roc_auc’</td>
+<td style="text-align:left">metrics.roc_auc_score</td>
+<td style="text-align:left">ROC曲线下方面积AUC</td>
+</tr>
+</tbody>
+</table>
+<h6 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a>聚类</h6><table>
+<thead>
+<tr>
+<th style="text-align:left">Scoring</th>
+<th style="text-align:left">Function</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">‘mutual_info_score’</td>
+<td style="text-align:left">metrics.mutual_info_score</td>
+<td style="text-align:left">互信息</td>
+</tr>
+<tr>
+<td style="text-align:left">‘adjusted_mututal_info_score’</td>
+<td style="text-align:left">metrics.adjusted_mutual_info_score</td>
+<td style="text-align:left">调整互信息</td>
+</tr>
+<tr>
+<td style="text-align:left">‘normalized_mutual_info_score’</td>
+<td style="text-align:left">metrics.normalized_mutual_info_score</td>
+<td style="text-align:left">标准互信息</td>
+</tr>
+<tr>
+<td style="text-align:left">‘homogeneity_score’</td>
+<td style="text-align:left">metrics.homogeneity_score</td>
+<td style="text-align:left">同质性H</td>
+</tr>
+<tr>
+<td style="text-align:left">‘completeness_score’</td>
+<td style="text-align:left">metrics.completeness_score</td>
+<td style="text-align:left">完整性C</td>
+</tr>
+<tr>
+<td style="text-align:left">‘v_measure_score’</td>
+<td style="text-align:left">metrics.v_measure_score</td>
+<td style="text-align:left">v=2HC/(H+C)</td>
+</tr>
+<tr>
+<td style="text-align:left">‘adjusted_rand_score’</td>
+<td style="text-align:left">metrics.adjusted_rand_score</td>
+<td style="text-align:left">兰德指数</td>
+</tr>
+<tr>
+<td style="text-align:left">‘fowlkes_mallows_score’</td>
+<td style="text-align:left">metrics.fowlkes_mallows_score</td>
+<td style="text-align:left">FMI</td>
+</tr>
+</tbody>
+</table>
+<h6 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h6><table>
+<thead>
+<tr>
+<th style="text-align:left">Scoring</th>
+<th style="text-align:left">Function</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">‘neg_mean_absolute_error’</td>
+<td style="text-align:left">metrics.mean_absolute_error</td>
+<td style="text-align:left">平均绝对误差MAE</td>
+</tr>
+<tr>
+<td style="text-align:left">‘neg_mean_squared_error’</td>
+<td style="text-align:left">metrics.mean_squared_error</td>
+<td style="text-align:left">均方误差MSE</td>
+</tr>
+<tr>
+<td style="text-align:left">‘neg_mean_squared_log_error’</td>
+<td style="text-align:left">metrics.mean_squared_log_error</td>
+<td style="text-align:left">均方对数误差</td>
+</tr>
+<tr>
+<td style="text-align:left">‘neg_median_absolute_error’</td>
+<td style="text-align:left">metrics.median_absolute_error</td>
+<td style="text-align:left">平均绝对离差MedAE</td>
+</tr>
+<tr>
+<td style="text-align:left">‘explained_variance’</td>
+<td style="text-align:left">metrics.explained_variance_score</td>
+<td style="text-align:left">解释方差</td>
+</tr>
+<tr>
+<td style="text-align:left">‘r2’</td>
+<td style="text-align:left">metrics.r2_score</td>
+<td style="text-align:left">$R^2拟合优度$</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Metrics"><a href="#Metrics" class="headerlink" title="Metrics"></a>Metrics</h4><p>Metrics提供了一些基本的函数实现，用于计算预测值和真实值之间的误差：</p>
+<ul>
+<li>_score结尾：返回最大值，越大越好</li>
+<li>_error结尾：返回最小值，越小越好；用make_scorer创建新策略时，要将greater_is_better设为False</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/14/Python-pandas-GetDummies/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/14/Python-pandas-GetDummies/" itemprop="url">pandas.get_dummies</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-14T13:28:06+08:00">
+                2018-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  268
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>使用pandas.get_dummies()可以对用字符标识的离散特征进行one-hot编码。<br><strong>只能处理字符类别，不能处理以数字标识的类别</strong></p>
+<p>离散特征的编码分为两种情况：</p>
+<ul>
+<li>没有大小意义，比如color:{red, blue, green}，使用one-hot编码</li>
+<li>有大小意义，比如size:{X, XL, XXL}，使用map映射{X:1, XL:2, XXL:3}</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">df = pd.DataFrame([...])</span><br><span class="line">df.columns = [<span class="string">'color'</span>, <span class="string">'size'</span>, <span class="string">'prize'</span>, <span class="string">'class label'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># map</span></span><br><span class="line">size_mapping = &#123;<span class="string">'X'</span>:<span class="number">1</span>, <span class="string">'XL'</span>:<span class="number">2</span>, <span class="string">'XXL'</span>:<span class="number">3</span>&#125;</span><br><span class="line">df[<span class="string">'size'</span>] = df[<span class="string">'size'</span>].map(size_mapping)</span><br><span class="line"></span><br><span class="line"><span class="comment"># one-hot</span></span><br><span class="line">pd.get_dummies(df)</span><br></pre></td></tr></table></figure>
+<h4 id="pandas-get-dummies"><a href="#pandas-get-dummies" class="headerlink" title="pandas.get_dummies"></a>pandas.get_dummies</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pandas.get_dummies(data, prefix=<span class="keyword">None</span>, prefix_sep=<span class="string">'_'</span>, dummy_na=<span class="keyword">False</span>, columns=<span class="keyword">None</span>, sparse=<span class="keyword">False</span>, drop_first=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
+<p>属性</p>
+<ul>
+<li>data: Series, DataFrame</li>
+<li>prefix: 拆分后的列名前缀</li>
+<li>prefix_sep: 前缀分隔符</li>
+<li>dummy_na: 默认False，若为True则单独列出NaN</li>
+<li>columns: 列名，默认None，转换全部列</li>
+<li>sparse: 默认False，是否返回SparseDataFrame</li>
+<li>drop_fist: 默认False，是否忽略第一个属性，使k个类别返回k-1个变量</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>dummes: DataFrame, SparseDataFrame</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s1 = [<span class="string">'a'</span>, <span class="string">'b'</span>, np.nan]</span><br><span class="line"></span><br><span class="line">pd.get_dummies(s1)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">  a b</span></span><br><span class="line"><span class="string">0 1 0</span></span><br><span class="line"><span class="string">1 0 1</span></span><br><span class="line"><span class="string">2 0 0</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">pd.get_dummies(s1, dummy_na=<span class="keyword">True</span>)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">  a b NaN</span></span><br><span class="line"><span class="string">0 1 0 0</span></span><br><span class="line"><span class="string">1 0 1 0</span></span><br><span class="line"><span class="string">2 0 0 1</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/14/Python-Scipy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/14/Python-Scipy/" itemprop="url">Scipy</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-14T12:58:17+08:00">
+                2018-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  127
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Scipy是一个高级科学计算库，通过操作Numpy数组来进行科学计算。<br>模块包括：</p>
+<ul>
+<li>scipy.cluster: 向量量化</li>
+<li>scipy.constants: 数学常量</li>
+<li>scipy.ffpack: 快速傅里叶变换</li>
+<li>scipy.integrate: 积分</li>
+<li>scipy.interpolate: 插值</li>
+<li>scipy.io: 输入输出</li>
+<li>scipy.linalg: 线性代数</li>
+<li>scipy.ndimage: N维图像</li>
+<li>scipy.odr: 正交距离回归</li>
+<li>scipy.optimize: 优化算法</li>
+<li>scipy.signal: 信号处理</li>
+<li>scipy.sparse: 稀疏矩阵</li>
+<li>scipy.spatial: 空间数据结构和算法</li>
+<li>scipy.special: 特殊数学函数</li>
+<li>scipy.stats: 统计函数</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/14/Python-Seaborn-Distplot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/14/Python-Seaborn-Distplot/" itemprop="url">seaborn.distplot</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-14T11:28:31+08:00">
+                2018-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  198
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>结合了matplotlib的hist函数和seaborn的kdeplot()、rugplot()。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">seaborn.distplot(a, bins=<span class="keyword">None</span>, hist=<span class="keyword">True</span>, kde=<span class="keyword">True</span>, rug=<span class="keyword">False</span>, fit=<span class="keyword">None</span>, hist_kws=<span class="keyword">None</span>, kde_kws=<span class="keyword">None</span>, rug_kws=<span class="keyword">None</span>, fit_kws=<span class="keyword">None</span>, color=<span class="keyword">None</span>, vertical=<span class="keyword">False</span>, norm_hist=<span class="keyword">False</span>, axlabel=<span class="keyword">None</span>, label=<span class="keyword">None</span>, ax=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure></p>
+<p>参数：</p>
+<ul>
+<li>a: 一维数组, Series, list</li>
+<li>bins: 条形宽度</li>
+<li>hist: 是否绘制柱状图</li>
+<li>kde: 是否绘制Gaussian Kernel Density Estimate</li>
+<li>rug: 是否在support label上绘制rugplot(小竖条)</li>
+<li>fit: 用于对比的标准分布</li>
+<li>{hist, kde, rug, fit}_kws: 关键词定义的参数字典</li>
+<li>color: 绘图颜色</li>
+<li>vertical: 若为True，则纵向绘制</li>
+<li>norm_hist: 使用密度而不是数量绘图</li>
+<li>axlabel: name for support axis label</li>
+<li>label: legend label</li>
+<li>ax: matplotlib axes</li>
+</ul>
+<p>返回：</p>
+<ul>
+<li>ax: matplotlib axes</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/14/Python-Seaborn-Distplot/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/13/Cryptography/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/13/Cryptography/" itemprop="url">密码学</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-13T09:51:05+08:00">
+                2018-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  594
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="密码学家的工具箱"><a href="#密码学家的工具箱" class="headerlink" title="密码学家的工具箱"></a>密码学家的工具箱</h4><ul>
+<li>对称密码</li>
+<li>公钥密码</li>
+<li>单向散列函数</li>
+<li>消息认证码</li>
+<li>数字签名</li>
+<li>伪随机数生成器</li>
+</ul>
+<h4 id="对称密码"><a href="#对称密码" class="headerlink" title="对称密码"></a>对称密码</h4><p>对称密码(symmetric cryptography)是指在加密和解密时使用同一种密钥的方式。</p>
+<p>1.一次性密码本<br>随机生成与明文等长的比特序列key，将明文msg与key做异或加密，再做异或解密。<br>缺点：需要保密配送随机生成的key</p>
+<p>2.DES(Data Encryption Standard)<br>密钥长度56位，每次加密64位信息<br>3DES：用3个密钥，进行加密-&gt;解密-&gt;加密过程</p>
+<p>3.AES(Rijndael)<br>由多个轮组成，分组长度128位。</p>
+<h4 id="非对称密码"><a href="#非对称密码" class="headerlink" title="非对称密码"></a>非对称密码</h4><p>非对称密码(asymmetric cryptography)是指在加密和解密时使用不同密钥的方式，比如公钥密码(public-key cryptography)。<br>加密使用公开密码，解密使用私有密码，私有密码不需要传输，解决了对称加密中的密钥配送问题。<br>缺点：处理速度只有对称密码的几百分之一，不适合用来对很长的消息内容加密。</p>
+<p>1.RSA<br>$$ 密文 = (明文)^E\; mod\; N\;\;\;\;\; 明文 = (密文)^D\; mod\; N$$<br>E和N组成了公钥，用于加密；D和N组成私钥，用于解密。<br>计算过程：</p>
+<ul>
+<li>准备两个很大的质数p和q，相乘得到N</li>
+<li>求p-1和q-1的最小公倍数，得到L</li>
+<li>找到一个比L小，且和L互质的整数E</li>
+<li>找到一个比L小，且(E*D)和L互质的整数D</li>
+</ul>
+<h4 id="单向散列函数Hash"><a href="#单向散列函数Hash" class="headerlink" title="单向散列函数Hash"></a>单向散列函数Hash</h4><p>根据任意长度的消息计算出固定长度的散列值，特点：</p>
+<ul>
+<li>单向性：不能逆推出原信息</li>
+<li>抗碰撞(collision)：对同一输出，难以找到两个不同的输入</li>
+<li>计算速度快</li>
+</ul>
+<p>实例：</p>
+<ul>
+<li>MD4, MD5</li>
+<li>SHA-1, SHA-256, SHA-384, SHA-512</li>
+<li>RIPEMD-160</li>
+<li>AHS, SHA-3</li>
+</ul>
+<p>能识别出文件是否被“篡改”，不能识别出发送者的身份是否“伪装”</p>
+<h4 id="消息认证码MAC"><a href="#消息认证码MAC" class="headerlink" title="消息认证码MAC"></a>消息认证码MAC</h4><p>消息认证码(message authentication code)是一种确认完整性并进行认证的技术。<br>输入包括任意长度的消息和双方共享的密钥，输出是固定长度的数据，称为MAC值。</p>
+<h4 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h4><p>同样使用一对钥匙，不过和前文相反，私钥用来加密生成签名，公钥用来解密验证签名。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/11/Python-pandas-MissingData/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/11/Python-pandas-MissingData/" itemprop="url">pandas缺失数据处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-11T09:46:55+08:00">
+                2018-03-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  384
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="发现缺失"><a href="#发现缺失" class="headerlink" title="发现缺失"></a>发现缺失</h4><p>pandas使用NaN(not a number)表示缺失的数据，使用isnull()<br>(numpy使用nan表示缺失数据，用np.isnan(np.nan)判断。)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">DataFrame.isnull()</span><br><span class="line"><span class="comment">#Return a boolean same-sized object indicating if the values are NA</span></span><br><span class="line"></span><br><span class="line">df.isnull().sum() <span class="comment">#返回每列的缺失总数</span></span><br><span class="line">df.isnull().sum() / len(df) * <span class="number">100</span> <span class="comment">#返回每列的缺失百分比</span></span><br></pre></td></tr></table></figure>
+<h4 id="处理缺失"><a href="#处理缺失" class="headerlink" title="处理缺失"></a>处理缺失</h4><h6 id="1-删除数据：drop-dropna"><a href="#1-删除数据：drop-dropna" class="headerlink" title="1.删除数据：drop, dropna"></a>1.删除数据：drop, dropna</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">DataFrame.drop(labels=<span class="keyword">None</span>, axis=<span class="number">0</span>, index=<span class="keyword">None</span>, columns=<span class="keyword">None</span>, level=<span class="keyword">None</span>, inplace=<span class="keyword">False</span>, errors=<span class="string">'raise'</span>)</span><br><span class="line">DataFrame.dropna(axis=<span class="number">0</span>, how=<span class="string">'any'</span>, thresh=<span class="keyword">None</span>, subset=<span class="keyword">None</span>, inplace=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># drop</span></span><br><span class="line">df.drop([<span class="number">0</span>,<span class="number">1</span>])</span><br><span class="line">df.drop([<span class="string">'B'</span>,<span class="string">'C'</span>], axis=<span class="number">1</span>)</span><br><span class="line">df.drop(columns=[<span class="string">'B'</span>,<span class="string">'C'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># dropna</span></span><br><span class="line">df.dropna(axis=<span class="number">1</span>, how=<span class="string">'any'</span>) <span class="comment">#删除有NA的列</span></span><br><span class="line">df.dropna(axis=<span class="number">0</span>, how=<span class="string">'all'</span>) <span class="comment">#删除全部为NA的行</span></span><br><span class="line">df.dropna(thresh=<span class="number">2</span>) <span class="comment">#删除有2个以上NA的行</span></span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>labels: 要删除的行列标签</li>
+<li>index/columns: 行列标签的另一种写法</li>
+<li>level: 多层索引的层级</li>
+<li>errors: {‘ignore’, ‘raise’}错误处理</li>
+<li>axis: 0横向index, 1纵向列</li>
+<li>how: {‘any’有NA则删, ‘all’全为NA则删}</li>
+<li>thresh: 阈值，有n个NA时才删除</li>
+<li>subset: 要考察的子列</li>
+<li>inplace: 默认False，若为True则修改原数据</li>
+</ul>
+<p>返回：</p>
+<ul>
+<li>drooped(drop): Type of caller</li>
+<li>dropped(dropna): DataFame</li>
+</ul>
+<h6 id="2-填充数据：fillna"><a href="#2-填充数据：fillna" class="headerlink" title="2.填充数据：fillna"></a>2.填充数据：fillna</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">DataFrame.fillna(value=<span class="keyword">None</span>, method=<span class="keyword">None</span>, axis=<span class="keyword">None</span>, inplace=Flase, limit=<span class="keyword">None</span>, downcast=<span class="keyword">None</span>, **kwags)</span><br><span class="line"></span><br><span class="line">df.fillna(<span class="number">0</span>)</span><br><span class="line">df.fillna(method=<span class="string">'ffill'</span>)</span><br><span class="line"></span><br><span class="line">values = &#123;<span class="string">'A'</span>:<span class="number">0</span>, <span class="string">'B'</span>:<span class="number">1</span>, <span class="string">'C'</span>:<span class="number">2</span>, <span class="string">'D'</span>:<span class="number">3</span>&#125;</span><br><span class="line">df.fillna(value=values, limit=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li>value: 填充内容，可以是常量、字典、Series、DataFrame等</li>
+<li>method: {‘backfill’, ‘bfill’, ‘pad’, ‘ffill’, None}, 使用邻近数据填充</li>
+<li>axis: 0横向index, 1纵向列</li>
+<li>inplace: 默认False，若为True则修改原数据</li>
+<li>limit: 默认None，最大填充长度</li>
+<li>downcast: 默认None</li>
+</ul>
+<p>返回：</p>
+<ul>
+<li>filled: DataFrame</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/10/Python-NumPy-NewAxis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2272,1207 +3683,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/02/Python-Functions/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/02/Python-Functions/" itemprop="url">Python函数和类</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T09:42:49+08:00">
-                2018-02-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  66
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_numbers</span><span class="params">(x,y,z=None)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> z==<span class="keyword">None</span>:</span><br><span class="line">		<span class="keyword">return</span> x+y</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> x+y+z</span><br><span class="line"></span><br><span class="line"><span class="comment"># Lambda函数</span></span><br><span class="line">my_function = <span class="keyword">lambda</span> a,b,c : a+b</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列表推导式</span></span><br><span class="line">my_list = [number <span class="keyword">for</span> number <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">1000</span>) <span class="keyword">if</span> number % <span class="number">2</span> == <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">	department = <span class="string">"Computer Science"</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">set_name</span><span class="params">(self, new_name)</span>:</span></span><br><span class="line">		self.name = new_name</span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">set_location</span><span class="params">(self, new_location)</span>:</span></span><br><span class="line">		self.location = new_location</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/02/Python-DataStructure/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/02/Python-DataStructure/" itemprop="url">Python数据结构</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T09:33:18+08:00">
-                2018-02-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  366
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h4 id="元组-Tuple"><a href="#元组-Tuple" class="headerlink" title="元组(Tuple)"></a>元组(Tuple)</h4><p>一维，定长，不可修改，用<strong>()</strong>标识。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 直接生成或用tuple()函数构造</span></span><br><span class="line">tup = <span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span></span><br><span class="line">tup = (<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>),<span class="number">7</span>,(<span class="number">8</span>,<span class="number">9</span>)</span><br><span class="line">tup = tuple([<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>])</span><br><span class="line">tup = tuple(<span class="string">'string'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 扩展</span></span><br><span class="line">tup = (<span class="number">4</span>, <span class="keyword">None</span>, <span class="string">'foo'</span>) + (<span class="number">2</span>,(<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">tup = (<span class="number">1</span>,<span class="number">2</span>) * <span class="number">3</span> <span class="comment">#tup=(1,2,1,2,1,2)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问</span></span><br><span class="line">tup[<span class="number">0</span>]</span><br><span class="line">a,b,(c,d) = tup <span class="comment">#拆包</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="列表-List"><a href="#列表-List" class="headerlink" title="列表(List)"></a>列表(List)</h4><p>一维，变长，可修改，用<strong>[]</strong>标识。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 直接生成或用list()函数构造</span></span><br><span class="line">lis = [<span class="number">2</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="keyword">None</span>]</span><br><span class="line">lis = list(tup)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加合并</span></span><br><span class="line">lis.insert(<span class="string">'body'</span>)</span><br><span class="line">lis.append(<span class="string">'tail'</span>)</span><br><span class="line">lis.extend([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])</span><br><span class="line">lis = [<span class="number">4</span>,<span class="keyword">None</span>,<span class="string">'go'</span>] + [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line">zip(lis1, lis2) <span class="comment">#将元素配对，生成新的元组列表</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除</span></span><br><span class="line">lis.pop(<span class="number">2</span>) <span class="comment">#删除并返回指定位置的元素</span></span><br><span class="line">lis.remove(<span class="string">'foo'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 排序</span></span><br><span class="line">lis.sort()</span><br><span class="line">lis.sort(key=len) <span class="comment">#按元素长度排序</span></span><br><span class="line">sorted(lis) <span class="comment">#返回有序</span></span><br><span class="line">reversed(lis) <span class="comment">#返回倒序</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 切片</span></span><br><span class="line">lis[<span class="number">2</span>:<span class="number">10</span>:<span class="number">2</span>] <span class="comment">#起始：终止：步长</span></span><br><span class="line">lis[<span class="number">-7</span>:<span class="number">-3</span>] <span class="comment">#负数从末尾开始索引</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 内置Enumerate</span></span><br><span class="line"><span class="keyword">for</span> i,value <span class="keyword">in</span> enumerate(lis):</span><br><span class="line">	print(i,value)</span><br></pre></td></tr></table></figure></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/02/02/Python-DataStructure/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/28/LinearAlgebra-EigenVector/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/28/LinearAlgebra-EigenVector/" itemprop="url">特征值和特征向量</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T11:27:41+08:00">
-                2018-01-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  727
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p><strong>特征值</strong><br>若存在数$\lambda$使得$Ax=\lambda x$成立，则称$\lambda$为$A$的特征值，$x$称为对应于$\lambda$的特征向量。<br>空间理解：变换$x\mapsto Ax$没有使向量$x$改变方向。<br>$\lambda$是$A$的特征值当且仅当方程$(A-\lambda I)x=0$有非平凡解。所有解的集合是矩阵$A-\lambda I$的零空间，由零向量和所有对应于$lambda$的特征向量组成，称为$A$的对应于$\lambda$的特征空间。<br>特征空间的维数称作对应特征值$\lambda$的重数，也就是方程的根的重数。</p>
-<p><strong>特征方程</strong><br>数值方程$det(A-\lambda I)=0$称为A的特征方程；$det(A-\lambda I)$是n次多项式，称为A的特征多项式。<br>数$\lambda$是n*n矩阵A的特征值的充要条件是$\lambda$是特征方程$det(A-\lambda I)=0$的根。<br>如果考虑复根，特征方程恰好有n个根。</p>
-<p><strong>相似变换</strong><br>假如A和B是n*n矩阵，如果存在可逆矩阵P，使得$P^{-1}AP=B$，则称A相似于B，A和B是相似的，把A变成$P^{-1}AP$的变换称为相似变换。<br>相似矩阵A和B有相同的特征多项式，从而有相同的特征值。</p>
-<p><strong>对称矩阵</strong><br>满足$A^T=A$的矩阵称作对称矩阵。对称矩阵的主对角线元素是任意的，其他元素在两边成对出现。<br>对称矩阵是正交可对角化的充分必要条件。</p>
-<p><strong>二次型</strong><br>$\mathbb{R}^n$上的二次型是一个定义在$\mathbb{R}^n$上的函数，它在向量$x$处的值可由表达式$Q(x)=x^TAx$计算，此处A是一个n*n对称矩阵，称为关于二次型的矩阵。</p>
-<ul>
-<li>如果对所有$x\neq 0$，有$Q(x)&gt;0$，则称二次型是正定的，当且仅当A的所有特征值都是正数；</li>
-<li>如果对所有$x\neq 0$，有$Q(x)&lt;0$，则称二次型是负定的，当且仅当A的所有特征值都是负数；</li>
-<li>如果$Q(x)$既有正值又有负值，则称二次型是不定的，当且仅当A既有正特征值，又有负特征值。</li>
-</ul>
-<h4 id="定理"><a href="#定理" class="headerlink" title="定理"></a>定理</h4><ol>
-<li>三角矩阵的主对角线的元素是其特征值。</li>
-<li>对应不同特征值的特征向量线性无关。</li>
-<li>对角化定理：n*n矩阵A可对角化的充分必要条件是A有n个线性无关的特征向量。</li>
-<li>由2和3可推出：有n个相异特征值$\lambda$的n*n矩阵可对角化。</li>
-<li>n*n矩阵A的秩$r(A)=k$，则$\lambda = 0$至少为A的$n-k$重特征值；若A可相似对角化，则$\lambda = 0$恰好是A的$n-k$重特征值。</li>
-<li>如果A是对称矩阵，那么不同特征空间的任意两个特征向量是正交的。</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/28/ML-CollaborativeFiltering/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/28/ML-CollaborativeFiltering/" itemprop="url">协同过滤</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-28T10:03:22+08:00">
-                2018-01-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  416
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>用户偏好</strong><br>从用户对物品的评分中，学习用户的偏好向量，从而预测用户对新物品的评分并推荐<br>$$J(\theta) = \frac{1}{2}\sum_{j=1}^{n_u}\sum_{i:r(i,j)=1}((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})^2+\frac{\lambda}{2}\sum_{j=1}^{n_u}\sum_{k=1}^n(\theta_k^{(j)})^2 $$</p>
-<p>$x^{(i)}$ 物品i的特征向量<br>$\theta^{(j)}$ 用户j的偏好向量<br>$r(i,j)$ 用户j是否对物品i评价<br>$y^{(i,j)}$ 用户j对物品i的评分，当$r(i,j)=1$时有效</p>
-<p><strong>物品特征</strong><br>$x^{(i)}$可以由专家给出，也可以通过用户评分来自主学习<br>$$ J(x) = \frac{1}{2}\sum_{i=1}^{n_m}\sum_{j:r(i,j)=1}((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})^2+\frac{\lambda}{2}\sum_{i=1}^{n_m}\sum_{k=1}^n(x_k^{(i)})^2 $$</p>
-<p><strong>协同过滤</strong><br>根据评分数据$y$，同时估计$\theta$和$x$<br>$$ J(x,\theta) = \frac{1}{2}\sum_{(i,j):r(i,j)=1}((\theta^{(j)})^Tx^{(i)}-y^{(i,j)})^2 +\frac{\lambda}{2}\sum_{i=1}^{n_m}\sum_{k=1}^n(x_k^{i})^2 +\frac{\lambda}{2}\sum_{j=1}^{n_u}\sum_{k=1}^n(\theta_k^{j})^2 $$<br>算法步骤：</p>
-<ol>
-<li>初始化所有$\theta,x$为”small random values”</li>
-<li>梯度迭代求解最优化问题</li>
-<li>对用户没有标记过的物品，预测评分$\theta^Tx$</li>
-</ol>
-<p>对没有任何标记的新用户，其偏好向量为<strong>0</strong>，对任何新物品的预测评分也为<strong>0</strong>;<br>新用户的评分应该中立，而不是厌恶，故修改评分为物品评分的均值$0+\mu_i$<br>对其他用户，也要做对应修改，故在训练模型前有必要对评分进行均值标准化处理，使评分分布从[0~5]变为[-0.25~0.25]。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/27/ML-AnomalyDetection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/27/ML-AnomalyDetection/" itemprop="url">异常点检测</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-27T14:55:32+08:00">
-                2018-01-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  238
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>正例(y=1)不足，不能支持分类模型训练时，可以使用非监督学习的检测算法来识别异常点。</p>
-<p><strong>算法</strong><br>假设特征服从正态分布，并且相互独立；</p>
-<ol>
-<li>选择能有效识别异常点的特征</li>
-<li>对每个特征，求均值$\mu$和方差$\sigma^2$</li>
-<li>计算样本分布概率$p(x)$<br>$$ p(x)=\prod_{j=1}^np(x_j;\mu_j,\sigma_j^2)=\prod_{j=1}^n\frac{1}{\sqrt{2\pi}\sigma_j}exp(-\frac{(x_j-\mu_j)^2}{2\sigma^2}) $$<br>如果$p(x)&lt;\epsilon$则认为是异常点。</li>
-</ol>
-<p><strong>问题</strong></p>
-<ol>
-<li>如果特征不服从正态分布怎么办？<br>对特征转化处理，例如乘方、开方、取log等，转为近似正态分布。</li>
-<li>如果特征不独立怎么办？<br>使用多元高斯分布计算$p(x)$。</li>
-<li>如果异常点的$p(x)$不显著，不能和正常点分开怎么办？<br>观察异常点，构造显著特征，例如$\frac{x_1}{x_2}$。</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/24/LinearAlgebra-LinearEquations/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/24/LinearAlgebra-LinearEquations/" itemprop="url">线性方程组和矩阵</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T13:45:51+08:00">
-                2018-01-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1,165
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="线性方程组"><a href="#线性方程组" class="headerlink" title="线性方程组"></a>线性方程组</h2><p>A <strong>linear system</strong> is a collection of one or more linear equations involving the same variables. A linear system has</p>
-<ul>
-<li>no solutions</li>
-<li>exactly one solution</li>
-<li>infinitely many solutions</li>
-</ul>
-<p>方程$Ax=b$有解当且仅当$b$是$A$的各列的线性组合。<br>每个线性方程代表高维空间的一个超平面，线性方程组的解是所有超平面的交点。<br>解方程组的基本思路是把方程组用一个更容易解的等价方程组代替。<br>若两个线性方程组的增广矩阵(augmented matrix)是行等价的，则它们具有相同的解集(solution set)。</p>
-<h4 id="阶梯形矩阵"><a href="#阶梯形矩阵" class="headerlink" title="阶梯形矩阵"></a>阶梯形矩阵</h4><p>一个矩阵称为阶梯形(echelon form)(或行阶梯形)，若它有以下三个性质：</p>
-<ul>
-<li>每一非零行在每一零行之上；</li>
-<li>某一行的先导元素(leading entry)所在的列位于前一行先导元素的右面；</li>
-<li>某一先导元素所在列下方元素都是零。<br>若一个阶梯形矩阵还满足以下性质，称为简化阶梯形(reduced echelon form)：</li>
-<li>每一非零行的先导元素是1；</li>
-<li>每一先导元素1是该元素所在列的唯一非零元素。</li>
-</ul>
-<p><strong>定理</strong><br>每个矩阵行等价于唯一的简化阶梯形矩阵。<br><strong>主元位置</strong><br>矩阵中的主元位置(pivot position)是A中对应于它的阶梯形中先导元素的位置。主元列是A的含有主元位置的列。</p>
-<h4 id="线性方程组的解"><a href="#线性方程组的解" class="headerlink" title="线性方程组的解"></a>线性方程组的解</h4><p>对应主元列的变量称为基本变量，其他变量称为自由变量。<br>齐次方程$Ax=0$有非平凡解(非零向量)，当且仅当方程至少有一个自由变量。</p>
-<h4 id="线性无关"><a href="#线性无关" class="headerlink" title="线性无关"></a>线性无关</h4><p>$\mathbb{R}^n$中一组向量{$\vec{v}_1,…\vec{v}_p$}称为线性无关的，若向量方程<br>$$ x_1\vec{v_1} + x_2\vec{v_2} +\cdot\cdot\cdot+ x_p\vec{v_p} = 0 $$<br>仅有平凡解。向量组称为线性相关的，若存在不全为零的权$c_1,…c_p$，使得<br>$$ c_1\vec{v_1} + c_2\vec{v_2} +\cdot\cdot\cdot+ c_p\vec{v_p} = 0 $$<br>矩阵A的各列线性无关，当且仅当$Ax=0$仅有平凡解。<br><strong>定理</strong><br>若一个向量组的向量个数超过每个向量元素个数，那么这个向量组线性相关。即$\mathbb{R}^n$中任意向量组{$\vec{v_1},…,\vec{v_p}$}，当$p&gt;n$时线性相关。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/24/LinearAlgebra-LinearEquations/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/21/Calculus-MultipleIntegrals/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/21/Calculus-MultipleIntegrals/" itemprop="url">多元积分</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-21T07:56:54+08:00">
-                2018-01-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  215
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Jacobian"><a href="#Jacobian" class="headerlink" title="Jacobian"></a>Jacobian</h4><p>The Jacobian determinant or Jacobian of the corredinate transformation $x=g(u,v),\;y=h(u,v)$ is<br>$$J(u,v)=\begin{vmatrix}\frac{\partial x}{\partial u}&amp;\frac{\partial x}{\partial v} \\ \frac{\partial y}{\partial u} &amp;\frac{\partial y}{\partial v} \end{vmatrix} = \frac{\partial x}{\partial u}\frac{\partial y}{\partial v}-\frac{\partial x}{\partial v}\frac{\partial y}{\partial u}$$<br>It measures how much the transformation is expanding or contracting the area around a point G as G is transformed into R.<br>$$ \int\int_Rf(x,y)dxdy = \int\int_Gf(g(u,v),h(u,v))\left|J(u,v)\right|dudv $$<br>The Jacobian is also denoted by<br>$$ J(u,v) = \frac{\partial(x,y)}{\partial(u,v)} $$</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="Fubini’s-Theorem"><a href="#Fubini’s-Theorem" class="headerlink" title="Fubini’s Theorem"></a>Fubini’s Theorem</h4><p>If $f(x,y)$ is continuous throughout the rectangular region $R:a\leq x\leq b,\; c\leq y\leq d$, then<br>$$ \int \int_R f(x,y)dA = \int_c^d \int_a^b f(x,y)dxdy = \int_a^b \int_c^d f(x,y)dydx $$<br>If $R$ is defined by $a\leq x\leq b,\;g_1(x)\leq y\leq g_2(x)$, with $g_1$ and $g_2$ continuous on $[a,b]$, then<br>$$ \int \int_R f(x,y)dA = \int_a^b \int_{g_1(x)}^{g_2(x)}f(x,y)dydx $$</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/20/ML-NeuralNetworks/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/20/ML-NeuralNetworks/" itemprop="url">神经网络</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-20T11:39:00+08:00">
-                2018-01-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  611
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="/img/nn.png" width="400px"></p>
-<p>$a_i^{(j)}$ = “activation” of unit $i$ in layer $j$<br>$\Theta^{(j)}$ = matrix of weights controlling function mapping from layer $j$ to layer $j+1$</p>
-<h4 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h4><p>$$ a_1^{(2)}=g(\Theta_{10}^{(1)}x_0 + \Theta_{11}^{(1)}x_1 + \Theta_{12}^{(1)}x_2 + \Theta_{13}^{(1)}x_3) $$<br>$$ a_2^{(2)}=g(\Theta_{20}^{(1)}x_0 + \Theta_{21}^{(1)}x_1 + \Theta_{22}^{(1)}x_2 + \Theta_{23}^{(1)}x_3) $$<br>$$ a_3^{(2)}=g(\Theta_{30}^{(1)}x_0 + \Theta_{31}^{(1)}x_1 + \Theta_{32}^{(1)}x_2 + \Theta_{33}^{(1)}x_3) $$<br>如果$j$层有$s_j$个单元，$j+1$层有$s_{j+1}$个单元，那么$\Theta^{(j)}$是一个$s_{j+1}*(s_j+1)$的矩阵，“+1”是因为要引入$j$层的隐藏单元，偏差项$x_0$。定义<br>$$z_k^{(i)} = \Theta_{k,0}^{(i-1)}x_0 + \Theta_{k,1}^{(i-1)}x_1+\cdot \cdot \cdot + \Theta_{k,n}^{(1)}x_n$$<br>则算法可以简写成<br>$$ z^{(j)} = \Theta^{(j-1)}a^{(j-1)} $$<br>$$ a^{(j)} = g(z^{(j)}) $$</p>
-<p><strong>随机初始值</strong><br>开始训练前，若设定$\Theta$初始值全为0，则所有层各节点的学习结果完全相同。<br>为避免这一结果，需要将$\omega$初始化为不同的较小的值，$\b$可初始化为0.<br>若$\omega$初始值较大，则sigmoid的输入值较大，梯度较小，收敛速度慢。</p>
-<p><strong>多分类</strong><br>One-vs-all，对于K个类别，$y=[0,1,…0]^T$是$k$维向量，对应输出层$k$个单元。</p>
-<p><strong>代价函数$J(\Theta)$</strong><br>$$ J(\Theta) = -\frac{1}{m}\sum_{i=1}^m\sum_{k=1}^K\left[y_k^{(i)}log((h_{\Theta}(x^{(i)}))_k) + (1-y_k^{(i)})log(1-(h_{\Theta}(x^{(i)}))_k) \right]+\frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_l+1}(\Theta_{j,i}^{(l)})^2  $$<br>其中<br>$$ cost(t) = y_k^{(t)}log(h_{\Theta}(x^{(t)})) + (1-y^{(t)})log(1-h_{\Theta}(x^{(t)})) $$<br>$\delta_j^{(l)}$是$a_j^{(l)}$的“误差”，是$cost(t)$的偏导数：<br>$$ \delta_j^{(l)} = \frac{\partial}{\partial z_j^{(l)}}cost(t) $$</p>
-<h4 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h4><p>反向传播是为了计算偏导数$\frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta)$，从而得到$min_{\Theta}J(\Theta)$</p>
-<ol>
-<li>给定训练集${(x^{(1),y^{(1)}})\cdot \cdot \cdot(x^{(m)},y^{(m)})}$</li>
-<li>设定初始值$\Delta_{i,j}^{(l)}:=0$ </li>
-<li>For $i=1$ to $m$<ol>
-<li>$a^{(1)} := x^{(i)}$</li>
-<li>用前向传播算法计算$a^{(l)},\;\; l=2,3…L$</li>
-<li>$\delta^{(L)} = a^{(L)} - y^(i)$</li>
-<li>计算$\delta ^{(L-1)}, \delta ^{(L-2)}…\delta ^{(2)}$<br>$$\delta ^{(l)}=((\Theta^{(l)})^T \delta ^{(l+1)}) .\ast a^{(l)} .\ast (1-a^{(l)}) = ((\Theta^{(l)})^T \delta ^{(l+1)}) .\ast g’(z^{(l)})$$</li>
-<li>更新$\Delta_{i,j}^{(l)} := \Delta_{i,j}^{(l)}+a_j^{(l)}\delta_i^{(l+1)}$</li>
-</ol>
-</li>
-<li>循环结束得到$D_{i,j}^{(l)}=\frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta)$<ol>
-<li>$D_{i,j}^{(l)} := \frac{1}{m}\Delta_{(i,j)}^{(l)}\;\;if\;\; j=0$</li>
-<li>$D_{i,j}^{(l)} := \frac{1}{m}\left(\Delta_{(i,j)}^{(l)}+\lambda\Theta_{i,j}^{(l)}\right)\;\;if\;\; j\neq0$</li>
-</ol>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3527,7 +3737,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">324</span>
+                  <span class="site-state-item-count">332</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3540,7 +3750,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3629,7 +3839,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">123.1k</span>
+    <span title="Site words total count">124.5k</span>
   
 </div>
 
