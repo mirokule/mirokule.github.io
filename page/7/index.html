@@ -262,6 +262,786 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/07/Python-NumPy-Broadcasting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/07/Python-NumPy-Broadcasting/" itemprop="url">NumPy中的Broadcasting机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-07T16:53:20+08:00">
+                2018-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  158
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Broadcasting是指对两个形状不同的矩阵进行数学计算的处理机制。<br>对两个阵列操作时，NumPy会逐元素地<strong>从后向前</strong>比较他们的形状。当以下情形出现时，两个维度是兼容的：</p>
+<ul>
+<li>两个维度相等</li>
+<li>其中一个是1</li>
+</ul>
+<p>如果这些条件没有达到，那么将会报错。</p>
+<h6 id="正例"><a href="#正例" class="headerlink" title="正例"></a>正例</h6><table>
+<thead>
+<tr>
+<th style="text-align:left">阵列</th>
+<th style="text-align:right">尺寸</th>
+<th style="text-align:right">尺寸</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">A</td>
+<td style="text-align:right">255 × 255 × 3</td>
+<td style="text-align:right">15 × 1 × 3</td>
+</tr>
+<tr>
+<td style="text-align:left">B</td>
+<td style="text-align:right">3</td>
+<td style="text-align:right">15 × 5 × 3</td>
+</tr>
+<tr>
+<td style="text-align:left">Result</td>
+<td style="text-align:right">255 × 255 × 3</td>
+<td style="text-align:right">15 × 5 × 3</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:right"></td>
+</tr>
+<tr>
+<td style="text-align:left">A</td>
+<td style="text-align:right">5 × 4</td>
+<td style="text-align:right">8 × 1 × 3 × 1</td>
+</tr>
+<tr>
+<td style="text-align:left">B</td>
+<td style="text-align:right">4</td>
+<td style="text-align:right">7 × 1 × 5</td>
+</tr>
+<tr>
+<td style="text-align:left">Result</td>
+<td style="text-align:right">5 × 4</td>
+<td style="text-align:right">8 × 7 × 3 × 5</td>
+</tr>
+</tbody>
+</table>
+<h6 id="负例"><a href="#负例" class="headerlink" title="负例"></a>负例</h6><table>
+<thead>
+<tr>
+<th style="text-align:left">阵列</th>
+<th style="text-align:right">尺寸</th>
+<th style="text-align:right">尺寸</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">A</td>
+<td style="text-align:right">8 × 3 × 4</td>
+<td style="text-align:right">15 × 1 × 3 × 5</td>
+</tr>
+<tr>
+<td style="text-align:left">B</td>
+<td style="text-align:right">3 × 2</td>
+<td style="text-align:right">7 × 6 × 1</td>
+</tr>
+<tr>
+<td style="text-align:left">Result</td>
+<td style="text-align:right">最后一个维度不兼容</td>
+<td style="text-align:right">倒数第二个维度不兼容</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/06/Python-skimage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/06/Python-skimage/" itemprop="url">Scikit-Image</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-06T10:02:01+08:00">
+                2018-04-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  219
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Scikit-Image是基于Scipy的图像处理包，将图片作为numpy数组处理。</p>
+<h6 id="子模块"><a href="#子模块" class="headerlink" title="子模块"></a>子模块</h6><table>
+<thead>
+<tr>
+<th style="text-align:center">子模块</th>
+<th style="text-align:center">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">io</td>
+<td style="text-align:center">读写、显示图片</td>
+</tr>
+<tr>
+<td style="text-align:center">data</td>
+<td style="text-align:center">内置样本图片</td>
+</tr>
+<tr>
+<td style="text-align:center">color</td>
+<td style="text-align:center">颜色空间变换</td>
+</tr>
+<tr>
+<td style="text-align:center">filters</td>
+<td style="text-align:center">滤镜如图像增强、边缘检测</td>
+</tr>
+<tr>
+<td style="text-align:center">draw</td>
+<td style="text-align:center">图形绘制如线条、矩形</td>
+</tr>
+<tr>
+<td style="text-align:center">transform</td>
+<td style="text-align:center">几何变换如旋转、拉伸</td>
+</tr>
+<tr>
+<td style="text-align:center">morphology</td>
+<td style="text-align:center">形态学操作如骨架提取</td>
+</tr>
+<tr>
+<td style="text-align:center">exposure</td>
+<td style="text-align:center">强度调整如亮度、直方图均衡</td>
+</tr>
+<tr>
+<td style="text-align:center">feature</td>
+<td style="text-align:center">特征检测与提取</td>
+</tr>
+<tr>
+<td style="text-align:center">measure</td>
+<td style="text-align:center">图像属性测量如相似性、等高线</td>
+</tr>
+<tr>
+<td style="text-align:center">segmentation</td>
+<td style="text-align:center">图像分割</td>
+</tr>
+<tr>
+<td style="text-align:center">restoration</td>
+<td style="text-align:center">图像恢复</td>
+</tr>
+<tr>
+<td style="text-align:center">util</td>
+<td style="text-align:center">通用函数</td>
+</tr>
+</tbody>
+</table>
+<h6 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io, data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取图片</span></span><br><span class="line">img_file1 = io.imread(<span class="string">'./input/111111.png'</span>)</span><br><span class="line">img_file2 = data.chelsea()</span><br><span class="line">io.imshow(img_file2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看图片信息</span></span><br><span class="line">type(img)</span><br><span class="line">img.shape</span><br><span class="line">img.size</span><br><span class="line">img[<span class="number">0</span>][<span class="number">0</span>] <span class="comment">#图像的像素值</span></span><br><span class="line">width = img.size[<span class="number">0</span>]</span><br><span class="line">height = img.size[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 颜色转换</span></span><br><span class="line">img_file3 = skimage.color.rgb2gray(img_file2_ <span class="comment">#彩色转灰度</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 缩放</span></span><br><span class="line">skimage.transform.resize(image, output_shape)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直方图</span></span><br><span class="line">skimage.exposure.histogram(image, nbins=<span class="number">256</span>)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/05/ML-ROC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/05/ML-ROC/" itemprop="url">ROC曲线</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-05T17:26:20+08:00">
+                2018-04-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  616
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1-定义"><a href="#1-定义" class="headerlink" title="1. 定义"></a>1. 定义</h4><p>ROC全称是“受试者工作特征”(Receiver Operating Characteristic).<br>ROC曲线下方的面积称为AUC(Area Under the Curve)。AUC可用于衡量二分类问题的算法性能。<br>ROC通常位于直线$y=x$上方，故AUC取值介于0.5~1之间，越大说明算法效果越好。<br><img src="/img/roc1.png"><br>绘制ROC曲线需要三个变量：</p>
+<ul>
+<li>TPR = TP/(TP+FN)，所有正例中挑出来了多少，例如有病的诊断率</li>
+<li>FPR = FP/(FP+TN)，所有负例中挑错了多少，例如没病的误判率</li>
+<li>Threashold：改变分类结果的阈值<br><img src="/img/roc2.png"></li>
+</ul>
+<p>在极端情况下，将所有样本都判为正例，那么TPR=FPR=1；<br>将所有样本都判为负例，那么TPR=FPR=0；<br>以0.3的概率随机判为正例，那么TPR=FPR=0.3；<br>这就是图中y=x直线的由来，代表随机胡蒙的ROC曲线。</p>
+<p><strong>绘制</strong></p>
+<ol>
+<li>将样本的预测概率值从高到低排列；</li>
+<li>从图中(0,0)开始，取一个样本，代表此时阈值将该样本预测为正例；<br>若样本实际是正例，则TP+1，TPR增大，向上一步；<br>若样本实际是负例，则FP+1，FPR增大，向右一步。</li>
+<li>遍历所有样本，将得到的点(TPR, FPR)用折线连接即可</li>
+</ol>
+<p><strong>计算AUC</strong><br>$$AUC = \frac{\sum_{positive}rank_i -\frac{M(1+M)}{2}}{M\times N} $$</p>
+<p>正样本数量为M，负样本数量为N，那么正负两两组合的种类是M×N；<br>将样本的score从大到小排列，score最大的样本的rank记为n(n=M+N)，第二大的样本rank记为n-1，依次类推，score最小的样本rank记为1；<br>将所有正样本的rank相加，再减去正样本两两组合的种类M(1+M)/2，得到的就是所有样本中，有多少对正样本的score大于负样本的score</p>
+<h4 id="2-ROC的优势"><a href="#2-ROC的优势" class="headerlink" title="2. ROC的优势"></a>2. ROC的优势</h4><p>ROC曲线比较稳定。<br>当测试集中的正负样本分布变化时，ROC曲线能够保持不变。<br><img src="/img/roc3.png"></p>
+<h4 id="3-roc-curve"><a href="#3-roc-curve" class="headerlink" title="3. roc_curve"></a>3. roc_curve</h4><p>sklearn.metrics.roc_curve(y_true, y_score, pos_label=None, sample_weight=None, drop_intermediate=True)</p>
+<p>参数</p>
+<ul>
+<li>y_true: 样本真实分类的二值数组</li>
+<li>y_score: 样本的预测得分</li>
+<li>pos_label: 正例标签</li>
+<li>sample_weight: 权重</li>
+<li>drop_intermediate: 是否忽略某些无影响的阈值</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>fpr</li>
+<li>tpr</li>
+<li>thresholds</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">y = np.array([<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>])</span><br><span class="line">scores = np.array([<span class="number">0.1</span>, <span class="number">0.4</span>, <span class="number">0.35</span>, <span class="number">0.89</span>])</span><br><span class="line">fpr, tpr, thresholds = metrics.roc_curve(y, scores, pos_label=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">fpr <span class="comment">#array([0, 0.5, 0.5, 1])</span></span><br><span class="line">tpr <span class="comment">#array([0.5, 0.5, 1, 1])</span></span><br><span class="line">thresholds <span class="comment">#array([0.89, 0.4, 0.35, 0.1])</span></span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/05/Python-NumPy-RavelFlatten/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/05/Python-NumPy-RavelFlatten/" itemprop="url">NumPy数组降维</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-05T15:05:08+08:00">
+                2018-04-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  327
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>NumPy中可以用于维度缩减的函数有：</p>
+<ul>
+<li>ravel: 1-D,就地生效</li>
+<li>flatten: 1-D,返回副本</li>
+<li>squeeze: 移除shape为1的维度</li>
+<li>reshape: 指定维度</li>
+</ul>
+<h4 id="1-ravel"><a href="#1-ravel" class="headerlink" title="1. ravel()"></a>1. ravel()</h4><p>numpy.ravel(a, order=’C’)<br>将数组降维，返回一维数组；如果没有必要，不会产生原数据的副本，而是<strong>就地生效</strong><br>相当于rashape(-1, order=order)</p>
+<p>参数</p>
+<ul>
+<li>a：输入array</li>
+<li>order: {‘C’, ‘F’, ‘A’, ‘K’}，默认’C’<ul>
+<li>‘C’: C-style，先处理行</li>
+<li>‘F’: Fortran-style，先处理列</li>
+<li>‘A’: Auto，如果a在内存中是Fortran contiguous则’F’，否则’C’</li>
+<li>‘K’: 按内存顺序</li>
+</ul>
+</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>y：1-D ndarray</li>
+</ul>
+<h4 id="2-flatten"><a href="#2-flatten" class="headerlink" title="2. flatten()"></a>2. flatten()</h4><p>numpy.ndarray.flatten(order=’C’)<br>返回数组降维后的<strong>副本</strong></p>
+<p>参数</p>
+<ul>
+<li>order: {‘C’,’F’,’A’,’K’}</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>y: ndarray</li>
+</ul>
+<h4 id="3-squeeze"><a href="#3-squeeze" class="headerlink" title="3. squeeze()"></a>3. squeeze()</h4><p>numpy.squeeze(a, axis=None)<br>移除 single-dimensional entries，即shape中为1的维度。</p>
+<p>参数</p>
+<ul>
+<li>a: 输入array</li>
+<li>axis: 指定要缩减的轴，若该轴的shape大于1，则报错</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>squeezed: ndarray</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = np.array([[[<span class="number">0</span>],[<span class="number">1</span>],[<span class="number">2</span>]]])</span><br><span class="line">x.shape <span class="comment">#(1,3,1)</span></span><br><span class="line">np.squeeze(x).shape <span class="comment">#(3,)</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">0</span>).shape <span class="comment">#(3,1)</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">1</span>).shape <span class="comment">#报错</span></span><br><span class="line">np.squeeze(x, axis=<span class="number">2</span>).shape <span class="comment">#(1,3)</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="4-reshape"><a href="#4-reshape" class="headerlink" title="4. reshape()"></a>4. reshape()</h4><p>numpy.reshape(a, newshape, order=’C’)<br>为数组指定新的shape</p>
+<p>参数</p>
+<ul>
+<li>a: 输入array</li>
+<li>newshape: int表示该维度长度，-1表示自动推断</li>
+<li>order: {‘C’, ‘F’, ‘A’}</li>
+</ul>
+<p>返回</p>
+<ul>
+<li>reshaped_array: ndarray</li>
+</ul>
+<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = np.arange(<span class="number">6</span>).reshape(<span class="number">3</span>,<span class="number">2</span>)</span><br><span class="line">np.reshape(a, <span class="number">6</span>)</span><br><span class="line">np.reshape(a, (<span class="number">2</span>,<span class="number">3</span>), order=<span class="string">'F'</span>)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/04/02/ML-Stacking/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2926,606 +3706,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/21/Python-sklearn-OneHotEncoder/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/21/Python-sklearn-OneHotEncoder/" itemprop="url">sklearn.OneHotEncoder</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T12:03:06+08:00">
-                2018-03-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  238
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>LabelEncoder将不同类别转换为数字，比如[‘paris’,’tokyo’]转为[2,3]，引入了类别大小属性。<br>OneHotEncoder将类别编码成m个二值类别，只标示类别，没有引入大小。<br>比get_dummies的优势在于可以处理数字类别。</p>
-<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><pre><code>class sklearn.preprocessing.OneHotEncoder(n_values=&apos;auto&apos;,categorical_features=&apos;all&apos;,dtype=&lt;class&apos;numpy.float64&apos;&gt;,sparse=True,handle_unknown=&apos;error&apos;)
-</code></pre><p>参数</p>
-<ul>
-<li>n_values: 特征的类别数量，’auto’由训练数据计算，也可以指定int</li>
-<li>categorical_features: 指定要转换的字段</li>
-<li>dtype: 输出的类型</li>
-<li>sparse: 默认True返回系数矩阵，若为False返回Array</li>
-<li>handle_unknown: 是否raise error</li>
-</ul>
-<p>属性</p>
-<ul>
-<li>active_features_: 训练集中的被转换的values</li>
-<li>feature_indices_: indices to feature ranges</li>
-<li>n_values_: 每个特征的number of values</li>
-</ul>
-<p>方法</p>
-<ul>
-<li>fit(X, y=None)</li>
-<li>fit_transform(X, y=None)</li>
-<li>transform(X)</li>
-<li>get_params([deep])</li>
-<li>set_params(**params)</li>
-</ul>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessign <span class="keyword">import</span> OneHotEncoder</span><br><span class="line">enc = OneHotEncoder()</span><br><span class="line">enc.fit([[<span class="number">0</span>,<span class="number">0</span>,<span class="number">3</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">2</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>]])</span><br><span class="line">enc.n_values_ <span class="comment">#array([2,3,4])</span></span><br><span class="line">enc.feature_indices_ <span class="comment">#array([0,2,5,9])</span></span><br><span class="line">enc.transform([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>]]).toarray() <span class="comment">#array([1.,0.,0.,1.,0.,0.,1.,0.,0.])</span></span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/21/Python-sklearn-LabelEncoder/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/21/Python-sklearn-LabelEncoder/" itemprop="url">sklearn.LabelEncoder</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T11:38:28+08:00">
-                2018-03-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  151
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>LabelEncoder可以对标签编码，将其转变为0~(n-1)的数字。<br>对比OneHotEncoder：编码成0~1的多个标签<br>对比GetDummies：只对字符标签编码成0~1的多个标签</p>
-<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><pre><code>class sklearn.preprocessing.LabelEncoder
-</code></pre><p>方法：</p>
-<ul>
-<li>fit(y): 训练转换器</li>
-<li>fit_transform(y): 训练并转换</li>
-<li>transform(y): 转换</li>
-<li>inverse_transform: 还原</li>
-<li>get_params([deep])</li>
-<li>set_params(**params)</li>
-</ul>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line">le = preprocessing.LabelEncoder()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换数字</span></span><br><span class="line">le.fit([<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">6</span>])</span><br><span class="line">le.classes_ <span class="comment">#array([1,2,6])</span></span><br><span class="line">le.transform([<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">6</span>]) <span class="comment">#array[0,0,1,2]</span></span><br><span class="line">le.inverse_transform([<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>]) <span class="comment">#array[1,1,2,6]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换字符</span></span><br><span class="line">le.fit([<span class="string">'paris'</span>,<span class="string">'paris'</span>,<span class="string">'tokyo'</span>,<span class="string">'london'</span>]</span><br><span class="line">le.transform([<span class="string">'tokyo'</span>,<span class="string">'tokyo'</span>,<span class="string">'paris'</span>]</span><br><span class="line">le.inverse_transform([<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/21/Python-string-Format/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/21/Python-string-Format/" itemprop="url">format()字符串格式化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T10:34:27+08:00">
-                2018-03-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  290
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>String的format函数用于字符串的格式化。<br>通过控制字符串的格式，可以替代(?)原有的’%’符号。</p>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 通过位置</span></span><br><span class="line"><span class="string">'&#123;0&#125;,&#123;1&#125;,&#123;2&#125;'</span>.format(<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>) <span class="comment">#'a,b,c'</span></span><br><span class="line"><span class="string">'&#123;2&#125;,&#123;1&#125;,&#123;0&#125;'</span>.format(<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>) <span class="comment">#'c,b,a'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过名称</span></span><br><span class="line"><span class="string">'position: &#123;x&#125;, &#123;y&#125;'</span>.format(x=<span class="string">'12.34'</span>, y=<span class="string">'35.22'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过下标</span></span><br><span class="line">p=[<span class="string">'abc'</span>,<span class="number">12</span>]</span><br><span class="line"><span class="string">'&#123;0[0],0[1]&#125;'</span>.format(p) <span class="comment">#'abc,12'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 格式限定符':'</span></span><br><span class="line"><span class="comment"># 控制精度</span></span><br><span class="line"><span class="string">'score: &#123;:.2f&#125;'</span>.format(<span class="number">12.23333333</span>) <span class="comment">#'12.23'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 百分数</span></span><br><span class="line"><span class="string">'answer: &#123;:.2%&#125;'</span>.format(<span class="number">12</span>/<span class="number">45</span>) <span class="comment">#'28.23%'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示符号</span></span><br><span class="line"><span class="comment"># +总显示；-只显示负号</span></span><br><span class="line"><span class="string">'&#123;:+f&#125;, &#123;:+f&#125;'</span>.format(<span class="number">3</span>,<span class="number">-3</span>) <span class="comment">#'+3,-3'</span></span><br><span class="line"><span class="string">'&#123;:-f&#125;, &#123;:-f&#125;'</span>.format(<span class="number">3</span>,<span class="number">-3</span>) <span class="comment">#'3,-3'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 填充和对齐</span></span><br><span class="line"><span class="comment"># ^、&lt;、&gt;分别是居中、左对齐、右对齐</span></span><br><span class="line"><span class="comment"># 数字8是总宽度</span></span><br><span class="line"><span class="comment"># 长度不够的，用:后跟的字符填充，默认空格填充</span></span><br><span class="line"><span class="string">'&#123;:&gt;8&#125;'</span>.format(<span class="string">'189'</span>) <span class="comment">#'     189'</span></span><br><span class="line"><span class="string">'&#123;:0&gt;8&#125;'</span>.format(<span class="string">'189'</span>) <span class="comment">#'00000189'</span></span><br><span class="line"><span class="string">'&#123;:a&gt;8&#125;'</span>.format(<span class="string">'189'</span>) <span class="comment">#'aaaaa189'	</span></span><br><span class="line"><span class="string">'&#123;0:7&#125;&#123;1:7&#125;'</span>.format(<span class="string">'use'</span>,<span class="string">'python'</span>) <span class="comment">#两个宽度为7的字符串</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择进制</span></span><br><span class="line"><span class="comment"># b、d、o、x分别是二进制、十进制、八进制、十六进制</span></span><br><span class="line"><span class="string">'&#123;:b&#125;'</span>.format(<span class="number">17</span>) <span class="comment">#'10001'</span></span><br><span class="line"><span class="string">'&#123;:d&#125;'</span>.format(<span class="number">17</span>) <span class="comment">#'17'</span></span><br><span class="line"><span class="string">'&#123;:o&#125;'</span>.format(<span class="number">17</span>) <span class="comment">#'21'</span></span><br><span class="line"><span class="string">'&#123;:x&#125;'</span>.format(<span class="number">17</span>) <span class="comment">#'11'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分隔符','</span></span><br><span class="line"><span class="string">'&#123;:,&#125;'</span>.format(<span class="number">1234567890</span>) <span class="comment">#'1,234,567,890'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 格式转化</span></span><br><span class="line"><span class="comment"># !r(repr), !s(str), !a(ascii)</span></span><br><span class="line"><span class="string">"repr() shows quotes: &#123;!r&#125;; str() doesn’t: &#123;!s&#125;"</span>.format(<span class="string">'t1'</span>,<span class="string">'t2'</span>)</span><br><span class="line"><span class="comment"># repr() shows quotes: 't1'; str() doesn‘t: t2</span></span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/21/Stat-QQPlot/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/21/Stat-QQPlot/" itemprop="url">Q-Q图</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T09:53:46+08:00">
-                2018-03-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  223
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h4><p>Q-Q图将两个概率分布的分位数放在一起比较，若分布线性相关，则应绘制一条直线。<br>固定一种为正态分布，则可观察另一套样本是否近似服从正态分布。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> stats</span><br><span class="line"><span class="comment"># 默认和正态分布比较</span></span><br><span class="line">stats.probplot(data, plot=plt)</span><br></pre></td></tr></table></figure></p>
-<p><img src="/img/probplot.png"></p>
-<h4 id="作图步骤"><a href="#作图步骤" class="headerlink" title="作图步骤"></a>作图步骤</h4><ol>
-<li>将原始观察数据从小到大排列：$x_1,x_2,…,x_n$</li>
-<li>计算$x$对应的分位频率$p_i=(i-\frac{1}{2})/n,i=1,2,…,n$，这里$P$可以有多种定义。</li>
-<li>计算$p$对应的标准正态分位数$q$:<br>$$ P\left{X\leq q_1\right} = \int_{-\infty}^{q_1}\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}} dx = p_i $$</li>
-<li>将数对$(q_i, x_i)$画在坐标平面上。</li>
-</ol>
-<p>因为$q_i$由$p_i$唯一确定，所以若数据$x_i$的分布与正态分布非常接近，则点$(q_i,x_i)$应大致成一条直线。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3580,7 +3760,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">332</span>
+                  <span class="site-state-item-count">336</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3668,7 +3848,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -3682,7 +3862,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">124.5k</span>
+    <span title="Site words total count">125.5k</span>
   
 </div>
 

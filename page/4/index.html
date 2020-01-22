@@ -262,6 +262,650 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/16/Keras-Callbacks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/16/Keras-Callbacks/" itemprop="url">Keras回调函数Callbacks</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-16T09:53:21+08:00">
+                2018-05-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  638
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>回调函数是一组在训练的特定阶段被调用的函数，可以用来观察网络内部的状态。<br>回调函数通常被传递到模型的 fit() 方法中。</p>
+<h4 id="Callback"><a href="#Callback" class="headerlink" title="Callback"></a>Callback</h4><p>keras.callbacks.Callback()<br>回调函数的抽象类，定义新的回调函数必须继承此类</p>
+<h4 id="BaseLogger"><a href="#BaseLogger" class="headerlink" title="BaseLogger"></a>BaseLogger</h4><p>keras.callbacks.BaseLogger()<br>Callback that accumulates epoch averages of metrics.<br>计算metrics指标的累加epoch平均值。<br>在每个keras模型中自动调用。</p>
+<h4 id="History"><a href="#History" class="headerlink" title="History"></a>History</h4><p>keras.callbacks.History()<br>History对象即为fit() 方法的返回值。<br>在每个keras模型中自动调用。<br>History.history是一个字典，键值包括[‘acc’,’loss’,’val_acc’,’val_loss’,’lr’]等。<br>value是长度=epoch的列表，即每个epoch记录一次数据。</p>
+<h4 id="TensorBoard"><a href="#TensorBoard" class="headerlink" title="TensorBoard"></a>TensorBoard</h4><p>当使用TensorFlow作为后台时，也可以在CallBack函数里使用TensorBoard.<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">callbacks = [</span><br><span class="line">	keras.callbacks.TensorBoard(</span><br><span class="line">		log_dir=<span class="string">'my_log_dir'</span>, <span class="comment"># 日志写入位置</span></span><br><span class="line">		histogram_freq=<span class="number">1</span>, <span class="comment"># 每一轮都要记录激活直方图</span></span><br><span class="line">		embeddings_freq=<span class="number">1</span>, <span class="comment"># 每一轮都要记录嵌入数据</span></span><br><span class="line">	)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">history = model.fit(X_train, y_train,</span><br><span class="line">	epochs = <span class="number">20</span>,</span><br><span class="line">	batch_size = <span class="number">128</span>,</span><br><span class="line">	validation_split = <span class="number">0.2</span>,</span><br><span class="line">	callbacks = callbacks)</span><br></pre></td></tr></table></figure></p>
+<p>启动之后，通过浏览器打开<a href="http://localhost:6006查看" target="_blank" rel="noopener">http://localhost:6006查看</a><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tensorboard --logdir=my_log_dir</span><br></pre></td></tr></table></figure></p>
+<h4 id="ReduceLROnPlateau"><a href="#ReduceLROnPlateau" class="headerlink" title="ReduceLROnPlateau"></a>ReduceLROnPlateau</h4><p>keras.callbacks.ReduceLROnPlateau(monitor=’val_loss’, factor=0.1, patience=10, verbose=0, mode=’auto’, epsilon=0.0001, cooldown=0, min_lr=0)<br>当评价指标不再提升时，减少学习速率。<br>参数</p>
+<ul>
+<li>mointor: 要监测的评价指标</li>
+<li>factor: 减少因子，更新方式lr = lr × factor</li>
+<li>patience: 经过多少个epoch而评价指标不变时，减少学习率的动作会被触发</li>
+<li>mode: ‘auto’,’min’,’max’, 评价指标的正常变动方向</li>
+<li>epsilon: 小于该阈值，则认为评价指标“无变化”</li>
+<li>cooldown: 学习率减少后，经过多少个epoch后才会再次触发</li>
+<li>min_lr: 学习速率下限</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">callbacks_list = [</span><br><span class="line">	keras.callbacks.ReduceLROnPlateau(</span><br><span class="line">		moniter = <span class="string">'val_loss'</span>,</span><br><span class="line">		factor = <span class="number">0.1</span>,</span><br><span class="line">		patience = <span class="number">10</span>,</span><br><span class="line">	)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h4 id="EarlyStopping"><a href="#EarlyStopping" class="headerlink" title="EarlyStopping"></a>EarlyStopping</h4><p>keras.callbacks.EarlyStopping(monitor=’val_loss’, min_delta=0, patience=0, verbose=0, mode=’auto’)<br>当评价指标不再提升时，中止训练。<br>参数</p>
+<ul>
+<li>monitor: 要监测的评价指标</li>
+<li>min_delta: 提升的最小阈值</li>
+<li>patience: 经过多少个epoch而评价指标不变时，触发动作</li>
+<li>verbose: 信息展示模式</li>
+<li>mode: ‘auto’,’min’,’max’</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">callbacks_list = [</span><br><span class="line">	keras.callbacks.EarlyStopping(</span><br><span class="line">		monitor = <span class="string">'acc'</span>,</span><br><span class="line">		patience = <span class="number">1</span>,</span><br><span class="line">	),</span><br><span class="line">	keras.callbacks.ModelCheckpoint(</span><br><span class="line">		filepath = <span class="string">'my_model.h5'</span>,</span><br><span class="line">		monitor = <span class="string">'val_loss'</span>,</span><br><span class="line">		save_best_only = <span class="keyword">True</span>,</span><br><span class="line">	)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, </span><br><span class="line">	loss=<span class="string">'binary_crossentropy'</span>, </span><br><span class="line">	metrics=[<span class="string">'acc'</span>])</span><br><span class="line"></span><br><span class="line">model.fit(x,y,</span><br><span class="line">	epochs = <span class="number">10</span>,</span><br><span class="line">	batch_size = <span class="number">32</span>,</span><br><span class="line">	callbacks=callbacks_list,</span><br><span class="line">	validation_data=(x_val, y_val))</span><br><span class="line"></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h4 id="ModelCheckpoint"><a href="#ModelCheckpoint" class="headerlink" title="ModelCheckpoint"></a>ModelCheckpoint</h4><p>keras.callbacks.ModelCheckpoint(filepath, monitor=’val_loss’, verbose=0, save_best_only=False, save_weights_only=False, mode=’auto’, period=1)<br>在每个epoch后将模型保存到文件。<br>参数</p>
+<ul>
+<li>filepath: 文件路径，可以包含格式，例如weights.{epoch:02d}-{val_loss:.2f}.hdf5</li>
+<li>save_best_only: 是否只保存在验证集上性能最好的模型 </li>
+<li>save_weights_only: ‘True’只保存权重，’False’保存整个模型(包括结构、配置等)</li>
+<li>period: 两次保存之间间隔的epoch数</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/15/Keras-Installation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/15/Keras-Installation/" itemprop="url">基于TensorFlow的Keras安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-15T16:48:21+08:00">
+                2018-05-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  202
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>安装环境</p>
+<ul>
+<li>MacOS: 没有N卡，不支持GPU版本的tensorflow，无需CUDA；使用CPU版本</li>
+<li>Anaconda：由社区提供对tensorflow的支持，没有任何官方支持</li>
+</ul>
+<p>安装步骤</p>
+<ol>
+<li><p>创建conda环境</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">conda create -n tensorflow pip python=<span class="number">2.7</span> <span class="comment"># or python=3.5, etc</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>激活该conda环境</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">source activate tensorflow</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装TensorFlow<br>使用pip install 而不是conda install</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看pip版本</span></span><br><span class="line">pip -V <span class="comment"># for Python 2.7</span></span><br><span class="line">pip3 -V <span class="comment"># for Python 3.n</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装方法</span></span><br><span class="line">pip install tensorflow</span><br><span class="line">pip3 install tensorflow</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选方法：如果上一步失败则直接使用软件包网址</span></span><br><span class="line">tfBinaryURL = https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow<span class="number">-1.6</span><span class="number">.0</span>-py3-none-any.whl </span><br><span class="line">pip install --upgrade tfBinaryURL</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装相关包</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install numpy scipy pandas</span><br><span class="line">pip install matplotlib seaborn</span><br><span class="line">pip install scikit-learn scikit-image</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装Keras</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install keras</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>验证</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/fchollet/keras.git</span><br><span class="line">cd keras/examples/</span><br><span class="line">python mnist_mlp.py</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/15/Keras-ImageDataGenerator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/15/Keras-ImageDataGenerator/" itemprop="url">Keras图片生成器ImageDataGenerator</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-15T10:08:46+08:00">
+                2018-05-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  511
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>图片生成器用于Data Augmentation，将会生成一个batch的图像数据。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.preprocessing.image.ImageDataGenerator(featurewise_center=<span class="keyword">False</span>, samplewise_center=<span class="keyword">False</span>,</span><br><span class="line">    featurewise_std_normalization=<span class="keyword">False</span>, samplewise_std_normalization=<span class="keyword">False</span>,</span><br><span class="line">    zca_whitening=<span class="keyword">False</span>, zca_epsilon=<span class="number">1e-6</span>,</span><br><span class="line">    rotation_range=<span class="number">0.</span>, width_shift_range=<span class="number">0.</span>, height_shift_range=<span class="number">0.</span>,</span><br><span class="line">    shear_range=<span class="number">0.</span>, zoom_range=<span class="number">0.</span>, channel_shift_range=<span class="number">0.</span>,</span><br><span class="line">    fill_mode=<span class="string">'nearest'</span>, cval=<span class="number">0.</span>,</span><br><span class="line">    horizontal_flip=<span class="keyword">False</span>, vertical_flip=<span class="keyword">False</span>,</span><br><span class="line">    rescale=<span class="keyword">None</span>, preprocessing_function=<span class="keyword">None</span>, data_format=K.image_data_format())</span><br></pre></td></tr></table></figure>
+<p><strong>参数</strong></p>
+<ul>
+<li>featurewise_center: 使输入数据的每个特征去中心化(均值为0)</li>
+<li>samplewise_center: 使输入数据的每个样本去中心化</li>
+<li>featurewise_std_normalization: 使输入数据的每个特征规范化</li>
+<li>samplewise_std_normalization: 使输入数据的每个样本规范化</li>
+<li>zca_whitening: 对输入数据施加ZCA白化</li>
+<li>zca_epsilon: zca使用的epsilon</li>
+<li>rotation_range: 随机旋转的角度</li>
+<li>width_shift_range: 水平偏移的幅度</li>
+<li>height_shift_range: 竖直偏移的幅度</li>
+<li>shear_range: 剪切变换的强度</li>
+<li>zoom_range: 随机缩放的强度</li>
+<li>channel_shift_range:</li>
+<li>fill_mode: ‘constant’,’nearest’, ‘reflect’, ‘wrap’超出边界的点的处理方式</li>
+<li>cval: ‘constant’时的常量填充值</li>
+<li>horizontal_flip: 是否随机水平翻转</li>
+<li>vertical_flip: 是否随机竖直翻转</li>
+<li>rescale: 重缩放因子</li>
+<li>preprocessing_function: 在数据提升之后运行，应用于每个输入的函数</li>
+<li>data_format: ‘channel_first’, ‘channel_last’</li>
+</ul>
+<p><strong>方法</strong></p>
+<ul>
+<li>fit(x, augment=False, rounds=1): 计算数据变换需要的统计信息，只有使用featruewise_center, featurewise_std_normalization, 或zca_whitening时需要此函数</li>
+<li>flow(self, X, y, batch_size=32, shuffle=True, seed=None, save_to_dir=None, save_prefix=’’, save_format=’png’): 接受numpy数组，生成数据提升后的batch数据，无限循环</li>
+<li>flow_from_directory(directory, target_size=(256, 256), color_mode=’rgb’,<br>  classes=None, class_mode=’categorical’, batch_size=32, shuffle=True,<br>  seed=None, save_to_dir=None, save_prefix=’’, save_format=’png’,<br>  follow_links=False, subset=None, interpolation=’nearest’)</li>
+</ul>
+<p><strong>实例</strong><br>1.使用 flow()<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">datagen = ImageDataGenerator(featurewise_center=<span class="keyword">True</span>, feature_std_normalization=<span class="keyword">True</span>,</span><br><span class="line">	rotation_range=<span class="number">20</span>, width_shift_range=<span class="number">0.2</span>, height_shift_range=<span class="number">0.2</span>, horizontal_flip=true)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算数据提升需要的参数</span></span><br><span class="line">datagen.fit(x_train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 实时数据提升，用于训练模型</span></span><br><span class="line">model.fit_generator(datagen.flow(x_train, y_train, batch_size=<span class="number">32</span>), </span><br><span class="line">	steps_per_epoch=len(x_train)/<span class="number">32</span>, epochs=epochs)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 另一种手动写法</span></span><br><span class="line"><span class="keyword">for</span> e <span class="keyword">in</span> range(epochs):</span><br><span class="line">	batches = <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> x_batch, y_batch <span class="keyword">in</span> datagen.flow(x_train, y_train, batch_size=<span class="number">32</span>):</span><br><span class="line">		model.fit(x_batch, y_batch)</span><br><span class="line">		batches += <span class="number">1</span></span><br><span class="line">		<span class="keyword">if</span> batches &gt;= len(x_train) / <span class="number">32</span>:</span><br><span class="line">			<span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
+<p>2.使用 flow_from_directory()<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">train_datagen = ImageDataGenerator(rescale=<span class="number">1.</span>/<span class="number">255</span>, shear_range=<span class="number">0.2</span>, </span><br><span class="line">	zoom_range=<span class="number">0.2</span>, horizontal_flip=<span class="keyword">True</span>)</span><br><span class="line">test_datagen = ImageDataGenerator(rescale=<span class="number">1.</span>/<span class="number">255</span>)</span><br><span class="line"></span><br><span class="line">train_generator = train_datagen.flow_from_directory(<span class="string">'data/train'</span>, </span><br><span class="line">	target_size=(<span class="number">150</span>,<span class="number">150</span>), batch_size=<span class="number">32</span>, class_mode=<span class="string">'binary'</span>)</span><br><span class="line">validation_generator = test_datagen.flow_from_directory(<span class="string">'data/validation'</span>,</span><br><span class="line">	target_size=(<span class="number">150</span>,<span class="number">150</span>), batch_size=<span class="number">32</span>, class_mode=<span class="string">'binary'</span>)</span><br><span class="line"></span><br><span class="line">model.fit_generator(train_generator,</span><br><span class="line">	steps_per_epoch=<span class="number">2000</span>, epochs=<span class="number">50</span>,</span><br><span class="line">	validation_data = validation_generator,</span><br><span class="line">	validation_steps=<span class="number">800</span>)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/09/ML-DecisionBoundary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/09/ML-DecisionBoundary/" itemprop="url">决策边界示意图</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-09T08:48:41+08:00">
+                2018-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  0
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/img/classifier_comparison.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/06/Keras-Application/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2770,640 +3414,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/03/Keras-Regularizer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/03/Keras-Regularizer/" itemprop="url">Keras正则项Regularizer</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-03T08:59:27+08:00">
-                2018-05-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  180
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>正则项基于层Layer进行惩罚，惩罚的接口与层有关。<br>正则函数接受权重矩阵作为输入，计算并返回单个值，添加到目标函数中。</p>
-<p>这些层有3个关键字参数可以施加正则项：</p>
-<ul>
-<li>kernel_regularizer：权重正则</li>
-<li>bias_regularizer：偏置正则</li>
-<li>activity_regularizer：输出正则</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> regularizers</span><br><span class="line">model.add(Dense(<span class="number">64</span>, input_dim=<span class="number">64</span>, kernel_regularizer = regularizers.l2(<span class="number">0.01</span>),</span><br><span class="line">		activity_regularizer = regularizerss.l1(<span class="number">0.01</span>)))</span><br></pre></td></tr></table></figure>
-<h4 id="可用正则项"><a href="#可用正则项" class="headerlink" title="可用正则项"></a>可用正则项</h4><ul>
-<li>keras.regularizers.l1(0.)</li>
-<li>keras.regularizers.l2(0.)</li>
-<li>keras.regularizers.l1_l2(0.)</li>
-</ul>
-<h4 id="自定义正则项"><a href="#自定义正则项" class="headerlink" title="自定义正则项"></a>自定义正则项</h4><p>任何以权重矩阵作为输入并返回单个数值的函数均可以作为正则项<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> backend <span class="keyword">as</span> K</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">l1_reg</span><span class="params">(weight_matrix)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0.01</span> * K.sum(K.abs(weight_matrix))</span><br><span class="line"></span><br><span class="line">model.add(Dense(<span class="number">64</span>, input_dim=<span class="number">64</span>, kernel_regularizer = l1_reg)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/02/Keras-Activation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/02/Keras-Activation/" itemprop="url">Keras激活函数Activation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T15:31:22+08:00">
-                2018-05-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  440
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>激活函数可以通过单独的激活层实现，也可以在构建层对象时通过传递 activation 参数实现。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 单独的激活层</span></span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Activation, Dense</span><br><span class="line"></span><br><span class="line">model.add(Dense(<span class="number">64</span>))</span><br><span class="line">model.add(Activation(<span class="string">'tanh'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 其他层的activation参数</span></span><br><span class="line">model.add(Dense(<span class="number">64</span>, activation=<span class="string">'tanh'</span>))</span><br></pre></td></tr></table></figure></p>
-<h4 id="预定义激活函数"><a href="#预定义激活函数" class="headerlink" title="预定义激活函数"></a>预定义激活函数</h4><ul>
-<li>linear</li>
-<li>sigmoid</li>
-<li>hard_sigmoid</li>
-<li>tanh</li>
-<li>relu</li>
-<li>elu</li>
-<li>selu: 可伸缩的指数线性单元(Scaled Exponential Linear Unit)</li>
-<li>softmax</li>
-<li>softplus</li>
-<li>softsign</li>
-</ul>
-<h4 id="使用后端框架的激活函数"><a href="#使用后端框架的激活函数" class="headerlink" title="使用后端框架的激活函数"></a>使用后端框架的激活函数</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> backend <span class="keyword">as</span> K</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tanh</span><span class="params">(x)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> K.tanh(x)</span><br><span class="line"></span><br><span class="line">model.add(Dense(<span class="number">64</span>, activation=tanh))</span><br><span class="line">model.add(Activation(tanh))</span><br></pre></td></tr></table></figure>
-<h4 id="高级激活函数"><a href="#高级激活函数" class="headerlink" title="高级激活函数"></a>高级激活函数</h4><p>对于后端Theano/TensorFlow/CNTK不能表达的复杂激活函数，如PReLU, LeakyReLU等，可以通过高级激活层(Advanced Activation)实现。<br>注意此时是在构建layer对象。</p>
-<h6 id="LeakyReLU层"><a href="#LeakyReLU层" class="headerlink" title="LeakyReLU层"></a>LeakyReLU层</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.advanced_activations.LeakyReLU(alpha=<span class="number">0.3</span>)</span><br></pre></td></tr></table></figure>
-<p>LeakyReLU是ReLU的特殊版本，当不激活时仍有非零输出值，从而获得一个小梯度，避免神经元“死亡”现象。<br>$$f(x)=<br>\begin{cases}<br>\alpha\cdot x&amp; \text{x &lt; 0}\\<br>x&amp; \text{x &gt;= 0}<br>\end{cases}$$</p>
-<p>参数alpha: float &gt;= 0，代表第三象限中线段的斜率。</p>
-<h6 id="PReLU层"><a href="#PReLU层" class="headerlink" title="PReLU层"></a>PReLU层</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.advanced_activations.PReLU(alpha_initializer=<span class="string">'zeros'</span>, alpha_regularizer=<span class="keyword">None</span>,</span><br><span class="line">					alpha_constraint=<span class="keyword">None</span>, shared_axes=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>参数化的ReLU(Parametric ReLU)，表达式为：<br>$$f(x)=<br>\begin{cases}<br>\alpha\cdot x&amp; \text{x &lt; 0}\\<br>x&amp; \text{x &gt;= 0}<br>\end{cases}$$</p>
-<p>其中参数 alpha 是通过学习得到的，和X具有相同形状。</p>
-<ul>
-<li>alpha_initializer: alpha的初始化函数</li>
-<li>alpha_regularizer: alpha的正则项</li>
-<li>alpha_constraint: alpha的约束项</li>
-<li>shared_axes: 该参数指定的轴将共享同一组参数</li>
-</ul>
-<h6 id="ELU层"><a href="#ELU层" class="headerlink" title="ELU层"></a>ELU层</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.advanced_activations.ELU(alpha=<span class="number">1.0</span>)</span><br></pre></td></tr></table></figure>
-<p>指数线性单元(Exponential Linear Unit)，表达式为：<br>$$f(x)=<br>\begin{cases}<br>\alpha(e^x - 1)&amp; \text{x &lt; 0}\\<br>x&amp; \text{x &gt;= 0}<br>\end{cases}$$</p>
-<h6 id="ThresholdedReLU层"><a href="#ThresholdedReLU层" class="headerlink" title="ThresholdedReLU层"></a>ThresholdedReLU层</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.advanced_activations.ThresholderReLU(theta=<span class="number">1.0</span>)</span><br></pre></td></tr></table></figure>
-<p>带有门限的ReLU，表达式为：<br>$$f(x)=<br>\begin{cases}<br>x&amp; \text{x &gt; theta}\\<br>0&amp; \text{otherwise}<br>\end{cases}$$</p>
-<h6 id="Softmax层"><a href="#Softmax层" class="headerlink" title="Softmax层"></a>Softmax层</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Softmax(axis=<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/02/Keras-Initializer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/02/Keras-Initializer/" itemprop="url">Keras初始化方法Initializer</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T14:21:55+08:00">
-                2018-05-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  603
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>初始化方法定义了对Keras层设置初始化权重的方法。<br>不同的层可能使用不同的关键字，一般是 kernel_initializer 和 bias_initializer.<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用字符串指定</span></span><br><span class="line">model.add(Dense(<span class="number">64</span>, kernel_initializer=<span class="string">'random_normal'</span>, bias_initializer=<span class="string">'zero'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用函数指定</span></span><br><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> initializers</span><br><span class="line">model.add(Dense(<span class="number">64</span>, kernel_initializer=initializers.random_normal(stddev=<span class="number">0.01</span>)))</span><br></pre></td></tr></table></figure></p>
-<h4 id="Initializer"><a href="#Initializer" class="headerlink" title="Initializer"></a>Initializer</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.initializers.Initializer()</span><br></pre></td></tr></table></figure>
-<p>Initializer的基类，不能直接使用，所有的Initializer均继承该类。</p>
-<h4 id="Zeros-Ones-Constant"><a href="#Zeros-Ones-Constant" class="headerlink" title="Zeros, Ones, Constant"></a>Zeros, Ones, Constant</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 0</span></span><br><span class="line">keras.initializers.Zeros()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1</span></span><br><span class="line">keras.initializers.Ones()</span><br><span class="line"></span><br><span class="line"><span class="comment"># constant</span></span><br><span class="line">keras.initializers.Constant(value=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<p>初始化为指定的固定值0, 1 或者 value</p>
-<h4 id="Identity-Orthogonal"><a href="#Identity-Orthogonal" class="headerlink" title="Identity, Orthogonal"></a>Identity, Orthogonal</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.initializers.Identity(gain=<span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line">keras.initializers.Orthogonal(gain=<span class="number">1.0</span>, seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>Identity：使用单位矩阵初始化，仅适用2D方阵。gain是单位矩阵的Multiplicative Factor<br>Orthogonal：使用正交矩阵初始化。</p>
-<h4 id="RandomNormal-RandomUniform"><a href="#RandomNormal-RandomUniform" class="headerlink" title="RandomNormal, RandomUniform"></a>RandomNormal, RandomUniform</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.initializers.RandomNormal(mean=<span class="number">0.0</span>, stddev=<span class="number">0.05</span>, seed=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">keras.initializers.RandomUniform(minval=<span class="number">-0.05</span>, maxval=<span class="number">0.05</span>, seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>Random Normal: 正态分布初始化，参数(均值，标准差，随机种子)<br>Random Uniform: 均匀分布初始化，参数(下界，上界，随机种子)</p>
-<h4 id="TruncatedNormal"><a href="#TruncatedNormal" class="headerlink" title="TruncatedNormal"></a>TruncatedNormal</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.initializers.TruncatedNormal(mean=<span class="number">0.0</span>, stddev=<span class="number">0.05</span>, seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>Truncated(截尾) Normal的不同之处在于，与均值相差2个标准差以上的点会被舍弃。<br>推荐神经网络的权重使用。</p>
-<h4 id="VarianceScaling"><a href="#VarianceScaling" class="headerlink" title="VarianceScaling"></a>VarianceScaling</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.initializers.VarianceScaling(scale=<span class="number">1.0</span>, mode=<span class="string">'fan_in'</span>, distribution=<span class="string">'normal'</span>, seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>该初始方法能够自适应目标张量的shape。</p>
-<ul>
-<li>distribution=’normal’: Truncated normal, mean=0, std=$\sqrt{\frac{scale}{n}}$</li>
-<li>distribution=’uniform’: [-limit, limit]的均匀分布，其中$limit=\sqrt{\frac{3\times scale}{n}}$</li>
-</ul>
-<p>其中，n从mode选择的’fan_in’, ‘fan_out’, ‘fan_avg’中选取；scale是缩放因子。</p>
-<h4 id="lecun-normal-lecun-uniform"><a href="#lecun-normal-lecun-uniform" class="headerlink" title="lecun_normal, lecun_uniform"></a>lecun_normal, lecun_uniform</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">lecun_normal(seed=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">lecun_uniform(seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>LeCun normal: Truncated normal, mean=0, std=$\sqrt{\frac{1}{fan_{in}}}$<br>LeCun uniform: [-limit, limit]的均匀分布，其中$limit = \sqrt{\frac{3}{fan_{in}}}$<br>$fan_{in}$是权重tensor的输入单元数。</p>
-<h4 id="he-normal-he-uniform"><a href="#he-normal-he-uniform" class="headerlink" title="he_normal, he_uniform"></a>he_normal, he_uniform</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">he_normal(seed=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">he_uniform(seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>He normal: Truncated normal, mean=0, std=$\sqrt{\frac{2}{fan_{in}}}$<br>He uniform: [-limit, limit]的均匀分布，其中$limit = \sqrt{\frac{6}{fan_{in}}}$<br>$fan_{in}$是权重tensor的输入单元数。</p>
-<h4 id="glorot-normal-glorot-uniform"><a href="#glorot-normal-glorot-uniform" class="headerlink" title="glorot_normal, glorot_uniform"></a>glorot_normal, glorot_uniform</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">glorot_normal(seed=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">glorot_uniform(seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
-<p>又称作 Xavier Normal Initializer 和 Xavier Uniform Initializer.<br>glorot normal: Truncated normal, mean=0, std=$\sqrt{\frac{2}{fan_{in}+fan_{out}}}$<br>glorot normal: [-limit, limit]的均匀分布，其中$limit = \sqrt{\frac{6}{fan_{in}+fan_{out}}}$<br>$fan_{in}$是权重tensor的输入单元数，$fan_{out}$是输出单元数。</p>
-<h4 id="自定义初始化方法"><a href="#自定义初始化方法" class="headerlink" title="自定义初始化方法"></a>自定义初始化方法</h4><p>初始化方法必须是callable的，并且接受 shape 和 dtype 两个参数，返回符合要求的张量。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> backend <span class="keyword">as</span> K</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_init</span><span class="params">(shape, dtype=None)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> K.random_normal(shape, dtype=dtype)</span><br><span class="line"></span><br><span class="line">model.add(Dense(<span class="number">64</span>, init=my_init))</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/05/02/Keras-Metrics/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/02/Keras-Metrics/" itemprop="url">Keras性能评估Metrics</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T11:52:34+08:00">
-                2018-05-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  161
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Metrics函数用于评估模型的表现。<br>和Loss Function的不同之处在于，Metrics不会在训练过程中使用。<br>Metrics函数在模型编译的”metrics”参数处调用。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用名称</span></span><br><span class="line">model.compile(loss=<span class="string">'mean_squared_error'</span>, optimizer=<span class="string">'sgd'</span>, metrics=[<span class="string">'mae'</span>,<span class="string">'acc'</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用symbolic function</span></span><br><span class="line"><span class="keyword">from</span> keras <span class="keyword">import</span> metrics</span><br><span class="line">model.compile(loss=<span class="string">'mean_squared_error'</span>, optimizer=<span class="string">'sgd'</span>, metrics=[metrics.mae, metrics.categorical_accuracy])</span><br></pre></td></tr></table></figure>
-<h4 id="可用的Metrics"><a href="#可用的Metrics" class="headerlink" title="可用的Metrics"></a>可用的Metrics</h4><ul>
-<li>binary_accuracy</li>
-<li>categorical_accuracy</li>
-<li>sparse_categorical_accuracy</li>
-<li>top_k_categorical_accuracy: 若预测的前k个值中存在目标类别，则认为预测正确</li>
-<li>sparse_top_k_categorical_accuracy</li>
-</ul>
-<h4 id="自定义Metrics"><a href="#自定义Metrics" class="headerlink" title="自定义Metrics"></a>自定义Metrics</h4><p>自定义的Metrics函数，需要接受(y_true, y_pred)两个参数，并返回一个tensor值。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> keras.backend <span class="keyword">as</span> K</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mean_pred</span><span class="params">(y_true, y_pred)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> K.mean(y_pred)</span><br><span class="line"></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'bianry_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>, mean_pred])</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3458,7 +3468,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">332</span>
+                  <span class="site-state-item-count">336</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3546,7 +3556,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -3560,7 +3570,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">124.5k</span>
+    <span title="Site words total count">125.5k</span>
   
 </div>
 

@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Gate of Babylon">
 <meta property="og:description" content="协程和线程的区别是：协程避免了无意义的调度，由程序员自己承担；由此可以提高性能，但也失去了标准线程使用多CPU的能力。Unity中所有的脚本和代码都在一个主线程里运行，通过每帧检测的方式，在函数间来回切换。 Coroutine Return type of function should be “IEnumerator” Using “yield return”：将程序挂起 Using “Star">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-23T14:41:15.911Z">
+<meta property="og:updated_time" content="2020-01-14T13:57:48.963Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-Corotine">
 <meta name="twitter:description" content="协程和线程的区别是：协程避免了无意义的调度，由程序员自己承担；由此可以提高性能，但也失去了标准线程使用多CPU的能力。Unity中所有的脚本和代码都在一个主线程里运行，通过每帧检测的方式，在函数间来回切换。 Coroutine Return type of function should be “IEnumerator” Using “yield return”：将程序挂起 Using “Star">
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  133
+                  195
                 </span>
               
 
@@ -350,7 +350,7 @@
 
       
         <p>协程和线程的区别是：协程避免了无意义的调度，由程序员自己承担；由此可以提高性能，但也失去了标准线程使用多CPU的能力。<br>Unity中所有的脚本和代码都在一个主线程里运行，通过每帧检测的方式，在函数间来回切换。</p>
-<h6 id="Coroutine"><a href="#Coroutine" class="headerlink" title="Coroutine"></a>Coroutine</h6><ol>
+<h4 id="Coroutine"><a href="#Coroutine" class="headerlink" title="Coroutine"></a>Coroutine</h4><ol>
 <li>Return type of function should be “IEnumerator”</li>
 <li>Using “yield return”：将程序挂起</li>
 <li>Using “StartCoroutine(function())”</li>
@@ -358,6 +358,12 @@
 <figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function">IEnumerator <span class="title">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="function"><span class="keyword">yield</span> return new <span class="title">WaitForSeconds</span>(<span class="params"><span class="number">3.0</span>f</span>)</span>;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h6 id="开始协程"><a href="#开始协程" class="headerlink" title="开始协程"></a>开始协程</h6><p>StartCoroutine(IEnumerator routine);</p>
 <h6 id="停止协程"><a href="#停止协程" class="headerlink" title="停止协程"></a>停止协程</h6><p>StopCoroutine(routine);<br>StopAllCoroutine();</p>
+<h4 id="Invoke"><a href="#Invoke" class="headerlink" title="Invoke"></a>Invoke</h4><p>Invoke(“Function”, n)：在n秒后执行函数Function</p>
+<ol>
+<li>应该在脚本的生命周期(Start, Update, FixedUpdate, LateUpdate)中被调用;</li>
+<li>只能接受没有参数的方法</li>
+<li>受Time.ScaleTime影响；当Time.ScaleTime=0时，Invoke()永远不会执行function</li>
+</ol>
 
       
     </div>
@@ -481,7 +487,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">332</span>
+                  <span class="site-state-item-count">336</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -565,7 +571,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#Coroutine"><span class="nav-number">1.</span> <span class="nav-text">Coroutine</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#开始协程"><span class="nav-number">2.</span> <span class="nav-text">开始协程</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#停止协程"><span class="nav-number">3.</span> <span class="nav-text">停止协程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Coroutine"><span class="nav-number">1.</span> <span class="nav-text">Coroutine</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#开始协程"><span class="nav-number">1.0.1.</span> <span class="nav-text">开始协程</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#停止协程"><span class="nav-number">1.0.2.</span> <span class="nav-text">停止协程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Invoke"><span class="nav-number">2.</span> <span class="nav-text">Invoke</span></a></li></ol></div>
             
 
           </div>
@@ -585,7 +591,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -599,7 +605,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">124.5k</span>
+    <span title="Site words total count">125.5k</span>
   
 </div>
 

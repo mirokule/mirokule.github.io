@@ -262,6 +262,631 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/ML-GDA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/11/ML-GDA/" itemprop="url">梯度下降法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T09:38:33+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  612
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h4><p>多元函数$f(x,y)$分别对$x,y$求偏导数，得到的向量$(\frac{\partial f}{\partial x},\frac{\partial f}{\partial y})^T$，称作梯度$grad f(x,y)$或者$\triangledown f(x,y)$。<br>梯度向量方向是函数增加最快的方向，更容易找到极大值；负梯度向量方向是函数减少最快的方向，更容易找到极小值。</p>
+<h4 id="梯度下降法-Gradient-Descent-Algorithm"><a href="#梯度下降法-Gradient-Descent-Algorithm" class="headerlink" title="梯度下降法(Gradient Descent Algorithm)"></a>梯度下降法(Gradient Descent Algorithm)</h4><p><img src="/img/GDA.png" alter="GDA"></p>
+<p>repeat until convergence {</p>
+<p>$$ \theta_{j} := \theta_{j} - \alpha \frac{\partial}{\partial\theta_{j}}J(\theta_{0}, \theta_{1}) $$</p>
+<p>(for j = 0 and j = 1)}(Batch Gradient Descent)</p>
+<p><strong>说明</strong></p>
+<ul>
+<li>$\alpha$ 学习速率(Leaning Rate)，迭代的步长，太小收敛慢，太大可能导致在最优解附近来回波动</li>
+<li>收敛到的局部最优解不一定是全局最优解，但对于最小二乘法的弓型损失函数来说唯一的局部最优解就是全局最优解</li>
+</ul>
+<h6 id="种类"><a href="#种类" class="headerlink" title="种类"></a>种类</h6><ul>
+<li>Batch Gradient Descent: 每次迭代使用全部m个样本，最优梯度方向，计算开销大，可以使用mapreduce</li>
+<li>Stochastic Gradient Descent: 每次迭代使用1个样本，随机梯度方向，适合大样本，需要将输入数据shuffle</li>
+<li>Mini-batch Gradient Descent: 每次迭代使用b个(2~100)样本</li>
+<li>Online Learning: 每次迭代使用1个样本，学习后丢弃样本，适合数据流，模型会跟随输入数据的趋势改变</li>
+</ul>
+<p><img src="/img/sgd.png"><br><img src="/img/minibatch.png"><br><strong>判断收敛</strong></p>
+<ul>
+<li>Batch: 观察$J_{train}(\theta)$, 每次跌代后是否变小</li>
+<li>Stochastic: 观察$Cost=\frac{1}{2}(h_{\theta}(x^{(i)})-y^{(i)})^2$均值，每k次迭代后是否变小</li>
+</ul>
+<h6 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h6><ol>
+<li><p>Batch Gradient Descent</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#(Batch) Gradient Descent:</span></span><br><span class="line">X = data_input</span><br><span class="line">Y = labels</span><br><span class="line">parameters = initialize_parameters(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="comment"># Forward propagation</span></span><br><span class="line">    a, caches = forward_propagation(X, parameters)</span><br><span class="line">    <span class="comment"># Compute cost.</span></span><br><span class="line">    cost = compute_cost(a, Y)</span><br><span class="line">    <span class="comment"># Backward propagation.</span></span><br><span class="line">    grads = backward_propagation(a, caches, parameters)</span><br><span class="line">    <span class="comment"># Update parameters.</span></span><br><span class="line">    parameters = update_parameters(parameters, grads)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Stochastic Gradient Descent</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Stochastic Gradient Descent:</span></span><br><span class="line">X = data_input</span><br><span class="line">Y = labels</span><br><span class="line">parameters = initialize_parameters(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, m):</span><br><span class="line">        <span class="comment"># Forward propagation</span></span><br><span class="line">        a, caches = forward_propagation(X[:,j], parameters)</span><br><span class="line">        <span class="comment"># Compute cost</span></span><br><span class="line">        cost = compute_cost(a, Y[:,j])</span><br><span class="line">        <span class="comment"># Backward propagation</span></span><br><span class="line">        grads = backward_propagation(a, caches, parameters)</span><br><span class="line">        <span class="comment"># Update parameters.</span></span><br><span class="line">        parameters = update_parameters(parameters, grads)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Mini-batch Gradient Descent<br><img src="/img/minibatch_shuffle.png"><br><img src="/img/minibatch_partition.png"></p>
+</li>
+</ol>
+<p>算法分为两步，首先Shuffle，然后Partition。<br>分块大小常采用2的幂指数，比如64，128，256，512</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Step 1: Shuffle (X, Y)</span></span><br><span class="line">permutation = list(np.random.permutation(m))</span><br><span class="line">shuffled_X = X[:, permutation]</span><br><span class="line">shuffled_Y = Y[:, permutation].reshape((<span class="number">1</span>,m))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 2: Partition (shuffled_X, shuffled_Y). Minus the end case.</span></span><br><span class="line">num_complete_minibatches = math.floor(m/mini_batch_size) <span class="comment"># number of mini batches </span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, num_complete_minibatches):</span><br><span class="line">    mini_batch_X = shuffled_X[:, k*mini_batch_size : (k+<span class="number">1</span>)*mini_batch_size]</span><br><span class="line">    mini_batch_Y = shuffled_Y[:, k*mini_batch_size : (k+<span class="number">1</span>)*mini_batch_size]</span><br><span class="line">    mini_batch = (mini_batch_X, mini_batch_Y)</span><br><span class="line">    mini_batches.append(mini_batch)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Handling the end case (last mini-batch &lt; mini_batch_size)</span></span><br><span class="line"><span class="keyword">if</span> m % mini_batch_size != <span class="number">0</span>:</span><br><span class="line">    mini_batch_X = shuffled_X[:, (mini_batch_size * num_complete_minibatches) : m]</span><br><span class="line">    mini_batch_Y = shuffled_Y[:, (mini_batch_size * num_complete_minibatches) : m]</span><br><span class="line">    mini_batch = (mini_batch_X, mini_batch_Y)</span><br><span class="line">    mini_batches.append(mini_batch)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/06/Calculus-NewtonMethod/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/06/Calculus-NewtonMethod/" itemprop="url">牛顿法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T11:25:22+08:00">
+                2018-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  83
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Procedure-for-Newton’s-Method"><a href="#Procedure-for-Newton’s-Method" class="headerlink" title="Procedure for Newton’s Method"></a>Procedure for Newton’s Method</h4><ol>
+<li><p>Guess a first approximation to a solution of the equation $f(x)=0$.</p>
+</li>
+<li><p>Use the first approximation to get a second, the second to get a third, and so on, using the formula</p>
+</li>
+</ol>
+<p>$$ x_{n+1} = x_{n} - \frac{f(x_{n})}{f’{x_{n}}} $$</p>
+<p>if $f’(x_{n}) \neq 0$</p>
+<p><img src="/img/newton.png" alt="Newton"></p>
+<ul>
+<li>Newton’s method does not always converge</li>
+<li>When Newton’s method converges to a root, it may not be the root you have in mind</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/06/ML-Tensorflow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/06/ML-Tensorflow/" itemprop="url">TensorFlow</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T09:58:28+08:00">
+                2018-01-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  284
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.使用TensorFlow输出一句话：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化常亮字符串</span></span><br><span class="line">greeting = tf.constant(<span class="string">'Hello!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动会话并执行</span></span><br><span class="line">session = tf.Session()</span><br><span class="line">result = sess.run(greeting)</span><br><span class="line"><span class="keyword">print</span> result</span><br><span class="line">sess.close()</span><br></pre></td></tr></table></figure>
+<p>2.线性函数计算：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">matrix1 = tf.constant([[<span class="number">3.</span>, <span class="number">3.</span>]])</span><br><span class="line">matrix2 = tf.constant([[<span class="number">2.</span>],[<span class="number">2.</span>]])</span><br><span class="line"></span><br><span class="line">product = tf.matmul(maxtrx1, matrix2)</span><br><span class="line">linear = tf.add(product, tf.constant(<span class="number">2.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">	result = sess.run(linear)</span><br><span class="line">	<span class="keyword">print</span> result</span><br></pre></td></tr></table></figure>
+<p>3.自定义线性分类器</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义变量并设定初始值</span></span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">1</span>]))</span><br><span class="line">W = tf.Variable(tf.random_uniform([<span class="number">1</span>,<span class="number">2</span>],<span class="number">-1.0</span>,<span class="number">1.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义目标函数、损失函数</span></span><br><span class="line">y = tf.matmul(W, X_train) + b</span><br><span class="line">loss = tf.reduce_mean(tf.square(y - y_train))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用梯度下降法估计参数，设定步长为0.01</span></span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(<span class="number">0.01</span>)</span><br><span class="line">train = optimizer.minimize(loss)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化所有变量</span></span><br><span class="line">init = tf.initialize_all_variables()</span><br><span class="line">sess = tf.Session()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 迭代训练参数</span></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> srange(<span class="number">0</span>,<span class="number">1000</span>):</span><br><span class="line">	sess.run(train)</span><br><span class="line">	<span class="keyword">if</span> step %<span class="number">200</span> == <span class="number">0</span>:</span><br><span class="line">		<span class="keyword">print</span> step, sess.run(W), sess.run(b)</span><br></pre></td></tr></table></figure>
+<p>4.skflow工具包是对TensorFlow进一步的封装，以求与Scikit-learn使用类似的接口。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> skflow</span><br><span class="line"></span><br><span class="line">tf_lr = skflow.TensorFlowLinearRegressor(steps=<span class="number">10000</span>, learning_rate=<span class="number">0.01</span>, batch_size=<span class="number">50</span>)</span><br><span class="line">tf_lr.fit(X_train, y_train)</span><br><span class="line">tf_lr_y_predict = tf_lr.predict(X_test)</span><br><span class="line"></span><br><span class="line">tf_dnn_regressor - skflow.TensorFlowDNNRegressor(hidden_units=[<span class="number">100</span>,<span class="number">40</span>], steps=<span class="number">10000</span>, learning_rate=<span class="number">0.01</span>, batch_size=<span class="number">50</span>)</span><br><span class="line">tf_dnn_regressor.fit(X_train, y_train)</span><br><span class="line">tf_dnn_regressor_y_predict = tf_dnn_regressor.predict(X_test)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/03/ML-XGBoost/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/03/ML-XGBoost/" itemprop="url">XGBoost</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-03T10:27:59+08:00">
+                2018-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  373
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>XGBoost的全称是 eXtreme Gradient Boosting.<br>XGBoost也是集成学习Boost的一种，经常和GDBT对比。</p>
+<p>决策树的学习过程是为了找出最优的决策树，然而从函数空间里所有的决策树中找出最优的决策树是NP-C问题，所以常采用启发式(Heuristic)的方法，如CART里面的优化GINI指数、剪枝、控制树的深度。这些启发式方法的背后往往隐含了一个目标函数。</p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>支持线性分类器：GBDT使用CART</li>
+<li>用到二阶导数：GBDT只用到一阶</li>
+<li>引入正则项：降低了variance</li>
+<li>Shrinkage(缩减)：迭代后将叶节点的权重乘上该系数，相当于学习速率</li>
+<li>列抽样</li>
+<li>自动处理缺失值</li>
+<li>支持并行</li>
+</ul>
+<h4 id="使用经验"><a href="#使用经验" class="headerlink" title="使用经验"></a>使用经验</h4><ul>
+<li>多类别分类时，类别要从0开始编码</li>
+<li>Watchlist不会影响模型训练</li>
+<li>类别特征必须编码，默认特征都是数值型</li>
+<li>设置随机数种子，使结果可以复现</li>
+<li>特征的重要性(feature score)等于它被选为树节点分裂特征的次数的和</li>
+</ul>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 划分数据集</span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">0.01</span>, random_state=<span class="number">1729</span>)</span><br><span class="line">print(X_train.shape, X_test.shape)</span><br><span class="line"></span><br><span class="line"><span class="comment">#模型参数设置</span></span><br><span class="line">xlf = xgb.XGBRegressor(max_depth=<span class="number">10</span>, </span><br><span class="line">                        learning_rate=<span class="number">0.1</span>, </span><br><span class="line">                        n_estimators=<span class="number">10</span>, </span><br><span class="line">                        silent=<span class="keyword">True</span>, </span><br><span class="line">                        objective=<span class="string">'reg:linear'</span>, </span><br><span class="line">                        nthread=<span class="number">-1</span>, </span><br><span class="line">                        gamma=<span class="number">0</span>,</span><br><span class="line">                        min_child_weight=<span class="number">1</span>, </span><br><span class="line">                        max_delta_step=<span class="number">0</span>, </span><br><span class="line">                        subsample=<span class="number">0.85</span>, </span><br><span class="line">                        colsample_bytree=<span class="number">0.7</span>, </span><br><span class="line">                        colsample_bylevel=<span class="number">1</span>, </span><br><span class="line">                        reg_alpha=<span class="number">0</span>, </span><br><span class="line">                        reg_lambda=<span class="number">1</span>, </span><br><span class="line">                        scale_pos_weight=<span class="number">1</span>, </span><br><span class="line">                        seed=<span class="number">1440</span>, </span><br><span class="line">                        missing=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">xlf.fit(X_train, y_train, eval_metric=<span class="string">'rmse'</span>, verbose = <span class="keyword">True</span>, eval_set = [(X_test, y_test)],early_stopping_rounds=<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算 auc 分数、预测</span></span><br><span class="line">preds = xlf.predict(X_test)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/02/ML-PCA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2697,642 +3322,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/20/DP-GameEngineOptimization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/20/DP-GameEngineOptimization/" itemprop="url">DesignPattern-GameEngineOptimization</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-20T21:13:09+08:00">
-                2016-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  405
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="数据局部性"><a href="#数据局部性" class="headerlink" title="数据局部性"></a>数据局部性</h4><ul>
-<li><strong>意图</strong></li>
-</ul>
-<p>通过合理组织数据利用CPU的缓存机制来加快内存访问速度。<br>保持数据处于连续的内存中，增加CPU缓存的命中几率，从而提高处理速度。</p>
-<ul>
-<li><strong>实现</strong></li>
-</ul>
-<p>1.将组件模式的组件放在数组中，比如PhysicsComponent[MAX_ENTITIES]<br>2.将活动的组件放在数组前端<br>3.将冷热数据分解。热数据是每帧都会用到的数据，冷数据是不会频繁使用的数据，比如怪物被消灭后的掉落信息。</p>
-<hr>
-<h4 id="脏标记模式"><a href="#脏标记模式" class="headerlink" title="脏标记模式"></a>脏标记模式</h4><ul>
-<li><strong>意图</strong></li>
-</ul>
-<p>一组原始数据随世界变化，一组衍生数据经过一些代价昂贵的操作由原始数据确定，比如子对象的位置和朝向。<br>当原始数据改变时，给衍生数据设置脏标记；当需要衍生数据时，如果有脏标记则重新计算，否则使用缓存数据。<br>这样对场景中大量的静态物体，不用每次都重新计算位置和朝向等。</p>
-<hr>
-<h4 id="对象池"><a href="#对象池" class="headerlink" title="对象池"></a>对象池</h4><ul>
-<li><strong>意图</strong></li>
-</ul>
-<p>使用固定的对象池重用对象，取代单独地分配和释放对象。</p>
-<ul>
-<li><strong>使用情境</strong><br>1.对象需要频繁的创建和销毁；<br>2.对象的大小一致；<br>3.对象内存分配较慢，或者会产生内存碎片；<br>4.每个对象封装着获取代价昂贵而且可重用的资源，比如数据库、网络的连接等</li>
-</ul>
-<hr>
-<h4 id="空间分区"><a href="#空间分区" class="headerlink" title="空间分区"></a>空间分区</h4><ul>
-<li><strong>意图</strong></li>
-</ul>
-<p>将对象存储在根据位置组织的数据结构中，以高效地定位它们</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/17/DP-GameEngine/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/17/DP-GameEngine/" itemprop="url">DesignPattern-GameEngine</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-17T11:29:23+08:00">
-                2016-12-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  456
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="游戏循环"><a href="#游戏循环" class="headerlink" title="游戏循环"></a>游戏循环</h4><p>实现用户输入和处理器速度在游戏行进时间上的解耦。<br>对于一般应用程序，在没有输入时程序处于阻塞状态，而游戏的AI、动画等在没有输入时仍然持续运行。</p>
-<p>一个游戏循环会在游戏过程中持续地运转。<br>每循环一次，它非阻塞地处理用户的输入，更新游戏状态，并渲染游戏。<br>它跟踪流逝的时间并控制游戏的速率。</p>
-<hr>
-<h4 id="更新方法"><a href="#更新方法" class="headerlink" title="更新方法"></a>更新方法</h4><p>游戏世界维护一个对象集合。每个对象实现一个更新方法以在每帧模拟自己的行为。游戏循环在每帧对集合中所有的对象调用其更新方法，以实现和游戏世界同步更新。</p>
-<hr>
-<h4 id="组件模式"><a href="#组件模式" class="headerlink" title="组件模式"></a>组件模式</h4><p>单一实体横跨了多个域时，为了保持域之间相互隔离，每个域的代码都独立地放在自己的组件类中。实体本身可以简化为这些组件的容器。<br>组件常用于定义实体的核心类。<br>使用组件模式后，不同组件之间的通信、内存管理将更加复杂。</p>
-<p><strong>使用条件</strong></p>
-<ul>
-<li>一个类涉及多个域，希望这些域保持解耦</li>
-<li>一个类越来越大，难以开发</li>
-<li>希望定义许多共享不同能力的对象，但采用继承无法精确地重用</li>
-</ul>
-<p><strong>组件通信方式</strong></p>
-<ul>
-<li>修改容器对象的状态：保持解耦；数据混杂，消耗内存；对组件执行顺序产生依赖</li>
-<li>直接相互引用：简单快捷，但会紧密耦合(推荐强关联组件使用)</li>
-<li>通过消息传递：最复杂，需要建立消息系统；保持解耦(推荐弱关联组件使用)</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/17/DP-Sandbox/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/17/DP-Sandbox/" itemprop="url">DesignPattern-Sandbox</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-17T11:24:36+08:00">
-                2016-12-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  339
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="子类沙盒"><a href="#子类沙盒" class="headerlink" title="子类沙盒"></a>子类沙盒</h4><ul>
-<li><strong>简介</strong></li>
-</ul>
-<p>基类定义一个抽象的沙盒方法和一些预定义的操作集合。<br>将它们设置为protected，以供子类调用。<br>每个派生出的沙盒子类根据基类提供的操作实现沙盒函数。<br>例如超能力，不同的超能力需要调用物理引擎、粒子、声音等多种功能。<br>可以将操作方法抽象到基类中，提高复用效率，降低子类和外部的耦合。</p>
-<ul>
-<li><strong>适用情况</strong></li>
-</ul>
-<p>1.有一个带有大量子类的基类；<br>2.基类能提供所有子类可能需要执行的操作集合；<br>3.子类之间有重叠的代码；<br>4.希望使子类和外部程序的耦合最小化。</p>
-<ul>
-<li><strong>设计决策</strong></li>
-</ul>
-<p>1.将哪些操作抽象到基类中是需要考虑的。过多的抽象将使基类臃肿。如果某操作只被1个子类使用，则无需抽象到基类中。<br>2.如果基类臃肿，考虑将相关操作进一步抽象成辅助类，比如SoundPlayer；将辅助类的引用提供给子类，代替直接的操作方法调用。</p>
-<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 基类</span></span><br><span class="line">Abstract <span class="class"><span class="keyword">class</span> <span class="title">SuperPower</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">activate</span><span class="params">()</span></span>; <span class="comment">//抽象沙盒方法，子类必须实现</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">move</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">playSound</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">spawnParticles</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 子类</span></span><br><span class="line">class SkyLaunch: SuperPower</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> override <span class="keyword">void</span> <span class="title">activate</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		move();</span><br><span class="line">		playSound();</span><br><span class="line">		spawnParticles();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/17/DP-Facade/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/12/17/DP-Facade/" itemprop="url">DesignPattern-FacadePattern</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-17T11:16:33+08:00">
-                2016-12-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  633
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>外观模式（Facade Pattern）隐藏系统的复杂性，并向客户端提供了一个客户端可以访问系统的接口。<br>这种类型的设计模式属于结构型模式，它向现有的系统添加一个接口，来隐藏系统的复杂性。</p>
-<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><ul>
-<li><p><strong>意图</strong><br>为子系统中的一组接口提供一个一致的界面，外观模式定义了一个高层接口，这个接口使得这一子系统更加容易使用。</p>
-</li>
-<li><p><strong>主要解决</strong><br>降低访问复杂系统的内部子系统时的复杂度，简化客户端与之的接口。</p>
-</li>
-<li><p><strong>何时使用</strong><br>1、客户端不需要知道系统内部的复杂联系，整个系统只需提供一个”接待员”即可。<br>2、定义系统的入口。 </p>
-</li>
-<li><p><strong>如何解决</strong><br>客户端不与系统耦合，外观类与系统耦合。</p>
-</li>
-<li><p><strong>关键代码</strong><br>在客户端和复杂系统之间再加一层，这一次将调用顺序、依赖关系等处理好。</p>
-</li>
-<li><p><strong>应用实例</strong><br>1、去医院看病，可能要去挂号、门诊、划价、取药，让患者或患者家属觉得很复杂，如果有提供接待人员，只让接待人员来处理，就很方便。<br>2、JAVA 的三层开发模式。</p>
-</li>
-<li><p><strong>优点</strong><br>1、减少系统相互依赖。<br>2、提高灵活性。<br>3、提高了安全性。 </p>
-</li>
-<li><p><strong>缺点</strong><br>不符合开闭原则，如果要改东西很麻烦，继承重写都不合适。</p>
-</li>
-<li><p><strong>使用场景</strong><br>1、为复杂的模块或子系统提供外界访问的模块。<br>2、子系统相对独立。<br>3、预防低水平人员带来的风险。 </p>
-</li>
-<li><p><strong>注意事项</strong><br>在层次化结构中，可以使用外观模式定义系统中每一层的入口。</p>
-</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/12/17/DP-Facade/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3387,7 +3376,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">332</span>
+                  <span class="site-state-item-count">336</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3475,7 +3464,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -3489,7 +3478,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">124.5k</span>
+    <span title="Site words total count">125.5k</span>
   
 </div>
 

@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Gate of Babylon">
 <meta property="og:description" content="加载新场景时，阻止摧毁旧场景的game object。所有的子对象同时被保留。可用于实现单例模式：  第一个实例保留，不摧毁 后续检测总个数，摧毁多余实例  void Awake()&amp;#123;    GameObject[] objs = FindGameObjectsWithTag(&quot;music&quot;);    if (objs.Length &amp;gt; 1)    &amp;#123;	// gameOb">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-14T06:54:17.858Z">
+<meta property="og:updated_time" content="2020-01-14T14:08:46.921Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DontDestroyOnLoad">
 <meta name="twitter:description" content="加载新场景时，阻止摧毁旧场景的game object。所有的子对象同时被保留。可用于实现单例模式：  第一个实例保留，不摧毁 后续检测总个数，摧毁多余实例  void Awake()&amp;#123;    GameObject[] objs = FindGameObjectsWithTag(&quot;music&quot;);    if (objs.Length &amp;gt; 1)    &amp;#123;	// gameOb">
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  94
+                  198
                 </span>
               
 
@@ -355,6 +355,11 @@
 <li>后续检测总个数，摧毁多余实例</li>
 </ul>
 <figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    GameObject[] objs = FindGameObjectsWithTag(<span class="string">"music"</span>);</span><br><span class="line">    <span class="keyword">if</span> (objs.Length &gt; <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">	<span class="comment">// gameObject.SetActive(false); 摧毁需要时间，完成前设置为不可用</span></span><br><span class="line">        Destory(<span class="keyword">this</span>.gameObject);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        DontDestroyOnLoad(<span class="keyword">this</span>.gameObject);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在Unity中，一种是继承MonoBehaviour的单例，一种是普通单例。</p>
+<h6 id="MonoBehavior单例"><a href="#MonoBehavior单例" class="headerlink" title="MonoBehavior单例"></a>MonoBehavior单例</h6><p>只需要在Awake()里添加一句 instance = this</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MonoSingleton</span>: <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> MonoSingleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        instance = <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="普通类的单例"><a href="#普通类的单例" class="headerlink" title="普通类的单例"></a>普通类的单例</h6><p>```csharp<br>public class Singleton {<br>    private static Singleton instance;<br>    public static Singleton Instance<br>    {<br>        get {<br>            if (null == instance)<br>                instance = new Singleton();<br>            return instance;<br>            }<br>    }<br>}</p>
+<p>另外，如果项目中有多个单例，可以封装一个单例类，每次从这个单例类继承。</p>
 
       
     </div>
@@ -449,8 +454,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -469,7 +483,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">332</span>
+                  <span class="site-state-item-count">336</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -544,6 +558,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#MonoBehavior单例"><span class="nav-number">1.</span> <span class="nav-text">MonoBehavior单例</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#普通类的单例"><span class="nav-number">2.</span> <span class="nav-text">普通类的单例</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -557,7 +587,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -571,7 +601,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">124.5k</span>
+    <span title="Site words total count">125.5k</span>
   
 </div>
 

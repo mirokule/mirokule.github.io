@@ -262,6 +262,606 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/21/Python-sklearn-OneHotEncoder/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/21/Python-sklearn-OneHotEncoder/" itemprop="url">sklearn.OneHotEncoder</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T12:03:06+08:00">
+                2018-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  238
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>LabelEncoder将不同类别转换为数字，比如[‘paris’,’tokyo’]转为[2,3]，引入了类别大小属性。<br>OneHotEncoder将类别编码成m个二值类别，只标示类别，没有引入大小。<br>比get_dummies的优势在于可以处理数字类别。</p>
+<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><pre><code>class sklearn.preprocessing.OneHotEncoder(n_values=&apos;auto&apos;,categorical_features=&apos;all&apos;,dtype=&lt;class&apos;numpy.float64&apos;&gt;,sparse=True,handle_unknown=&apos;error&apos;)
+</code></pre><p>参数</p>
+<ul>
+<li>n_values: 特征的类别数量，’auto’由训练数据计算，也可以指定int</li>
+<li>categorical_features: 指定要转换的字段</li>
+<li>dtype: 输出的类型</li>
+<li>sparse: 默认True返回系数矩阵，若为False返回Array</li>
+<li>handle_unknown: 是否raise error</li>
+</ul>
+<p>属性</p>
+<ul>
+<li>active_features_: 训练集中的被转换的values</li>
+<li>feature_indices_: indices to feature ranges</li>
+<li>n_values_: 每个特征的number of values</li>
+</ul>
+<p>方法</p>
+<ul>
+<li>fit(X, y=None)</li>
+<li>fit_transform(X, y=None)</li>
+<li>transform(X)</li>
+<li>get_params([deep])</li>
+<li>set_params(**params)</li>
+</ul>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessign <span class="keyword">import</span> OneHotEncoder</span><br><span class="line">enc = OneHotEncoder()</span><br><span class="line">enc.fit([[<span class="number">0</span>,<span class="number">0</span>,<span class="number">3</span>],[<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">2</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>]])</span><br><span class="line">enc.n_values_ <span class="comment">#array([2,3,4])</span></span><br><span class="line">enc.feature_indices_ <span class="comment">#array([0,2,5,9])</span></span><br><span class="line">enc.transform([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>]]).toarray() <span class="comment">#array([1.,0.,0.,1.,0.,0.,1.,0.,0.])</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/21/Python-sklearn-LabelEncoder/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/21/Python-sklearn-LabelEncoder/" itemprop="url">sklearn.LabelEncoder</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T11:38:28+08:00">
+                2018-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  151
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>LabelEncoder可以对标签编码，将其转变为0~(n-1)的数字。<br>对比OneHotEncoder：编码成0~1的多个标签<br>对比GetDummies：只对字符标签编码成0~1的多个标签</p>
+<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><pre><code>class sklearn.preprocessing.LabelEncoder
+</code></pre><p>方法：</p>
+<ul>
+<li>fit(y): 训练转换器</li>
+<li>fit_transform(y): 训练并转换</li>
+<li>transform(y): 转换</li>
+<li>inverse_transform: 还原</li>
+<li>get_params([deep])</li>
+<li>set_params(**params)</li>
+</ul>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line">le = preprocessing.LabelEncoder()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换数字</span></span><br><span class="line">le.fit([<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">6</span>])</span><br><span class="line">le.classes_ <span class="comment">#array([1,2,6])</span></span><br><span class="line">le.transform([<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">6</span>]) <span class="comment">#array[0,0,1,2]</span></span><br><span class="line">le.inverse_transform([<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>]) <span class="comment">#array[1,1,2,6]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换字符</span></span><br><span class="line">le.fit([<span class="string">'paris'</span>,<span class="string">'paris'</span>,<span class="string">'tokyo'</span>,<span class="string">'london'</span>]</span><br><span class="line">le.transform([<span class="string">'tokyo'</span>,<span class="string">'tokyo'</span>,<span class="string">'paris'</span>]</span><br><span class="line">le.inverse_transform([<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/21/Python-string-Format/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/21/Python-string-Format/" itemprop="url">format()字符串格式化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T10:34:27+08:00">
+                2018-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  290
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>String的format函数用于字符串的格式化。<br>通过控制字符串的格式，可以替代(?)原有的’%’符号。</p>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 通过位置</span></span><br><span class="line"><span class="string">'&#123;0&#125;,&#123;1&#125;,&#123;2&#125;'</span>.format(<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>) <span class="comment">#'a,b,c'</span></span><br><span class="line"><span class="string">'&#123;2&#125;,&#123;1&#125;,&#123;0&#125;'</span>.format(<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>) <span class="comment">#'c,b,a'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过名称</span></span><br><span class="line"><span class="string">'position: &#123;x&#125;, &#123;y&#125;'</span>.format(x=<span class="string">'12.34'</span>, y=<span class="string">'35.22'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过下标</span></span><br><span class="line">p=[<span class="string">'abc'</span>,<span class="number">12</span>]</span><br><span class="line"><span class="string">'&#123;0[0],0[1]&#125;'</span>.format(p) <span class="comment">#'abc,12'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 格式限定符':'</span></span><br><span class="line"><span class="comment"># 控制精度</span></span><br><span class="line"><span class="string">'score: &#123;:.2f&#125;'</span>.format(<span class="number">12.23333333</span>) <span class="comment">#'12.23'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 百分数</span></span><br><span class="line"><span class="string">'answer: &#123;:.2%&#125;'</span>.format(<span class="number">12</span>/<span class="number">45</span>) <span class="comment">#'28.23%'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示符号</span></span><br><span class="line"><span class="comment"># +总显示；-只显示负号</span></span><br><span class="line"><span class="string">'&#123;:+f&#125;, &#123;:+f&#125;'</span>.format(<span class="number">3</span>,<span class="number">-3</span>) <span class="comment">#'+3,-3'</span></span><br><span class="line"><span class="string">'&#123;:-f&#125;, &#123;:-f&#125;'</span>.format(<span class="number">3</span>,<span class="number">-3</span>) <span class="comment">#'3,-3'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 填充和对齐</span></span><br><span class="line"><span class="comment"># ^、&lt;、&gt;分别是居中、左对齐、右对齐</span></span><br><span class="line"><span class="comment"># 数字8是总宽度</span></span><br><span class="line"><span class="comment"># 长度不够的，用:后跟的字符填充，默认空格填充</span></span><br><span class="line"><span class="string">'&#123;:&gt;8&#125;'</span>.format(<span class="string">'189'</span>) <span class="comment">#'     189'</span></span><br><span class="line"><span class="string">'&#123;:0&gt;8&#125;'</span>.format(<span class="string">'189'</span>) <span class="comment">#'00000189'</span></span><br><span class="line"><span class="string">'&#123;:a&gt;8&#125;'</span>.format(<span class="string">'189'</span>) <span class="comment">#'aaaaa189'	</span></span><br><span class="line"><span class="string">'&#123;0:7&#125;&#123;1:7&#125;'</span>.format(<span class="string">'use'</span>,<span class="string">'python'</span>) <span class="comment">#两个宽度为7的字符串</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择进制</span></span><br><span class="line"><span class="comment"># b、d、o、x分别是二进制、十进制、八进制、十六进制</span></span><br><span class="line"><span class="string">'&#123;:b&#125;'</span>.format(<span class="number">17</span>) <span class="comment">#'10001'</span></span><br><span class="line"><span class="string">'&#123;:d&#125;'</span>.format(<span class="number">17</span>) <span class="comment">#'17'</span></span><br><span class="line"><span class="string">'&#123;:o&#125;'</span>.format(<span class="number">17</span>) <span class="comment">#'21'</span></span><br><span class="line"><span class="string">'&#123;:x&#125;'</span>.format(<span class="number">17</span>) <span class="comment">#'11'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分隔符','</span></span><br><span class="line"><span class="string">'&#123;:,&#125;'</span>.format(<span class="number">1234567890</span>) <span class="comment">#'1,234,567,890'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 格式转化</span></span><br><span class="line"><span class="comment"># !r(repr), !s(str), !a(ascii)</span></span><br><span class="line"><span class="string">"repr() shows quotes: &#123;!r&#125;; str() doesn’t: &#123;!s&#125;"</span>.format(<span class="string">'t1'</span>,<span class="string">'t2'</span>)</span><br><span class="line"><span class="comment"># repr() shows quotes: 't1'; str() doesn‘t: t2</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/21/Stat-QQPlot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/21/Stat-QQPlot/" itemprop="url">Q-Q图</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T09:53:46+08:00">
+                2018-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  223
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h4><p>Q-Q图将两个概率分布的分位数放在一起比较，若分布线性相关，则应绘制一条直线。<br>固定一种为正态分布，则可观察另一套样本是否近似服从正态分布。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> stats</span><br><span class="line"><span class="comment"># 默认和正态分布比较</span></span><br><span class="line">stats.probplot(data, plot=plt)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/probplot.png"></p>
+<h4 id="作图步骤"><a href="#作图步骤" class="headerlink" title="作图步骤"></a>作图步骤</h4><ol>
+<li>将原始观察数据从小到大排列：$x_1,x_2,…,x_n$</li>
+<li>计算$x$对应的分位频率$p_i=(i-\frac{1}{2})/n,i=1,2,…,n$，这里$P$可以有多种定义。</li>
+<li>计算$p$对应的标准正态分位数$q$:<br>$$ P\left{X\leq q_1\right} = \int_{-\infty}^{q_1}\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}} dx = p_i $$</li>
+<li>将数对$(q_i, x_i)$画在坐标平面上。</li>
+</ol>
+<p>因为$q_i$由$p_i$唯一确定，所以若数据$x_i$的分布与正态分布非常接近，则点$(q_i,x_i)$应大致成一条直线。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/03/20/Python-pandas-Outliers/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3027,662 +3627,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/27/Python-Seaborn/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/27/Python-Seaborn/" itemprop="url">Seaborn</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T10:36:51+08:00">
-                2018-02-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  253
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Seaborn是在matplotlib的基础上进行了更高级的API封装，是对matplotlib的补充。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns <span class="comment">#一旦导入seaborn, matplotlib的作图风格会被覆盖成seaborn的格式</span></span><br><span class="line">%matplotlib inline <span class="comment">#在notebook中绘图</span></span><br><span class="line"></span><br><span class="line">sns.distplot(df[<span class="string">'A'</span>]) <span class="comment">#有密度曲线KDE</span></span><br><span class="line">sns.axlabel(<span class="string">'xLabelName'</span>, <span class="string">'yLabelName'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p>常用绘图函数<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Seaborn有五个预设好的主题：dark, white, darkgrid, whitegrid 和 ticks。</span></span><br><span class="line">sns.set_style(<span class="string">'whitegrid'</span>)</span><br><span class="line">sns.set_style(<span class="string">'dark'</span>) <span class="comment">#使用黑色作为背景色</span></span><br><span class="line">sns.set(style=<span class="string">'white'</span>, palette=<span class="string">'muted'</span>, color_codes=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直方图加强版distplot()</span></span><br><span class="line">sns.destplot(df[<span class="string">'A'</span>], kde=false) <span class="comment">#不显示密度曲线</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 密度曲线图kdeplot()</span></span><br><span class="line">sns.kedplot(df[<span class="string">'A'</span>], shade=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 箱型图boxplot()</span></span><br><span class="line">sns.boxplot(x=df[<span class="string">'A'</span>], y=df[<span class="string">'B'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 热点图heatmap()，显示相关系数</span></span><br><span class="line">sns.heatmap(corrmat, square=<span class="keyword">True</span>, linewidth=<span class="number">.5</span>, annot=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 散点图scatter()</span></span><br><span class="line">sns.scatter(x=df[<span class="string">'A'</span>], y=df[<span class="string">'B'</span>], c=<span class="string">'r'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 联合分布jointplot()，可以选择kind</span></span><br><span class="line">sns.jointplot(<span class="string">'A'</span>,<span class="string">'B'</span>,df)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 点图pointplot()，基本plot</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 两两作图pairplot()，例如4个特征将生成4*4=16张图</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 横柱图barplot()，适合比较，比如各种油的脂肪酸构成</span></span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/27/Python-IPython/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/27/Python-IPython/" itemprop="url">IPython</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T09:39:57+08:00">
-                2018-02-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  644
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.表面上看，IPython就像是一个增强的交互式Python解释器，可以使用Tab键自动完成。<br>在变量的前面或后面加上一个问号(?)就可以将有关该对象的一些通用信息显示出来，使用双问号(??)还可以显示出该函数的源代码。<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">b?</span><br><span class="line">add_numbers?</span><br><span class="line"></span><br><span class="line">add_numbers??</span><br></pre></td></tr></table></figure></p>
-<p>2.IPython团队还开发了一个基于Qt框架的GUI控制台，其目的是为终端应用程序提供诸如内嵌图片、多行编辑、语法高亮之类的富文本编辑功能。使用下列命令可为其添加绘图功能：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">ipython qtconsole --pylab=inline</span><br></pre></td></tr></table></figure></p>
-<p>3.IPython Notebook是一个运行在命令行上的轻量级服务器进程，使用基于JSON的文档格式.ipynb，可以轻松分享代码、输出结果以及图片等内容。</p>
-<h4 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h4><ul>
-<li>Ctrl-P 后向搜索命令历史</li>
-<li>Ctrl-N 前向搜索命令历史</li>
-<li>Ctrl-Shift-V 从剪贴板粘贴文本</li>
-<li>Ctrl-C 中断当前执行的代码</li>
-<li>Ctrl-A 将光标移动到行首</li>
-<li>Ctrl-E 将光标移动到行尾</li>
-<li>Ctrl-F 将光标向前移动一个字符</li>
-<li>Ctrl-B 将光标向后移动一个字符</li>
-<li>Ctrl-K 清除从光标开始到行尾</li>
-<li>Ctrl-U 清除当前行</li>
-<li>Ctrl-L 清屏</li>
-</ul>
-<h4 id="魔术命令"><a href="#魔术命令" class="headerlink" title="魔术命令"></a>魔术命令</h4><p>魔术命令(Magic Command)是以百分号(%)为前缀的命令，为常见任务提供便利。<br>使用问号(?)同样可以查看命令选项。</p>
-<ul>
-<li>%run 可以执行一个py脚本</li>
-<li>%time 执行一条语句，报告执行时间</li>
-<li>%timeit 多次执行同一语句，报告执行时间</li>
-<li>%debug 进入调试器</li>
-<li>%pdb 在异常发生后自动进入调试器</li>
-<li>%paste 执行剪贴板中的代码</li>
-<li>%cpaste 打开一个特殊提示符以便手工粘贴待执行的Python代码</li>
-<li>%hist 打印命令的输入历史</li>
-<li>%who、%whos、%who_ls 显示命名空间中定义的变量</li>
-<li>%reset 删除命名空间中的全部变量</li>
-<li>%quickref 显示IPython的快速参考</li>
-<li>%magic 显示所有魔术命令的详细文档</li>
-</ul>
-<p>IPython的另一个重要特点是跟操作系统shell结合得非常紧密，可以在IPython中直接使用Linux系统命令，而不用像Python那样import os。调用shell命令的魔术命令：</p>
-<ul>
-<li>%pwd 返回当前工作目录</li>
-<li>%cd directory 更改当前工作目录</li>
-<li>%pushd directory 将当前目录入栈，并转向目标目录</li>
-<li>%popd 弹出栈顶目录，并转向该目录</li>
-<li>%alias alias_name cmd 为系统shell命令定义别名</li>
-<li>!cmd 在系统shell中执行cmd</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/06/Python-pandas-Map/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/06/Python-pandas-Map/" itemprop="url">Map, Apply</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T14:23:43+08:00">
-                2018-02-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  473
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Series-Map"><a href="#Series-Map" class="headerlink" title="Series.Map"></a>Series.Map</h4><p>Series.map(arg, na_action=None)<br>Map是Series特有的方法，DataFrame中没有。<br>不在字典里的值将被转成NaN，或者_missing_中预设的值。</p>
-<p>参数</p>
-<ul>
-<li>arg: function, dict, or Series</li>
-<li>na_action: {None, ‘ignore’}，转换时是否忽略NA</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>y: Series</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], index=[<span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>]</span><br><span class="line">y = pd.Series([<span class="string">'foo'</span>,<span class="string">'bar'</span>,<span class="string">'baz'</span>], index=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">z = &#123;<span class="number">1</span>:<span class="string">'A'</span>, <span class="number">2</span>:<span class="string">'B'</span>, <span class="number">3</span>:<span class="string">'C'</span>&#125;</span><br><span class="line"></span><br><span class="line">x.map(y)</span><br><span class="line">x.map(z)</span><br><span class="line"></span><br><span class="line">s = pd.Series([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,np.nan])</span><br><span class="line">s2 = s.map(<span class="string">'print: &#123;&#125;'</span>.format, na_action=<span class="string">'ignore'</span>) <span class="comment">#nan将不会被转换</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="Series-apply"><a href="#Series-apply" class="headerlink" title="Series.apply"></a>Series.apply</h4><p>Series.apply(func, convert_dtype=True, args=(), **kwds)<br>在Series上应用函数，可以是NumPy ufunc(作用于整列)，也可以是Python function(作用于元素)。</p>
-<p>参数</p>
-<ul>
-<li>function: function</li>
-<li>convert_dtype: 默认True，寻找更好的dtype；若为False则dtype=object</li>
-<li>args: 传递给function的其他参数</li>
-<li>kwds: keyword参数</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>y</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 无参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">square</span><span class="params">(x)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> x**<span class="number">2</span></span><br><span class="line">series.apply(square)</span><br><span class="line">series.apply(<span class="keyword">lambda</span> x: x**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 有参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">subtract</span><span class="params">(x, custom_value)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> x - custom_value</span><br><span class="line">series.apply(subtract, args=(<span class="number">5</span>,))</span><br><span class="line"></span><br><span class="line"><span class="comment"># numpy ufunc</span></span><br><span class="line">series.apply(np.log)</span><br></pre></td></tr></table></figure></p>
-<h4 id="DataFrame-apply"><a href="#DataFrame-apply" class="headerlink" title="DataFrame.apply"></a>DataFrame.apply</h4><p>DataFrame.apply(func, axis=0, broadcast=False, raw=False, reduce=None, args=(), **kwds)<br>作用于行列</p>
-<p>参数</p>
-<ul>
-<li>func: function</li>
-<li>axis: 默认0，作用于每列；若为1则作用于每行</li>
-<li>broadcast: 默认False</li>
-<li>raw: 默认False，将每行列转为Series; 若为True则接受ndarray作为输入</li>
-<li>reduce</li>
-<li>args</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>applied</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df.apply(np.sqrt)</span><br><span class="line">df.apply(np.sum, axis=<span class="number">0</span>)</span><br><span class="line">df.apply(np.sum, axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="DataFrame-applymap"><a href="#DataFrame-applymap" class="headerlink" title="DataFrame.applymap"></a>DataFrame.applymap</h4><p>DataFrame.applymap(func)<br>为每个元素传递函数变换，像作用于Series的Map函数一样。</p>
-<p>参数</p>
-<ul>
-<li>func: function</li>
-</ul>
-<p>返回</p>
-<ul>
-<li>applied: DataFrame</li>
-</ul>
-<p>实例<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df = pd.DataFrame(np.random.randn(<span class="number">3</span>,<span class="number">3</span>))</span><br><span class="line">df = df.applymap(<span class="keyword">lambda</span> x: <span class="string">'%.2f'</span> % x) <span class="comment">#取小数点后两位</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="数据转换"><a href="#数据转换" class="headerlink" title="数据转换"></a>数据转换</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将数据映射为其他值</span></span><br><span class="line">data[<span class="string">'food'</span>].map(str.lower).map(meat_to_animal)</span><br><span class="line">data[<span class="string">'food'</span>].map(<span class="keyword">lambda</span> x: meat_to_animal[x.lower()])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将轴标签映射为其他值</span></span><br><span class="line">data.index.map(str.upper)</span><br><span class="line">data.rename(index=&#123;<span class="string">'oldName'</span>:<span class="string">'newName'</span>&#125;, inplace=<span class="keyword">True</span>) <span class="comment">#就地生效</span></span><br><span class="line">data.rename(index=&#123;<span class="string">'o'</span>:<span class="string">'n'</span>&#125;,columns=&#123;<span class="string">'oo'</span>:<span class="string">'nn'</span>&#125;) <span class="comment">#复制数据并修改行列索引</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换值</span></span><br><span class="line">data.replace(<span class="number">-999</span>, np.nan)</span><br><span class="line">data.replace([<span class="number">-999</span>,<span class="number">-1000</span>], np.nan)</span><br><span class="line">data.replace([<span class="number">-999</span>,<span class="number">-1000</span>], [np.nan, <span class="number">0</span>])</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/02/06/Python-pandas-ConcatMerge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/06/Python-pandas-ConcatMerge/" itemprop="url">Pandas数据合并</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T13:42:28+08:00">
-                2018-02-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  345
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>数据对象可以通过几种不同的方式合并：</p>
-<ul>
-<li>pd.merge: join</li>
-<li>pd.concat: concatenation, binding, stacking</li>
-<li>pd.combine_first: 补充</li>
-</ul>
-<h4 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h4><p>数据库风格的合并，将两张表按某些相同值连接。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 列-列连接，索引会被丢弃</span></span><br><span class="line">pd.merge(df1, df2, on=<span class="string">'key'</span>)</span><br><span class="line">pd.merge(df1, df2, left_on=<span class="string">'key1'</span>, right_on=<span class="string">'key2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># merge默认inner join</span></span><br><span class="line">pd.merge(df1, df2, how=<span class="string">'outer'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># suffixes用于指定附加到重复列名上的字符串</span></span><br><span class="line">pd.merge(left, right, on=<span class="string">'key1'</span>, suffixes=(<span class="string">'_left'</span>,<span class="string">'_right'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将索引用作连接键</span></span><br><span class="line">pd.merge(left, right, left_on=<span class="string">'key'</span>, right_index=<span class="keyword">True</span>)</span><br><span class="line">left.join(right, how=<span class="string">'outer'</span>)<span class="comment">#按索引合并，默认左连接</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="concat"><a href="#concat" class="headerlink" title="concat"></a>concat</h4><p>Numpy中有一个用于合并原始Numpy数组的concatenation函数：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.concatenate([arr,arr], axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
-<p>Pandas中的concat可以将值和索引粘合在一起：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.concat([s1, s2, s3]) <span class="comment">#将Series数据堆叠在一起</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定轴向堆叠，得到DataFrame</span></span><br><span class="line">pd.concat([s1, s2, s3], axis=<span class="number">1</span>) </span><br><span class="line">pd.concat([s1, s4], axis=<span class="number">1</span>, join=<span class="string">'inner'</span>) <span class="comment">#内连接，得到交集</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定索引</span></span><br><span class="line">pd.concat([s1, s4], axis=<span class="number">1</span>, join_axes=[[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>]])</span><br><span class="line">pd.concat([s1, s2], keys=[<span class="string">'one'</span>,<span class="string">'two'</span>,<span class="string">'three'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 堆积之后index可能重复，需要重置</span></span><br><span class="line">df.index.duplicated().sum()</span><br><span class="line">df.reset_index(drop=<span class="keyword">True</span>, inplace=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="combine-first"><a href="#combine-first" class="headerlink" title="combine_first"></a>combine_first</h4><p>索引全部或部分重叠的两个数据集，用B数据集为A数据集里的缺失数据“打补丁”。<br>在Numpy中，可以使用where函数<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">np.where(pd.isnull(a), b, a)</span><br></pre></td></tr></table></figure></p>
-<p>在pandas中，combine_first函数实现的是同样的方法，而且会数据对齐：<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">df1.combine_first(df2)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3737,7 +3681,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">332</span>
+                  <span class="site-state-item-count">336</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3825,7 +3769,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -3839,7 +3783,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">124.5k</span>
+    <span title="Site words total count">125.5k</span>
   
 </div>
 
