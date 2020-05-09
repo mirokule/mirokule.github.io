@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/11/ML-GDA/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/02/Unity-Audio/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -281,7 +281,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/11/ML-GDA/" itemprop="url">梯度下降法</a></h1>
+                <a class="post-title-link" href="/2016/12/02/Unity-Audio/" itemprop="url">Unity-Audio</a></h1>
         
 
         <div class="post-meta">
@@ -293,8 +293,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T09:38:33+08:00">
-                2018-01-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-02T11:10:50+08:00">
+                2016-12-02
               </time>
             
 
@@ -325,7 +325,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  612
+                  347
                 </span>
               
 
@@ -352,189 +352,50 @@
       
         
           
-            <h4 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h4><p>多元函数$f(x,y)$分别对$x,y$求偏导数，得到的向量$(\frac{\partial f}{\partial x},\frac{\partial f}{\partial y})^T$，称作梯度$grad f(x,y)$或者$\triangledown f(x,y)$。<br>梯度向量方向是函数增加最快的方向，更容易找到极大值；负梯度向量方向是函数减少最快的方向，更容易找到极小值。</p>
-<h4 id="梯度下降法-Gradient-Descent-Algorithm"><a href="#梯度下降法-Gradient-Descent-Algorithm" class="headerlink" title="梯度下降法(Gradient Descent Algorithm)"></a>梯度下降法(Gradient Descent Algorithm)</h4><p><img src="/img/GDA.png" alter="GDA"></p>
-<p>repeat until convergence {</p>
-<p>$$ \theta_{j} := \theta_{j} - \alpha \frac{\partial}{\partial\theta_{j}}J(\theta_{0}, \theta_{1}) $$</p>
-<p>(for j = 0 and j = 1)}(Batch Gradient Descent)</p>
-<p><strong>说明</strong></p>
+            <p>音频系统组成：</p>
 <ul>
-<li>$\alpha$ 学习速率(Leaning Rate)，迭代的步长，太小收敛慢，太大可能导致在最优解附近来回波动</li>
-<li>收敛到的局部最优解不一定是全局最优解，但对于最小二乘法的弓型损失函数来说唯一的局部最优解就是全局最优解</li>
+<li>Audio Source: 发出声音组件，音源</li>
+<li>Audio Listener: 接收声音组件，根据和音源的距离远近，会有声音强度的变化；一般在Camera上</li>
+<li>Audio Clip: 声音文件，支持mp3、ogg、wav等</li>
 </ul>
-<h6 id="种类"><a href="#种类" class="headerlink" title="种类"></a>种类</h6><ul>
-<li>Batch Gradient Descent: 每次迭代使用全部m个样本，最优梯度方向，计算开销大，可以使用mapreduce</li>
-<li>Stochastic Gradient Descent: 每次迭代使用1个样本，随机梯度方向，适合大样本，需要将输入数据shuffle</li>
-<li>Mini-batch Gradient Descent: 每次迭代使用b个(2~100)样本</li>
-<li>Online Learning: 每次迭代使用1个样本，学习后丢弃样本，适合数据流，模型会跟随输入数据的趋势改变</li>
+<h4 id="AudioSource"><a href="#AudioSource" class="headerlink" title="AudioSource"></a>AudioSource</h4><h6 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h6><ul>
+<li>clip</li>
+<li>isPlaying</li>
+<li>loop</li>
+<li>mute</li>
+<li>volume: 音量</li>
 </ul>
-<p><img src="/img/sgd.png"><br><img src="/img/minibatch.png"><br><strong>判断收敛</strong></p>
+<h6 id="Static-Methods"><a href="#Static-Methods" class="headerlink" title="Static Methods"></a>Static Methods</h6><ul>
+<li>PlayClipAtPoint: 在指定位置播放声音，不需要附加到GameObject上；可用于销毁物体后的声音</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">AudioSource.PlayClipAtPoint(breakSound, Camera.main.transform.position);</span><br></pre></td></tr></table></figure>
+<h6 id="Public-Methods"><a href="#Public-Methods" class="headerlink" title="Public Methods"></a>Public Methods</h6><ul>
+<li>Pause()</li>
+<li>UnPause()</li>
+<li>Stop()</li>
+<li>Play()</li>
+<li>PlayOneShot(): 把音频文件播放完毕，在多个音频并发时不会相互覆盖 </li>
+<li>PlayDelayed(): 延迟若干时间后播放</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">AudioSource myAS;</span><br><span class="line"></span><br><span class="line">myAS = GetCompoent&lt;AudioSource&gt;();</span><br><span class="line"></span><br><span class="line">myAS.Play();</span><br><span class="line">myAS.Stop()</span><br><span class="line">myAS.PlayOneShoot();</span><br></pre></td></tr></table></figure>
+<h4 id="音频文件导入设置"><a href="#音频文件导入设置" class="headerlink" title="音频文件导入设置"></a>音频文件导入设置</h4><ul>
+<li>Force to Mono:强制变为单声道</li>
+<li>Load in Background:加载时在后台处理，不会造成卡顿等，用于大文件。</li>
+<li><p>Preload Audio Data:预加载会消耗内存，但可以避免播放时等待。</p>
+</li>
+<li><p>Load Type:运行时加载音频的方法。</p>
 <ul>
-<li>Batch: 观察$J_{train}(\theta)$, 每次跌代后是否变小</li>
-<li>Stochastic: 观察$Cost=\frac{1}{2}(h_{\theta}(x^{(i)})-y^{(i)})^2$均值，每k次迭代后是否变小</li>
+<li><strong>Decompress on load</strong>加载后就解压缩，避免运行时的性能开销，将使用更多内存，用于小文件;</li>
+<li><strong>Compressed in memory</strong>加载后仍然保持压缩，仅在播放时解压缩，用于大文件；</li>
+<li><strong>Streaming</strong>从磁盘流式加载，而不是完全加载到内存，用于大型背景音乐等。</li>
 </ul>
-<h6 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h6><ol>
-<li><p>Batch Gradient Descent</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#(Batch) Gradient Descent:</span></span><br><span class="line">X = data_input</span><br><span class="line">Y = labels</span><br><span class="line">parameters = initialize_parameters(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="comment"># Forward propagation</span></span><br><span class="line">    a, caches = forward_propagation(X, parameters)</span><br><span class="line">    <span class="comment"># Compute cost.</span></span><br><span class="line">    cost = compute_cost(a, Y)</span><br><span class="line">    <span class="comment"># Backward propagation.</span></span><br><span class="line">    grads = backward_propagation(a, caches, parameters)</span><br><span class="line">    <span class="comment"># Update parameters.</span></span><br><span class="line">    parameters = update_parameters(parameters, grads)</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>Stochastic Gradient Descent</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Stochastic Gradient Descent:</span></span><br><span class="line">X = data_input</span><br><span class="line">Y = labels</span><br><span class="line">parameters = initialize_parameters(layers_dims)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, num_iterations):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, m):</span><br><span class="line">        <span class="comment"># Forward propagation</span></span><br><span class="line">        a, caches = forward_propagation(X[:,j], parameters)</span><br><span class="line">        <span class="comment"># Compute cost</span></span><br><span class="line">        cost = compute_cost(a, Y[:,j])</span><br><span class="line">        <span class="comment"># Backward propagation</span></span><br><span class="line">        grads = backward_propagation(a, caches, parameters)</span><br><span class="line">        <span class="comment"># Update parameters.</span></span><br><span class="line">        parameters = update_parameters(parameters, grads)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Mini-batch Gradient Descent<br><img src="/img/minibatch_shuffle.png"><br><img src="/img/minibatch_partition.png"></p>
-</li>
-</ol>
-<p>算法分为两步，首先Shuffle，然后Partition。<br>分块大小常采用2的幂指数，比如64，128，256，512</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Step 1: Shuffle (X, Y)</span></span><br><span class="line">permutation = list(np.random.permutation(m))</span><br><span class="line">shuffled_X = X[:, permutation]</span><br><span class="line">shuffled_Y = Y[:, permutation].reshape((<span class="number">1</span>,m))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 2: Partition (shuffled_X, shuffled_Y). Minus the end case.</span></span><br><span class="line">num_complete_minibatches = math.floor(m/mini_batch_size) <span class="comment"># number of mini batches </span></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">0</span>, num_complete_minibatches):</span><br><span class="line">    mini_batch_X = shuffled_X[:, k*mini_batch_size : (k+<span class="number">1</span>)*mini_batch_size]</span><br><span class="line">    mini_batch_Y = shuffled_Y[:, k*mini_batch_size : (k+<span class="number">1</span>)*mini_batch_size]</span><br><span class="line">    mini_batch = (mini_batch_X, mini_batch_Y)</span><br><span class="line">    mini_batches.append(mini_batch)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Handling the end case (last mini-batch &lt; mini_batch_size)</span></span><br><span class="line"><span class="keyword">if</span> m % mini_batch_size != <span class="number">0</span>:</span><br><span class="line">    mini_batch_X = shuffled_X[:, (mini_batch_size * num_complete_minibatches) : m]</span><br><span class="line">    mini_batch_Y = shuffled_Y[:, (mini_batch_size * num_complete_minibatches) : m]</span><br><span class="line">    mini_batch = (mini_batch_X, mini_batch_Y)</span><br><span class="line">    mini_batches.append(mini_batch)</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/06/Calculus-NewtonMethod/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/06/Calculus-NewtonMethod/" itemprop="url">牛顿法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T11:25:22+08:00">
-                2018-01-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  83
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Procedure-for-Newton’s-Method"><a href="#Procedure-for-Newton’s-Method" class="headerlink" title="Procedure for Newton’s Method"></a>Procedure for Newton’s Method</h4><ol>
-<li><p>Guess a first approximation to a solution of the equation $f(x)=0$.</p>
-</li>
-<li><p>Use the first approximation to get a second, the second to get a third, and so on, using the formula</p>
-</li>
-</ol>
-<p>$$ x_{n+1} = x_{n} - \frac{f(x_{n})}{f’{x_{n}}} $$</p>
-<p>if $f’(x_{n}) \neq 0$</p>
-<p><img src="/img/newton.png" alt="Newton"></p>
+<li><p>Compression Format: 音频存储的数据格式。</p>
 <ul>
-<li>Newton’s method does not always converge</li>
-<li>When Newton’s method converges to a root, it may not be the root you have in mind</li>
+<li><strong>Vorbits</strong>压缩格式，用于大文件；</li>
+<li><strong>PCM</strong>原始格式，用于小文件。</li>
+</ul>
+</li>
 </ul>
 
           
@@ -584,7 +445,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/06/ML-Tensorflow/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/30/Unity-Lambda/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -603,7 +464,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/06/ML-Tensorflow/" itemprop="url">TensorFlow</a></h1>
+                <a class="post-title-link" href="/2016/11/30/Unity-Lambda/" itemprop="url">Unity-Lambda</a></h1>
         
 
         <div class="post-meta">
@@ -615,8 +476,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T09:58:28+08:00">
-                2018-01-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T16:11:59+08:00">
+                2016-11-30
               </time>
             
 
@@ -647,7 +508,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  284
+                  156
                 </span>
               
 
@@ -674,14 +535,9 @@
       
         
           
-            <p>1.使用TensorFlow输出一句话：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化常亮字符串</span></span><br><span class="line">greeting = tf.constant(<span class="string">'Hello!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动会话并执行</span></span><br><span class="line">session = tf.Session()</span><br><span class="line">result = sess.run(greeting)</span><br><span class="line"><span class="keyword">print</span> result</span><br><span class="line">sess.close()</span><br></pre></td></tr></table></figure>
-<p>2.线性函数计算：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">matrix1 = tf.constant([[<span class="number">3.</span>, <span class="number">3.</span>]])</span><br><span class="line">matrix2 = tf.constant([[<span class="number">2.</span>],[<span class="number">2.</span>]])</span><br><span class="line"></span><br><span class="line">product = tf.matmul(maxtrx1, matrix2)</span><br><span class="line">linear = tf.add(product, tf.constant(<span class="number">2.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">	result = sess.run(linear)</span><br><span class="line">	<span class="keyword">print</span> result</span><br></pre></td></tr></table></figure>
-<p>3.自定义线性分类器</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义变量并设定初始值</span></span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">1</span>]))</span><br><span class="line">W = tf.Variable(tf.random_uniform([<span class="number">1</span>,<span class="number">2</span>],<span class="number">-1.0</span>,<span class="number">1.0</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义目标函数、损失函数</span></span><br><span class="line">y = tf.matmul(W, X_train) + b</span><br><span class="line">loss = tf.reduce_mean(tf.square(y - y_train))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用梯度下降法估计参数，设定步长为0.01</span></span><br><span class="line">optimizer = tf.train.GradientDescentOptimizer(<span class="number">0.01</span>)</span><br><span class="line">train = optimizer.minimize(loss)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化所有变量</span></span><br><span class="line">init = tf.initialize_all_variables()</span><br><span class="line">sess = tf.Session()</span><br><span class="line">sess.run(init)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 迭代训练参数</span></span><br><span class="line"><span class="keyword">for</span> step <span class="keyword">in</span> srange(<span class="number">0</span>,<span class="number">1000</span>):</span><br><span class="line">	sess.run(train)</span><br><span class="line">	<span class="keyword">if</span> step %<span class="number">200</span> == <span class="number">0</span>:</span><br><span class="line">		<span class="keyword">print</span> step, sess.run(W), sess.run(b)</span><br></pre></td></tr></table></figure>
-<p>4.skflow工具包是对TensorFlow进一步的封装，以求与Scikit-learn使用类似的接口。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> skflow</span><br><span class="line"></span><br><span class="line">tf_lr = skflow.TensorFlowLinearRegressor(steps=<span class="number">10000</span>, learning_rate=<span class="number">0.01</span>, batch_size=<span class="number">50</span>)</span><br><span class="line">tf_lr.fit(X_train, y_train)</span><br><span class="line">tf_lr_y_predict = tf_lr.predict(X_test)</span><br><span class="line"></span><br><span class="line">tf_dnn_regressor - skflow.TensorFlowDNNRegressor(hidden_units=[<span class="number">100</span>,<span class="number">40</span>], steps=<span class="number">10000</span>, learning_rate=<span class="number">0.01</span>, batch_size=<span class="number">50</span>)</span><br><span class="line">tf_dnn_regressor.fit(X_train, y_train)</span><br><span class="line">tf_dnn_regressor_y_predict = tf_dnn_regressor.predict(X_test)</span><br></pre></td></tr></table></figure>
+            <p>Lambda是没有函数名的函数，又称匿名函数；通常临时创建在其他函数中。<br>和closure闭包很像。<br>格式为 () =&gt; {}</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetWebImage</span>(<span class="params">Action&lt;Texture2D&gt; callbackFunc</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (_webImage == <span class="literal">null</span>) &#123;</span><br><span class="line">		StartCoroutine(_network.DownloadImage( </span><br><span class="line">			(Texture2d image) =&gt; &#123;</span><br><span class="line">				_webImage = image;</span><br><span class="line">				callbackFunc(_webImage);</span><br><span class="line">			&#125;</span><br><span class="line">		));</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		callbackFunc(_webImage);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>本段代码的目的是缓存图片。在前端显示和底层网络数据获取的回调之间，将图片保存下来。<br>network.DownloadImage(Action<texture2d> func)需要传入回调函数，在这里创建了Lambda函数作为参数传入。<br>Lambda函数接受图片作为输入参数，在本地保存后，再调用前端的回调函数显示图片。</texture2d></p>
 
           
         
@@ -730,7 +586,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/03/ML-XGBoost/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/30/Unity-XML/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -749,7 +605,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/03/ML-XGBoost/" itemprop="url">XGBoost</a></h1>
+                <a class="post-title-link" href="/2016/11/30/Unity-XML/" itemprop="url">Unity-XML</a></h1>
         
 
         <div class="post-meta">
@@ -761,8 +617,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-03T10:27:59+08:00">
-                2018-01-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T15:44:35+08:00">
+                2016-11-30
               </time>
             
 
@@ -793,7 +649,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  373
+                  37
                 </span>
               
 
@@ -820,25 +676,8 @@
       
         
           
-            <p>XGBoost的全称是 eXtreme Gradient Boosting.<br>XGBoost也是集成学习Boost的一种，经常和GDBT对比。</p>
-<p>决策树的学习过程是为了找出最优的决策树，然而从函数空间里所有的决策树中找出最优的决策树是NP-C问题，所以常采用启发式(Heuristic)的方法，如CART里面的优化GINI指数、剪枝、控制树的深度。这些启发式方法的背后往往隐含了一个目标函数。</p>
-<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
-<li>支持线性分类器：GBDT使用CART</li>
-<li>用到二阶导数：GBDT只用到一阶</li>
-<li>引入正则项：降低了variance</li>
-<li>Shrinkage(缩减)：迭代后将叶节点的权重乘上该系数，相当于学习速率</li>
-<li>列抽样</li>
-<li>自动处理缺失值</li>
-<li>支持并行</li>
-</ul>
-<h4 id="使用经验"><a href="#使用经验" class="headerlink" title="使用经验"></a>使用经验</h4><ul>
-<li>多类别分类时，类别要从0开始编码</li>
-<li>Watchlist不会影响模型训练</li>
-<li>类别特征必须编码，默认特征都是数值型</li>
-<li>设置随机数种子，使结果可以复现</li>
-<li>特征的重要性(feature score)等于它被选为树节点分裂特征的次数的和</li>
-</ul>
-<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 划分数据集</span></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="number">0.01</span>, random_state=<span class="number">1729</span>)</span><br><span class="line">print(X_train.shape, X_test.shape)</span><br><span class="line"></span><br><span class="line"><span class="comment">#模型参数设置</span></span><br><span class="line">xlf = xgb.XGBRegressor(max_depth=<span class="number">10</span>, </span><br><span class="line">                        learning_rate=<span class="number">0.1</span>, </span><br><span class="line">                        n_estimators=<span class="number">10</span>, </span><br><span class="line">                        silent=<span class="keyword">True</span>, </span><br><span class="line">                        objective=<span class="string">'reg:linear'</span>, </span><br><span class="line">                        nthread=<span class="number">-1</span>, </span><br><span class="line">                        gamma=<span class="number">0</span>,</span><br><span class="line">                        min_child_weight=<span class="number">1</span>, </span><br><span class="line">                        max_delta_step=<span class="number">0</span>, </span><br><span class="line">                        subsample=<span class="number">0.85</span>, </span><br><span class="line">                        colsample_bytree=<span class="number">0.7</span>, </span><br><span class="line">                        colsample_bylevel=<span class="number">1</span>, </span><br><span class="line">                        reg_alpha=<span class="number">0</span>, </span><br><span class="line">                        reg_lambda=<span class="number">1</span>, </span><br><span class="line">                        scale_pos_weight=<span class="number">1</span>, </span><br><span class="line">                        seed=<span class="number">1440</span>, </span><br><span class="line">                        missing=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">xlf.fit(X_train, y_train, eval_metric=<span class="string">'rmse'</span>, verbose = <span class="keyword">True</span>, eval_set = [(X_test, y_test)],early_stopping_rounds=<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 计算 auc 分数、预测</span></span><br><span class="line">preds = xlf.predict(X_test)</span><br></pre></td></tr></table></figure>
+            <p>Mono包含xml的解析器。</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Xml</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnXMLDataLoaded</span>(<span class="params"><span class="keyword">string</span> data</span>) </span>&#123;</span><br><span class="line">	XmlDocument doc = <span class="keyword">new</span> XmlDocument ();</span><br><span class="line">	doc.LoadXml (data);</span><br><span class="line"></span><br><span class="line">	XmlNode root = doc.DocumentElement;</span><br><span class="line">	XmlNode node = root.SelectSingleNode (<span class="string">"clouds"</span>);</span><br><span class="line">	<span class="keyword">string</span> <span class="keyword">value</span> = node.Attributes [<span class="string">"value"</span>].Value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -887,7 +726,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/02/ML-PCA/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/30/C#-Delegation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -906,7 +745,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/02/ML-PCA/" itemprop="url">主成分分析</a></h1>
+                <a class="post-title-link" href="/2016/11/30/C#-Delegation/" itemprop="url">C#-Delegation</a></h1>
         
 
         <div class="post-meta">
@@ -918,8 +757,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T09:56:13+08:00">
-                2018-01-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T15:19:14+08:00">
+                2016-11-30
               </time>
             
 
@@ -950,7 +789,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  423
+                  205
                 </span>
               
 
@@ -977,22 +816,167 @@
       
         
           
-            <p>主成分分析(Principal Component Analysis)是经典的特征降维技术。<br>寻找k个向量张成的超平面，使原始数据投影到超平面的误差最小。<br>PCA可以用于</p>
+            <h5 id="委托的类型"><a href="#委托的类型" class="headerlink" title="委托的类型"></a>委托的类型</h5><h6 id="1-Delegate"><a href="#1-Delegate" class="headerlink" title="1.Delegate"></a>1.Delegate</h6><p>Delegate至少0个参数，至多32个参数，可以无返回值，也可以指定返回值类型。<br>例：public delegate int MethodtDelegate(int x, int y);表示有两个参数，并返回int型。</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">int</span> <span class="title">MyDelegateMethod</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> MyDelegateMethod method;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>) </span>&#123;</span><br><span class="line">	method = <span class="keyword">new</span> MyDelegateMethod(Add);</span><br><span class="line">	Console.WriteLine(method(<span class="number">10</span>, <span class="number">12</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">Add</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="2-Predicate"><a href="#2-Predicate" class="headerlink" title="2.Predicate"></a>2.Predicate</h6><p>Predicate有且只有一个参数，返回值固定为bool</p>
+<h6 id="3-Action"><a href="#3-Action" class="headerlink" title="3.Action"></a>3.Action</h6><p>Action是无返回值的泛型委托。<br>Action可以有参数，Action<int, string=""> 表示有传入参数int, string。<br>例：public void Test<t> (Action<t> action, T p)</t></t></int,></p>
+<h6 id="4-Func"><a href="#4-Func" class="headerlink" title="4.Func"></a>4.Func</h6><p>Func是有返回值的泛型委托。<br>Func<int> 表示无参，有返回值int的委托。<br>Func<object, string,="" int=""> 表示传入参数为object,string，返回值为int的委托。<br>    public int Test<t1, t2="">(Func<t1,t2,int> func, T1 a, T2 b) {<br>        return func(a, b);<br>    }</t1,t2,int></t1,></object,></int></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/30/Unity-WWW/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/30/Unity-WWW/" itemprop="url">Unity-WWW</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T15:05:35+08:00">
+                2016-11-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  269
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>WWW is a small utility module for retrieving the contents of URLs.</p>
 <ul>
-<li>减少存储数据的内存消耗</li>
-<li>加快模型训练速度</li>
-<li>去除噪声</li>
-<li>高维数据可视化(k=2，3)</li>
+<li>使用WWW下载文字和图片比较简单，但下载其他类型的资源会比较复杂。<br>可以使用AssetBundles机制来下载任何类型的资源。</li>
+<li><p>下载图片要做缓存，这是一个重要优化</p>
+</li>
+<li><p>url    The URL of this WWW request (Read Only).</p>
+</li>
+<li>error    Returns an error message if there was an error during the download (Read Only).</li>
+<li>bytes    Returns the contents of the fetched web page as a byte array (Read Only).</li>
+<li>text    Returns the contents of the fetched web page as a string (Read Only).</li>
+<li>texture    Returns a Texture2D generated from the downloaded data (Read Only).</li>
+<li>movie    Returns a MovieTexture generated from the downloaded data (Read Only).</li>
+<li>audioClip    Returns a AudioClip generated from the downloaded data (Read Only).</li>
+<li>isDone    Is the download already finished? (Read Only)</li>
+<li>progress    How far has the download progressed (Read Only).</li>
 </ul>
-<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>将数据从原来的坐标系转换到新的坐标系。<br>首先，以数据方差最大的方向作为第一条坐标轴的方向，因为最大的方差给出了最重要的数据分布信息。<br>然后，选择与第一个坐标轴正交，且方差次大的方向作为第二个坐标轴，以此类推。<br>越往后的坐标轴方向，数据的方差越小，几乎为0，可以舍弃。</p>
-<p>PCA是一种线性变换，用更少的m个特征取代了原来的n个特征，这些新特征是原特征的线性组合。</p>
-<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ol>
-<li>数据标准化</li>
-<li>计算协方差矩阵covariance matrix<br>$$ \sigma = \frac{1}{m}\sum_{i=1}^{n}(x^{(i)})(x^{(i)})^T $$</li>
-<li>计算 $[U,S,V] = svd(Sigma)$<br>其中前k个向量$U(:,1:K)=U_{reduce}$是映射矩阵，$z=U_{reduce}\ast x$;<br>若要还原x，$x_{approx}=U_{reduce}\ast z$；</li>
-</ol>
-<p><strong>选择k</strong><br>一般要求映射过程保留99%的方差<br>$$ \frac{\frac{1}{m}\sum_{i=1}^m\left|\left|x^{(i)}-x_{approx}^{(i)}\right|\right|^2}{\frac{1}{m}\sum_{i=1}^m\left|left|x^{(i)}\right|\right|^2} \leq 0.01(1%)<br>S是一个n*n矩阵，主元位置$S_{ii}$即代表数据方差，选择$k$使得<br>$$ \frac{\sum_{i=1}^kS_{ii}}{\sum_{i=1}^nS_{ii}} \geq 0.99$$</p>
-<p>使用sklearn:<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line"></span><br><span class="line">estimater = PCA(n_components = <span class="number">2</span>)</span><br><span class="line">X_pca = estimator.fit_transform(X_digits)</span><br></pre></td></tr></table></figure></p>
+<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1:"></a>Example 1:</h4><figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ExampleClass</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">string</span> url = <span class="string">"http://images.earthcam.com/ec_metros/ourcams/fridays.jpg"</span>;</span><br><span class="line">	<span class="function">IEnumerator <span class="title">Start</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		WWW www = <span class="keyword">new</span> WWW(url);</span><br><span class="line">		<span class="keyword">yield</span> <span class="keyword">return</span> www;</span><br><span class="line">		Renderer renderer = GetComponent&lt;Renderer&gt;();</span><br><span class="line">		renderer.material.mainTexture = www.texture;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2"></a>Example 2</h4><figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> IEnumerator <span class="title">CallAPI</span>(<span class="params"><span class="keyword">string</span> url, Action&lt;<span class="keyword">string</span>&gt; callback</span>) </span>&#123;</span><br><span class="line">	WWW www = <span class="keyword">new</span> WWW (url);</span><br><span class="line">	<span class="keyword">yield</span> <span class="keyword">return</span> WWW;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!IsResponseValid (www))</span><br><span class="line">		<span class="keyword">yield</span> <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">	callback (www.text);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">IsResponseValid</span>(<span class="params">WWW www</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (www.error != <span class="literal">null</span>) &#123;</span><br><span class="line">		Debug.Log (<span class="string">"bad connenction"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">string</span>.IsNullOrEmpty (www.text)) &#123;</span><br><span class="line">		Debug.Log (<span class="string">"bad data"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1041,7 +1025,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/02/ML-Kmeans/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/29/Unity-SkyboxBlended/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -1060,7 +1044,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/02/ML-Kmeans/" itemprop="url">K均值聚类</a></h1>
+                <a class="post-title-link" href="/2016/11/29/Unity-SkyboxBlended/" itemprop="url">Unity-SkyboxBlended</a></h1>
         
 
         <div class="post-meta">
@@ -1072,8 +1056,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T09:27:32+08:00">
-                2018-01-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-29T17:00:22+08:00">
+                2016-11-29
               </time>
             
 
@@ -1104,7 +1088,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  400
+                  354
                 </span>
               
 
@@ -1130,173 +1114,15 @@
 
       
         
-          
-            <p>无监督学习的主流应用之一，最经典易用的聚类模型。</p>
-<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><p>1.随机选取K个聚类空间中的点作为初始中心；<br>2.根据每个数据的特征向量，从K个聚类中心中选取距离最近的一个，把该数据标记为从属该聚类中心；<br>3.根据标记后的簇，重新计算每个簇的中心；<br>4.重复2、3直到聚类中心不再变化。</p>
-<p>$$ J = \frac{1}{m}\sum_{i=1}^m\left|\left|x^{(i)}-\mu_{c^{i}}\right|\right|^2$$</p>
-<p><strong>缺陷</strong></p>
-<ul>
-<li>容易收敛到局部最优解：通过多次执行算法，选择性能更好(J最小)的初始中心点</li>
-<li>需要预先设定簇的数量：通过观察簇内距离与簇数量的关系图，选择肘部拐点</li>
+          <h4 id="天气可变的天空盒"><a href="#天气可变的天空盒" class="headerlink" title="天气可变的天空盒"></a>天气可变的天空盒</h4><ul>
+<li>目标：实现两套skybox逐渐过渡的效果，由代码控制过渡过程</li>
+<li>方法：自定义Shader，使用2套共12张图片构建skybox材质。<br>Shader脚本参见<a href="http://wiki.unity3d.com/index.php?title=SkyboxBlended" target="_blank" rel="noopener">http://wiki.unity3d.com/index.php?title=SkyboxBlended</a></li>
+<li><strong>注意</strong>：程序对从Project视图关联的资源的修改是永久的，即skybox材质参数的修改不会因程序结束而重置。<br>脚本和Lighting选项卡引用了相同的skybox材质，参数修改即时生效。</li>
 </ul>
-<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型</span></span><br><span class="line">kmeans = KMeans(n_clusters=<span class="number">10</span>)</span><br><span class="line">kmeans.fit(X_train)</span><br><span class="line">y_pred = kmeans.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能评估</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line">metrics.adjusted_rand_score(y_test, y_pred)</span><br></pre></td></tr></table></figure>
-<p><strong>肘部观察法</strong><br>寻找拐点，确定类的数量k，不一定有用。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"><span class="keyword">from</span> scipy.spatial.distance <span class="keyword">import</span> cdist</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成数据，使用均匀分布函数随机三个簇</span></span><br><span class="line">cluster1 = np.random.uniform(<span class="number">0.5</span>, <span class="number">1.5</span>, (<span class="number">2</span>,<span class="number">10</span>))</span><br><span class="line">cluster2 = np.random.uniform(<span class="number">5.5</span>, <span class="number">6.5</span>, (<span class="number">2</span>,<span class="number">10</span>))</span><br><span class="line">cluster3 = np.random.uniform(<span class="number">3.0</span>, <span class="number">4.0</span>, (<span class="number">2</span>,<span class="number">10</span>))</span><br><span class="line">X = np.hstack((cluster1, cluster2, cluster3)).T</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试9种不同聚类中心数量</span></span><br><span class="line">K = range(<span class="number">1</span>,<span class="number">10</span>)</span><br><span class="line">meandistortioins = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> K:</span><br><span class="line">	kmeans = KMeans(n_clusters = k)</span><br><span class="line">	kmeans.fit(X)</span><br><span class="line">	meandistortions.append(sum(np.min(cdist(X, kmeans.cluster_centers_, <span class="string">'euclidean'</span>), axis=<span class="number">1</span>))/X.shape[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 绘图</span></span><br><span class="line">plt.plot(K, meanditortions, <span class="string">'bx-'</span>)</span><br><span class="line">plt.xlabel(<span class="string">'k'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Average Dispersion'</span>)</span><br><span class="line">plt.title(<span class="string">'Selecting k with Elbow Method'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/01/Calculus-Derivatives/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/01/Calculus-Derivatives/" itemprop="url">导数和微分</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-01T16:25:29+08:00">
-                2018-01-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  781
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="DEFINITIONS"><a href="#DEFINITIONS" class="headerlink" title="DEFINITIONS"></a>DEFINITIONS</h2><h4 id="Slope-Tangent-Line-and-Derivative"><a href="#Slope-Tangent-Line-and-Derivative" class="headerlink" title="Slope, Tangent Line and Derivative"></a>Slope, Tangent Line and Derivative</h4><p>The <strong>slope of the curve</strong> $y = f(x)$ at the point $P(x_{0}, f(x_{0}))$ is the number</p>
-<p>$$ m = \lim_{h\rightarrow 0} \frac{f(x_{0} + h)-f(x_{0})}{h} $$</p>
-<p>provided the limit exists.</p>
-<p>The <strong>tangent line</strong> to the curve at P is the line through P with this slope.</p>
-<p>The <strong>derivative</strong> of the function $f(x)$ with respect to the variable x is the function $f’$ whose value at x is</p>
-<p>$$ f’(x) = \lim_{h\rightarrow 0 } \frac{f(x+h) - f(x)}{h} $$</p>
-<p>provided the limit exists.</p>
-<p>The process of calculating a derivative is called <strong>differentiation</strong>.</p>
-<p>求导数的过程叫做<strong>微分</strong>。</p>
-<p>导数存在的条件是表达式的左极限等于右极限，即函数的左导数等于右导数。</p>
-<h4 id="Alternative-Formula-for-the-Derivative"><a href="#Alternative-Formula-for-the-Derivative" class="headerlink" title="Alternative Formula for the Derivative"></a>Alternative Formula for the Derivative</h4><p>$$ f’(x) = \lim_{z\rightarrow x} \frac{f(z)-f(x)}{z-x} $$</p>
-<h4 id="Critical-Point"><a href="#Critical-Point" class="headerlink" title="Critical Point"></a>Critical Point</h4><p>An interior point of the domain of a function $f$ where $f’$ is zero or undefined is a <strong>critical point</strong> of $f$.</p>
-<h4 id="Concave-Up-Concave-Down"><a href="#Concave-Up-Concave-Down" class="headerlink" title="Concave Up, Concave Down"></a>Concave Up, Concave Down</h4><p>The graph of a differentiable function $y=f(x)$ is</p>
-<p><strong>concave up</strong> on an open interval if $f’$ is increasing, $f’’ &gt; 0$</p>
-<p><strong>concave down</strong> on an open interval if $f’$ is decreasing, $f’’ &lt; 0$</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">[<span class="meta">SerializeField</span>] <span class="keyword">private</span> Material sky;</span><br><span class="line">[<span class="meta">SerializeField</span>] <span class="keyword">private</span> Light sun;</span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">SetWeather</span>(<span class="params"><span class="keyword">float</span> <span class="keyword">value</span></span>) </span>&#123;</span><br><span class="line">   	sky.SetFloat (<span class="string">"_Blend"</span>, <span class="keyword">value</span>);</span><br><span class="line">       sun.intensity = _fullIntensity * <span class="keyword">value</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/01/Calculus-Derivatives/#more" rel="contents">
+            <a class="btn" href="/2016/11/29/Unity-SkyboxBlended/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1347,7 +1173,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2018/01/01/Calculus-Continuity/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/29/Unity-InventoryManager/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -1366,7 +1192,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/01/Calculus-Continuity/" itemprop="url">连续</a></h1>
+                <a class="post-title-link" href="/2016/11/29/Unity-InventoryManager/" itemprop="url">Unity-InventoryManager</a></h1>
         
 
         <div class="post-meta">
@@ -1378,8 +1204,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-01T15:50:06+08:00">
-                2018-01-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-29T15:24:21+08:00">
+                2016-11-29
               </time>
             
 
@@ -1410,7 +1236,151 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  185
+                  346
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>数据管理的MVC模式，统一使用场景中的Manager访问数据。<br>Manager是挂载在GameObject下的管理器，管理sub-Managers的启动、读写等。<br>sub-Managers继承接口，分别管理游戏中的不同部分如角色、物品等。</p>
+<h4 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h4><figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">   <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IGameManager</span> &#123;</span><br><span class="line">ManagerStatus status &#123; <span class="keyword">get</span>;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Startup</span> (<span class="params"></span>)</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/11/29/Unity-InventoryManager/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/29/Unity-Component/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/29/Unity-Component/" itemprop="url">Unity-Component</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-29T10:48:16+08:00">
+                2016-11-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  189
                 </span>
               
 
@@ -1437,13 +1407,33 @@
       
         
           
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Continuous-at-a-Point"><a href="#Continuous-at-a-Point" class="headerlink" title="Continuous at a Point"></a>Continuous at a Point</h4><p><strong>Interior point</strong>: A function $y = f(x)$ is <strong>continuous at an interior point c</strong> of its domain if</p>
-<p>$$ \lim_{x\rightarrow c} f(x) = f(c) $$</p>
-<p><strong>Endpoint</strong>: A function $y = f(x)$ is <strong>continuous at a left endpoint a</strong> or is <strong>continuous at a right endpoint b</strong> of its domain if</p>
-<p>$$ \lim_{x\rightarrow a^{+}} f(x) = f(a) \, or \, \lim_{x\rightarrow b^{-}} f(x) = f(b) $$</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="Intermediate-Value-Property-介值定理"><a href="#Intermediate-Value-Property-介值定理" class="headerlink" title="Intermediate Value Property(介值定理)"></a>Intermediate Value Property(介值定理)</h4><p>A function $y = f(x)$ that is continuous on a closed interval $[a,b]$ takes on every value between $f(a)$ and $f(b)$. In other words, if $y_{0}$ is any value between $f(a)$ and $f(b)$, the $y_{0} = f(c)$ for some c in $[a,b]$.</p>
-<p>若$f(x)$在$[a,b]$上连续，对$(f(a), f(b))$中的任意y，存在c，使得$f(c) = y$.</p>
-<p>若$f(x)$在区间内连续且有正负值，且方程$f(x) = 0$在区间内必有解。</p>
+            <p>Component is base class for everything attached to GameObjects.</p>
+<h4 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h4><ul>
+<li>gameObject: The game object which the component is attached to. Always not null.</li>
+<li>tag</li>
+<li>transform: The transform attached to gameObject.</li>
+</ul>
+<h4 id="Public-Functions"><a href="#Public-Functions" class="headerlink" title="Public Functions"></a>Public Functions</h4><ul>
+<li>CompareTag    Is this game object tagged with tag ?</li>
+</ul>
+<h6 id="GetComponent"><a href="#GetComponent" class="headerlink" title="GetComponent"></a>GetComponent</h6><ul>
+<li>GetComponent    Returns the component of Type type if the game object has one attached, null if it doesn’t.</li>
+<li>GetComponentInChildren    Returns the component of Type type in the GameObject or any of its children using depth first search.</li>
+<li>GetComponentInParent    Returns the component of Type type in the GameObject or any of its parents.</li>
+<li>GetComponents    Returns all components of Type type in the GameObject.</li>
+<li>GetComponentsInChildren    Returns all components of Type type in the GameObject or any of its children.</li>
+<li>GetComponentsInParent    Returns all components of Type type in the GameObject or any of its parents.</li>
+</ul>
+<h6 id="Message"><a href="#Message" class="headerlink" title="Message"></a>Message</h6><ul>
+<li>BroadcastMessage    Calls the method named methodName on every MonoBehaviour in this game object or any of its children.</li>
+<li>SendMessage    Calls the method named methodName on every MonoBehaviour in this game object.</li>
+<li>SendMessageUpwards    Calls the method named methodName on every MonoBehaviour in this game object and on every ancestor of the behaviour.</li>
+</ul>
+<p><strong>SendMessageOptions</strong></p>
+<ul>
+<li>RequireReceiver</li>
+<li>DontRequireReceiver</li>
+</ul>
 
           
         
@@ -1492,7 +1482,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/30/Calculus-Limit/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/29/Unity-Physics/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -1511,7 +1501,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/30/Calculus-Limit/" itemprop="url">极限</a></h1>
+                <a class="post-title-link" href="/2016/11/29/Unity-Physics/" itemprop="url">Unity-Physics</a></h1>
         
 
         <div class="post-meta">
@@ -1523,8 +1513,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-30T09:57:51+08:00">
-                2017-12-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-29T10:29:59+08:00">
+                2016-11-29
               </time>
             
 
@@ -1555,7 +1545,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  534
+                  542
                 </span>
               
 
@@ -1582,41 +1572,505 @@
       
         
           
-            <h2 id="DEFINITION"><a href="#DEFINITION" class="headerlink" title="DEFINITION"></a>DEFINITION</h2><h4 id="Limit-of-a-Function"><a href="#Limit-of-a-Function" class="headerlink" title="Limit of a Function"></a>Limit of a Function</h4><p>Let $f(x)$ be defined on an open interval about $x_{0}$, except possibly at $x_{0}$ itself. We say that the <strong>limit of $f(x)$ as $x$ approaches $x_{0}$ is the number $L$ </strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $\delta &gt; 0$ such that for all x,</p>
-<p>$$ 0 &lt; \left | x - x_{0} \right | &lt; \delta \Rightarrow \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>对任意小的正数 $\epsilon$，都可以找到一个区间，在这个区间内 $\left | f(x) - L \right | &lt; \epsilon $</p>
-<p>由定义可以证明加法律、乘法律等运算规则。</p>
-<h4 id="One-Sided-Limits"><a href="#One-Sided-Limits" class="headerlink" title="One-Sided Limits"></a>One-Sided Limits</h4><p>1.We say that $f(x)$ has <strong>right-hand limit $L$ at $x_{0}$</strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}^{+}} f(x) = L $$</p>
-<p>if for every number $\epsilon &gt; 0$ there exists a corresponding number $\delta &gt; 0$ such that for all x</p>
-<p>$$ x_{0} &lt; x &lt; x_{0} + \delta \Rightarrow \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>2.We say that $f(x)$ has <strong>left-hand limit $L$ at $x_{0}$</strong>, and write</p>
-<p>$$ \lim_{x\rightarrow x_{0}^{-}} f(x) = L $$</p>
-<p>if for every number $\epsilon &gt; 0$ there exists a corresponding number $\delta &gt; 0$ such that for all x</p>
-<p>$$ x_{0} - \delta &lt; x &lt; x_{0}   \Rightarrow   \left | f(x) - L \right | &lt; \epsilon $$</p>
-<p>3.当左右极限相等时，在该点有函数极限。</p>
-<p>A function $f(x)$ has a limit as $x$ approaches $c$ if and only if it has left-hand and right-hand limits there and these one-sided limits are equal:</p>
-<p>$$ \lim_{x\rightarrow c} f(x) = L \Leftrightarrow \lim_{x\rightarrow c^{-}} f(x) = L \; and \; \lim{x\rightarrow c^{+}} f(x) = L $$</p>
-<h4 id="Limit-as-x-approaches-∞-or-∞"><a href="#Limit-as-x-approaches-∞-or-∞" class="headerlink" title="Limit as x approaches ∞ or -∞"></a>Limit as x approaches ∞ or -∞</h4><ol>
-<li>We say that $f(x)$ has the <strong>limit $L$ as $x$ approaches infinity</strong> and write</li>
-</ol>
-<p>$$ \lim_{x\rightarrow ∞} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $M$ such that for all $x$</p>
-<p>$$ x &gt; M \Rightarrow \left |f(x) - L \right | &lt; \epsilon $$</p>
-<p>对任意小的正数$\epsilon$，都可以找到区间$(M, ∞)$，在这个区间内 $\left |f(x) - L \right | &lt; \epsilon$</p>
+            <p>Global physics properties and helper methods.</p>
+<h4 id="Static-Variables"><a href="#Static-Variables" class="headerlink" title="Static Variables"></a>Static Variables</h4><ul>
+<li>AllLayers    Layer mask constant to select all layers.</li>
+<li>bounceThreshold    Two colliding objects with a relative velocity below this will not bounce (default 2). Must be positive.</li>
+<li>defaultContactOffset    The default contact offset of the newly created colliders.</li>
+<li>DefaultRaycastLayers    Layer mask constant to select default raycast layers.</li>
+<li>defaultSolverIterations    The defaultSolverIterations determines how accurately Rigidbody joints and collision contacts are resolved. (default 6). Must be positive.</li>
+<li>defaultSolverVelocityIterations    The defaultSolverVelocityIterations affects how how accurately Rigidbody joints and collision contacts are resolved. (default 1). Must be positive.</li>
+<li>gravity    The gravity applied to all rigid bodies in the scene.</li>
+<li>IgnoreRaycastLayer    Layer mask constant to select ignore raycast layer.</li>
+<li>queriesHitTriggers    Specifies whether queries (raycasts, spherecasts, overlap tests, etc.) hit Triggers by default.</li>
+<li>sleepThreshold    The mass-normalized energy threshold, below which objects start going to sleep.</li>
+</ul>
+<h4 id="Static-Functions"><a href="#Static-Functions" class="headerlink" title="Static Functions"></a>Static Functions</h4><h6 id="Cast-out-hit"><a href="#Cast-out-hit" class="headerlink" title="Cast(out hit)"></a>Cast(out hit)</h6><ul>
+<li>Raycast    Casts a ray, from point origin, in direction direction, of length maxDistance, against all colliders in the scene.</li>
+<li>RaycastAll    Casts a ray through the scene and returns all hits. Note that order is not guaranteed.</li>
+<li>RaycastNonAlloc    Cast a ray through the scene and store the hits into the buffer.</li>
+<li>SphereCast    Casts a sphere along a ray and returns detailed information on what was hit.</li>
+<li>SphereCastAll    Like Physics.SphereCast, but this function will return all hits the sphere sweep intersects.</li>
+<li>SphereCastNonAlloc    Cast sphere along the direction and store the results into buffer.</li>
+<li>BoxCast    Casts the box along a ray and returns detailed information on what was hit.</li>
+<li>BoxCastAll    Like Physics.BoxCast, but returns all hits.</li>
+<li>BoxCastNonAlloc    Cast the box along the direction, and store hits in the provided buffer.</li>
+<li>Linecast    Returns true if there is any collider intersecting the line between start and end.</li>
+<li>CapsuleCast    Casts a capsule against all colliders in the scene and returns detailed information on what was hit.</li>
+<li>CapsuleCastAll    Like Physics.CapsuleCast, but this function will return all hits the capsule sweep intersects.</li>
+<li>CapsuleCastNonAlloc    Casts a capsule against all colliders in the scene and returns detailed information on what was hit into the buffer.</li>
+</ul>
+<h6 id="Overlap-return-colliders"><a href="#Overlap-return-colliders" class="headerlink" title="Overlap(return colliders)"></a>Overlap(return colliders)</h6><ul>
+<li>OverlapBox    Find all colliders touching or inside of the given box.</li>
+<li>OverlapBoxNonAlloc    Find all colliders touching or inside of the given box, and store them into the buffer.</li>
+<li>OverlapCapsule    Check the given capsule against the physics world and return all overlapping colliders.</li>
+<li>OverlapCapsuleNonAlloc    Check the given capsule against the physics world and return all overlapping colliders in the user-provided buffer.</li>
+<li>OverlapSphere    Returns an array with all colliders touching or inside the sphere.</li>
+<li>OverlapSphereNonAlloc    Computes and stores colliders touching or inside the sphere into the provided buffer.</li>
+</ul>
+<h6 id="Check-return-bool"><a href="#Check-return-bool" class="headerlink" title="Check(return bool)"></a>Check(return bool)</h6><ul>
+<li>CheckBox    Check whether the given box overlaps with other colliders or not.</li>
+<li>CheckCapsule    Checks if any colliders overlap a capsule-shaped volume in world space.</li>
+<li>CheckSphere    Returns true if there are any colliders overlapping the sphere defined by position and radius in world coordinates.</li>
+</ul>
+<h6 id="Ignore"><a href="#Ignore" class="headerlink" title="Ignore"></a>Ignore</h6><ul>
+<li>GetIgnoreLayerCollision    Are collisions between layer1 and layer2 being ignored?</li>
+<li>IgnoreCollision    Makes the collision detection system ignore all collisions between collider1 and collider2.</li>
+<li>IgnoreLayerCollision    Makes the collision detection system ignore all collisions between any collider in layer1 and any collider in layer2.Note that IgnoreLayerCollision will reset the trigger state of affected colliders, so you might receive OnTriggerExit and OnTriggerEnter messages in response to calling this.</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/28/Unity-RelativeMove/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/28/Unity-RelativeMove/" itemprop="url">Unity-RelativeMove</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-28T16:15:44+08:00">
+                2016-11-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  529
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>第三人称游戏中，控制角色移动、转向等。</p>
+<p>1.角色转向。角色将旋转至相对于摄像机的朝向，即面向摄像机的左右。<br>2.水平移动。使用CharacterController，限制移动速度。<br>3.垂直移动。CharacterController胶囊体判断落地有误差，故使用RayCast判断是否落地。<br>当射线未检测到地面，而胶囊体触地时表明卡在平台边缘，需要调整速度离开边缘。<br>角色站在地面上时也要有向下的速度，按在地面上，以通过凹凸不平的地表。<br>限制垂直速度。<br>4.移动动画。在合适的位置向Animator传递参数而不是直接控制动画播放，更好地解耦。</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">   <span class="keyword">using</span> UnityEngine;</span><br><span class="line">   <span class="keyword">using</span> System.Collections;</span><br><span class="line"></span><br><span class="line">   [<span class="meta">RequireComponent(typeof(CharacterController))</span>]</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RelativeMovement</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">[<span class="meta">SerializeField</span>] <span class="keyword">private</span> Transform target;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> rotSpeed = <span class="number">1.5</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> moveSpeed = <span class="number">6.0</span>f;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> jumpSpeed = <span class="number">15.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> gravity = <span class="number">-9.8</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> terminalVelocity = <span class="number">-10.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> minFall = <span class="number">-1.5</span>f;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">float</span> _vertSpeed;</span><br><span class="line"><span class="keyword">private</span> CharacterController _charController;</span><br><span class="line"><span class="keyword">private</span> ControllerColliderHit _contact;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Animator _animator;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	_charController = GetComponent&lt;CharacterController&gt; ();</span><br><span class="line">	_vertSpeed = minFall;</span><br><span class="line">	_animator = GetComponent&lt;Animator&gt; ();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	Vector3 movement = Vector3.zero;</span><br><span class="line">	<span class="keyword">bool</span> hitGround = <span class="literal">false</span>;</span><br><span class="line">	RaycastHit hit;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">float</span> horInput = Input.GetAxis (<span class="string">"Horizontal"</span>);</span><br><span class="line">	<span class="keyword">float</span> verInput = Input.GetAxis (<span class="string">"Vertical"</span>);</span><br><span class="line">	<span class="keyword">if</span> (horInput != <span class="number">0</span> || verInput != <span class="number">0</span>) &#123;</span><br><span class="line">		movement.x = horInput * moveSpeed;</span><br><span class="line">		movement.z = verInput * moveSpeed;</span><br><span class="line">		movement = Vector3.ClampMagnitude (movement, moveSpeed);</span><br><span class="line">		_animator.SetFloat (<span class="string">"Speed"</span>, movement.sqrMagnitude);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 使角色相对于摄像机朝向不同的方向，比如输入“左”，将“左”根据摄像机角度转向，角色将转向“摄像机的左边”</span></span><br><span class="line">		Quaternion temp = target.rotation;</span><br><span class="line">		target.eulerAngles = <span class="keyword">new</span> Vector3 (<span class="number">0</span>, target.eulerAngles.y, <span class="number">0</span>);</span><br><span class="line">		movement = target.TransformDirection (movement);</span><br><span class="line">		target.rotation = temp;</span><br><span class="line"></span><br><span class="line">		Quaternion direction = Quaternion.LookRotation (movement);</span><br><span class="line">		transform.rotation = Quaternion.Lerp (transform.rotation, direction, rotSpeed);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 射线投射，检测是否触地</span></span><br><span class="line">	<span class="keyword">if</span> (_vertSpeed &lt; <span class="number">0</span> &amp;&amp; Physics.Raycast (transform.position, Vector3.down, <span class="keyword">out</span> hit)) &#123;</span><br><span class="line">		<span class="keyword">float</span> check = (_charController.height + _charController.radius) / <span class="number">1.9</span>f;</span><br><span class="line">		hitGround = hit.distance &lt;= check;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 跳跃</span></span><br><span class="line">	<span class="keyword">if</span> (hitGround) &#123;</span><br><span class="line">		<span class="keyword">if</span> (Input.GetButtonDown (<span class="string">"Jump"</span>)) &#123;</span><br><span class="line">			_vertSpeed = jumpSpeed;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			_vertSpeed = minFall;</span><br><span class="line">			_animator.SetBool (<span class="string">"Jumping"</span>, <span class="literal">false</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		_vertSpeed += gravity * <span class="number">5</span> * Time.deltaTime;</span><br><span class="line">		<span class="keyword">if</span> (_vertSpeed &lt; terminalVelocity) &#123;</span><br><span class="line">			_vertSpeed = terminalVelocity;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (_contact != <span class="literal">null</span>) &#123;</span><br><span class="line">			_animator.SetBool (<span class="string">"Jumping"</span>, <span class="literal">true</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 射线未检测到地面，控制器触地，代表平台边缘</span></span><br><span class="line">		<span class="keyword">if</span> (_charController.isGrounded) &#123;</span><br><span class="line">			<span class="keyword">if</span> (Vector3.Dot (movement, _contact.normal) &lt; <span class="number">0</span>) &#123; <span class="comment">//  朝向平台移动</span></span><br><span class="line">				movement = _contact.normal * moveSpeed;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123; <span class="comment">// &gt;0 背离平台移动，从平台掉落</span></span><br><span class="line">				movement += _contact.normal * moveSpeed;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	movement.y = _vertSpeed;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 移动角色，永远要乘deltaTime，帧率独立</span></span><br><span class="line">	movement *= Time.deltaTime;</span><br><span class="line">	_charController.Move (movement);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnControllerColliderHit</span>(<span class="params">ControllerColliderHit hit</span>) </span>&#123;</span><br><span class="line">	_contact = hit;</span><br><span class="line">&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/27/Unity-Basic3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/27/Unity-Basic3/" itemprop="url">Unity-Basic3</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-27T16:13:15+08:00">
+                2016-11-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  597
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>1.计算场景阴影是计算机图形学中特别耗时的部分之一，所以游戏往往以不同的方式偷工减料。</p>
+<p>2.Normals（法线）是垂直于多边形的方向向量，它将多边形的朝向告诉计算机。这个朝向用于光照计算。<br>导入模型时，Normals的默认设置是import，但是个别模型无法正确定义法线并将以奇怪的方式对光照做出反应。<br>修改设置为Calculate，可以让Unity为每个多边形重新计算方向向量。</p>
+<p>3.LightMap（光照贴图）是应用到平面几何体的贴图，贴图中烘焙了阴影。</p>
+<p>4.LateUpdate()每一帧都被调用。在Update()方法调用所有对象后才执行LateUpdate()，确保在目标移动之后再更新摄像机。</p>
+<p>5.不同游戏对数据管理的需求不同。不要认为对于Unity都需要强制使用规则“每个游戏必须使用这样或那样的模式”。</p>
+<p>6.放置在Resources目录中的资源可以使用Resources.load()方法来动态加载。其他目录只能通过Unity编辑器放置到场景中。</p>
+<p>7.推荐使用的图片格式：PNG和TGA<br>推荐使用的3D格式：首选FBX，其次Collada(DAE)，含有网格和动画。OBJ是文本格式，只有网格。</p>
+<p>8.出于技术上的有效性，图形芯片希望处理2的N次幂的贴图：4,8,16,32,64,128,256,512,1024,2056</p>
+<p>9.Texture经过Shader处理才能生成Material，即Texture + Shader = Material。不同Shader里，Texture的组织方式不同。</p>
+<p>10.Texture WrapMode 包裹模式<br>Repeat 重复平铺<br>Clamp 强制贴图边界拉伸</p>
+<p>11.Unity中有一些用于文件夹名字的关键字，这些特殊文件夹中的文件会以特殊的方式处理。<br>这些特殊关键字为Resources、Plugins、Editor和Gizmos。</p>
+<p>12.Additive着色器将粒子颜色叠加，而不替换。让像素更明亮。<br>Multiply着色器将灰度相乘？让像素变得更暗，叠加黑色则变为黑色，叠加白色不影响。</p>
+<p>13.Particle Simulation Space：一般静止时使用Local,移动时使用World；视情况而定<br>比如火车顶部的烟，粒子运动轨迹为竖直向上。火车移动时粒子若使用Local坐标，则为竖直向上；使用world坐标则随风飘散。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/27/Unity-Messanger/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/27/Unity-Messanger/" itemprop="url">Unity-Messanger</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-27T15:24:22+08:00">
+                2016-11-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  120
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="全局广播"><a href="#全局广播" class="headerlink" title="全局广播"></a>全局广播</h4><p>用于UI与游戏通信等</p>
 <ol>
-<li>We say that $f(x)$ has the <strong>limit $L$ as $x$ approaches minus infinity</strong> and write</li>
+<li><p>import Messenger.cs</p>
+</li>
+<li><p>set up GameEvent</p>
+</li>
 </ol>
-<p>$$ \lim_{x\rightarrow -∞} f(x) = L $$</p>
-<p>if, for every number $\epsilon &gt; 0$, there exists a corresponding number $N$ such that for all $x$</p>
-<p>$$ x &lt; N \Rightarrow \left |f(x) - L \right | &lt; \epsilon $$</p>
-<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Sandwich-Theorem-夹逼定理"><a href="#The-Sandwich-Theorem-夹逼定理" class="headerlink" title="The Sandwich Theorem(夹逼定理)"></a>The Sandwich Theorem(夹逼定理)</h4><p>Suppose that $g(x)\leqslant f(x)\leqslant h(x)$ for all $x$ in some open interval containing $c$, except possibly at $x = c$ itself. Suppose also that</p>
-<p>$$\lim_{x\rightarrow c} g(x) = \lim_{x\rightarrow c} h(x) = L$$</p>
-<p>Then $\lim_{x\rightarrow c} f(x) = L$</p>
-<h4 id="函数-frac-sin-theta-theta"><a href="#函数-frac-sin-theta-theta" class="headerlink" title="函数$\frac{sin\theta}{\theta}$"></a>函数$\frac{sin\theta}{\theta}$</h4><p>$$ \lim_{\theta\rightarrow 0}\frac{sin\theta}{\theta} = 1    (\theta \, in \, radians) $$</p>
-<p>因为 $ cos\theta &lt; \frac{sin\theta}{\theta} &lt; 1$，由夹逼定理可证。</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">GameEvent</span> &#123;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> ENEMY_HIT = <span class="string">"ENEMY_HIT"</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">string</span> SPEED_CHANGED = <span class="string">"SPEED_CHANGED"</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>add listener</li>
+</ol>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	Messenger&lt;<span class="keyword">float</span>&gt;.AddListener (GameEvent.SPEED_CHANGED, OnSpeedChanged);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Destroy</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	Messenger&lt;<span class="keyword">float</span>&gt;.RemoveListener (GameEvent.SPEED_CHANGED, OnSpeedChanged);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnSpeedChanged</span>(<span class="params"><span class="keyword">float</span> <span class="keyword">value</span></span>) </span>&#123;</span><br><span class="line">	speed = baseSpeed * <span class="keyword">value</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>broadcast message</p>
+<p> Messenger<float>.Broadcast (GameEvent.SPEED_CHANGED, speed);</float></p>
+</li>
+</ol>
+<h4 id="点对点"><a href="#点对点" class="headerlink" title="点对点"></a>点对点</h4><ol>
+<li>脚本定义接到通知后的操作方法，operateFunction()</li>
+<li>将脚本添加到目标物体objectA</li>
+<li>取得objectA的组件引用，例如colliderA</li>
+<li>使用colliderA.SendMessage(“operateFunction”, options)</li>
+</ol>
 
           
         
@@ -1665,7 +2119,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/29/ML-LinearRegression/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/27/Unity-EventSystem/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -1684,7 +2138,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/29/ML-LinearRegression/" itemprop="url">线性回归</a></h1>
+                <a class="post-title-link" href="/2016/11/27/Unity-EventSystem/" itemprop="url">Unity-EventSystem</a></h1>
         
 
         <div class="post-meta">
@@ -1696,8 +2150,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T10:19:17+08:00">
-                2017-12-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-27T10:51:48+08:00">
+                2016-11-27
               </time>
             
 
@@ -1728,7 +2182,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  237
+                  160
                 </span>
               
 
@@ -1755,327 +2209,23 @@
       
         
           
-            <h4 id="Boston房价预测"><a href="#Boston房价预测" class="headerlink" title="Boston房价预测"></a>Boston房价预测</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_boston</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> SGDRegressor</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> r2_score, mean_square_error, mean_absolute_error</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入数据</span></span><br><span class="line">boston = load_boston()</span><br><span class="line">X = boston.data</span><br><span class="line">y = boston.target</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=<span class="number">33</span>, test_size=<span class="number">0.25</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化，由于y不再是0和1，也需要标准化</span></span><br><span class="line">ss_X = StandardScaler()</span><br><span class="line">ss_y = StandardScaler()</span><br><span class="line">X_train = ss_X.fit_transform(X_train)</span><br><span class="line">X_test = ss_X.transform(X_test)</span><br><span class="line">y_train = ss_y.fit_transform(y_train)</span><br><span class="line">y_test = ss_y.transform(y_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析法训练参数</span></span><br><span class="line">lr = LinearRegression()</span><br><span class="line">lr.fit(X_train, y_train)</span><br><span class="line">lr_y_predict = lr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度下降法训练参数</span></span><br><span class="line">sgdr = SGDRegressor()</span><br><span class="line">sgdr.fit(X_train, y_train)</span><br><span class="line">sgdr_y_predict = sgdr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">lr.score(X_test, y_test)</span><br><span class="line">r2_score(y_test, lr_y_predict)</span><br><span class="line">mean_square_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(lr_y_predict))</span><br><span class="line">mean_absolute_error(ss_y.inverse_transform(y_test), ss_y.inverse_transform(lr_y_predict))</span><br></pre></td></tr></table></figure>
-<p>随机梯度下降法训练出的模型，预测精度不如解析法(Normal Equation?)训练出的模型。<br>但是计算量小，消耗时间少。<br>根据Scikit-learn官网的建议，在数据规模超过10万时，推荐使用随机梯度法估计参数模型。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/29/ML-ModelAssemble/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/29/ML-ModelAssemble/" itemprop="url">模型集成</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T09:40:42+08:00">
-                2017-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  450
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>模型集成是通过使用多个模型，获得比单独模型更好的预测效果。<br>在Kaggle比赛中，排名靠前的解决方案里几乎都能看到模型集成的方法。<br>模型集成会带来额外的计算资源消耗，虽然对竞赛不成问题，但应用在线上生产环境时要慎重。</p>
-<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>集成方法有两种：</p>
-<ul>
-<li>并行：多个模型同步进行，通过投票的方式得出最终的分类决策。例如随机森林，同时搭建多棵决策树，每棵决策树随机选取特征作为节点。</li>
-<li>串行：按照一定次序搭建多个模型，模型间存在依赖关系。每一个后续模型的加入都需要对现有模型的性能提升有贡献。例如梯度提升决策树(Gradient Tree Boosting)</li>
+            <p>EventSystem组件主要负责处理输入、射线投射以及发送事件。一个场景中只能有一个EventSystem组件，并且需要BaseInputModule类型组件的协助才能工作。</p>
+<h4 id="Static-Variables"><a href="#Static-Variables" class="headerlink" title="Static Variables"></a>Static Variables</h4><ul>
+<li>current    Return the current EventSystem.</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 随机森林模型</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier</span><br><span class="line">rfc = RandomForestClassifier()</span><br><span class="line">rfc.fit(X_train, y_train)</span><br><span class="line">rfc_y_pred = rfc.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度提升决策树</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingClassifier</span><br><span class="line">gbc = GradientBoostingClassfier()</span><br><span class="line">gbc.fit(X_train, y_train)</span><br><span class="line">gbc_y_pred = gbc.predict(X_test)</span><br></pre></td></tr></table></figure>
-<p>随机森林分类模型一般作为基线系统(Baseline System)，用于和其他模型的性能比较。<br>集成模型训练参数需要更多的时间，往往也有更好的性能和稳定性。</p>
-<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><p>与分类集成的思路相同。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 随机森林</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestRegressor</span><br><span class="line">rfr = RandomForestRegressor()</span><br><span class="line">rfr.fit(X_train, y_train)</span><br><span class="line">rfr_y_predict = rfr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 极端森林</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> ExtraTreesRegressor</span><br><span class="line">etr = ExtraTreesRegressor()</span><br><span class="line">etr.fit(X_train, y_train)</span><br><span class="line">etr_y_predict = etr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 梯度提升</span></span><br><span class="line"><span class="comment"># **性能最佳**</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingRegressor</span><br><span class="line">gbr = GradientBoostingRegressor()</span><br><span class="line">gbr.fit(X_train, y_train)</span><br><span class="line">gbr_y_predict = gbr.predict(X_test)</span><br></pre></td></tr></table></figure>
-<p>极端随机森林(Extremely Randomized Trees)在构建每棵树的分裂节点时，先随机收集一部分特征，然后利用信息熵和基尼不纯性等指标挑选最佳的节点特征。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/28/ML-DecisioinTree/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/28/ML-DecisioinTree/" itemprop="url">决策树</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T14:22:31+08:00">
-                2017-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  606
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>决策树实际上是将空间用超平面进行划分的一种方法。<br><img src="/img/DecisionTree.png"></p>
-<h6 id="决策树算法三要素"><a href="#决策树算法三要素" class="headerlink" title="决策树算法三要素"></a>决策树算法三要素</h6><ul>
-<li>特征选择：信息增益，信息增益率，基尼指数等</li>
-<li>决策树生成：</li>
-<li>决策树剪枝</li>
+<h4 id="Variables"><a href="#Variables" class="headerlink" title="Variables"></a>Variables</h4><ul>
+<li>alreadySelecting    Returns true if the EventSystem is already in a SetSelectedGameObject.</li>
+<li>currentInputModule    The currently active BaseInputModule.</li>
+<li>currentSelectedGameObject    The GameObject currently considered active by the EventSystem.</li>
+<li>firstSelectedGameObject    The GameObject that was selected first.</li>
+<li>pixelDragThreshold    The soft area for dragging in pixels.</li>
+<li>sendNavigationEvents    Should the EventSystem allow navigation events (move / submit / cancel).</li>
 </ul>
-<h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><h4 id="1-ID3"><a href="#1-ID3" class="headerlink" title="1. ID3"></a>1. ID3</h4><p>使用信息增益选择特征，递归地构建决策树。<br>从根节点开始，对节点计算所有可能的特征的信息增益，选择信息增益最大的特征作为节点的特征，由该特征的不同取值建立子节点；再对子节点递归调用以上方法，构建决策树。直到所有特征的信息增益均很小或没有特征可以选择为止。</p>
-<h6 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h6><ul>
-<li>偏向于选择分支比较多的特征，即取值多的特征</li>
-<li>不能处理连续特征</li>
-</ul>
-<h4 id="2-C4-5"><a href="#2-C4-5" class="headerlink" title="2. C4.5"></a>2. C4.5</h4><p>相对ID3有以下几个改进：</p>
-<ul>
-<li>使用信息增益率选择特征</li>
-<li>在决策树的构造过程中对树剪枝</li>
-<li>能够处理非离散数据</li>
-<li>能够处理不完整数据</li>
-</ul>
-<h4 id="3-CART"><a href="#3-CART" class="headerlink" title="3. CART"></a>3. CART</h4><p>使用Gini指数选择特征。<br>计算每个子集的的不纯度，选取其中最小的作为树的分支。<br>是二叉树。</p>
-<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><h4 id="1-分类"><a href="#1-分类" class="headerlink" title="1. 分类"></a>1. 分类</h4><p>使用不同特征组合搭建多层决策树，非线性模型。<br>考虑特征节点的选取顺序时，常用的度量方式包括信息熵(Information Gain)和基尼不纯性(Gini Impurity)。<br>决策树的推断逻辑非常直观，具有清晰的可解释性。<br>在使用时，无需将数据标准化。<br>决策树属于有参数模型，需要花费时间用于训练数据。</p>
-<h6 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line"></span><br><span class="line">dtc = DecisionTreeClassifier()</span><br><span class="line">dtc.fit(X_train, y_train)</span><br><span class="line">y_predict = dtc.predict(X_test)</span><br></pre></td></tr></table></figure>
-<h4 id="2-回归"><a href="#2-回归" class="headerlink" title="2. 回归"></a>2. 回归</h4><p>回归树叶节点的数据类型不是离散型，而是连续型。<br>严格地讲，回归树不能称为“回归算法”，因为返回的是若干训练数据的均值，而不是连续值。</p>
-<h6 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h6><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeRegressor</span><br><span class="line"></span><br><span class="line">dtr = DecisionTreeRegressor()</span><br><span class="line">dtr.fit(X_train, y_train)</span><br><span class="line">dtr_y_predict = dtr.predict(X_test)</span><br></pre></td></tr></table></figure>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
-<li>可以解决非线性问题</li>
-<li>不要求特征标准化</li>
-<li>决策过程直观，结果易解释</li>
-</ul>
-<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><ul>
-<li>容易过拟合</li>
-<li>稳定性差，数据的细微改变可能引起树结构的较大改变</li>
-<li>依托训练数据构建最佳的树模型是NP难问题，在有限时间内无法找到最优解</li>
+<h4 id="Public-Functions"><a href="#Public-Functions" class="headerlink" title="Public Functions"></a>Public Functions</h4><ul>
+<li>IsPointerOverGameObject    Is the pointer with the given id over an EventSystem object?</li>
+<li>RaycastAll    Raycast into the scene using all configured BaseRaycasters.</li>
+<li>SetSelectedGameObject    Set the object as selected. Will send an OnDeselect the the old selected object and OnSelect to the new selected object.</li>
+<li>UpdateModules    Recalculate the internal list of BaseInputModules.</li>
 </ul>
 
           
@@ -2125,7 +2275,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/28/ML-KNN/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/27/Unity-Anchors/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -2144,7 +2294,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/28/ML-KNN/" itemprop="url">k近邻</a></h1>
+                <a class="post-title-link" href="/2016/11/27/Unity-Anchors/" itemprop="url">Unity-Anchors</a></h1>
         
 
         <div class="post-meta">
@@ -2156,8 +2306,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T14:03:55+08:00">
-                2017-12-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-27T10:27:03+08:00">
+                2016-11-27
               </time>
             
 
@@ -2188,7 +2338,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  334
+                  165
                 </span>
               
 
@@ -2215,12 +2365,8 @@
       
         
           
-            <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>kNN(k Nearest Neighbour)寻找与待分类样本在特征空间中距离最近的K个已标记样本作为参考。</p>
-<h4 id="Iris花朵分类"><a href="#Iris花朵分类" class="headerlink" title="Iris花朵分类"></a>Iris花朵分类</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入数据</span></span><br><span class="line">iris = load_iris()</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化</span></span><br><span class="line">ss = StandardScaler()</span><br><span class="line">X_train = ss.fit_transform(X_train)</span><br><span class="line">X_test = ss.transform(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型并预测</span></span><br><span class="line">knc = KNeighborsClassifier()</span><br><span class="line">knc.fit(X_train, y_train)</span><br><span class="line">y_predict = knc.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">knc.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, y_predict, target_names=iris.target_names)</span><br></pre></td></tr></table></figure>
-<p>k近邻算法没有参数训练过程，属于无参数模型(Nonparametric Model)中非常简单的一种。<br>也就是说，并没有使用学习算法分析训练数据，而只是根据样本的分布直接作出分类决策。<br>由于需要对内存中的样本逐一计算距离，具有平方级的计算复杂度，内存消耗大。</p>
-<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><p>使用样本周围k个最近的训练样本的目标数值，得出预测值。<br>可以使用普通的算术平均算法，也可以考虑距离的差异进行加权平均。</p>
-<h4 id="预测房价"><a href="#预测房价" class="headerlink" title="预测房价"></a>预测房价</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbours <span class="keyword">import</span> KNeighborsRegressor</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用算术平均</span></span><br><span class="line">uni_knr = KNeighborsRegressor(weights=<span class="string">'uniform'</span>)</span><br><span class="line">uni_knr.fit(X_train, y_train)</span><br><span class="line">uni_knr_y_predict = uni_knr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用距离加权</span></span><br><span class="line">dis_knr = KNeighborsRegressor(weights=<span class="string">'distance'</span>)</span><br><span class="line">dis_knr.fit(X_train, y_train)</span><br><span class="line">dis_knr_y_predict = dis_knr.predict(X_test_)</span><br></pre></td></tr></table></figure>
-<p>与KNN分类一样，属于无参数模型。</p>
+            <h4 id="Anchors"><a href="#Anchors" class="headerlink" title="Anchors"></a>Anchors</h4><p>一组4个点，定义UI元素的边角位置。<br>所有UI对象都有锚点(anchor)，锚点组成一个矩形，坐标归一化，代表“在父对象中的相对位置”。<br>UI元素的位置(minX, maxX, minY, maxY)表示为，“到四个锚点的相对距离”。<br>当父元素的大小改变时，锚点的位置改变，子元素的大小随之改变，从而实现等比例缩放。</p>
+<h4 id="Pivot"><a href="#Pivot" class="headerlink" title="Pivot"></a>Pivot</h4><p>1个点，定义UI元素的变换中心。<br>以0~1的数字表示，代表在UI元素中的位置百分比。<br>当实现旋转、缩放时，将以pivot点为轴。<br>Transform里Position是Pivot的位置。</p>
 
           
         
@@ -2269,7 +2415,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/27/ML-NaiveBayes/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/23/Unity-SphereCast/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -2288,7 +2434,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/27/ML-NaiveBayes/" itemprop="url">朴素贝叶斯分类器</a></h1>
+                <a class="post-title-link" href="/2016/11/23/Unity-SphereCast/" itemprop="url">Unity-SphereCast</a></h1>
         
 
         <div class="post-meta">
@@ -2300,8 +2446,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T14:33:15+08:00">
-                2017-12-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-23T17:43:32+08:00">
+                2016-11-23
               </time>
             
 
@@ -2332,7 +2478,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  496
+                  227
                 </span>
               
 
@@ -2359,14 +2505,15 @@
       
         
           
-            <p>朴素贝叶斯(Naive Bayes)分类器基于贝叶斯理论，不再有线性关系假设。</p>
-<p>$$P(y|\textbf{x}) = \frac{P(\textbf{x}|y)P(y)}{P(\textbf{x})}$$</p>
-<p>其中 $P(\textbf{x})$ 和 $P(y)$ 分别是特征值（单词）和类别（新闻分类）的先验概率，为固定值。<br>分类的依据取决于 $P(\textbf{x}|y)$.<br>因而引入基本<strong>数学假设</strong>：各个维度上的特征被分类的条件概率之间是相互独立的，即</p>
-<p>$$ P(\textbf{x}|y) = P(x_{1},x_{2},\cdot \cdot \cdot x_{n}|y) = P(x_{1}|y)P(x_{2}|y) \cdot \cdot \cdot P(x_{n}|y) $$</p>
-<p>问题转化为统计各个类别（新闻分类）里特征值（单词）的出现频率，即 $P(x_{i}|y)$<br>该方法由这个特征独立的假设而被称为”Naive”。</p>
-<p>朴素贝叶斯模型有着广泛的实际应用场景，特别是在文本分类的任务里，如互联网新闻分类、垃圾邮件筛选等。<br>在文本分类中，特征是文字而不是数字，不适合使用线性分类模型。</p>
-<h4 id="新闻分类"><a href="#新闻分类" class="headerlink" title="新闻分类"></a>新闻分类</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.dataset <span class="keyword">import</span> fetch_20newsgroups</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer</span><br><span class="line"><span class="keyword">from</span> sklearn.naive_bayes <span class="keyword">import</span> MultinomialNB</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用新闻样例数据</span></span><br><span class="line">news = fetch_20newsgroups(subset=<span class="string">'all'</span>)</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(news.data, news.target, test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 特征抽取，文本特征向量化</span></span><br><span class="line">vec = CountVectorizer()</span><br><span class="line">X_train = vec.fit_transfrom(X_train)</span><br><span class="line">X_test = vec.transform(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型并用于预测</span></span><br><span class="line">mnb = MultinomialNB()</span><br><span class="line">mnb.fit(X_train, y_train)</span><br><span class="line">y_predict = mnb.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">mnb.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, y_predict, target_names=news.target_names)</span><br></pre></td></tr></table></figure>
-<p>由于朴素贝叶斯较强的特征条件独立假设，使模型需要估计的参数规模从幂指数级向线性量级减少，极大地节约了内存消耗和计算时间。<br>同时，这种假设限制了将特征之间的关联考量在内，因而在特征关联性较强的分类任务里性能不佳。<br>朴素贝叶斯模型广泛应用于海量互联网文本分类任务。</p>
+            <p>Casts a sphere along a ray and returns detailed information on what was hit.</p>
+<p>This is useful when a Raycast does not give enough precision, because you want to find out if an object of a specific size, such as a character, will be able to move somewhere without colliding with anything on the way. Think of the sphere cast like a thick raycast. In this case the ray is specified by a start vector and a direction.</p>
+<p>Returns true when the sphere intersects any collider.</p>
+<ul>
+<li>public static bool SphereCast(Vector3 origin, float radius, Vector3 direction, out RaycastHit hitInfo, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
+<li>public static bool SphereCast(Ray ray, float radius, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
+<li>public static bool SphereCast(Ray ray, float radius, out RaycastHit hitInfo, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (_alive) &#123;</span><br><span class="line">		transform.Translate (<span class="number">0</span>, <span class="number">0</span>, speed * Time.deltaTime);</span><br><span class="line"></span><br><span class="line">		Ray ray = <span class="keyword">new</span> Ray (transform.position, transform.forward);</span><br><span class="line">		RaycastHit hit;</span><br><span class="line">		<span class="keyword">if</span> (Physics.SphereCast (ray, <span class="number">0.75</span>f, <span class="keyword">out</span> hit)) &#123;</span><br><span class="line">			GameObject hitObject = hit.transform.gameObject;</span><br><span class="line">			<span class="keyword">if</span> (hitObject.GetComponent&lt;PlayerCharacter&gt; ()) &#123;</span><br><span class="line">				<span class="keyword">if</span> (_fireball == <span class="literal">null</span>) &#123;</span><br><span class="line">					_fireball = Instantiate (fireballPrefab) <span class="keyword">as</span> GameObject;</span><br><span class="line">					_fireball.transform.position = transform.TransformPoint (Vector3.forward * <span class="number">1.5</span>f);</span><br><span class="line">					_fireball.transform.rotation = transform.rotation;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (hit.distance &lt; obstacleRange) &#123;</span><br><span class="line">				<span class="keyword">float</span> angle = Random.Range (<span class="number">-100</span>, <span class="number">100</span>);</span><br><span class="line">				transform.Rotate (<span class="number">0</span>, angle, <span class="number">0</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -2415,7 +2562,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/27/ML-SVM/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/23/Unity-Instantiate/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -2434,7 +2581,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/27/ML-SVM/" itemprop="url">支持向量机</a></h1>
+                <a class="post-title-link" href="/2016/11/23/Unity-Instantiate/" itemprop="url">Unity-Instantiate</a></h1>
         
 
         <div class="post-meta">
@@ -2446,8 +2593,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T14:08:11+08:00">
-                2017-12-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-23T16:34:01+08:00">
+                2016-11-23
               </time>
             
 
@@ -2478,7 +2625,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  780
+                  194
                 </span>
               
 
@@ -2505,16 +2652,10 @@
       
         
           
-            <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>支持向量机分类器(Support Vector Classifier)，根据训练样本的分布，搜索所有可能的线性分类器中最佳的那个。<br>最佳是指分类直线离样本点的距离最远，具有最大的安全边界。<br>Logistic Regression分类中考虑了所有样本点对参数的影响，获得的不一定是最佳分类直线。</p>
-<h4 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h4><p>$$min_{\theta}C\sum_{i=1}^m\left[y^{(i)}cost_1(\theta^Tx^{(i)})+(1-y^{(i)})cost_0(\theta^Tx^{(i)})\right]+\frac{1}{2}\sum_{j=1}^n\theta_j^2$$<br>其中$C=\frac{1}{\lambda}$, Cost(z)的函数图像如下：<br><img src="\img\svmCost.png"></p>
-<p>$\theta^Tx$可看做向量$\vec(\theta)$与向量$\vec(x)$的内积，等于$\vec(p)\cdot\left|\left|\theta\right|\right|$。<br>理想情况下，样本能完全分开使得$cost(z)=1$，代价函数缩减为$min_{\theta}\frac{1}{2}\sum_{j=1}^n\theta_j^2$；<br>为使$\left|\left|\theta\right|\right|$尽可能小，应使得$\vec(p)$尽可能大，$\vec(p)$是$\vec(x)$在$\vec(\theta)$方向上的投影，$\vec(\theta)$垂直于分类直线$\theta^Tx$.</p>
-<h4 id="Kernel核函数"><a href="#Kernel核函数" class="headerlink" title="Kernel核函数"></a>Kernel核函数</h4><p>核函数可以将低维空间数据映射到高维空间，常与SVM配合使用，因为可以采用某些数值计算的优化方法，极大降低计算复杂度。核函数与其他分类模型如Logistic Regression的配合并不好，计算开销大。</p>
-<p>常用的核函数包括线性核函数、多项式核函数、高斯核函数等。其中高斯核函数最常用，可以将数据映射到无穷维，也叫做径向基函数(Radial Basis Function, RBF).构建核函数时，需要满足Mercer定理。</p>
-<p>高斯核函数：$f=similarity(x,l^{(1)}) = exp(-\frac{\left|\left|x-l^{(1)}\right|\right|^2}{2\sigma^2})$</p>
-<h4 id="识别手写数字"><a href="#识别手写数字" class="headerlink" title="识别手写数字"></a>识别手写数字</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_digits</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocession <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> LinearSVC</span><br><span class="line"></span><br><span class="line"><span class="comment"># 准备数据，使用sklearn提供的手写数字，无需清洗</span></span><br><span class="line">digits = load_digits()</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(digits.data, digits.target, test_size=<span class="number">0.25</span>, random_state=<span class="number">33</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 标准化</span></span><br><span class="line">ss = StandardScalar()</span><br><span class="line">X_train = ss.fit_transform(X_train)</span><br><span class="line">X_test = ss.transform(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练模型并预测</span></span><br><span class="line">lsvc = LinearSVC()</span><br><span class="line">lsvc.fit(X_train, y_train)</span><br><span class="line">y_predict = lsvc.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 性能分析</span></span><br><span class="line">lsvc.score(X_test, y_test)</span><br><span class="line">classification_report(y_test, y_predict, target_names=digits.target_names.astype(str))</span><br></pre></td></tr></table></figure>
-<h2 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h2><p>SVR回归，假设f(x)和y之间最多能容忍e的误差，当且仅当f(x)与y之间的差别的绝对值大于e时，才计算损失。<br>相当于以f(x)高维平面为中心，构建一个宽度为2e的间隔带。如果样本在此间隔带内，则认为是正确的。<br>回归的目的就是找到这样一个平面，使尽可能多的样本点落在间隔带内。<br>容忍误差e的目的是防止过拟合。</p>
-<h4 id="预测房价"><a href="#预测房价" class="headerlink" title="预测房价"></a>预测房价</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVR</span><br><span class="line"></span><br><span class="line"><span class="comment"># 线性核函数</span></span><br><span class="line">linear_svr = SVR(kernel=<span class="string">'linear'</span>)</span><br><span class="line">linear_svr.fit(X_train, y_train)</span><br><span class="line">linear_svr_y_predict = linear_svr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 多项式核函数</span></span><br><span class="line">poly_svr = SVR(kernel=<span class="string">'poly'</span>)</span><br><span class="line">poly_svr.fit(X_train, y_train)</span><br><span class="line">poly_svr_y_predict = poly_svr.predict(X_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 径向基核函数</span></span><br><span class="line">rbf_svr = SVR(kernel=<span class="string">'rbf'</span>)</span><br><span class="line">rbf_svr.fit(X_train, y_train)</span><br><span class="line">rbf_svr_y_predict = rbf_svr.predict(X_test)</span><br></pre></td></tr></table></figure>
-<p>核函数可以将原有特征映射到更高维度的空间，在高维空间里实现线性可分。<br>使用不同核函数的模型，性能有非常大的差异。</p>
+            <h4 id="Object-Instantiate"><a href="#Object-Instantiate" class="headerlink" title="Object.Instantiate"></a>Object.Instantiate</h4><p>Returns a clone of the original object.</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">Instantiate</span>(<span class="params">Object original</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">Instantiate</span>(<span class="params">Object original, Transform parent</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">Instantiate</span>(<span class="params">Object original, Transform parent, <span class="keyword">bool</span> worldPositionStays</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">Instantiate</span>(<span class="params">Object original, Vector3 position, Quaternion rotation</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">Instantiate</span>(<span class="params">Object original, Vector3 position, Quaternion rotation, Transform parent</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">InstantiateExample</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> GameObject prefab;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">            Instantiate(prefab, <span class="keyword">new</span> Vector3(i * <span class="number">2.0</span>f, <span class="number">0</span>, <span class="number">0</span>), Quaternion.identity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="GameObject-CreatePrimitive"><a href="#GameObject-CreatePrimitive" class="headerlink" title="GameObject.CreatePrimitive"></a>GameObject.CreatePrimitive</h4><p>基本类型的prefab没有暴露出来，不方便使用instantiate，使用GameObject的内置方法。</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">/在场景中创建一个平面，球体，立方体，胶囊，圆柱体  </span><br><span class="line">GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);  </span><br><span class="line">GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);  </span><br><span class="line">cube.transform.position = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0.5</span>F, <span class="number">0</span>);  </span><br><span class="line">GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);  </span><br><span class="line">sphere.transform.position = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">1.5</span>F, <span class="number">0</span>);  </span><br><span class="line">GameObject capsule = GameObject.CreatePrimitive(PrimitiveType.Capsule);  </span><br><span class="line">capsule.transform.position = <span class="keyword">new</span> Vector3(<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>);  </span><br><span class="line">GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);  </span><br><span class="line">cylinder.transform.position = <span class="keyword">new</span> Vector3(<span class="number">-2</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
 
           
         
@@ -2563,7 +2704,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/27/ML-Logistic/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/23/Unity-RayCast/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -2582,7 +2723,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/27/ML-Logistic/" itemprop="url">Logistic Regression</a></h1>
+                <a class="post-title-link" href="/2016/11/23/Unity-RayCast/" itemprop="url">Unity-RayCast</a></h1>
         
 
         <div class="post-meta">
@@ -2594,8 +2735,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T13:25:07+08:00">
-                2017-12-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-23T15:53:05+08:00">
+                2016-11-23
               </time>
             
 
@@ -2626,7 +2767,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  599
+                  266
                 </span>
               
 
@@ -2652,320 +2793,36 @@
 
       
         
-          <p>将线性回归函数f映射到(0,1)，得到经典的线性分类器Logistic Regression。<br>虽然名字叫做“回归”，但实际上是一种分类模型。</p>
-<p>$$h_{w,b}(x)=g(f(w,x,b))=\frac{1}{1+e^{-f}}=\frac{1}{1+e^{-(w^{T}x+b)}}$$</p>
-<p><img src="/img/logistic.jpg" alt="Logistic" align="middle">  </p>
-<p>线性分类器是最基本和最常用的分类模型。<br>受限于数据特征和分类目标之间的线性假设。</p>
-<h4 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h4><p><img src="/img/cross_entropy.png"></p>
-<p>Logistic Regression不能使用和线性回归同样的代价函数，因为Logistic使原代价函数蜿蜒，产生多个局部最小值，不能使用GDA求得最小值。<br>故引入新的代价函数：<br>$$ J(\theta) = \frac{1}{m}\sum_{i=1}^{m}Cost(h_{\theta}(x^{(i)}),y^{(i)}) $$<br>$$ Cost(h_{\theta}(x),y) = -log(h_{\theta}(x))  \;\;\;\;\; if \;\; y = 1 $$<br>$$ Cost(h_{\theta}(x),y) = -log(1-h_{\theta}(x)) \;\;\;\;\; if \;\;  y = 0 $$</p>
-<p><img src="/img/logisticY1.png" width="250"><img src="/img/logisticY0.png" width="250"></p>
-<p>将Cost的分段函数合并，代价函数J可以写作：<br>$$ J(\theta) = -\frac{1}{m} \sum_{i=1}^{m}[y^{(i)} log(h_{\theta}(x^{(i)})) + (1-y^{(i)})log(1-h_{\theta}(x^{(i)}))] $$<br>向量形式：<br>$$ J(\theta) = \frac{1}{m}\cdot (-y^T log(h) - (1-y)^T log(1-h)) $$</p>
-<p>Gradient Descent迭代求解：<br>$$ \theta_j := \theta_j - \frac{\alpha}{m} \sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})x_j^{(i)} $$<br>向量形式：<br>$$ \theta := \theta - \frac{\alpha}{m} X^T(g(X\theta - \vec{y})) $$</p>
-<p>除此之外也有其他的最优化方法。不需要指定$\alpha$，求解速度更快，但是也更复杂。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/27/ML-Logistic/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/12/09/RegularExpression/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/09/RegularExpression/" itemprop="url">正则表达式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-09T10:27:31+08:00">
-                2017-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
           
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  503
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>正则表达式(regular expression)用于定义一种文本模式，实现功能强大的字符串搜索。</p>
-<h2 id="符号"><a href="#符号" class="headerlink" title="符号"></a>符号</h2><h4 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h4><p>限定符用来指定正则表达式的一个给定组件必须出现多少次。</p>
+            <h4 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h4><p>射线，从某点(origin)沿某方向(direction)发出。<br>无限长度，不需要指定Length。</p>
+<p>属性</p>
 <ul>
-<li>*：匹配前面的组件0次或多次，等价于{0,}</li>
-<li>+：匹配前面的组件1次或多次，等价于{1,}</li>
-<li>?：匹配前面的组件0次或1次，等价于{0,1}</li>
-<li>{n}：匹配确定的n次，例如’o{2}’表示匹配’oo’</li>
-<li>{n,}：匹配n次或更多</li>
-<li>{n,m}：至少匹配n次，至多匹配m次</li>
+<li><strong>origin</strong>: Vector3</li>
+<li><strong>direction</strong>: Vector3</li>
 </ul>
-<h4 id="定位符"><a href="#定位符" class="headerlink" title="定位符"></a>定位符</h4><p>定位符能将正则表达式固定到行首或行尾。</p>
+<p>方法</p>
 <ul>
-<li>^：匹配输入字符串开始的位置</li>
-<li>$：匹配输入字符串结尾的位置</li>
-<li>\b：匹配一个字边界，即字与空格间的位置</li>
-<li>\B：非字边界匹配</li>
+<li><strong>GetPoint</strong>: returns a point at distance units along the ray</li>
+<li><strong>ToString</strong></li>
 </ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/09/RegularExpression/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2017/03/31/C#-BitOperation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Miles">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Gate of Babylon">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/31/C#-BitOperation/" itemprop="url">C#-BitOperation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-31T18:04:49+08:00">
-                2017-03-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  203
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="异或"><a href="#异或" class="headerlink" title="异或"></a>异或</h4><p>异或：两者相同为0，两者不同为1；命题为 “两者的值不同”，“有且仅有一个为真”。<br>用途：<br>(1)快速比较两个值： a ^ b == 0<br>(2)翻转特定位置：与00100按位异或将使原数字的第3位翻转<br>(3)判断一个二进制数中1的数量是奇数还是偶数<br>(4)不使用其他空间，交换两个值</p>
-<h4 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h4><figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 移位运算            </span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">7</span>;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">        Console.WriteLine(i &gt;&gt; j);   <span class="comment">//输出结果为1</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 异或运算</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">int</span> x = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">int</span> y = <span class="number">3</span>;</span><br><span class="line">        y ^= x;   <span class="comment">//等价与y=y^x</span></span><br><span class="line">        Console.WriteLine(y);        <span class="comment"><span class="doctag">///</span>/输出结果为6</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 或运算            </span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">7</span>;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">        Console.WriteLine(i | j);   <span class="comment">//输出结果为7</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 与运算            </span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span><span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">7</span>;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">        Console.WriteLine(i &amp; j);   <span class="comment">//输出结果为2</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="RaycastHit"><a href="#RaycastHit" class="headerlink" title="RaycastHit"></a>RaycastHit</h4><p>调用raycast后，返回的数据结构。<br>记录了被击中的collider的相关信息。</p>
+<p>属性</p>
+<ul>
+<li><strong>collider</strong>: the collider that was hit</li>
+<li><strong>rigidbody</strong>: rigidbody of the collider, null if not exist</li>
+<li><strong>transform</strong>: transform of the rigidbody or collider</li>
+<li><strong>point</strong>: the impact point in world space where the ray hit the collider</li>
+<li><strong>distance</strong>: from the ray’s origin to the impact point</li>
+</ul>
+<h4 id="Physics-Raycast"><a href="#Physics-Raycast" class="headerlink" title="Physics.Raycast"></a>Physics.Raycast</h4><p>射线发射方法，有多个重载。</p>
+<ul>
+<li>public static bool Raycast(Vector3 origin, Vector3 direction, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
+<li>public static bool Raycast(Vector3 origin, Vector3 direction, out RaycastHit hitInfo, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
+<li>public static bool Raycast(Ray ray, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
+<li>public static bool Raycast(Ray ray, out RaycastHit hitInfo, float maxDistance = Mathf.Infinity, int layerMask = DefaultRaycastLayers, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.UseGlobal);</li>
+</ul>
+<p>returns true when the ray intersects any collider, otherwise false</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (Input.GetMouseButtonDown (<span class="number">0</span>)) &#123;</span><br><span class="line">		Vector3 point = <span class="keyword">new</span> Vector3 (_camera.pixelWidth / <span class="number">2</span>, _camera.pixelHeight / <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">		Ray ray = _camera.ScreenPointToRay (point);</span><br><span class="line">		RaycastHit hitInfo;</span><br><span class="line">		<span class="keyword">if</span> (Physics.Raycast(ray, <span class="keyword">out</span> hitInfo)) &#123;</span><br><span class="line">			GameObject hitObject = hitInfo.transform.gameObject;</span><br><span class="line">			ReactiveTarget target = hitObject.GetComponent&lt;ReactiveTarget&gt; ();</span><br><span class="line">			<span class="keyword">if</span> (target != <span class="literal">null</span>) &#123;</span><br><span class="line">				target.ReactToHit ();</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				StartCoroutine (SphereIndicator (hitInfo.point));</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -3014,7 +2871,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/21/DP-Prototype/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/23/C#/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -3033,7 +2890,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/12/21/DP-Prototype/" itemprop="url">DesignPattern-Prototype</a></h1>
+                <a class="post-title-link" href="/2016/11/23/C#/" itemprop="url">C#</a></h1>
         
 
         <div class="post-meta">
@@ -3045,8 +2902,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-21T10:44:59+08:00">
-                2016-12-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-23T11:13:35+08:00">
+                2016-11-23
               </time>
             
 
@@ -3077,7 +2934,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  758
+                  456
                 </span>
               
 
@@ -3104,43 +2961,19 @@
       
         
           
-            <p>原型模式<br>使用特定实例来创建特定种类的对象，并且通过拷贝原型来创建新的对象。</p>
-<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><ul>
-<li><strong>主要解决</strong></li>
-</ul>
-<p>在运行期建立和删除原型。</p>
+            <p>1.如果没有标明成员函数或成员变量的访问权限级别，<br>C++中，struct中默认的是public，class中默认的是private<br>C#中，struct和class中都是private的。</p>
+<p>2.struct定义的是值类型，值类型的实例在栈上分配内存，由编译器自动分配和释放<br>class定义的是引用类型，引用类型的实例在堆上分配内存，由用户分配和释放</p>
+<p>3.C#可以定义Finalizer和Dispose方法来释放资源，类似于C++的析构函数，但运行时机不确定<br>静态构造函数，在类型第一次被使用前自动调用，且保证只调用一次</p>
+<p>4.C++支持多继承，C#类只能继承一个基类中的实现但可以实现多个接口。</p>
+<p>5.C# 中没有全局方法和全局变量：方法和变量必须包含在类型声明（如 class 或 struct）中。</p>
+<p>6.C# 不能重写非虚方法或静态方法。能重写的基方法必须是 virtual、abstract的。</p>
 <ul>
-<li><strong>何时使用</strong></li>
+<li>virtual：基类必须有实现，子类可以重写或不重写，用于“可以重写的方法”</li>
+<li>abstract：基类必须没有实现，子类必须有实现，类似接口，用于“必须重写的方法”</li>
+<li>override：子类重写的方法，前缀必须加上override</li>
 </ul>
-<p>1、当一个系统应该独立于它的产品创建，构成和表示时。<br>2、当要实例化的类是在运行时刻指定时，例如，通过动态装载。<br>3、为了避免创建一个与产品类层次平行的工厂类层次时。<br>4、当一个类的实例只能有几个不同状态组合中的一种时。建立相应数目的原型并克隆它们可能比每次用合适的状态手工实例化该类更方便一些。</p>
-<ul>
-<li><strong>如何解决</strong></li>
-</ul>
-<p>利用已有的一个原型对象，快速地生成和原型对象一样的实例。</p>
-<ul>
-<li><strong>关键代码</strong> </li>
-</ul>
-<p>1、实现克隆操作，在 JAVA 继承 Cloneable，重写 clone()，在 .NET 中可以使用 Object 类的 MemberwiseClone() 方法来实现对象的浅拷贝或通过序列化的方式来实现深拷贝。<br> 2、原型模式同样用于隔离类对象的使用者和具体类型（易变类）之间的耦合关系，它同样要求这些”易变类”拥有稳定的接口。</p>
-<ul>
-<li><strong>应用实例</strong> </li>
-</ul>
-<p>1、细胞分裂。<br>2、JAVA 中的 Object clone() 方法。</p>
-<ul>
-<li><strong>优点</strong> </li>
-</ul>
-<p>1、性能提高。<br>2、逃避构造函数的约束。</p>
-<ul>
-<li><strong>缺点</strong> </li>
-</ul>
-<p>1、配备克隆方法需要对类的功能进行通盘考虑，这对于全新的类不是很难，但对于已有的类不一定很容易，特别当一个类引用不支持串行化的间接对象，或者引用含有循环结构的时候。<br>2、必须实现 Cloneable 接口。<br>3、逃避构造函数的约束。</p>
-<ul>
-<li><strong>使用场景</strong> </li>
-</ul>
-<p>1、资源优化场景。<br>2、类初始化需要消化非常多的资源，这个资源包括数据、硬件资源等。<br>3、性能和安全要求的场景。<br>4、通过 new 产生一个对象需要非常繁琐的数据准备或访问权限，则可以使用原型模式。<br>5、一个对象多个修改者的场景。<br>6、一个对象需要提供给其他对象访问，而且各个调用者可能都需要修改其值时，可以考虑使用原型模式拷贝多个对象供调用者使用。<br>7、在实际项目中，原型模式很少单独出现，一般是和工厂方法模式一起出现，通过 clone 的方法创建一个对象，然后由工厂方法提供给调用者。原型模式已经与 Java 融为浑然一体，大家可以随手拿来使用。</p>
-<ul>
-<li><strong>注意事项</strong></li>
-</ul>
-<p>与通过对一个类进行实例化来构造新对象不同的是，原型模式是通过拷贝一个现有对象生成新对象的。浅拷贝实现 Cloneable，重写，深拷贝是通过实现 Serializable 读取二进制流。</p>
+<p>7.接口是抽象的集合，不能存在实现的功能<br>抽象类不能被实例化，存在抽象方法，具有类的其他特性；可以有已经实现的方法</p>
+<p>8.private类型完全私有，不能被子类继承，只有当前类中的成员能访问；<br>protected类型受保护，能被子类继承，只有当前类的成员、子类成员能访问；<br>public类型完全公开，能被子类继承，大家都可以访问。</p>
 
           
         
@@ -3189,7 +3022,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/12/20/DP-TypeObject/">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/22/Unity-FPSInput/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Miles">
@@ -3208,7 +3041,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/12/20/DP-TypeObject/" itemprop="url">DesignPattern-TypeObject</a></h1>
+                <a class="post-title-link" href="/2016/11/22/Unity-FPSInput/" itemprop="url">Unity-FPSInput</a></h1>
         
 
         <div class="post-meta">
@@ -3220,8 +3053,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-20T21:46:10+08:00">
-                2016-12-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-22T14:48:07+08:00">
+                2016-11-22
               </time>
             
 
@@ -3252,7 +3085,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  102
+                  107
                 </span>
               
 
@@ -3279,14 +3112,147 @@
       
         
           
-            <ul>
-<li><strong>意图</strong></li>
-</ul>
-<p>游戏中有许多怪物和怪物类型，同一类型的怪物具有相同的攻击力和生命值。<br>1.使用派生类，每种类型都派生为一个类；<br>2.使用类型类breed，每个怪物拥有breed的一个实例。</p>
-<ul>
-<li><strong>使用情境</strong></li>
-</ul>
-<p>当需要定义一些不同“种类”的东西，又不想把种类硬编码进类型系统。</p>
+            <figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">   <span class="keyword">using</span> UnityEngine;</span><br><span class="line">   <span class="keyword">using</span> System.Collections;</span><br><span class="line"></span><br><span class="line">   [<span class="meta">RequireComponent(typeof(CharacterController))</span>] <span class="comment">// another component must exist</span></span><br><span class="line">   [<span class="meta">AddComponentMenu(<span class="meta-string">"Control Script/FPS Input"</span>)</span>] <span class="comment">// add mentu to "Add Component" in the Inspector</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FPSInput</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> speed = <span class="number">6.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> gravity = <span class="number">-9.8</span>f;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> CharacterController _characterController;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	_characterController = GetComponent&lt;CharacterController&gt; ();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">float</span> deltaX = Input.GetAxis (<span class="string">"Horizontal"</span>) * speed;</span><br><span class="line">	<span class="keyword">float</span> deltaZ = Input.GetAxis (<span class="string">"Vertical"</span>) * speed;</span><br><span class="line">	Vector3 movement = <span class="keyword">new</span> Vector3 (deltaX, <span class="number">0</span>, deltaZ);</span><br><span class="line">	movement = Vector3.ClampMagnitude (movement, speed); <span class="comment">// overall speed clamp</span></span><br><span class="line">	movement.y = gravity; <span class="comment">// keep player on ground</span></span><br><span class="line">	movement *= Time.deltaTime; <span class="comment">// frame independent</span></span><br><span class="line">	movement = transform.TransformDirection (movement); <span class="comment">// from local(1,0,0) to world(0.7, 0, 0.7)</span></span><br><span class="line"></span><br><span class="line">	_characterController.Move (movement);</span><br><span class="line">&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2016/11/22/Unity-MouseLook/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/22/Unity-MouseLook/" itemprop="url">Unity-MouseLook</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-22T14:42:23+08:00">
+                2016-11-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  167
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>3 kinds of camera movement: only X, only Y, X&amp;Y<br>You can add 1 script on player, setting to only X; and add another 1 script to camera, setting to only Y. This can avoid walking into sky, and assure gravity always into ground.</p>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">   <span class="keyword">using</span> UnityEngine;</span><br><span class="line">   <span class="keyword">using</span> System.Collections;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MouseLook</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> RotationAxes &#123;</span><br><span class="line">	MouseXandY = <span class="number">0</span>,</span><br><span class="line">	MouseX = <span class="number">1</span>,</span><br><span class="line">	MouseY = <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> RotationAxes axes = RotationAxes.MouseXandY;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> sensitivityHor = <span class="number">9.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> sensitivityVert = <span class="number">9.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> MaxVert = <span class="number">45.0</span>f;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">float</span> MinVert = <span class="number">-45.0</span>f;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">float</span> rotationX = <span class="number">0.0</span>f;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (axes == RotationAxes.MouseX) &#123;</span><br><span class="line">		transform.Rotate (<span class="number">0</span>, Input.GetAxis(<span class="string">"Mouse X"</span>) * sensitivityHor, <span class="number">0</span>);	</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (axes == RotationAxes.MouseY) &#123;</span><br><span class="line">		rotationX -= Input.GetAxis (<span class="string">"Mouse Y"</span>) * sensitivityVert;</span><br><span class="line">		rotationX = Mathf.Clamp (rotationX, MinVert, MaxVert);</span><br><span class="line">		<span class="keyword">float</span> rotationY = transform.localEulerAngles.y;</span><br><span class="line">		transform.localEulerAngles = <span class="keyword">new</span> Vector3 (rotationX, rotationY, <span class="number">0</span>); </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		rotationX -= Input.GetAxis (<span class="string">"Mouse Y"</span>) * sensitivityVert;</span><br><span class="line">		rotationX = Mathf.Clamp (rotationX, MinVert, MaxVert);</span><br><span class="line">		<span class="keyword">float</span> rotationY = transform.localEulerAngles.y + Input.GetAxis (<span class="string">"Mouse X"</span>) * sensitivityHor;</span><br><span class="line">		transform.localEulerAngles = <span class="keyword">new</span> Vector3 (rotationX, rotationY, <span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -3326,7 +3292,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3376,7 +3342,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">336</span>
+                  <span class="site-state-item-count">230</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3389,7 +3355,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -3478,7 +3444,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">125.5k</span>
+    <span title="Site words total count">98.8k</span>
   
 </div>
 

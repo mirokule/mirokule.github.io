@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content=",," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="序贯模型是多个网络层的线性堆叠。 快速开始构造可以通过传递一个layer的list来构造模型，也可以通过add()方法将Layer逐个加入。from keras.models import Sequentialfrom keras.layers import Dense, Activation# 传递layer的listmodel = Sequential([Dense(32, units=784">
+<meta name="keywords" content="Deep Learning,Keras">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Keras序贯模型Sequential">
+<meta property="og:url" content="http://mirokule.github.io/old posts/Keras-Sequential.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="序贯模型是多个网络层的线性堆叠。 快速开始构造可以通过传递一个layer的list来构造模型，也可以通过add()方法将Layer逐个加入。from keras.models import Sequentialfrom keras.layers import Dense, Activation# 传递layer的listmodel = Sequential([Dense(32, units=784">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-15T08:47:13.430Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Keras序贯模型Sequential">
+<meta name="twitter:description" content="序贯模型是多个网络层的线性堆叠。 快速开始构造可以通过传递一个layer的list来构造模型，也可以通过add()方法将Layer逐个加入。from keras.models import Sequentialfrom keras.layers import Dense, Activation# 传递layer的listmodel = Sequential([Dense(32, units=784">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/old posts/Keras-Sequential.html"/>
+
+
+
+
+
+  <title>Keras序贯模型Sequential | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">Keras序贯模型Sequential</h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <p>序贯模型是多个网络层的线性堆叠。</p>
+<h3 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h3><p><strong>构造</strong><br>可以通过传递一个layer的list来构造模型，也可以通过add()方法将Layer逐个加入。<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Activation</span><br><span class="line"></span><br><span class="line"><span class="comment"># 传递layer的list</span></span><br><span class="line">model = Sequential([Dense(<span class="number">32</span>, units=<span class="number">784</span>), Activation(<span class="string">'relu'</span>), Dense(<span class="number">10</span>), Activation(<span class="string">'softmax'</span>)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过add()逐个加入layer</span></span><br><span class="line">model = Sequential()</span><br><span class="line">model.add(Dense(<span class="number">32</span>, input_shape=(<span class="number">784</span>,)))</span><br><span class="line">model.add(Activation(<span class="string">'relu'</span>)</span><br></pre></td></tr></table></figure></p>
+<p><strong>输入</strong><br>Sequential的第一层需要接受一个输入数据shape的参数，后面的各个层可以自动推导出中间数据的shape.<br>为第一层指定输入数据shape的方法包括：</p>
+<ul>
+<li>input_shape: tuple类型，不包括batch大小</li>
+<li>input_dim: 某些层支持该参数</li>
+<li>batch_size: 某些层需要指定固定大小的batch_size</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model = Sequential()</span><br><span class="line">model.add(Dense(<span class="number">32</span>, input_dim=<span class="number">784</span>))</span><br><span class="line">model.add(Dense(<span class="number">32</span>, input_shape=(<span class="number">784</span>,)))</span><br></pre></td></tr></table></figure>
+<p><strong>编译</strong><br>训练模型之前，需要通过compile对模型编译。<br>compile(self, optimizer, loss, metrics=None, sample_weight_mode=None)</p>
+<ul>
+<li>optimizer: 优化器，必须</li>
+<li>loss: 目标函数，必须</li>
+<li>metrics: 评价指标，可选</li>
+<li>sample_weight_mode: 默认”None”按样本赋予权值；”temporal”按时间步赋予权值</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'binary_crossentropy'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, loss=<span class="string">'mse'</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>训练</strong><br>fit(self, x, y, batch_size=32, epochs=10, verbose=1, callbacks=None,<br>     validation_split=0.0, validation_data=None, shuffle=True,<br>    class_weight=None, sample_weight=None, initial_epoch=0)</p>
+<ul>
+<li>x: 单个输入numpy array，多个输入是list of numpy array</li>
+<li>y: numpy array</li>
+<li>batch_size: 优化一步的样本数</li>
+<li>epochs: 训练的总轮数</li>
+<li>verbose: 日志显示，0不输出，1输出进度条，2每个epoch输出一行记录</li>
+<li>callbacks: list，其中的元素是Callback函数</li>
+<li>validation_split: float(0~1)，验证集的比例</li>
+<li>validation_data: 指定验证集(X,y)，将覆盖validation_split</li>
+<li>shuffle: 是否随机打乱顺序</li>
+<li>class_weight: 字典，不同类别映射为不同的权重</li>
+<li>sample_weight: 样本权重，numpy array</li>
+<li>initial_epoch: 从指定的epoch开始训练，用于继续之前的训练过程</li>
+</ul>
+<p><strong>其他方法</strong></p>
+<ul>
+<li>add(self, layer): 向模型中添加一个层</li>
+<li>pop(self): 弹出模型最后的一层，无返回值</li>
+<li>evaluate(self, x, y, batch_size=32, verbose=1, sample_weight=None): 计算误差</li>
+<li>predict(self, x, batch_size=32, verbose=0): 预测</li>
+<li>train_on_batch(self, x, y, class_weight=None, sample_weight=None): 根据一个batch更新参数</li>
+<li>test_on_batch(self, x, y, sample_weight=None): 在一个batch上评估模型</li>
+<li>predict_on_batch(self, x): 在一个batch上测试</li>
+<li>fit_generator(self, generator, steps_per_epoch, epochs=1, verbose=1, callbacks=None, validation_data=None, validation_steps=None, class_weight=None, max_q_size=10, workers=1, pickle_safe=False, initial_epoch=0): 逐个产生batch数据，并用于训练，而不是像fit那样一次将所有数据读入内存</li>
+<li>evaluate_generator(self, generator, steps, max_q_size=10, workers=1, pickle_safe=False)</li>
+<li>predict_generator(self, generator, steps, max_q_size=10, workers=1, pickle_safe=False, verbose=0) </li>
+</ul>
+<a id="more"></a>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p><strong>基于多层感知器的softmax分类</strong><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Dropout, Activation</span><br><span class="line"><span class="keyword">from</span> keras.optimizers <span class="keyword">import</span> SGD</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">x_train = np.random.random((<span class="number">1000</span>,<span class="number">20</span>))</span><br><span class="line">y_train = keras.utils.to_categorical(np.random.randint(<span class="number">10</span>, size=(<span class="number">1000</span>,<span class="number">1</span>)), num_class=<span class="number">10</span>)</span><br><span class="line">x_test = np.random.random((<span class="number">100</span>,<span class="number">20</span>))</span><br><span class="line">y_test = keras.utils.to_categorical(np.random.randint(<span class="number">10</span>, size=(<span class="number">100</span>,<span class="number">1</span>)), num_class=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">model = Sequential()</span><br><span class="line">model.add(Dense(<span class="number">64</span>, activation=<span class="string">'relu'</span>, input_dim=<span class="number">20</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>))</span><br><span class="line">model.add(Dense(<span class="number">46</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>))</span><br><span class="line">model.add(Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>)</span><br><span class="line"></span><br><span class="line">sdg = SGD(lr=<span class="number">0.01</span>, decay=<span class="number">1e-6</span>, momentum=<span class="number">0.9</span>, nesterov=<span class="keyword">True</span>)</span><br><span class="line">model.compile(loss=<span class="string">'categorical_crossentropy'</span>, optimizer=sgd, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line">model.fit(x_train, y_train, epochs=<span class="number">20</span>, batch_size=<span class="number">128</span>)</span><br><span class="line">score= model.evaluate(x_test, y_test, batch_size=<span class="number">128</span>)</span><br></pre></td></tr></table></figure></p>
+<p><strong>卷积神经网络</strong><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> keras</span><br><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Dropout, Flatten</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Conv2D, MaxPooling2D</span><br><span class="line"><span class="keyword">from</span> keras.optimizers <span class="keyword">import</span> SGD</span><br><span class="line"></span><br><span class="line">model = Sequential()</span><br><span class="line">model.add(Conv2D(<span class="number">32</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, input_shape=(<span class="number">100</span>,<span class="number">100</span>,<span class="number">3</span>)))</span><br><span class="line">model.add(Conv2D(<span class="number">32</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>,<span class="number">2</span>)))</span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br><span class="line"></span><br><span class="line">model.add(Conv2D(<span class="number">64</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>)</span><br><span class="line">model.add(Conv2D(<span class="number">64</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>)</span><br><span class="line">model.add(MaxPooling2D(pool_size=(<span class="number">2</span>,<span class="number">2</span>)))</span><br><span class="line">model.add(Dropout(<span class="number">0.25</span>))</span><br><span class="line"></span><br><span class="line">model.add(Flatten())</span><br><span class="line">model.add(Dense(<span class="number">256</span>, activation=<span class="string">'relu'</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>))</span><br><span class="line">model.add(Dense(<span class="number">10</span>, activation=<span class="string">'softmax'</span>))</span><br><span class="line"></span><br><span class="line">sgd = SGD(lr=<span class="number">0.01</span>, decay=<span class="number">1e-6</span>, momentum=<span class="number">0.9</span>, nesterov=<span class="keyword">True</span>)</span><br><span class="line">model.compile(loss=<span class="string">'categorical_crossentropy'</span>, optimizer=sgd)</span><br><span class="line">model.fit(x_train, y_train, batch_size=<span class="number">32</span>, epochs=<span class="number">10</span>)</span><br><span class="line">score = model.evaluate(x_test, y_test, batch_size=<span class="number">32</span>)</span><br></pre></td></tr></table></figure></p>
+<p><strong>LSTM序列分类</strong><br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> Sequential</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Dense, Dropout</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> Embedding</span><br><span class="line"><span class="keyword">from</span> keras.layers <span class="keyword">import</span> LSTM</span><br><span class="line"></span><br><span class="line">model = Sequential()</span><br><span class="line">model.add(Embedding(max_features, output_dim=<span class="number">256</span>))</span><br><span class="line">model.add(LSTM(<span class="number">128</span>))</span><br><span class="line">model.add(Dropout(<span class="number">0.5</span>))</span><br><span class="line">model.add(Dense(<span class="number">1</span>, activation=<span class="string">'sigmoid'</span>))</span><br><span class="line"></span><br><span class="line">model.compile(loss=<span class="string">'binary_crossentropy'</span>, optimizer=<span class="string">'rmsprop'</span>, metrics=[<span class="string">'accuracy'</span>])</span><br><span class="line">model.fit(x_train, y_train, batch_size=<span class="number">16</span>, epochs=<span class="number">10</span>)</span><br><span class="line">score = model.evaluate(x_test, y_test, batch_size=<span class="number">16</span>)</span><br></pre></td></tr></table></figure></p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">万人迷</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">230</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#快速开始"><span class="nav-number">1.</span> <span class="nav-text">快速开始</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">98.8k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

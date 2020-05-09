@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="TensorFlow," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在tf1.0的静态计算图中，梯度可以通过反向图计算。而在tf2.0的动态图中，没有了构建图的过程，需要上下文管理器来连接需要计算梯度的函数和变量。 tf.GradientTape是一个记录器，能够记录其上下文环境中的计算步骤，并自动求导。使用方法分为两步：1.使用with语句，将需要求导的计算步骤封装在tf.GradientTape的上下文中；2.使用tf.gradientTape的gradien">
+<meta name="keywords" content="TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TF-GradientTape">
+<meta property="og:url" content="http://mirokule.github.io/2020/04/18/TF-GradientTape/index.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="在tf1.0的静态计算图中，梯度可以通过反向图计算。而在tf2.0的动态图中，没有了构建图的过程，需要上下文管理器来连接需要计算梯度的函数和变量。 tf.GradientTape是一个记录器，能够记录其上下文环境中的计算步骤，并自动求导。使用方法分为两步：1.使用with语句，将需要求导的计算步骤封装在tf.GradientTape的上下文中；2.使用tf.gradientTape的gradien">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-04-18T03:32:35.534Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TF-GradientTape">
+<meta name="twitter:description" content="在tf1.0的静态计算图中，梯度可以通过反向图计算。而在tf2.0的动态图中，没有了构建图的过程，需要上下文管理器来连接需要计算梯度的函数和变量。 tf.GradientTape是一个记录器，能够记录其上下文环境中的计算步骤，并自动求导。使用方法分为两步：1.使用with语句，将需要求导的计算步骤封装在tf.GradientTape的上下文中；2.使用tf.gradientTape的gradien">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/2020/04/18/TF-GradientTape/"/>
+
+
+
+
+
+  <title>TF-GradientTape | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://mirokule.github.io/2020/04/18/TF-GradientTape/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Miles">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gate of Babylon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TF-GradientTape</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-18T10:39:25+08:00">
+                2020-04-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  673
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在tf1.0的静态计算图中，梯度可以通过反向图计算。而在tf2.0的动态图中，没有了构建图的过程，需要上下文管理器来连接需要计算梯度的函数和变量。</p>
+<p>tf.GradientTape是一个记录器，能够记录其上下文环境中的计算步骤，并自动求导。使用方法分为两步：<br>1.使用with语句，将需要求导的计算步骤封装在tf.GradientTape的上下文中；<br>2.使用tf.gradientTape的gradient方法计算导数。</p>
+<h4 id="上下文"><a href="#上下文" class="headerlink" title="上下文"></a>上下文</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.Variable(initial_value=<span class="number">3.</span>)</span><br><span class="line"><span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">    y = tf.square(x)</span><br><span class="line">y_grad = tape.gradient(y,x)</span><br><span class="line">print([y, y_grad])</span><br></pre></td></tr></table></figure>
+<p>with语句结束后大多数资源会被释放；但对于gradientTape来说，离开with语句意味着停止记录，并不会自动释放。<br>每个tf.GradientTape在调用一次gradient方法后，其记录的信息才会释放。<br>如果要阻止自动释放，需要指定persistent参数为True，并在使用结束后手动释放。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.GradientTape(persistent=<span class="keyword">True</span>) <span class="keyword">as</span> tape:</span><br><span class="line">    y = tf.square(x)</span><br><span class="line">y_grad = tape.gradient(y)</span><br><span class="line"><span class="keyword">del</span> tape</span><br></pre></td></tr></table></figure>
+<h4 id="监视机制"><a href="#监视机制" class="headerlink" title="监视机制"></a>监视机制</h4><p>tf.gradientTape的上下文中，默认只将变量加入监视列表，从而自动求导。<br>如果要将常量加入，需要手动指定。<br>例如求取$y=x^2$在x=3处的导数：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.constant(<span class="number">3.</span>)</span><br><span class="line"><span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">    tape.watch(x)</span><br><span class="line">    y = tf.square(x)</span><br><span class="line">y_grad = tape.gradient(y, x)</span><br></pre></td></tr></table></figure>
+<h4 id="高阶求导"><a href="#高阶求导" class="headerlink" title="高阶求导"></a>高阶求导</h4><p>tf.gradient支持嵌套使用，可以用来计算高阶导数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.Variable(<span class="number">3.</span>)</span><br><span class="line"><span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape_1:</span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape_2:</span><br><span class="line">        y = tf.square(x)</span><br><span class="line">    dy_dx = tape_2.gradient(y,x)</span><br><span class="line">d2y_dx2 = tape_1.gradient(dy_dx, x)</span><br></pre></td></tr></table></figure>
+<h4 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h4><p>尽量只将需要求导的计算步骤放入tf.gradient的上下文中。<br>如果要加入一些无需记录求导的步骤，可以试用tape.stop_recording()来暂时停止记录。<br>同时，gradient方法本身也是计算步骤，若非高阶求导，不要将gradient放在tf.gradientTape的上下文中。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.Variable(<span class="number">3.</span>)</span><br><span class="line"><span class="keyword">with</span> tf.Gradient(persistent=<span class="keyword">True</span>) <span class="keyword">as</span> tape:</span><br><span class="line">    y = tf.square(x)</span><br><span class="line">    y_grad = tape.gradient(y,x)</span><br><span class="line">    <span class="keyword">with</span> tape.stop_recording(): <span class="comment">#无需记录的步骤</span></span><br><span class="line">        y_grad_not_recorded = tape.gradient(y,x)</span><br><span class="line">d2y_dx2 = tape.gradient(y_grad, x) <span class="comment">#二阶导数</span></span><br></pre></td></tr></table></figure>
+<h4 id="使用tf-GradientTape求取最小值"><a href="#使用tf-GradientTape求取最小值" class="headerlink" title="使用tf.GradientTape求取最小值"></a>使用tf.GradientTape求取最小值</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.Variable(<span class="number">0.0</span>,name = <span class="string">"x"</span>,dtype = tf.float32)</span><br><span class="line">a = tf.constant(<span class="number">1.0</span>)</span><br><span class="line">b = tf.constant(<span class="number">-2.0</span>)</span><br><span class="line">c = tf.constant(<span class="number">1.0</span>)</span><br><span class="line"></span><br><span class="line">optimizer = tf.keras.optimizers.SGD(learning_rate=<span class="number">0.01</span>)</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        y = a*tf.pow(x,<span class="number">2</span>) + b*x + c</span><br><span class="line">    dy_dx = tape.gradient(y,x)</span><br><span class="line">    optimizer.apply_gradients(grads_and_vars=[(dy_dx,x)])</span><br></pre></td></tr></table></figure>
+<p>也可使使用optimizer.minimize()代替。<br>optimizer.minimize()相当于先用tape求gradient，在apply_gradient.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = tf.Variable(<span class="number">0.0</span>,name = <span class="string">"x"</span>,dtype = tf.float32)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">()</span>:</span>   </span><br><span class="line">    a = tf.constant(<span class="number">1.0</span>)</span><br><span class="line">    b = tf.constant(<span class="number">-2.0</span>)</span><br><span class="line">    c = tf.constant(<span class="number">1.0</span>)</span><br><span class="line">    y = a*tf.pow(x,<span class="number">2</span>)+b*x+c</span><br><span class="line">    <span class="keyword">return</span>(y)</span><br><span class="line"></span><br><span class="line">optimizer = tf.keras.optimizers.SGD(learning_rate=<span class="number">0.01</span>)   </span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    optimizer.minimize(f,[x])</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/TensorFlow/" rel="tag"># TensorFlow</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/01/Unity-PostProcessing/" rel="next" title="Unity-PostProcessing">
+                <i class="fa fa-chevron-left"></i> Unity-PostProcessing
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/27/Torch-Tensor/" rel="prev" title="Tensor">
+                Tensor <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">万人迷</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">230</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#上下文"><span class="nav-number">1.</span> <span class="nav-text">上下文</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#监视机制"><span class="nav-number">2.</span> <span class="nav-text">监视机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高阶求导"><span class="nav-number">3.</span> <span class="nav-text">高阶求导</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#性能优化"><span class="nav-number">4.</span> <span class="nav-text">性能优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用tf-GradientTape求取最小值"><span class="nav-number">5.</span> <span class="nav-text">使用tf.GradientTape求取最小值</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">98.8k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

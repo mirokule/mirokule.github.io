@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Gate of Babylon">
 <meta property="og:description" content="Rotation旋转本质上需要知道 1个向量 + 1个角度，共4个值。有3种表示方法：  Matrix(矩阵): 使用 4*4 矩阵，共16个值，计算时有额外的时间和空间消耗；  Euler(欧拉): 使用3个值(xRotation, yRotation, zRotation)，是一系列坐标轴旋转的组合，按顺序沿各个轴旋转；会带来万向节锁问题。Gimbal Lock(万向节锁)：当欧拉旋转的第二次">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-20T00:32:15.991Z">
+<meta property="og:updated_time" content="2020-02-01T09:17:32.606Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity-Quaternion">
 <meta name="twitter:description" content="Rotation旋转本质上需要知道 1个向量 + 1个角度，共4个值。有3种表示方法：  Matrix(矩阵): 使用 4*4 矩阵，共16个值，计算时有额外的时间和空间消耗；  Euler(欧拉): 使用3个值(xRotation, yRotation, zRotation)，是一系列坐标轴旋转的组合，按顺序沿各个轴旋转；会带来万向节锁问题。Gimbal Lock(万向节锁)：当欧拉旋转的第二次">
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  271
+                  348
                 </span>
               
 
@@ -363,12 +363,7 @@
 <li>quaternion <em> quaternio，例如q = q1 </em> q2，表示将一个点先q1旋转，再q2旋转</li>
 <li>quaternion <em> Vector3，例如p = q </em> v，表示将向量v进行q旋转，得到旋转后的向量p.<br>Quaternion必须位于乘号的左边。</li>
 </ol>
-<pre><code class="cs"><span class="comment">//镜头到物体的距离</span>
-distance = Vector3.forward * <span class="number">10.0</span>f;
-transform.position = target.position - distance
-<span class="comment">//有旋转</span>
-transform.position = target.position - rotation * distance
-</code></pre>
+<figure class="highlight cs"><table><tr><td class="code"><pre><span class="line">	<span class="comment">//镜头到物体的距离</span></span><br><span class="line">	distance = Vector3.forward * <span class="number">10.0</span>f;</span><br><span class="line">	transform.position = target.position - distance</span><br><span class="line">	<span class="comment">//有旋转</span></span><br><span class="line">	transform.position = target.position - rotation * distance</span><br><span class="line">```	</span><br><span class="line"></span><br><span class="line"><span class="meta">#### Quaternion.LookRotation()</span></span><br><span class="line">根据给定的forward和upwards向量，计算rotation。</span><br><span class="line">其中z = forward, x = forward * upwards, y = z * x。</span><br><span class="line">和transform.LookAt()不同之处在于LookAt()参数是目标位置target.position，而LookRotation()参数是到目标的方向target.position-self.position.</span><br><span class="line"></span><br><span class="line">```csharp</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vector3 relativePos = target.position - transform.position;</span><br><span class="line">    </span><br><span class="line">    Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);</span><br><span class="line">    transform.rotation = rotation;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -399,8 +394,8 @@ transform.position = target.position - rotation * distance
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/08/08/GKRandom/" rel="next" title="GKRandom">
-                <i class="fa fa-chevron-left"></i> GKRandom
+              <a href="/2016/05/26/Python-sklearn/" rel="next" title="sklearn">
+                <i class="fa fa-chevron-left"></i> sklearn
               </a>
             
           </div>
@@ -492,7 +487,7 @@ transform.position = target.position - rotation * distance
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">336</span>
+                  <span class="site-state-item-count">230</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -505,7 +500,7 @@ transform.position = target.position - rotation * distance
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -610,7 +605,7 @@ transform.position = target.position - rotation * distance
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">125.5k</span>
+    <span title="Site words total count">98.8k</span>
   
 </div>
 

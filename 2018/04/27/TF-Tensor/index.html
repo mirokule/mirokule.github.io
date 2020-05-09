@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Gate of Babylon">
 <meta property="og:description" content="TensorFlow中的核心数据单位是张量，用Numpy阵列来表示。TensorFlow程序首先建立 tf.Tensor 目标图，详细说明如何基于其他可用张量来计算每个张量，然后运行该图的部分内容以获得所期望的结果。tf.Tensor 有以下属性：  数据类型(int32, float32, string) 形状(shape)  主要的特殊张量包括：  tf.Variable tf.constan">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-02T02:44:45.592Z">
+<meta property="og:updated_time" content="2020-04-18T01:42:28.536Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TensorFlow张量Tensor">
 <meta name="twitter:description" content="TensorFlow中的核心数据单位是张量，用Numpy阵列来表示。TensorFlow程序首先建立 tf.Tensor 目标图，详细说明如何基于其他可用张量来计算每个张量，然后运行该图的部分内容以获得所期望的结果。tf.Tensor 有以下属性：  数据类型(int32, float32, string) 形状(shape)  主要的特殊张量包括：  tf.Variable tf.constan">
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  715
+                  732
                 </span>
               
 
@@ -361,7 +361,7 @@
 <li>tf.placeholder</li>
 <li>tf.SparseTensor</li>
 </ul>
-<p>除 tf.Variable 之外，张量的值不可变。<br>然而，同一张量的两次评估可能会返回不同的值。</p>
+<p>除 tf.Variable 之外，张量的值不可变，常量的重新赋值等于创造新的常量。<br>同一张量的两次评估可能会返回不同的值。</p>
 <h3 id="阶"><a href="#阶" class="headerlink" title="阶"></a>阶</h3><p>tf.Tensor 的阶就是它本身的维数，也就是秩(rank, degree)，与数学中的阶并不相同。</p>
 <ul>
 <li>0阶：标量</li>
@@ -370,7 +370,7 @@
 <li>3阶：数据立体</li>
 <li>n阶：n阶张量</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 0阶</span></span><br><span class="line">str0 = tf.Variable(<span class="string">"Elephant"</span>, tf.string)</span><br><span class="line">int0 = tf.Variable(<span class="number">344</span>, tf.int32)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1阶</span></span><br><span class="line">str1 = tf.Variable([<span class="string">"hello"</span>], tf.string)</span><br><span class="line">float1 = tf.Variable([<span class="number">3.1</span>, <span class="number">2.7</span>], tf.float64)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2阶</span></span><br><span class="line">mat2 = tf.Variable([[<span class="number">7</span>],[<span class="number">11</span>]], tf.int16)</span><br><span class="line">xor2 = tf.Variable([[<span class="keyword">False</span>, <span class="keyword">True</span>], [<span class="keyword">True</span>, <span class="keyword">False</span>]], tf.bool)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4阶</span></span><br><span class="line">image4 = tf.zeros([<span class="number">10</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取阶</span></span><br><span class="line">r = tf.rank(image4)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取切片</span></span><br><span class="line">scalar = vector1[<span class="number">2</span>] <span class="comment">#1阶张量切片得到标量</span></span><br><span class="line">scalar = matrix2[<span class="number">2</span>,<span class="number">3</span>]	</span><br><span class="line">vector = matrix[<span class="number">2</span>]</span><br><span class="line">vector = matrix[:,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 0阶</span></span><br><span class="line">str0 = tf.Variable(<span class="string">"Elephant"</span>, tf.string)</span><br><span class="line">int0 = tf.Variable(<span class="number">344</span>, tf.int32)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1阶</span></span><br><span class="line">str1 = tf.Variable([<span class="string">"hello"</span>], tf.string)</span><br><span class="line">float1 = tf.Variable([<span class="number">3.1</span>, <span class="number">2.7</span>], tf.float64)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2阶</span></span><br><span class="line">mat2 = tf.Variable([[<span class="number">7</span>],[<span class="number">11</span>]], tf.int16)</span><br><span class="line">xor2 = tf.Variable([[<span class="keyword">False</span>, <span class="keyword">True</span>], [<span class="keyword">True</span>, <span class="keyword">False</span>]], tf.bool)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4阶</span></span><br><span class="line">image4 = tf.zeros([<span class="number">10</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取阶</span></span><br><span class="line">r = tf.rank(image4)</span><br><span class="line">       r = image4.numpy().ndim </span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取切片</span></span><br><span class="line">scalar = vector1[<span class="number">2</span>] <span class="comment">#1阶张量切片得到标量</span></span><br><span class="line">scalar = matrix2[<span class="number">2</span>,<span class="number">3</span>]	</span><br><span class="line">vector = matrix[<span class="number">2</span>]</span><br><span class="line">vector = matrix[:,<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
 <h3 id="形状"><a href="#形状" class="headerlink" title="形状"></a>形状</h3><p><strong>获取形状</strong><br>获取 tf.Tensor 形状的方法有两种：</p>
 <ul>
 <li>tf.Tensor.shape: 返回一个 TensorShape 目标</li>
@@ -511,7 +511,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">336</span>
+                  <span class="site-state-item-count">230</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -524,7 +524,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -629,7 +629,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">125.5k</span>
+    <span title="Site words total count">98.8k</span>
   
 </div>
 

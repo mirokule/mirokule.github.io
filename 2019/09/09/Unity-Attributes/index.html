@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Gate of Babylon">
 <meta property="og:description" content="Inspector相关1.[PropertyAttribute]: 基类 2.[SerializeField]: 强制在Inspector中显示private变量3.[HideInInspector]: 强制在Inspector中隐藏public变量 4.[TextAreaAttribute]: 在Inspector中为变量生成文本框5.[Range(1,10)]: 在Inspector中生成滑动">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-27T03:40:05.203Z">
+<meta property="og:updated_time" content="2020-02-22T14:13:11.584Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity中的Attributes">
 <meta name="twitter:description" content="Inspector相关1.[PropertyAttribute]: 基类 2.[SerializeField]: 强制在Inspector中显示private变量3.[HideInInspector]: 强制在Inspector中隐藏public变量 4.[TextAreaAttribute]: 在Inspector中为变量生成文本框5.[Range(1,10)]: 在Inspector中生成滑动">
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  141
+                  257
                 </span>
               
 
@@ -353,12 +353,20 @@
 <p>2.[SerializeField]: 强制在Inspector中显示private变量<br>3.[HideInInspector]: 强制在Inspector中隐藏public变量</p>
 <p>4.[TextAreaAttribute]: 在Inspector中为变量生成文本框<br>5.[Range(1,10)]: 在Inspector中生成滑动条<br>6.[Multiline(3)]: 使string的文本框支持多行</p>
 <p>7.[Header(“xxx”)]: 在Inspector中生成标题文字<br>8.[Tooltip(“yyy”)]: 当鼠标移动到参数上时显示说明文字</p>
+<p><strong>例子</strong><br><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">[<span class="meta">TextArea(10,12)</span>][SerializeField] <span class="keyword">string</span> storyText;</span><br></pre></td></tr></table></figure></p>
 <h4 id="Menu相关"><a href="#Menu相关" class="headerlink" title="Menu相关"></a>Menu相关</h4><p>1.[CreateAssetMenuAttribute]: 在Create菜单中新增一个类别 </p>
 <ul>
 <li>menuName:该类的显示名称</li>
 <li>fileName:生成实例的默认文件名</li>
 </ul>
-<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">[<span class="meta">TextArea(10,12)</span>][SerializeField] <span class="keyword">string</span> storyText;</span><br></pre></td></tr></table></figure>
+<h4 id="Component相关"><a href="#Component相关" class="headerlink" title="Component相关"></a>Component相关</h4><p>1.[RequireComponent(typeof(Health))]：要求前置组件<br>例如组件A要求有组件B，那么添加组件A时会自动添加组件B。</p>
+<h4 id="ExecuteInEditMode"><a href="#ExecuteInEditMode" class="headerlink" title="ExecuteInEditMode"></a>ExecuteInEditMode</h4><p>MonoBehaviours默认在Play Mode下执行，添加此属性可使脚本在Edit Mode下执行。</p>
+<ul>
+<li>Update: 当场景中的某个物体变化时调用</li>
+<li>OnGUI: 当GameView接收到Event时调用</li>
+<li>OnRenderObject: 当SceneView、GameView重绘时调用</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">[<span class="meta">ExecuteInEditMode</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PrintAwake</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        Debug.Log(<span class="string">"Editor causes this Awake"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        Debug.Log(<span class="string">"Editor causes this Update"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -482,7 +490,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">336</span>
+                  <span class="site-state-item-count">230</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -495,7 +503,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -566,7 +574,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Inspector相关"><span class="nav-number">1.</span> <span class="nav-text">Inspector相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Menu相关"><span class="nav-number">2.</span> <span class="nav-text">Menu相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例子"><span class="nav-number">3.</span> <span class="nav-text">例子</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Inspector相关"><span class="nav-number">1.</span> <span class="nav-text">Inspector相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Menu相关"><span class="nav-number">2.</span> <span class="nav-text">Menu相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Component相关"><span class="nav-number">3.</span> <span class="nav-text">Component相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ExecuteInEditMode"><span class="nav-number">4.</span> <span class="nav-text">ExecuteInEditMode</span></a></li></ol></div>
             
 
           </div>
@@ -600,7 +608,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">125.5k</span>
+    <span title="Site words total count">98.8k</span>
   
 </div>
 

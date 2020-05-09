@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content=",," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="回调函数是一组在训练的特定阶段被调用的函数，可以用来观察网络内部的状态。回调函数通常被传递到模型的 fit() 方法中。 Callbackkeras.callbacks.Callback()回调函数的抽象类，定义新的回调函数必须继承此类 BaseLoggerkeras.callbacks.BaseLogger()Callback that accumulates epoch averages of">
+<meta name="keywords" content="Deep Learning,Keras">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Keras回调函数Callbacks">
+<meta property="og:url" content="http://mirokule.github.io/old posts/Keras-Callbacks.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="回调函数是一组在训练的特定阶段被调用的函数，可以用来观察网络内部的状态。回调函数通常被传递到模型的 fit() 方法中。 Callbackkeras.callbacks.Callback()回调函数的抽象类，定义新的回调函数必须继承此类 BaseLoggerkeras.callbacks.BaseLogger()Callback that accumulates epoch averages of">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-28T08:17:11.893Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Keras回调函数Callbacks">
+<meta name="twitter:description" content="回调函数是一组在训练的特定阶段被调用的函数，可以用来观察网络内部的状态。回调函数通常被传递到模型的 fit() 方法中。 Callbackkeras.callbacks.Callback()回调函数的抽象类，定义新的回调函数必须继承此类 BaseLoggerkeras.callbacks.BaseLogger()Callback that accumulates epoch averages of">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/old posts/Keras-Callbacks.html"/>
+
+
+
+
+
+  <title>Keras回调函数Callbacks | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">Keras回调函数Callbacks</h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <p>回调函数是一组在训练的特定阶段被调用的函数，可以用来观察网络内部的状态。<br>回调函数通常被传递到模型的 fit() 方法中。</p>
+<h4 id="Callback"><a href="#Callback" class="headerlink" title="Callback"></a>Callback</h4><p>keras.callbacks.Callback()<br>回调函数的抽象类，定义新的回调函数必须继承此类</p>
+<h4 id="BaseLogger"><a href="#BaseLogger" class="headerlink" title="BaseLogger"></a>BaseLogger</h4><p>keras.callbacks.BaseLogger()<br>Callback that accumulates epoch averages of metrics.<br>计算metrics指标的累加epoch平均值。<br>在每个keras模型中自动调用。</p>
+<h4 id="History"><a href="#History" class="headerlink" title="History"></a>History</h4><p>keras.callbacks.History()<br>History对象即为fit() 方法的返回值。<br>在每个keras模型中自动调用。<br>History.history是一个字典，键值包括[‘acc’,’loss’,’val_acc’,’val_loss’,’lr’]等。<br>value是长度=epoch的列表，即每个epoch记录一次数据。</p>
+<h4 id="TensorBoard"><a href="#TensorBoard" class="headerlink" title="TensorBoard"></a>TensorBoard</h4><p>当使用TensorFlow作为后台时，也可以在CallBack函数里使用TensorBoard.<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">callbacks = [</span><br><span class="line">	keras.callbacks.TensorBoard(</span><br><span class="line">		log_dir=<span class="string">'my_log_dir'</span>, <span class="comment"># 日志写入位置</span></span><br><span class="line">		histogram_freq=<span class="number">1</span>, <span class="comment"># 每一轮都要记录激活直方图</span></span><br><span class="line">		embeddings_freq=<span class="number">1</span>, <span class="comment"># 每一轮都要记录嵌入数据</span></span><br><span class="line">	)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">history = model.fit(X_train, y_train,</span><br><span class="line">	epochs = <span class="number">20</span>,</span><br><span class="line">	batch_size = <span class="number">128</span>,</span><br><span class="line">	validation_split = <span class="number">0.2</span>,</span><br><span class="line">	callbacks = callbacks)</span><br></pre></td></tr></table></figure></p>
+<p>启动之后，通过浏览器打开<a href="http://localhost:6006查看" target="_blank" rel="noopener">http://localhost:6006查看</a><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tensorboard --logdir=my_log_dir</span><br></pre></td></tr></table></figure></p>
+<h4 id="ReduceLROnPlateau"><a href="#ReduceLROnPlateau" class="headerlink" title="ReduceLROnPlateau"></a>ReduceLROnPlateau</h4><p>keras.callbacks.ReduceLROnPlateau(monitor=’val_loss’, factor=0.1, patience=10, verbose=0, mode=’auto’, epsilon=0.0001, cooldown=0, min_lr=0)<br>当评价指标不再提升时，减少学习速率。<br>参数</p>
+<ul>
+<li>mointor: 要监测的评价指标</li>
+<li>factor: 减少因子，更新方式lr = lr × factor</li>
+<li>patience: 经过多少个epoch而评价指标不变时，减少学习率的动作会被触发</li>
+<li>mode: ‘auto’,’min’,’max’, 评价指标的正常变动方向</li>
+<li>epsilon: 小于该阈值，则认为评价指标“无变化”</li>
+<li>cooldown: 学习率减少后，经过多少个epoch后才会再次触发</li>
+<li>min_lr: 学习速率下限</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">callbacks_list = [</span><br><span class="line">	keras.callbacks.ReduceLROnPlateau(</span><br><span class="line">		moniter = <span class="string">'val_loss'</span>,</span><br><span class="line">		factor = <span class="number">0.1</span>,</span><br><span class="line">		patience = <span class="number">10</span>,</span><br><span class="line">	)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h4 id="EarlyStopping"><a href="#EarlyStopping" class="headerlink" title="EarlyStopping"></a>EarlyStopping</h4><p>keras.callbacks.EarlyStopping(monitor=’val_loss’, min_delta=0, patience=0, verbose=0, mode=’auto’)<br>当评价指标不再提升时，中止训练。<br>参数</p>
+<ul>
+<li>monitor: 要监测的评价指标</li>
+<li>min_delta: 提升的最小阈值</li>
+<li>patience: 经过多少个epoch而评价指标不变时，触发动作</li>
+<li>verbose: 信息展示模式</li>
+<li>mode: ‘auto’,’min’,’max’</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">callbacks_list = [</span><br><span class="line">	keras.callbacks.EarlyStopping(</span><br><span class="line">		monitor = <span class="string">'acc'</span>,</span><br><span class="line">		patience = <span class="number">1</span>,</span><br><span class="line">	),</span><br><span class="line">	keras.callbacks.ModelCheckpoint(</span><br><span class="line">		filepath = <span class="string">'my_model.h5'</span>,</span><br><span class="line">		monitor = <span class="string">'val_loss'</span>,</span><br><span class="line">		save_best_only = <span class="keyword">True</span>,</span><br><span class="line">	)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">model.compile(optimizer=<span class="string">'rmsprop'</span>, </span><br><span class="line">	loss=<span class="string">'binary_crossentropy'</span>, </span><br><span class="line">	metrics=[<span class="string">'acc'</span>])</span><br><span class="line"></span><br><span class="line">model.fit(x,y,</span><br><span class="line">	epochs = <span class="number">10</span>,</span><br><span class="line">	batch_size = <span class="number">32</span>,</span><br><span class="line">	callbacks=callbacks_list,</span><br><span class="line">	validation_data=(x_val, y_val))</span><br><span class="line"></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h4 id="ModelCheckpoint"><a href="#ModelCheckpoint" class="headerlink" title="ModelCheckpoint"></a>ModelCheckpoint</h4><p>keras.callbacks.ModelCheckpoint(filepath, monitor=’val_loss’, verbose=0, save_best_only=False, save_weights_only=False, mode=’auto’, period=1)<br>在每个epoch后将模型保存到文件。<br>参数</p>
+<ul>
+<li>filepath: 文件路径，可以包含格式，例如weights.{epoch:02d}-{val_loss:.2f}.hdf5</li>
+<li>save_best_only: 是否只保存在验证集上性能最好的模型 </li>
+<li>save_weights_only: ‘True’只保存权重，’False’保存整个模型(包括结构、配置等)</li>
+<li>period: 两次保存之间间隔的epoch数</li>
+</ul>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">万人迷</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">230</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Callback"><span class="nav-number">1.</span> <span class="nav-text">Callback</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BaseLogger"><span class="nav-number">2.</span> <span class="nav-text">BaseLogger</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#History"><span class="nav-number">3.</span> <span class="nav-text">History</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TensorBoard"><span class="nav-number">4.</span> <span class="nav-text">TensorBoard</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ReduceLROnPlateau"><span class="nav-number">5.</span> <span class="nav-text">ReduceLROnPlateau</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EarlyStopping"><span class="nav-number">6.</span> <span class="nav-text">EarlyStopping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ModelCheckpoint"><span class="nav-number">7.</span> <span class="nav-text">ModelCheckpoint</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">98.8k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
