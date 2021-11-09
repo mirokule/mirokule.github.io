@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content=",," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="当使用层作为模型首层时，需要指定 input_shape 参数。 Densekeras.layers.Dense(units, activation=None, use_bias=True,	kernel_initializer=&apos;glorot_uniform&apos;, bias_initializer=&apos;zeros&apos;,	kernel_regularizer=None, bias_regularizer">
+<meta name="keywords" content="Deep Learning,Keras">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Keras常用层Core">
+<meta property="og:url" content="http://mirokule.github.io/old_posts/Keras-Core.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="当使用层作为模型首层时，需要指定 input_shape 参数。 Densekeras.layers.Dense(units, activation=None, use_bias=True,	kernel_initializer=&apos;glorot_uniform&apos;, bias_initializer=&apos;zeros&apos;,	kernel_regularizer=None, bias_regularizer">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-03T09:18:20.464Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Keras常用层Core">
+<meta name="twitter:description" content="当使用层作为模型首层时，需要指定 input_shape 参数。 Densekeras.layers.Dense(units, activation=None, use_bias=True,	kernel_initializer=&apos;glorot_uniform&apos;, bias_initializer=&apos;zeros&apos;,	kernel_regularizer=None, bias_regularizer">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/old_posts/Keras-Core.html"/>
+
+
+
+
+
+  <title>Keras常用层Core | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">Keras常用层Core</h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <p>当使用层作为模型首层时，需要指定 input_shape 参数。</p>
+<h4 id="Dense"><a href="#Dense" class="headerlink" title="Dense"></a>Dense</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Dense(units, activation=<span class="keyword">None</span>, use_bias=<span class="keyword">True</span>,</span><br><span class="line">	kernel_initializer=<span class="string">'glorot_uniform'</span>, bias_initializer=<span class="string">'zeros'</span>,</span><br><span class="line">	kernel_regularizer=<span class="keyword">None</span>, bias_regularizer=<span class="keyword">None</span>, activity_regularizer=<span class="keyword">None</span>,</span><br><span class="line">	kernel_constraint=<span class="keyword">None</span>, bias_constraint=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>全连接层Dense，实现的运算是 output = activation(dot(input, kernel) + bias).</p>
+<ul>
+<li>units: 大于0的整数，代表该层的输出维度</li>
+<li>activation: 如果不指定，则不使用</li>
+<li>use_bias: 为True则使用偏置项bias</li>
+</ul>
+<h4 id="Activation"><a href="#Activation" class="headerlink" title="Activation"></a>Activation</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Activation(activation)</span><br></pre></td></tr></table></figure>
+<p>激活层对一个层的输出施加激活函数。和Dense中的activation作用相同。</p>
+<h4 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Dropout(rate, noise_shape=<span class="keyword">None</span>, seed=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>Dropout在训练过程中每次更新参数时按一定概率随机断开输入神经元。可以防止过拟合。</p>
+<ul>
+<li>rate: float(0~1)，fraction of the input units to drop</li>
+<li>noise_shape: shape of the binary dropout mask</li>
+</ul>
+<h4 id="Flatten"><a href="#Flatten" class="headerlink" title="Flatten"></a>Flatten</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Flatten(data_format=<span class="string">'channels_last'</span>)</span><br></pre></td></tr></table></figure>
+<p>Flatten层用来将输入展平，将多维数据变成一维，常用在从卷积层到全连接层的过度。<br>Flatten不会影响batch的大小。</p>
+<ul>
+<li>data_format: ‘channels_last’, ‘channels_first’</li>
+</ul>
+<h4 id="Input"><a href="#Input" class="headerlink" title="Input"></a>Input</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.engine.topology.Input()</span><br></pre></td></tr></table></figure>
+<p>Input() is used to instantiate a Keras tensor.</p>
+<h4 id="Reshape"><a href="#Reshape" class="headerlink" title="Reshape"></a>Reshape</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Reshape(target_shape)</span><br></pre></td></tr></table></figure>
+<p>Reshape层用来将输入转换为特定的shape，不包含batch大小。<br>即Reshape((6,2))将把shape变为(m,6,2)</p>
+<h4 id="Permute"><a href="#Permute" class="headerlink" title="Permute"></a>Permute</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Permute(dims)</span><br></pre></td></tr></table></figure>
+<p>Permute(序列改变)层将输入的维度按照给定模式重排顺序，例如将RNN和CNN网络连接时，可能会用到该层。</p>
+<ul>
+<li>dims: 整数元组，比如(2,1)，将会互换数据的第一、第二维度。</li>
+</ul>
+<h4 id="RepeatVector"><a href="#RepeatVector" class="headerlink" title="RepeatVector"></a>RepeatVector</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.RepeatVector(n)</span><br></pre></td></tr></table></figure>
+<p>将输入重复n次。</p>
+<h4 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Lambda(function, output_shape=<span class="keyword">None</span>, mask=<span class="keyword">None</span>, arguments=<span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">model.add(Lambda(<span class="keyword">lambda</span> x: x**<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>对上一层的输出施加任何表达式</p>
+<h4 id="ActivityRegularizer"><a href="#ActivityRegularizer" class="headerlink" title="ActivityRegularizer"></a>ActivityRegularizer</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.ActivityRegularization(l1=<span class="number">0.0</span>, l2=<span class="number">0.0</span>)</span><br></pre></td></tr></table></figure>
+<p>经过本层的数据不会有任何变化，会更新损失函数</p>
+<h4 id="Masking"><a href="#Masking" class="headerlink" title="Masking"></a>Masking</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">keras.layers.Masking(mask_value=<span class="number">0.0</span>)</span><br></pre></td></tr></table></figure>
+<p>对输入的信号序列“屏蔽”，来跳过特定的时间步。</p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">万人迷</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">219</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dense"><span class="nav-number">1.</span> <span class="nav-text">Dense</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Activation"><span class="nav-number">2.</span> <span class="nav-text">Activation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dropout"><span class="nav-number">3.</span> <span class="nav-text">Dropout</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Flatten"><span class="nav-number">4.</span> <span class="nav-text">Flatten</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Input"><span class="nav-number">5.</span> <span class="nav-text">Input</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reshape"><span class="nav-number">6.</span> <span class="nav-text">Reshape</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Permute"><span class="nav-number">7.</span> <span class="nav-text">Permute</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RepeatVector"><span class="nav-number">8.</span> <span class="nav-text">RepeatVector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lambda"><span class="nav-number">9.</span> <span class="nav-text">Lambda</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ActivityRegularizer"><span class="nav-number">10.</span> <span class="nav-text">ActivityRegularizer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Masking"><span class="nav-number">11.</span> <span class="nav-text">Masking</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">87.0k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

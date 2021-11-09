@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="DEFINITIONSConverges, Diverges, LimitThe sequence ${a_n}$ converges to the number $L$ if to every positive number $\epsilon$ there corresponds an integer $N$ such that for all $n$, $$ n &amp;gt; N \;\;\;\">
+<meta name="keywords" content="Calculus">
+<meta property="og:type" content="website">
+<meta property="og:title" content="数列和级数">
+<meta property="og:url" content="http://mirokule.github.io/old_posts/Calculus-Sequence.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="DEFINITIONSConverges, Diverges, LimitThe sequence ${a_n}$ converges to the number $L$ if to every positive number $\epsilon$ there corresponds an integer $N$ such that for all $n$, $$ n &amp;gt; N \;\;\;\">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-19T03:43:18.163Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数列和级数">
+<meta name="twitter:description" content="DEFINITIONSConverges, Diverges, LimitThe sequence ${a_n}$ converges to the number $L$ if to every positive number $\epsilon$ there corresponds an integer $N$ such that for all $n$, $$ n &amp;gt; N \;\;\;\">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/old_posts/Calculus-Sequence.html"/>
+
+
+
+
+
+  <title>数列和级数 | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">数列和级数</h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <h2 id="DEFINITIONS"><a href="#DEFINITIONS" class="headerlink" title="DEFINITIONS"></a>DEFINITIONS</h2><h4 id="Converges-Diverges-Limit"><a href="#Converges-Diverges-Limit" class="headerlink" title="Converges, Diverges, Limit"></a>Converges, Diverges, Limit</h4><p>The sequence ${a_n}$ converges to the number $L$ if to every positive number $\epsilon$ there corresponds an integer $N$ such that for all $n$,</p>
+<p>$$ n &gt; N \;\;\;\; \Rightarrow \;\;\;\; \left|a_n-L\right| &lt; \epsilon. $$</p>
+<p>L is limit of the sequence.</p>
+<p>If no such number $L$ exists, we say that ${a_n}$ diverges.</p>
+<h4 id="Deverges-to-Infinity"><a href="#Deverges-to-Infinity" class="headerlink" title="Deverges to Infinity"></a>Deverges to Infinity</h4><p>The sequence ${a_n}$ diverges to infinity if for every number $M$ there is an integer $N$ such that for all $n$ larger than $N$, $a_n &gt; M$. If this condition holds we write</p>
+<p>$$ \lim_{n\rightarrow ∞} a_n = ∞ \;\;\;\; or \;\;\;\; a_n\rightarrow ∞. $$</p>
+<h4 id="Nondecreasing-Sequence"><a href="#Nondecreasing-Sequence" class="headerlink" title="Nondecreasing Sequence"></a>Nondecreasing Sequence</h4><p>A sequence ${a_n}$ with the property that $a_n \leq a_{n+1}$ for all $n$ is called a nondecreasing sequence.</p>
+<h4 id="Power-Series"><a href="#Power-Series" class="headerlink" title="Power Series"></a>Power Series</h4><p>A power series about $x=0$ is a series of the form<br>$$ \sum_{n=0}^{∞}c_nx^n = c_0+c_1x+c_2x^2+\cdot \cdot \cdot +c_nx^n+\cdot \cdot \cdot $$<br>A power series about $x=a$ is a series of the form<br>$$ \sum_{n=0}^{∞}c_n(x-a)^n = c_0+c_1(x-a)+c_2(x-a)^2+\cdot \cdot \cdot +c_n(x-a)^n+\cdot \cdot \cdot $$</p>
+<h4 id="Tayloer-Series"><a href="#Tayloer-Series" class="headerlink" title="Tayloer Series"></a>Tayloer Series</h4><p>The Taylor series generated by $f$ at $x=a$ is<br>$$ \sum_{k=0}^{∞} \frac{f^{(k)(a)}}{k!}(x-a)^k $$</p>
+<a id="more"></a>
+<h2 id="THEOREM"><a href="#THEOREM" class="headerlink" title="THEOREM"></a>THEOREM</h2><h4 id="The-Sandwich-Theroem-for-Sequences"><a href="#The-Sandwich-Theroem-for-Sequences" class="headerlink" title="The Sandwich Theroem for Sequences"></a>The Sandwich Theroem for Sequences</h4><p>If $a_n \leq b_n \leq c_n$ holds for all $n$ beyond some index $N$, and if $\lim_{n\rightarrow ∞}a_n=\lim_{n\rightarrow ∞}c_n=L$, then $\lim_{n\rightarrow ∞}b_n = L$ also.</p>
+<h4 id="The-Continuous-Function-Theorem-for-Sequences"><a href="#The-Continuous-Function-Theorem-for-Sequences" class="headerlink" title="The Continuous Function Theorem for Sequences"></a>The Continuous Function Theorem for Sequences</h4><p>Let ${a_n}$ be a sequence of real numbers. If $a_n\rightarrow L$ and if $f$ is a function that is continuous at $L$ and defined at all $a_n$, then $f(a_n)\rightarrow f(L)$.</p>
+<h4 id="The-Comparison-Test"><a href="#The-Comparison-Test" class="headerlink" title="The Comparison Test"></a>The Comparison Test</h4><p>Let $\Sigma a_n$ be a series with no negative terms.</p>
+<p>(a) $\Sigma a_n$ converges if there is a convergent series $\Sigma c_n$ with $a_n \leq c_n$ for all $n&gt;N$, for some integer N.</p>
+<p>(b) $\Sigma a_n$ diverges if there is a divergent series of nonnegative terms $\Sigma d_n$ with $a_n \geq d_n$ for all $n&gt;N$, for some integer N.</p>
+<h4 id="The-Ratio-Test"><a href="#The-Ratio-Test" class="headerlink" title="The Ratio Test"></a>The Ratio Test</h4><p>Let $\Sigma a_n$ be series with positive terms and suppose that</p>
+<p>$$ \lim_{n\rightarrow ∞} \frac{a_{n+1}}{a_n} = \rho $$</p>
+<p>Then<br>(a) the series converges if $\rho &lt; 1$,<br>(b) the series diverges if $\rho &gt; 1$ or $\rho$ is infinite,<br>(c) the test is inconclusive if $\rho = 1$.</p>
+<h4 id="The-Root-Test"><a href="#The-Root-Test" class="headerlink" title="The Root Test"></a>The Root Test</h4><p>Let $\Sigma a_n$ be a series with $a_n \geq 0$ for $n\geq N$, and suppose that</p>
+<p>$$ \lim_{n\rightarrow ∞} \sqrt[n]{a_n} = \rho $$</p>
+<p>Then<br>(a) the series converges if $\rho &lt; 1$,<br>(b) the series diverges if $\rho &gt; 1$ or $\rho$ is infinite,<br>(c) the test is inconclusive if $\rho = 1$.</p>
+<h4 id="The-Alternating-Series-Test-Leibniz’s-Theorem"><a href="#The-Alternating-Series-Test-Leibniz’s-Theorem" class="headerlink" title="The Alternating Series Test(Leibniz’s Theorem)"></a>The Alternating Series Test(Leibniz’s Theorem)</h4><p>The series</p>
+<p>$$ \sum_{n=1}^{∞}(-1)^{n+1} u_n = u_1 - u_2 + u_3 - u_4 + … $$</p>
+<p>converges if all three of the following conditions are satisfied:<br>(1) The $u_n$’s are all positive.<br>(2) $u_n \geq u_{n+1}$ for all $n\geq N$, for some integer $N$.<br>(3) $u_n \rightarrow 0$.</p>
+<p>The sum L of the series with an error whose absolute value is less than $u_{n+1}$, the remainder, $L-s_n$, has the same sign as the first unused term.</p>
+<h4 id="The-Convergence-Theorem-for-Power-Series"><a href="#The-Convergence-Theorem-for-Power-Series" class="headerlink" title="The Convergence Theorem for Power Series"></a>The Convergence Theorem for Power Series</h4><p>If the power series $\sum_{n=0}^{∞}a_nx^n = a_0+a_1x+a_2x^2+\cdot \cdot \cdot$ converges for $x=c\neq 0$, then it converges absolutely for all $x$ with $\left|x\right|&lt;\left|c\right|$.If the series diverges for $x=d$, then it diverges for all $x$ with $\left|x\right|&gt;\left|d\right|$</p>
+<h4 id="The-Term-by-Term-Differentiation-Theorem"><a href="#The-Term-by-Term-Differentiation-Theorem" class="headerlink" title="The Term-by-Term Differentiation Theorem"></a>The Term-by-Term Differentiation Theorem</h4><p>If $\sigma c_n(x-a)^n$ converges for $a-R<x<a+r$ for="" some="" $r="">0$, it defines a function $f$:<br>$$ f(x) = \sum_{n=0}^{∞}c_n(x-a)^n, \;\;\;\;\;\; a-R&lt;x&lt;a+R $$<br>Such a function $f$ has derivatives of all orders inside the interval of convergence.</x<a+r$></p>
+<h4 id="The-Term-by-Term-Integration-Theorem"><a href="#The-Term-by-Term-Integration-Theorem" class="headerlink" title="The Term-by-Term Integration Theorem"></a>The Term-by-Term Integration Theorem</h4><p>Suppose that<br>$$ f(x) = \sum_{n=0}^{∞}c_n(x-a)^n $$<br>converges for $a-R<x<a+r(r>0)$. Then<br>$$ \sum_{n=0}^{∞}c_n\frac{(x-a)^{n+1}}{n+1} $$<br>converges for $a-R&lt;x&lt;a+R$ and<br>$$ \int f(x)dx = \sum_{n=0}^{∞}c_n\frac{(x-a)^{n+1}}{n+1} $$<br>for $a-R&lt;x&lt;a+R$.</x<a+r(r></p>
+<h4 id="The-Remainder-Estimation-Theorem"><a href="#The-Remainder-Estimation-Theorem" class="headerlink" title="The Remainder Estimation Theorem"></a>The Remainder Estimation Theorem</h4><p>If there is a positive constant $M$ such that $\left|f^{(n+1)}(t)\right|\leq M$ for all $t$ between $x$ and $a$, then the remainder term $R_n(x)$ satisfies the inequality<br>$$ \left|R_n(x)\right| \leq M\frac{\left|x-a\right|^{n+1}}{(n+1)!} $$</p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">万人迷</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">219</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DEFINITIONS"><span class="nav-number">1.</span> <span class="nav-text">DEFINITIONS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Converges-Diverges-Limit"><span class="nav-number">1.0.1.</span> <span class="nav-text">Converges, Diverges, Limit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Deverges-to-Infinity"><span class="nav-number">1.0.2.</span> <span class="nav-text">Deverges to Infinity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Nondecreasing-Sequence"><span class="nav-number">1.0.3.</span> <span class="nav-text">Nondecreasing Sequence</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Power-Series"><span class="nav-number">1.0.4.</span> <span class="nav-text">Power Series</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Tayloer-Series"><span class="nav-number">1.0.5.</span> <span class="nav-text">Tayloer Series</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#THEOREM"><span class="nav-number">2.</span> <span class="nav-text">THEOREM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Sandwich-Theroem-for-Sequences"><span class="nav-number">2.0.1.</span> <span class="nav-text">The Sandwich Theroem for Sequences</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Continuous-Function-Theorem-for-Sequences"><span class="nav-number">2.0.2.</span> <span class="nav-text">The Continuous Function Theorem for Sequences</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Comparison-Test"><span class="nav-number">2.0.3.</span> <span class="nav-text">The Comparison Test</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Ratio-Test"><span class="nav-number">2.0.4.</span> <span class="nav-text">The Ratio Test</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Root-Test"><span class="nav-number">2.0.5.</span> <span class="nav-text">The Root Test</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Alternating-Series-Test-Leibniz’s-Theorem"><span class="nav-number">2.0.6.</span> <span class="nav-text">The Alternating Series Test(Leibniz’s Theorem)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Convergence-Theorem-for-Power-Series"><span class="nav-number">2.0.7.</span> <span class="nav-text">The Convergence Theorem for Power Series</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Term-by-Term-Differentiation-Theorem"><span class="nav-number">2.0.8.</span> <span class="nav-text">The Term-by-Term Differentiation Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Term-by-Term-Integration-Theorem"><span class="nav-number">2.0.9.</span> <span class="nav-text">The Term-by-Term Integration Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Remainder-Estimation-Theorem"><span class="nav-number">2.0.10.</span> <span class="nav-text">The Remainder Estimation Theorem</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">87.0k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

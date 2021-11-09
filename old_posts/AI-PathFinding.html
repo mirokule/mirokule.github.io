@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="地图划分1.Grid (方格)将搜索区域划分成了方形网格。没有障碍物的地方画上方格，选取方格中心作为可以行走的点。 优点：划分简单，容易结合寻路算法使用。缺点：移动是不连续的；网格数较多时需要资源计算和存储。 2.Navigation Mesh(导航网格)利用了凸多边形的性质：在凸多边形上的一个点走到另一个点，路径一定在多边形内部。 生成步骤：（1）通过地图的边界点和障碍物的边界点，将地图划分成许">
+<meta name="keywords" content="AI">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI-PathFinding">
+<meta property="og:url" content="http://mirokule.github.io/old_posts/AI-PathFinding.html">
+<meta property="og:site_name" content="Gate of Babylon">
+<meta property="og:description" content="地图划分1.Grid (方格)将搜索区域划分成了方形网格。没有障碍物的地方画上方格，选取方格中心作为可以行走的点。 优点：划分简单，容易结合寻路算法使用。缺点：移动是不连续的；网格数较多时需要资源计算和存储。 2.Navigation Mesh(导航网格)利用了凸多边形的性质：在凸多边形上的一个点走到另一个点，路径一定在多边形内部。 生成步骤：（1）通过地图的边界点和障碍物的边界点，将地图划分成许">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-29T00:45:17.603Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AI-PathFinding">
+<meta name="twitter:description" content="地图划分1.Grid (方格)将搜索区域划分成了方形网格。没有障碍物的地方画上方格，选取方格中心作为可以行走的点。 优点：划分简单，容易结合寻路算法使用。缺点：移动是不连续的；网格数较多时需要资源计算和存储。 2.Navigation Mesh(导航网格)利用了凸多边形的性质：在凸多边形上的一个点走到另一个点，路径一定在多边形内部。 生成步骤：（1）通过地图的边界点和障碍物的边界点，将地图划分成许">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://mirokule.github.io/old_posts/AI-PathFinding.html"/>
+
+
+
+
+
+  <title>AI-PathFinding | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gate of Babylon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">不积跬步，无以至千里</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline">AI-PathFinding</h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <h2 id="地图划分"><a href="#地图划分" class="headerlink" title="地图划分"></a>地图划分</h2><h5 id="1-Grid-方格"><a href="#1-Grid-方格" class="headerlink" title="1.Grid (方格)"></a>1.Grid (方格)</h5><p>将搜索区域划分成了方形网格。<br>没有障碍物的地方画上方格，选取方格中心作为可以行走的点。</p>
+<p>优点：划分简单，容易结合寻路算法使用。<br>缺点：移动是不连续的；网格数较多时需要资源计算和存储。</p>
+<h5 id="2-Navigation-Mesh-导航网格"><a href="#2-Navigation-Mesh-导航网格" class="headerlink" title="2.Navigation Mesh(导航网格)"></a>2.Navigation Mesh(导航网格)</h5><p>利用了凸多边形的性质：在凸多边形上的一个点走到另一个点，路径一定在多边形内部。</p>
+<p>生成步骤：<br>（1）通过地图的边界点和障碍物的边界点，将地图划分成许多三角形；<br>（2）将相邻的三角形合并形成凸多边形；<br>（3）将凸多边形继续不断合并为凸多边形；<br>（4）将凸多边形每条边的中点放置路径点，将每个多边形的路径点连线。</p>
+<p>优点：降低搜寻计算量，移动更加自然。<br>缺点：实现复杂。</p>
+<a id="more"></a>
+<h2 id="寻路算法"><a href="#寻路算法" class="headerlink" title="寻路算法"></a>寻路算法</h2><h5 id="BFS-宽度优先-算法"><a href="#BFS-宽度优先-算法" class="headerlink" title="BFS(宽度优先)算法"></a>BFS(宽度优先)算法</h5><p>Breadth First Search,所有因为展开节点而得到的子节点都会被加进一个先进先出的队列中。<br>一般的实验里，其邻居节点尚未被检验过的节点会被放置在一个被称为open的容器中（例如队列或是链表），而被检验过的节点则被放置在被称为closed的容器中。（open-closed表）<br>可以看做是A*算法的特例，估计函数h=0.</p>
+<h5 id="Dijkstra算法"><a href="#Dijkstra算法" class="headerlink" title="Dijkstra算法"></a>Dijkstra算法</h5><p>是从一个顶点到其余各顶点的最短路径算法，解决的是有向图中最短路径问题。<br>可以一次算出起始点到所有目标的距离，遍历节点较多，效率低。</p>
+<p>算法步骤：<br>（1）初始时，S中只包含顶点v，U中包含除v外的其他顶点；<br>（2）计算U中各顶点到v的距离，如果没有路径则距离为正无穷；<br>（3）从U中选取距离v最小的顶点k，把k加入S；<br>（4）计算v经过k到各顶点的距离，与之前的比较，取更小的值，得到更新的距离；<br>（5）重复3、4步，直到所有的顶点都在S中。</p>
+<h5 id="A-算法"><a href="#A-算法" class="headerlink" title="A*算法"></a>A*算法</h5><p>启发式搜索，对每个位置进行估价。估价函数选择的不同，可以有不同的结果。<br>在迷宫和寻路问题中，通常使用曼哈顿估价函数。</p>
+<p>算法步骤：<br>（1）将起始节点a加入open表；<br>（2）寻找起始节点周围可达的节点，也加入open表。这些节点需要记录a为父节点；<br>（3）将a移动到close表；<br>（4）从open表中选择下一个节点时，总是选择F值最低的。<br>    F = G + H<br>    G = 从起点A，沿着产生的路径，移动到网格上指定方格的移动耗费。<br>    H = 从网格上那个方格移动到终点B的预估移动耗费。这经常被称为启发式的，因为它只是个猜测。我们没办法事先知道路径的长度，因为路上可能存在各种障碍(墙，水，等等)。<br>    例如，G=10,14（对角线）；H=30,40,50,60等等<br>（5）将F值最小的节点k移动到close表；<br>（6）将k周围的节点中，无障碍可达、不在close表中的加入open表，记录新父节点k；<br>（7）对于已经在open表里的k周围节点，检查新路径G值是否更低。若是，重新计算F和G；<br>（8）重复4-7，直到目标格进入close表。<br>（9）从目标格开始，逆向遍历父节点，得到最短路径。</p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Miles" />
+            
+              <p class="site-author-name" itemprop="name">Miles</p>
+              <p class="site-description motion-element" itemprop="description">万人迷</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">219</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/mirokule" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:miles.miro@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.kaggle.com/" title="Kaggle" target="_blank">Kaggle</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://unity3d.com/" title="Unity" target="_blank">Unity</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.apple.com/swift/" title="Swift" target="_blank">Swift</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#地图划分"><span class="nav-number">1.</span> <span class="nav-text">地图划分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Grid-方格"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">1.Grid (方格)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Navigation-Mesh-导航网格"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">2.Navigation Mesh(导航网格)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寻路算法"><span class="nav-number">2.</span> <span class="nav-text">寻路算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#BFS-宽度优先-算法"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">BFS(宽度优先)算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Dijkstra算法"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">Dijkstra算法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#A-算法"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">A*算法</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">M.M.Tech</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">87.0k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

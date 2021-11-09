@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Scriptable Object用于存储数据。首先声明一个存储数据结构的基类，然后在每个实例中存储不同的数据。可以将数据与代码逻辑分离。另外如果你有存储很多固定数据的prefab，每次实例化这个prefab都会在内存中单独存储一份数据的拷贝。而将数据从prefab中剥离出来，存储到scriptable object中，就不会再每次实例化prefab时占用额外的存储空间。 1.声明基类基类需要继承">
+<meta name="description" content="Scriptable Object用于存储数据。首先声明一个存储数据结构的基类，然后在每个实例中存储不同的数据。可以将数据与代码逻辑分离。另外如果你有存储很多固定数据的prefab(例如有一大段文字描述string的道具A)，每次实例化这个prefab都会在内存中单独存储一份数据的拷贝(多个A的实例对应多个string)。而将数据从prefab中剥离出来，存储到scriptable object中">
 <meta name="keywords" content="Unity">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Scriptable Object">
 <meta property="og:url" content="http://mirokule.github.io/2019/09/10/Unity-ScriptableObject/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="Scriptable Object用于存储数据。首先声明一个存储数据结构的基类，然后在每个实例中存储不同的数据。可以将数据与代码逻辑分离。另外如果你有存储很多固定数据的prefab，每次实例化这个prefab都会在内存中单独存储一份数据的拷贝。而将数据从prefab中剥离出来，存储到scriptable object中，就不会再每次实例化prefab时占用额外的存储空间。 1.声明基类基类需要继承">
+<meta property="og:description" content="Scriptable Object用于存储数据。首先声明一个存储数据结构的基类，然后在每个实例中存储不同的数据。可以将数据与代码逻辑分离。另外如果你有存储很多固定数据的prefab(例如有一大段文字描述string的道具A)，每次实例化这个prefab都会在内存中单独存储一份数据的拷贝(多个A的实例对应多个string)。而将数据从prefab中剥离出来，存储到scriptable object中">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-10T08:43:52.016Z">
+<meta property="og:updated_time" content="2021-09-09T01:27:28.866Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Scriptable Object">
-<meta name="twitter:description" content="Scriptable Object用于存储数据。首先声明一个存储数据结构的基类，然后在每个实例中存储不同的数据。可以将数据与代码逻辑分离。另外如果你有存储很多固定数据的prefab，每次实例化这个prefab都会在内存中单独存储一份数据的拷贝。而将数据从prefab中剥离出来，存储到scriptable object中，就不会再每次实例化prefab时占用额外的存储空间。 1.声明基类基类需要继承">
+<meta name="twitter:description" content="Scriptable Object用于存储数据。首先声明一个存储数据结构的基类，然后在每个实例中存储不同的数据。可以将数据与代码逻辑分离。另外如果你有存储很多固定数据的prefab(例如有一大段文字描述string的道具A)，每次实例化这个prefab都会在内存中单独存储一份数据的拷贝(多个A的实例对应多个string)。而将数据从prefab中剥离出来，存储到scriptable object中">
 
 
 
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  371
+                  405
                 </span>
               
 
@@ -349,7 +349,7 @@
       
 
       
-        <p>Scriptable Object用于存储数据。<br>首先声明一个存储数据结构的基类，然后在每个实例中存储不同的数据。可以将数据与代码逻辑分离。<br>另外如果你有存储很多固定数据的prefab，每次实例化这个prefab都会在内存中单独存储一份数据的拷贝。而将数据从prefab中剥离出来，存储到scriptable object中，就不会再每次实例化prefab时占用额外的存储空间。</p>
+        <p>Scriptable Object用于存储数据。<br>首先声明一个存储数据结构的基类，然后在每个实例中存储不同的数据。可以将数据与代码逻辑分离。<br>另外如果你有存储很多固定数据的prefab(例如有一大段文字描述string的道具A)，每次实例化这个prefab都会在内存中单独存储一份数据的拷贝(多个A的实例对应多个string)。而将数据从prefab中剥离出来，存储到scriptable object中，就不会再每次实例化prefab时占用额外的存储空间(多个A的实例对应一份string)。</p>
 <h6 id="1-声明基类"><a href="#1-声明基类" class="headerlink" title="1.声明基类"></a>1.声明基类</h6><p>基类需要继承ScripableObject类，并且创捷一个菜单，用于生成实例。</p>
 <figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">[<span class="meta">CreateAssetMenu(fileName = <span class="meta-string">"Data"</span>, menuName = <span class="meta-string">"ScriptableObjects/SpawnManagerScriptableObject"</span>, order = 1)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SpawnManagerScriptableObject</span> : <span class="title">ScriptableObject</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> prefabName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> numberOfPrefabsToCreate;</span><br><span class="line">    <span class="keyword">public</span> Vector3[] spawnPoints;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其中fileName是默认的文件名，menuName是创建实例的目录路径。</p>
@@ -479,7 +479,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">230</span>
+                  <span class="site-state-item-count">219</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -492,7 +492,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -583,7 +583,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -597,7 +597,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">98.8k</span>
+    <span title="Site words total count">87.0k</span>
   
 </div>
 

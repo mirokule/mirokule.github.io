@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="委托的类型1.DelegateDelegate至少0个参数，至多32个参数，可以无返回值，也可以指定返回值类型。例：public delegate int MethodtDelegate(int x, int y);表示有两个参数，并返回int型。 public delegate int MyDelegateMethod(int x, int y);private static MyDelegat">
+<meta name="description" content="事件EventC#中使用事件机制实现线程间的通信。事件在类中声明且生成，通过使用委托与事件处理程序关联。事件是一种特殊的委托，更多是为了封装。在类内部和委托一样。在类的外部，不能调用事件，只能使用+=和-=运算。// 首先声明该事件的委托类型public delegate void BoilerLogHandler(string status);// 然后声明事件public event Boil">
 <meta name="keywords" content="C#">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C#-Delegation">
+<meta property="og:title" content="委托和事件">
 <meta property="og:url" content="http://mirokule.github.io/2016/11/30/C#-Delegation/index.html">
 <meta property="og:site_name" content="Gate of Babylon">
-<meta property="og:description" content="委托的类型1.DelegateDelegate至少0个参数，至多32个参数，可以无返回值，也可以指定返回值类型。例：public delegate int MethodtDelegate(int x, int y);表示有两个参数，并返回int型。 public delegate int MyDelegateMethod(int x, int y);private static MyDelegat">
+<meta property="og:description" content="事件EventC#中使用事件机制实现线程间的通信。事件在类中声明且生成，通过使用委托与事件处理程序关联。事件是一种特殊的委托，更多是为了封装。在类内部和委托一样。在类的外部，不能调用事件，只能使用+=和-=运算。// 首先声明该事件的委托类型public delegate void BoilerLogHandler(string status);// 然后声明事件public event Boil">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-29T00:45:17.604Z">
+<meta property="og:updated_time" content="2021-01-20T04:17:32.307Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C#-Delegation">
-<meta name="twitter:description" content="委托的类型1.DelegateDelegate至少0个参数，至多32个参数，可以无返回值，也可以指定返回值类型。例：public delegate int MethodtDelegate(int x, int y);表示有两个参数，并返回int型。 public delegate int MyDelegateMethod(int x, int y);private static MyDelegat">
+<meta name="twitter:title" content="委托和事件">
+<meta name="twitter:description" content="事件EventC#中使用事件机制实现线程间的通信。事件在类中声明且生成，通过使用委托与事件处理程序关联。事件是一种特殊的委托，更多是为了封装。在类内部和委托一样。在类的外部，不能调用事件，只能使用+=和-=运算。// 首先声明该事件的委托类型public delegate void BoilerLogHandler(string status);// 然后声明事件public event Boil">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>C#-Delegation | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>委托和事件 | Gate of Babylon</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C#-Delegation</h1>
+          <h1 class="post-title" itemprop="name headline">委托和事件</h1>
         
 
         <div class="post-meta">
@@ -324,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  205
+                  393
                 </span>
               
 
@@ -349,8 +349,10 @@
       
 
       
-        <h5 id="委托的类型"><a href="#委托的类型" class="headerlink" title="委托的类型"></a>委托的类型</h5><h6 id="1-Delegate"><a href="#1-Delegate" class="headerlink" title="1.Delegate"></a>1.Delegate</h6><p>Delegate至少0个参数，至多32个参数，可以无返回值，也可以指定返回值类型。<br>例：public delegate int MethodtDelegate(int x, int y);表示有两个参数，并返回int型。</p>
+        <h3 id="事件Event"><a href="#事件Event" class="headerlink" title="事件Event"></a>事件Event</h3><p>C#中使用事件机制实现线程间的通信。<br>事件在类中声明且生成，通过使用委托与事件处理程序关联。<br>事件是一种特殊的委托，更多是为了封装。在类内部和委托一样。在类的外部，不能调用事件，只能使用+=和-=运算。<br><figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 首先声明该事件的委托类型</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">void</span> <span class="title">BoilerLogHandler</span>(<span class="params"><span class="keyword">string</span> status</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 然后声明事件</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">event</span> BoilerLogHandler BoilerEventLog;</span><br><span class="line"><span class="comment">// 订阅</span></span><br><span class="line">boilerEvent.BoilerEventLog += <span class="keyword">new</span> DelegateBoilerEvent.BoilerLogHandler(Logger);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果声明委托，外部类可以访问这个委托</span></span><br><span class="line"><span class="keyword">public</span> BoilerLogHandler BoilerEventLog;</span><br><span class="line">A.BoilerEventLog = B.method();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 事件发布</span></span><br><span class="line">BoilerEventLog(message);</span><br></pre></td></tr></table></figure></p>
+<h3 id="委托Delegate"><a href="#委托Delegate" class="headerlink" title="委托Delegate"></a>委托Delegate</h3><h6 id="1-Delegate"><a href="#1-Delegate" class="headerlink" title="1.Delegate"></a>1.Delegate</h6><p>Delegate至少0个参数，至多32个参数，可以无返回值，也可以指定返回值类型。<br>例：public delegate int MethodtDelegate(int x, int y);表示有两个参数，并返回int型。</p>
 <figure class="highlight cs"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">int</span> <span class="title">MyDelegateMethod</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> MyDelegateMethod method;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>) </span>&#123;</span><br><span class="line">	method = <span class="keyword">new</span> MyDelegateMethod(Add);</span><br><span class="line">	Console.WriteLine(method(<span class="number">10</span>, <span class="number">12</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">Add</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>委托对象可以使用”+“运算符合并，只有相同类型的委托可被合并。由此可以创建调用列表。</p>
 <h6 id="2-Predicate"><a href="#2-Predicate" class="headerlink" title="2.Predicate"></a>2.Predicate</h6><p>Predicate有且只有一个参数，返回值固定为bool</p>
 <h6 id="3-Action"><a href="#3-Action" class="headerlink" title="3.Action"></a>3.Action</h6><p>Action是无返回值的泛型委托。<br>Action可以有参数，Action<int, string=""> 表示有传入参数int, string。<br>例：public void Test<t> (Action<t> action, T p)</t></t></int,></p>
 <h6 id="4-Func"><a href="#4-Func" class="headerlink" title="4.Func"></a>4.Func</h6><p>Func是有返回值的泛型委托。<br>Func<int> 表示无参，有返回值int的委托。<br>Func<object, string,="" int=""> 表示传入参数为object,string，返回值为int的委托。<br>    public int Test<t1, t2="">(Func<t1,t2,int> func, T1 a, T2 b) {<br>        return func(a, b);<br>    }</t1,t2,int></t1,></object,></int></p>
@@ -477,7 +479,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">230</span>
+                  <span class="site-state-item-count">219</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -490,7 +492,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -561,7 +563,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#委托的类型"><span class="nav-number">1.</span> <span class="nav-text">委托的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-Delegate"><span class="nav-number">1.1.</span> <span class="nav-text">1.Delegate</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-Predicate"><span class="nav-number">1.2.</span> <span class="nav-text">2.Predicate</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-Action"><span class="nav-number">1.3.</span> <span class="nav-text">3.Action</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-Func"><span class="nav-number">1.4.</span> <span class="nav-text">4.Func</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#事件Event"><span class="nav-number">1.</span> <span class="nav-text">事件Event</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#委托Delegate"><span class="nav-number">2.</span> <span class="nav-text">委托Delegate</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-Delegate"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">1.Delegate</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-Predicate"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">2.Predicate</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-Action"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">3.Action</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-Func"><span class="nav-number">2.0.0.4.</span> <span class="nav-text">4.Func</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -581,7 +583,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -595,7 +597,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">98.8k</span>
+    <span title="Site words total count">87.0k</span>
   
 </div>
 
